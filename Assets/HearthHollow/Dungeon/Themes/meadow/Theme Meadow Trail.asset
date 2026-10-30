@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Meadow Trail
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: meadow
+  displayName: Meadow Trail
+  floor: {fileID: 11400000, guid: d03a942cb6ebd413fb41c04c34291188, type: 2}
+  floorAlt: {fileID: 11400000, guid: 26ad083c7a4154b4c916e062bf583a2c, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: df4706f8eb263477c87d00c208c1a5be, type: 2}
+  wallFace: {fileID: 11400000, guid: 9ecd65646f9474c6bb03dab631e409d5, type: 2}
+  hazard: {fileID: 11400000, guid: 79d2f5a47f5904b2f9844c6da26a742a, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 5b2e4e55e1c5a4da6b3ddc8389b3fa63, type: 2}
+  - {fileID: 11400000, guid: f9e023e1afca74e82aac04e39336e261, type: 2}
+  - {fileID: 11400000, guid: f0a108b7b4afc4a398c738ffbebafab3, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.078431375, g: 0.11764706, b: 0.0627451, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 1, g: 0.98, b: 0.9, a: 1}
+  lightIntensity: 1
+  playerLight: 0
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 7557cc482f2464bb580bb3be852b95c9, type: 3}
+  ladder: {fileID: 21300000, guid: 32e402a6041344a26a968c1b05cd6ba3, type: 3}
+  exitPortal: {fileID: 21300000, guid: 01155d578f75e48c783572717ebcc089, type: 3}
+  campfire: {fileID: 21300000, guid: 6d7167c01c0df42a591a9fc94f29e622, type: 3}
+  forage: {fileID: 21300000, guid: 051275b7b5c0240c8a57718095c1fa4b, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1

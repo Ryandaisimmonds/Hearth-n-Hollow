@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Chili Ridge Trail
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: chili
+  displayName: Chili Ridge Trail
+  floor: {fileID: 11400000, guid: 08ec483914869457687fde5d07e2e78a, type: 2}
+  floorAlt: {fileID: 11400000, guid: 2e2b26d8cc4bd4796884189ac6cf79b0, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: bc3a45c73da3a48edb564e4508ff76ab, type: 2}
+  wallFace: {fileID: 11400000, guid: a8de24ae3c52a4b78880fd0e1f1ea205, type: 2}
+  hazard: {fileID: 11400000, guid: 3a016ff26c72b484395144874e3987cf, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 3cd702de6def142778b4e2b393331308, type: 2}
+  - {fileID: 11400000, guid: 5846d2ce3bfe8489caf42a032a101dc0, type: 2}
+  - {fileID: 11400000, guid: c44a1795c38dc4e4e99f753e55e5b464, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.1254902, g: 0.047058824, b: 0.023529412, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 1, g: 0.86, b: 0.7, a: 1}
+  lightIntensity: 1
+  playerLight: 0
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 62902faea0c784fc0a9cc899a340623f, type: 3}
+  ladder: {fileID: 21300000, guid: e91e620abc2bd4f2fab20155dd773d19, type: 3}
+  exitPortal: {fileID: 21300000, guid: d8e4cc0d2f6a94fd3b76d31e98f6a618, type: 3}
+  campfire: {fileID: 21300000, guid: a3a2a7abe9aab40b2927a67dc2dc7e60, type: 3}
+  forage: {fileID: 21300000, guid: bb9e9f20d4c6e479e9224a5d7b99112d, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.08

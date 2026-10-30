@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Forgotten Larder
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: larder
+  displayName: Forgotten Larder
+  floor: {fileID: 11400000, guid: 13b108cae6fb7495a8a3804ad0ae5c9d, type: 2}
+  floorAlt: {fileID: 11400000, guid: 3de17a20168a04f5898412eb018426fe, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: 7018e9f5a6ac2458aa079114988d516a, type: 2}
+  wallFace: {fileID: 11400000, guid: 8a3ba59ed6ebc4d66a1a19853f3d3eea, type: 2}
+  hazard: {fileID: 11400000, guid: 71ffbb2121a5740499132fe693df1f87, type: 2}
+  decor:
+  - {fileID: 11400000, guid: d76d579e0c545485ebc1082ea45ed43b, type: 2}
+  - {fileID: 11400000, guid: b1d9aa9cca9814d4597d36a8e844ecfa, type: 2}
+  - {fileID: 11400000, guid: 7fddce18564964c64a353d822caae3b7, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.078431375, g: 0.047058824, b: 0.023529412, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 1, g: 0.85, b: 0.62, a: 1}
+  lightIntensity: 0.75
+  playerLight: 0.9
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: ad9713351c7fb461cb9729125b817bc1, type: 3}
+  ladder: {fileID: 21300000, guid: e75ba861143ca4a708355b109dc3e67f, type: 3}
+  exitPortal: {fileID: 21300000, guid: a30b3147ce96748ce8fec0c4299e5fdf, type: 3}
+  campfire: {fileID: 21300000, guid: 838024e36d085492e9baecfb8d9796a7, type: 3}
+  forage: {fileID: 21300000, guid: c3d117698f43c46548af958fa5544c74, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.08

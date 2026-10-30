@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Glowcap Grotto
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: glowcap
+  displayName: Glowcap Grotto
+  floor: {fileID: 11400000, guid: fd754bfe33c6b424e8181aa535a6a8a0, type: 2}
+  floorAlt: {fileID: 11400000, guid: 376944566e813439dbf6c7ec1c9ed1ea, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: 897826d25a6004c2c9970186d3bfe0ed, type: 2}
+  wallFace: {fileID: 11400000, guid: 66a34516a2ba7493f93ca34eb93a378c, type: 2}
+  hazard: {fileID: 11400000, guid: f694c2ddca9cb4d5ebb4ba9117557b05, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 8f9339793c1024c44a7076d2953a2b55, type: 2}
+  - {fileID: 11400000, guid: 55048c0f144244873988c7da101b462e, type: 2}
+  - {fileID: 11400000, guid: 4251113eb46084fc1ab66f7cdc9258b6, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.007843138, g: 0.015686275, b: 0.03137255, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 0.6, g: 0.9, b: 0.95, a: 1}
+  lightIntensity: 0.7
+  playerLight: 1.1
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: aed06344125dd482fa1490bd9a940296, type: 3}
+  ladder: {fileID: 21300000, guid: 5723b3eee8d1640808d05e3f9da49ab6, type: 3}
+  exitPortal: {fileID: 21300000, guid: 6801d96a729c94913ba253f3fadded29, type: 3}
+  campfire: {fileID: 21300000, guid: 6d5b070c3f3c34d5193ca2d9edce6482, type: 3}
+  forage: {fileID: 21300000, guid: 78dd62d09e8f14758a75e7b14060b727, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.05

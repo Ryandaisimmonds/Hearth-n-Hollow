@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Ember Hunt
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: ember
+  displayName: Ember Hunt
+  floor: {fileID: 11400000, guid: 8541d3ab1d3be4e00a3761d1d4ab3f65, type: 2}
+  floorAlt: {fileID: 11400000, guid: 5e6eeaa29ab67417899f0576c299663c, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: e24d5396faf364aaa868401c68a6fdab, type: 2}
+  wallFace: {fileID: 11400000, guid: d07128121d56341f4b121d4b2a5100ba, type: 2}
+  hazard: {fileID: 11400000, guid: 30b7b4c16e758406293f5f4eb210e864, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 2bfab1e8586c049189ac2670cba751c3, type: 2}
+  - {fileID: 11400000, guid: 4ea54c17fd12e4cc39d57c4295798540, type: 2}
+  - {fileID: 11400000, guid: 6c408d0b4bd114d15b6c8d683a1545dd, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.07058824, g: 0.023529412, b: 0.015686275, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 1, g: 0.62, b: 0.46, a: 1}
+  lightIntensity: 0.75
+  playerLight: 1
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 12875ea1e4c704a9b9a586eeba59c58a, type: 3}
+  ladder: {fileID: 21300000, guid: 3c3c0177fd869490188e87345673e310, type: 3}
+  exitPortal: {fileID: 21300000, guid: 17c18195f03164ffca885bfdd1fa7e51, type: 3}
+  campfire: {fileID: 21300000, guid: ca2ddb2c33db94080b38ffe4301ea9ec, type: 3}
+  forage: {fileID: 21300000, guid: a7f7df6211fa94c42ac73fb1a802bbb5, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.12

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Cavern Hunt
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: cavern
+  displayName: Cavern Hunt
+  floor: {fileID: 11400000, guid: af4479b93e25e4c45be4723406e9ff8b, type: 2}
+  floorAlt: {fileID: 11400000, guid: 2d5250cd5a9b6477e91ed0f831437cf7, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: c725b61e924704e6cb5ad103191a13d1, type: 2}
+  wallFace: {fileID: 11400000, guid: e9c39ad002f984ffbb1bcc7b2a225881, type: 2}
+  hazard: {fileID: 11400000, guid: 8b56f4790c7644f9b9612a644b9d3590, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 49c7fdece956c4696a4ded7d22d994ae, type: 2}
+  - {fileID: 11400000, guid: 410e06d2b22ec4be5a7a02cd899b9e19, type: 2}
+  - {fileID: 11400000, guid: fda3df2d8a3234f7a8dbe4aab7c61c48, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.023529412, g: 0.03137255, b: 0.047058824, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 0.55, g: 0.62, b: 0.85, a: 1}
+  lightIntensity: 0.6
+  playerLight: 1.4
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: c6ffc6d8e51814e5bb5b1efdb95816be, type: 3}
+  ladder: {fileID: 21300000, guid: 5133c0542c8d34edc9027596e0f72d4f, type: 3}
+  exitPortal: {fileID: 21300000, guid: 8369f703fc9b24e8b8ff91267e23e232, type: 3}
+  campfire: {fileID: 21300000, guid: 282f46eca19ce436b8cb63052af647f3, type: 3}
+  forage: {fileID: 21300000, guid: 6f18110e3548746f89fc246a6fbc3b26, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.05

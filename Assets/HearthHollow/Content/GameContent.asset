@@ -1,0 +1,3465 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b2284d1014941429a914888263581b, type: 3}
+  m_Name: GameContent
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Data.GameContentAsset
+  content:
+    tuning:
+      gridWidth: 9
+      gridHeight: 7
+      restChance: 0.08
+      eliteChance: 0.1
+      monsterReqMin: 0
+      monsterReqMax: 3
+      eliteReqMin: 2
+      eliteReqMax: 6
+      roomCoinBonus: 5
+      roomXpBonus: 3
+      levelCap: 50
+      skillUnlockLevel: 1
+      hpPerLevel: 0.2
+      hpPerLevelEarly: 1
+      earlyLevels: 10
+      xpBase: 30
+      xpPerLevel: 10
+      damagePerLevel: 0.005
+      secondSkillLevel: 5
+      borrowLevel: 20
+      skillPointsPerLevel: 1
+      armourPerPoint: 0.05
+      armourCap: 0.6
+      baseCritChance: 0.1
+      critMult: 2
+      monsterHpBase: 6
+      monsterHpPerDiff: 3
+      monsterAtkBase: 2
+      monsterAtkPerDiff: 2
+      killCoinBase: 8
+      killCoinPerDiff: 4
+      killXpBase: 8
+      killXpPerDiff: 2
+      eliteRewardMult: 2
+      monsterDropChance: 0.35
+      strikeHit: 0.6
+      strikeHitAfterMiss: 0.8
+      guardHeal: 5
+      guardDamageTaken: 0.5
+      riposteMult: 1.5
+      luckyDamageMult: 0.5
+      luckyCritMult: 2
+      shamanHealPct: 0.25
+      dragonWindUpChance: 0.5
+      dragonWindUpMult: 2
+      traySize: 3
+      secondHelping: 0.5
+      thirdHelping: 0.25
+      bagSlots: 15
+      bagSlotsBackpack: 30
+      stackSize: 5
+      backpackPrice: 120
+      merchantChance: 0.3
+      stormChance: 0.2
+      armourerChance: 0.15
+      foragerChance: 0.1
+      harvestMoonChance: 0.1
+      armourerDiscount: 0.3
+      foragerGiftCount: 3
+      harvestMoonGatherBonus: 1
+      routeModChance: 0.35
+      restHealPct: 0.3
+      gatherSafeWidth: 0.3
+      gatherPerfectWidth: 0.1
+      gatherBarSpeed: 1.2
+      gatherYieldSafe: 1
+      gatherYieldPerfect: 2
+      deathXpMult: 0.5
+      dungeonFloors: 3
+      roomsPerFloorMin: 7
+      roomsPerFloorMax: 10
+      enemiesPerRoomMin: 2
+      enemiesPerRoomMax: 4
+      dungeonEliteChance: 0.15
+      bossHpMult: 2.5
+      bossAtkMult: 1.2
+      bossRewardMult: 2
+      dungeonKillCoinMult: 0.25
+      dungeonKillXpMult: 0.35
+      skillCooldownSeconds: 6
+      dashCooldownSeconds: 0.7
+      hurtInvulnSeconds: 0.6
+      monsterAttackCooldown: 1.3
+      cleaveRadius: 2.2
+      guardSeconds: 3
+      guardDamageMult: 0.5
+      hazardTickSeconds: 2
+      hazardMitigationPerMeal: 0.5
+      coldSlow: 0.25
+      heatStillMult: 2
+      darkLight: 0.07
+      darkRadiusMin: 2.6
+      darkRadiusMax: 7.5
+      swiftSpeed: 2
+      franticSpeed: 3
+      bigBangDamage: 2
+      bigBangRadius: 1.25
+      glassMult: 2
+      giantHp: 1.75
+      giantSize: 1.45
+      giantSpeed: 0.75
+      swarmCount: 2
+      swarmHp: 0.55
+      trinketSlots: 2
+      trinketSlotRoute: cavern
+      trinketBossDrop: 0.15
+      trinketEliteDrop: 0.03
+      merchantTrinketChance: 0.4
+    classes:
+    - id: 0
+      name: Warden
+      emoji: "\u2694\uFE0F"
+      role: Bruiser
+      description: 'A steady guardian of the campfire. Hits 15% harder. Loves the BBQ: grilled meals are 50% stronger.'
+      baseMaxHp: 16
+      damageMult: 1.15
+      gatherZoneMult: 1
+      mealBuffMult: 1
+      favouriteStation: 1
+      favouriteBonus: 0.5
+      skill:
+        kind: 0
+        name: Cleave
+        emoji: "\U0001FA93"
+        description: "One mighty swing for \xD71.75 damage. Can crit."
+        cooldownTurns: 3
+        value: 1.75
+      starterAttack: w_sweep
+      starterSkill: w_cleave
+      starterDash: roll
+      branchNames:
+      - Blade
+      - Bulwark
+      - Fury
+    - id: 1
+      name: Ranger
+      emoji: "\U0001F3F9"
+      role: Forager
+      description: 'Knows the wilds by heart. Much wider golden gather zone. Lives on trail food: sandwiches are 50% stronger.'
+      baseMaxHp: 12
+      damageMult: 1
+      gatherZoneMult: 1.6
+      mealBuffMult: 1
+      favouriteStation: 2
+      favouriteBonus: 0.5
+      skill:
+        kind: 1
+        name: Volley
+        emoji: "\U0001F3AF"
+        description: "Two quick arrows for \xD70.75 damage each. Each can crit."
+        cooldownTurns: 3
+        value: 0.75
+      starterAttack: r_shot
+      starterSkill: r_volley
+      starterDash: roll
+      branchNames:
+      - Marksman
+      - Wayfinder
+      - Trickster
+    - id: 2
+      name: Cook
+      emoji: "\U0001F373"
+      role: Support
+      description: 'Every meal tastes like home: all meals 25% stronger, and pot meals 50% on top.'
+      baseMaxHp: 14
+      damageMult: 1
+      gatherZoneMult: 1
+      mealBuffMult: 1.25
+      favouriteStation: 0
+      favouriteBonus: 0.5
+      skill:
+        kind: 2
+        name: Hearty Snack
+        emoji: "\U0001F950"
+        description: 'Munch a snack: heal 12 and guard this turn.'
+        cooldownTurns: 3
+        value: 12
+      starterAttack: c_ladle
+      starterSkill: c_snack
+      starterDash: roll
+      branchNames:
+      - Brawler
+      - Comfort
+      - Spice
+    ingredients:
+    - id: herbs
+      name: Wild Herbs
+      emoji: "\U0001F33F"
+      tier: 0
+    - id: wheat
+      name: Meadow Wheat
+      emoji: "\U0001F33E"
+      tier: 0
+    - id: berries
+      name: Bramble Berries
+      emoji: "\U0001FAD0"
+      tier: 0
+    - id: mushroom
+      name: Forest Mushroom
+      emoji: "\U0001F344"
+      tier: 1
+    - id: salt
+      name: Marsh Salt
+      emoji: "\U0001F9C2"
+      tier: 1
+    - id: fish
+      name: Reed Fish
+      emoji: "\U0001F41F"
+      tier: 1
+    - id: cave_egg
+      name: Glow Egg
+      emoji: "\U0001F95A"
+      tier: 2
+    - id: truffle
+      name: Cave Truffle
+      emoji: "\U0001F330"
+      tier: 2
+    - id: chili
+      name: Ridge Chili
+      emoji: "\U0001F336\uFE0F"
+      tier: 2
+    - id: garlic
+      name: Smoky Garlic
+      emoji: "\U0001F9C4"
+      tier: 2
+    - id: ember_meat
+      name: Ember Haunch
+      emoji: "\U0001F356"
+      tier: 3
+    - id: fire_honey
+      name: Fire Honey
+      emoji: "\U0001F36F"
+      tier: 3
+    - id: nettle
+      name: Stinging Nettle
+      emoji: "\U0001F331"
+      tier: 1
+    - id: mint
+      name: Glade Mint
+      emoji: "\U0001F343"
+      tier: 1
+    - id: ginger
+      name: Snow Ginger
+      emoji: "\U0001FADA"
+      tier: 2
+    - id: frost_berry
+      name: Frostberry
+      emoji: "\U0001F347"
+      tier: 3
+    - id: glowcap
+      name: Glowcap
+      emoji: "\U0001F344"
+      tier: 2
+    recipes:
+    - id: herb_stew
+      name: Herb Stew
+      emoji: "\U0001F372"
+      station: 0
+      ingredients:
+      - ingredientId: herbs
+        count: 2
+      - ingredientId: mushroom
+        count: 1
+      buffs:
+      - stat: 1
+        value: 20
+      tags:
+      - stone
+      - veg
+      description: A thick, earthy stew that sits in your belly like a warm stone. Sturdier all day.
+      counters: 0
+      rarity: 0
+    - id: berry_porridge
+      name: Berry Porridge
+      emoji: "\U0001F963"
+      station: 0
+      ingredients:
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: berries
+        count: 2
+      buffs:
+      - stat: 7
+        value: 0.25
+      - stat: 1
+        value: 8
+      - stat: 0
+        value: 0.15
+      tags:
+      - sweet
+      description: Creamy oats swirled with bramble berries. Clears the head.
+      counters: 0
+      rarity: 0
+    - id: marsh_chowder
+      name: Marsh Chowder
+      emoji: "\U0001F35C"
+      station: 0
+      ingredients:
+      - ingredientId: fish
+        count: 2
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 1
+        value: 20
+      - stat: 3
+        value: 2
+      tags:
+      - stone
+      - fish
+      description: Salty, hearty and steaming. Tastes of foggy mornings.
+      counters: 0
+      rarity: 1
+    - id: truffle_risotto
+      name: Truffle Risotto
+      emoji: "\U0001F35A"
+      station: 0
+      ingredients:
+      - ingredientId: truffle
+        count: 1
+      - ingredientId: mushroom
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      buffs:
+      - stat: 3
+        value: 3
+      - stat: 1
+        value: 14
+      - stat: 0
+        value: 0.2
+      tags:
+      - stone
+      - veg
+      description: Slow-stirred by lantern light. Rich enough to shrug off a blow.
+      counters: 0
+      rarity: 2
+    - id: ember_chili
+      name: Ember Chili
+      emoji: "\U0001FAD5"
+      station: 0
+      ingredients:
+      - ingredientId: chili
+        count: 2
+      - ingredientId: garlic
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.5
+      - stat: 1
+        value: 12
+      tags:
+      - fire
+      description: A bubbling pot of fire. Your eyes water; your arms tingle.
+      counters: 0
+      rarity: 2
+    - id: lantern_soup
+      name: Lantern Egg Soup
+      emoji: "\U0001F375"
+      station: 0
+      ingredients:
+      - ingredientId: cave_egg
+        count: 1
+      - ingredientId: herbs
+        count: 1
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 1
+        value: 32
+      - stat: 3
+        value: 2
+      tags:
+      - stone
+      description: Glowing egg ribbons in clear broth. Fortifies body and spirit.
+      counters: 0
+      rarity: 2
+    - id: mushroom_skewer
+      name: Mushroom Skewer
+      emoji: "\U0001F362"
+      station: 1
+      ingredients:
+      - ingredientId: mushroom
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.35
+      - stat: 4
+        value: 0.06
+      tags:
+      - smoky
+      - veg
+      description: Charred caps on a stick, herby and smoky.
+      counters: 0
+      rarity: 0
+    - id: grilled_fish
+      name: Salt-Crust Fish
+      emoji: "\U0001F41F"
+      station: 1
+      ingredients:
+      - ingredientId: fish
+        count: 1
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 4
+        value: 0.12
+      - stat: 0
+        value: 0.25
+      - stat: 6
+        value: 0.15
+      tags:
+      - smoky
+      - fish
+      description: Baked in a salt shell on the coals. Sharpens the senses.
+      counters: 0
+      rarity: 1
+    - id: firecracker_skewer
+      name: Firecracker Skewer
+      emoji: "\U0001F336\uFE0F"
+      station: 1
+      ingredients:
+      - ingredientId: chili
+        count: 2
+      - ingredientId: mushroom
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.6
+      - stat: 4
+        value: 0.06
+      tags:
+      - fire
+      - smoky
+      description: "Pops and crackles on the grill \u2014 and in your mouth."
+      counters: 0
+      rarity: 2
+    - id: ember_steak
+      name: Ember Steak
+      emoji: "\U0001F969"
+      station: 1
+      ingredients:
+      - ingredientId: ember_meat
+        count: 2
+      - ingredientId: garlic
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.8
+      - stat: 1
+        value: 10
+      tags:
+      - fire
+      description: Seared over drake-coals. Pure, glowing strength.
+      counters: 0
+      rarity: 3
+    - id: honey_ribs
+      name: Fire-Honey Ribs
+      emoji: "\U0001F356"
+      station: 1
+      ingredients:
+      - ingredientId: ember_meat
+        count: 1
+      - ingredientId: fire_honey
+        count: 2
+      buffs:
+      - stat: 4
+        value: 0.18
+      - stat: 0
+        value: 0.45
+      tags:
+      - fire
+      - sweet
+      description: Sticky, spicy-sweet glaze. Every bite feels lucky.
+      counters: 0
+      rarity: 3
+    - id: bread
+      name: Camp Bread
+      emoji: "\U0001F35E"
+      station: 2
+      ingredients: []
+      buffs:
+      - stat: 1
+        value: 6
+      - stat: 0
+        value: 0.1
+      tags:
+      - plain
+      description: "Free \u2014 there's always a loaf by the fire. Plain, filling, better than nothing."
+      counters: 0
+      rarity: 0
+    - id: herb_butty
+      name: Herb Butty
+      emoji: "\U0001F96A"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 5
+        value: 0.3
+      - stat: 1
+        value: 8
+      - stat: 0
+        value: 0.2
+      tags:
+      - veg
+      description: Fresh bread and a fistful of herbs. A forager's favourite.
+      counters: 0
+      rarity: 0
+    - id: bramble_jam
+      name: Bramble Jam Sandwich
+      emoji: "\U0001F353"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: berries
+        count: 2
+      buffs:
+      - stat: 6
+        value: 0.2
+      - stat: 1
+        value: 8
+      - stat: 4
+        value: 0.08
+      tags:
+      - sweet
+      description: Sticky fingers, sunny mood. Coins seem to find you.
+      counters: 0
+      rarity: 0
+    - id: marsh_butty
+      name: Marsh Fish Butty
+      emoji: "\U0001F956"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: fish
+        count: 1
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 3
+        value: 3
+      - stat: 0
+        value: 0.25
+      - stat: 6
+        value: 0.15
+      tags:
+      - fish
+      description: Crispy fish in a crusty roll. Proper wanderer's food.
+      counters: 0
+      rarity: 1
+    - id: glow_egg_sandwich
+      name: Glow-Egg Sandwich
+      emoji: "\U0001F95A"
+      station: 2
+      ingredients:
+      - ingredientId: cave_egg
+        count: 1
+      - ingredientId: truffle
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      buffs:
+      - stat: 1
+        value: 16
+      - stat: 0
+        value: 0.3
+      - stat: 7
+        value: 0.25
+      - stat: 5
+        value: 0.2
+      tags:
+      - stone
+      description: Shimmering egg and truffle shavings. Oddly enlightening.
+      counters: 0
+      rarity: 3
+    - id: ember_toastie
+      name: Ember Toastie
+      emoji: "\U0001F525"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: ember_meat
+        count: 1
+      - ingredientId: chili
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.5
+      - stat: 4
+        value: 0.12
+      - stat: 1
+        value: 8
+      tags:
+      - fire
+      description: Pressed until it smoulders. Handle with oven gloves.
+      counters: 0
+      rarity: 4
+    - id: nettle_soup
+      name: Nettle Soup
+      emoji: "\U0001F96C"
+      station: 0
+      ingredients:
+      - ingredientId: nettle
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 1
+        value: 16
+      - stat: 3
+        value: 1
+      tags:
+      - stone
+      - veg
+      description: Sharp, green and cleansing. Spores can't settle in a belly full of nettle. Protects against poison.
+      counters: 1
+      rarity: 1
+    - id: nettle_skewer
+      name: Nettle-Wrapped Skewer
+      emoji: "\U0001F361"
+      station: 1
+      ingredients:
+      - ingredientId: nettle
+        count: 1
+      - ingredientId: mushroom
+        count: 2
+      buffs:
+      - stat: 0
+        value: 0.35
+      - stat: 4
+        value: 0.05
+      tags:
+      - smoky
+      - veg
+      description: Mushrooms grilled in nettle leaves. Protects against poison.
+      counters: 1
+      rarity: 1
+    - id: nettle_wrap
+      name: Nettle & Herb Wrap
+      emoji: "\U0001F32F"
+      station: 2
+      ingredients:
+      - ingredientId: nettle
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.2
+      - stat: 1
+        value: 8
+      - stat: 5
+        value: 0.15
+      tags:
+      - veg
+      description: A forager's wrap, wilted nettle and herbs. Protects against poison.
+      counters: 1
+      rarity: 1
+    - id: mint_soup
+      name: Chilled Mint Soup
+      emoji: "\U0001F957"
+      station: 0
+      ingredients:
+      - ingredientId: mint
+        count: 2
+      - ingredientId: berries
+        count: 1
+      buffs:
+      - stat: 1
+        value: 18
+      - stat: 7
+        value: 0.1
+      tags:
+      - sweet
+      description: Cold, sweet and green. Keeps your head clear in the heat. Protects against heat.
+      counters: 3
+      rarity: 1
+    - id: mint_fish
+      name: Mint-Glazed Fish
+      emoji: "\U0001F420"
+      station: 1
+      ingredients:
+      - ingredientId: mint
+        count: 1
+      - ingredientId: fish
+        count: 1
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.45
+      - stat: 4
+        value: 0.08
+      tags:
+      - smoky
+      - fish
+      description: Charred outside, cool mint inside. Protects against heat.
+      counters: 3
+      rarity: 1
+    - id: mint_butty
+      name: Mint & Berry Butty
+      emoji: "\U0001F959"
+      station: 2
+      ingredients:
+      - ingredientId: mint
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: berries
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.25
+      - stat: 4
+        value: 0.06
+      - stat: 1
+        value: 8
+      tags:
+      - sweet
+      description: Squashed berries and fresh mint. Protects against heat.
+      counters: 3
+      rarity: 2
+    - id: ginger_stew
+      name: Ginger Hotpot
+      emoji: "\U0001F35B"
+      station: 0
+      ingredients:
+      - ingredientId: ginger
+        count: 1
+      - ingredientId: fish
+        count: 1
+      - ingredientId: garlic
+        count: 1
+      buffs:
+      - stat: 1
+        value: 26
+      - stat: 3
+        value: 2
+      tags:
+      - stone
+      - fire
+      description: Warms you from the toes up. Protects against the cold.
+      counters: 2
+      rarity: 2
+    - id: ginger_skewer
+      name: Ginger-Glazed Skewer
+      emoji: "\U0001F357"
+      station: 1
+      ingredients:
+      - ingredientId: ginger
+        count: 1
+      - ingredientId: ember_meat
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.7
+      - stat: 1
+        value: 8
+      tags:
+      - fire
+      description: Sticky, fiery ginger glaze over drake-coals. Protects against the cold.
+      counters: 2
+      rarity: 3
+    - id: ginger_toastie
+      name: Ginger & Honey Toastie
+      emoji: "\U0001F95E"
+      station: 2
+      ingredients:
+      - ingredientId: ginger
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: fire_honey
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.4
+      - stat: 4
+        value: 0.1
+      - stat: 1
+        value: 10
+      tags:
+      - fire
+      - sweet
+      description: Toasted until the honey bubbles. Protects against the cold.
+      counters: 2
+      rarity: 4
+    - id: frostberry_crumble
+      name: Frostberry Crumble
+      emoji: "\U0001F967"
+      station: 0
+      ingredients:
+      - ingredientId: frost_berry
+        count: 2
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: fire_honey
+        count: 1
+      buffs:
+      - stat: 1
+        value: 30
+      - stat: 0
+        value: 0.4
+      - stat: 4
+        value: 0.08
+      tags:
+      - sweet
+      description: Frostberries only grow in Frost Hollow. Worth every shiver.
+      counters: 0
+      rarity: 4
+    - id: glowcap_broth
+      name: Glowcap Broth
+      emoji: "\U0001FAD6"
+      station: 0
+      ingredients:
+      - ingredientId: glowcap
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 1
+        value: 20
+      - stat: 7
+        value: 0.1
+      tags:
+      - stone
+      - veg
+      description: A softly glowing broth. Your eyes shine for hours afterwards. Lights up the dark.
+      counters: 4
+      rarity: 2
+    - id: glowcap_kebab
+      name: Glowcap Kebab
+      emoji: "\U0001F362"
+      station: 1
+      ingredients:
+      - ingredientId: glowcap
+        count: 1
+      - ingredientId: mushroom
+        count: 1
+      - ingredientId: garlic
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.45
+      - stat: 4
+        value: 0.08
+      tags:
+      - smoky
+      - veg
+      description: Glowcaps charred until they sparkle. Lights up the dark.
+      counters: 4
+      rarity: 2
+    - id: glowcap_sandwich
+      name: Glow-in-the-Dark Sandwich
+      emoji: "\U0001F96A"
+      station: 2
+      ingredients:
+      - ingredientId: glowcap
+        count: 1
+      - ingredientId: cave_egg
+        count: 1
+      - ingredientId: wheat
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.3
+      - stat: 1
+        value: 12
+      - stat: 5
+        value: 0.15
+      tags:
+      - stone
+      description: Glow-egg and glowcap on a crusty roll. Lights up the dark.
+      counters: 4
+      rarity: 3
+    synergies:
+    - id: balanced_feast
+      name: Balanced Feast
+      emoji: "\U0001F37D\uFE0F"
+      description: "One meal from each station: all meal bonuses \xD71.5."
+      requireAllStations: 1
+      requiredTag: 
+      requiredCount: 0
+      requireSameRecipe: 0
+      useStation: 0
+      requiredStation: 0
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1.5
+      bonus: []
+    - id: twin_flame
+      name: Twin Flame
+      emoji: "\U0001F525"
+      description: 'Eat 2 fiery meals: +10% crit chance, +25% damage.'
+      requireAllStations: 0
+      requiredTag: fire
+      requiredCount: 2
+      requireSameRecipe: 0
+      useStation: 0
+      requiredStation: 0
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 4
+        value: 0.1
+      - stat: 0
+        value: 0.25
+    - id: stone_stomach
+      name: Stone Stomach
+      emoji: "\U0001FAA8"
+      description: 'Eat 2 hearty meals: +2 armour, +14 max HP.'
+      requireAllStations: 0
+      requiredTag: stone
+      requiredCount: 2
+      requireSameRecipe: 0
+      useStation: 0
+      requiredStation: 0
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 3
+        value: 2
+      - stat: 1
+        value: 14
+    - id: comfort_food
+      name: Comfort Food
+      emoji: "\U0001F958"
+      description: '3 of the same meal: that meal''s bonus counts an extra half again.'
+      requireAllStations: 0
+      requiredTag: 
+      requiredCount: 3
+      requireSameRecipe: 1
+      useStation: 0
+      requiredStation: 0
+      sameRecipeBonus: 0.5
+      allBuffMultiplier: 1
+      bonus: []
+    - id: slow_simmer
+      name: Slow Simmer
+      emoji: "\U0001F372"
+      description: 'All Pot meals: +18 max HP, +2 armour.'
+      requireAllStations: 0
+      requiredTag: 
+      requiredCount: 3
+      requireSameRecipe: 0
+      useStation: 1
+      requiredStation: 0
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 1
+        value: 18
+      - stat: 3
+        value: 2
+    - id: grill_master
+      name: Grill Master
+      emoji: "\U0001F356"
+      description: 'All BBQ meals: +40% damage, +8% crit.'
+      requireAllStations: 0
+      requiredTag: 
+      requiredCount: 3
+      requireSameRecipe: 0
+      useStation: 1
+      requiredStation: 1
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 0
+        value: 0.4
+      - stat: 4
+        value: 0.08
+    - id: packed_lunch
+      name: Packed Lunch
+      emoji: "\U0001F96A"
+      description: 'All Sandwich meals: +25% damage, +10 max HP, +25% gather zone, +15% coins.'
+      requireAllStations: 0
+      requiredTag: 
+      requiredCount: 3
+      requireSameRecipe: 0
+      useStation: 1
+      requiredStation: 2
+      sameRecipeBonus: 0
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 0
+        value: 0.25
+      - stat: 1
+        value: 10
+      - stat: 5
+        value: 0.25
+      - stat: 6
+        value: 0.15
+    monsters:
+    - id: slime
+      name: Moss Slime
+      emoji: "\U0001F7E2"
+      behaviour: 0
+      hpMult: 1
+      eliteOnly: 0
+    - id: boar
+      name: Bramble Boar
+      emoji: "\U0001F417"
+      behaviour: 0
+      hpMult: 1
+      eliteOnly: 0
+    - id: bat
+      name: Lantern Bee
+      emoji: "\U0001F41D"
+      behaviour: 0
+      hpMult: 1
+      eliteOnly: 0
+    - id: crab
+      name: Marsh Viper
+      emoji: "\U0001F40D"
+      behaviour: 0
+      hpMult: 1
+      eliteOnly: 0
+    - id: wolf
+      name: Fog Wolf
+      emoji: "\U0001F43A"
+      behaviour: 1
+      hpMult: 1
+      eliteOnly: 0
+    - id: shaman
+      name: Bog Shaman
+      emoji: "\U0001F9D9"
+      behaviour: 2
+      hpMult: 1
+      eliteOnly: 0
+    - id: dragon
+      name: Ember Drake
+      emoji: "\U0001F409"
+      behaviour: 3
+      hpMult: 1.5
+      eliteOnly: 1
+    routes:
+    - id: meadow
+      name: Meadow Trail
+      emoji: "\U0001F33C"
+      kind: 0
+      description: Sunlit grass and sleepy slimes. A gentle first stroll.
+      baseDifficulty: 0
+      gatherChance: 0.3
+      coinMult: 1
+      clearReward: 20
+      clearXp: 15
+      unlockedByRouteId: 
+      monsterIds:
+      - slime
+      - boar
+      gatherIngredientIds:
+      - herbs
+      - wheat
+      chapter: 1
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: 'Old Wren needs herbs and wheat for travelling bread before anyone can walk the Ember Path. The meadow is gentle: a few sleepy slimes, nothing more.'
+      storyOutro: Your bag smells of fresh herbs. From the hill you can see the bramble woods. The Ember Path runs right through them.
+    - id: berry
+      name: Berry Hunt
+      emoji: "\U0001FAD0"
+      kind: 1
+      description: "Thorny thickets heavy with fruit \u2014 and things that guard it."
+      baseDifficulty: 1
+      gatherChance: 0.15
+      coinMult: 1.3
+      clearReward: 30
+      clearXp: 20
+      unlockedByRouteId: meadow
+      monsterIds:
+      - boar
+      - bat
+      - wolf
+      gatherIngredientIds:
+      - berries
+      - mushroom
+      - herbs
+      chapter: 2
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: The Path bends into thorny woods heavy with fruit, and with the things that guard it.
+      storyOutro: Past the brambles the ground turns to salt and reed. Wren says the marsh folk once lived beyond it.
+    - id: salt
+      name: Salt Marsh Trail
+      emoji: "\U0001F9C2"
+      kind: 0
+      description: Boardwalks over misty pools. Vipers hiss in the reeds.
+      baseDifficulty: 2
+      gatherChance: 0.28
+      coinMult: 1.05
+      clearReward: 40
+      clearXp: 28
+      unlockedByRouteId: berry
+      monsterIds:
+      - crab
+      - slime
+      - shaman
+      gatherIngredientIds:
+      - salt
+      - fish
+      chapter: 3
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: Boardwalks over misty pools. The Bog Shamans have been stirring the fog, and the vipers are restless.
+      storyOutro: "Beyond the marsh, the Path drops into a cavern black as soot. You'll need a light. Fireflies drift above a glade to the east\u2026"
+    - id: cavern
+      name: Cavern Hunt
+      emoji: "\U0001F573\uFE0F"
+      kind: 1
+      description: Glowing tunnels, echoing wings, and something warm sleeping deeper.
+      baseDifficulty: 3
+      gatherChance: 0.15
+      coinMult: 1.4
+      clearReward: 55
+      clearXp: 36
+      unlockedByRouteId: salt
+      monsterIds:
+      - bat
+      - wolf
+      - shaman
+      - dragon
+      gatherIngredientIds:
+      - cave_egg
+      - truffle
+      - mushroom
+      - glowcap
+      chapter: 4
+      requiredKeyItem: glow_lantern
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: With the Firefly Lantern held high, the Cavern's crystals wake around you. Something warm is sleeping deeper down.
+      storyOutro: At the far end of the caves the Path climbs onto a ridge of red mud. Normal boots would sink. The bog-walkers of the Spore Mire might know a trick.
+    - id: chili
+      name: Chili Ridge Trail
+      emoji: "\U0001F336\uFE0F"
+      kind: 0
+      description: Hot winds along a red ridge. Bring water, bring courage.
+      baseDifficulty: 4
+      gatherChance: 0.27
+      coinMult: 1.1
+      clearReward: 70
+      clearXp: 45
+      unlockedByRouteId: cavern
+      monsterIds:
+      - boar
+      - wolf
+      - shaman
+      gatherIngredientIds:
+      - chili
+      - garlic
+      - wheat
+      chapter: 5
+      requiredKeyItem: bog_boots
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: Bog-Walker Boots squelch over the red mud. Chilies grow wild here, and so do tempers.
+      storyOutro: 'The ridge ends at a gate of black iron: the Ember Gate, locked tight. Wren remembers that the Wardens of the Old Watchtower kept its key.'
+    - id: ember
+      name: Ember Hunt
+      emoji: "\U0001F525"
+      kind: 1
+      description: Smouldering hollows where the drakes nest. Big risks, rich pickings.
+      baseDifficulty: 5
+      gatherChance: 0.15
+      coinMult: 1.6
+      clearReward: 90
+      clearXp: 60
+      unlockedByRouteId: chili
+      monsterIds:
+      - wolf
+      - shaman
+      - crab
+      - dragon
+      gatherIngredientIds:
+      - ember_meat
+      - fire_honey
+      - chili
+      chapter: 6
+      requiredKeyItem: watch_key
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 3
+      hazardPct: 0.012
+      mutators: 
+      storyIntro: The Watchtower Key turns with a groan. Beyond the Ember Gate the air shimmers; the heat will sap you. Pack something cooling.
+      storyOutro: 'Past the fire fields, the Path climbs into ice: Frostfang Pass. Its cliffs are sheer. Only the Rangers of the Thornwood weave a rope strong enough.'
+    - id: frost
+      name: Frostfang Pass
+      emoji: "\u2744\uFE0F"
+      kind: 0
+      description: An icy climb where the wind howls. The cold slows every step.
+      baseDifficulty: 6
+      gatherChance: 0.24
+      coinMult: 1.4
+      clearReward: 115
+      clearXp: 75
+      unlockedByRouteId: ember
+      monsterIds:
+      - wolf
+      - crab
+      - shaman
+      gatherIngredientIds:
+      - ginger
+      - frost_berry
+      - salt
+      chapter: 7
+      requiredKeyItem: climbing_rope
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 2
+      hazardPct: 0.012
+      mutators: 
+      storyIntro: Thornsilk rope over your shoulder, you climb. The cold bites and slows every step; warm food helps.
+      storyOutro: At the top of the pass lies the Hollow Heart. The Everflame is a single blue spark. Nothing you carry burns hot enough to relight it. Grandmother Hob's lost recipe might.
+    - id: heart
+      name: The Hollow Heart
+      emoji: "\U0001F49B"
+      kind: 1
+      description: The source of the fog, and of every hearth's fire. Something in the mist doesn't want it lit.
+      baseDifficulty: 7
+      gatherChance: 0.12
+      coinMult: 2
+      clearReward: 200
+      clearXp: 120
+      unlockedByRouteId: frost
+      monsterIds:
+      - wolf
+      - shaman
+      - bat
+      - dragon
+      gatherIngredientIds:
+      - ember_meat
+      - frost_berry
+      - fire_honey
+      chapter: 8
+      requiredKeyItem: everflame_recipe
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 4
+      hazardPct: 0
+      mutators: 
+      storyIntro: With the Everflame Recipe in your pack, you step into the Hollow Heart. The fog is so thick you can barely see your own hands; glowcap dishes from the Glowcap Grotto will light your way. Somewhere in the dark, the great drake that feeds on the fog wakes.
+      storyOutro: You stir Grandmother Hob's stew into the embers and the Everflame roars back to life. Across the valley the hearths are lit again, one by one. Wren is waiting at camp with a bowl of something warm. The end, for now.
+    - id: harerun
+      name: Hare's Run
+      emoji: "\U0001F407"
+      kind: 0
+      description: "Windy hillsides where everything runs at twice the speed \u2014 you included."
+      baseDifficulty: 1
+      gatherChance: 0.3
+      coinMult: 1.4
+      clearReward: 35
+      clearXp: 20
+      unlockedByRouteId: berry
+      monsterIds:
+      - boar
+      - wolf
+      - slime
+      gatherIngredientIds:
+      - wheat
+      - berries
+      - herbs
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 01000000i
+      storyIntro: Old Wren swears the hares here are enchanted. Everything on these hills moves at double speed, so keep your feet light.
+      storyOutro: You outran the hares! Wren laughs that you're the first cook to come back with your hat still on.
+    - id: firefly
+      name: Firefly Glade
+      emoji: "\u2728"
+      kind: 0
+      description: A hush of glowing grass where fireflies nest. The Lantern Bees guard it fiercely.
+      baseDifficulty: 2
+      gatherChance: 0.32
+      coinMult: 1.1
+      clearReward: 35
+      clearXp: 22
+      unlockedByRouteId: salt
+      monsterIds:
+      - bat
+      - slime
+      gatherIngredientIds:
+      - nettle
+      - mint
+      - berries
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: glow_lantern
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: The fireflies here sleep in jars left by an old lantern-maker. Clear the glade and one of those jars is yours.
+      storyOutro: You found the Firefly Lantern! Its warm glow will light the Cavern on the Ember Path.
+    - id: spore
+      name: Spore Mire
+      emoji: "\U0001F344"
+      kind: 1
+      description: A bog of puffing spore-caps. The air itself is poison; nettle dishes help.
+      baseDifficulty: 3
+      gatherChance: 0.22
+      coinMult: 1.3
+      clearReward: 55
+      clearXp: 34
+      unlockedByRouteId: cavern
+      monsterIds:
+      - slime
+      - crab
+      - shaman
+      gatherIngredientIds:
+      - mushroom
+      - nettle
+      - fish
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: bog_boots
+      classLocked: 0
+      requiredClass: 0
+      hazard: 1
+      hazardPct: 0.012
+      mutators: 06000000i
+      storyIntro: 'The bog-walkers left their boots at the bottom of the mire when the spores came. Pack an antidote: nettle soup, skewers or wraps.'
+      storyOutro: You found the Bog-Walker Boots! Chili Ridge's red mud can't swallow you now.
+    - id: glowcap
+      name: Glowcap Grotto
+      emoji: "\U0001F56F\uFE0F"
+      kind: 1
+      description: A pitch-black grotto where glowcap mushrooms sprout. Without light you'll see only a few steps ahead.
+      baseDifficulty: 4
+      gatherChance: 0.3
+      coinMult: 1.35
+      clearReward: 70
+      clearXp: 42
+      unlockedByRouteId: cavern
+      monsterIds:
+      - bat
+      - crab
+      - slime
+      gatherIngredientIds:
+      - glowcap
+      - cave_egg
+      - truffle
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 4
+      hazardPct: 0
+      mutators: 
+      storyIntro: 'The Grotto is utterly dark. Glowcaps grow here and nowhere else: cook them and your eyes will glow for a day. You''ll need that light in the Hollow Heart.'
+      storyOutro: Your bag glows softly with glowcaps. Cook them into broth, kebabs or sandwiches to light the darkest places.
+    - id: watchtower
+      name: Old Watchtower
+      emoji: "\U0001F3F0"
+      kind: 1
+      description: The Wardens' old post, overrun by boars and wolves. Its doors only open for a Warden.
+      baseDifficulty: 4
+      gatherChance: 0.18
+      coinMult: 1.35
+      clearReward: 75
+      clearXp: 45
+      unlockedByRouteId: chili
+      monsterIds:
+      - boar
+      - wolf
+      - shaman
+      gatherIngredientIds:
+      - garlic
+      - salt
+      - herbs
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: watch_key
+      classLocked: 1
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: Only a Warden's crest opens the tower gate. The Ember Gate's key still hangs in the captain's room at the top.
+      storyOutro: You found the Watchtower Key! It fits the Ember Gate at the end of Chili Ridge.
+    - id: thunder
+      name: Thunderpuff Hills
+      emoji: "\u26C8\uFE0F"
+      kind: 1
+      description: Storm-charged hills. Every area hit crackles with double power, and the monsters come in droves.
+      baseDifficulty: 5
+      gatherChance: 0.24
+      coinMult: 1.5
+      clearReward: 95
+      clearXp: 58
+      unlockedByRouteId: chili
+      monsterIds:
+      - boar
+      - bat
+      - wolf
+      - shaman
+      gatherIngredientIds:
+      - chili
+      - garlic
+      - mint
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 0300000006000000i
+      storyIntro: 'Thunder rolls over the hills and every sweeping blow lands like a lightning strike. Bring something that hits a crowd: there will be one.'
+      storyOutro: The storm has blown itself out. Somewhere a Warden is very jealous of how many monsters you flattened.
+    - id: canopy
+      name: Thornwood Canopy
+      emoji: "\U0001F333"
+      kind: 0
+      description: A forest that lives in the treetops. Only a Ranger can find the paths between the branches.
+      baseDifficulty: 5
+      gatherChance: 0.3
+      coinMult: 1.25
+      clearReward: 90
+      clearXp: 55
+      unlockedByRouteId: ember
+      monsterIds:
+      - bat
+      - crab
+      - wolf
+      gatherIngredientIds:
+      - ginger
+      - berries
+      - fire_honey
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: climbing_rope
+      classLocked: 1
+      requiredClass: 1
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: The Thornwood Rangers left a spool of thornsilk in their highest lookout. Only a Ranger can climb that far.
+      storyOutro: You found the Thornsilk Rope! Now Frostfang Pass can be climbed.
+    - id: hive
+      name: Wild Hive
+      emoji: "\U0001F36F"
+      kind: 1
+      description: A buzzing, honey-drunk hive. Everything moves at triple speed.
+      baseDifficulty: 6
+      gatherChance: 0.26
+      coinMult: 1.7
+      clearReward: 125
+      clearXp: 75
+      unlockedByRouteId: ember
+      monsterIds:
+      - bat
+      - boar
+      - crab
+      gatherIngredientIds:
+      - fire_honey
+      - berries
+      - mint
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 02000000i
+      storyIntro: The ember-bees have gone honey-mad. Everything in the hive, you included, moves three times as fast. Hold on to your ladle.
+      storyOutro: Sticky, dizzy and rich in fire honey. Wren says she's never seen anyone come out of the Wild Hive walking straight.
+    - id: larder
+      name: Forgotten Larder
+      emoji: "\U0001F96B"
+      kind: 1
+      description: Grandmother Hob's cellar under the old inn. Only a Cook knows the larder's secret door.
+      baseDifficulty: 6
+      gatherChance: 0.26
+      coinMult: 1.5
+      clearReward: 110
+      clearXp: 68
+      unlockedByRouteId: frost
+      monsterIds:
+      - slime
+      - boar
+      - shaman
+      gatherIngredientIds:
+      - truffle
+      - cave_egg
+      - ginger
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: everflame_recipe
+      classLocked: 1
+      requiredClass: 2
+      hazard: 0
+      hazardPct: 0
+      mutators: 04000000i
+      storyIntro: Somewhere among the jars and barrels is Grandmother Hob's recipe book. Only a Cook would know where she hid it.
+      storyOutro: You found the Everflame Recipe! The way into the Hollow Heart is open.
+    - id: frosthollow
+      name: Frost Hollow
+      emoji: "\U0001F9CA"
+      kind: 1
+      description: 'An ice cave off the pass. Bitter cold, rich rewards: frostberries grow nowhere else.'
+      baseDifficulty: 7
+      gatherChance: 0.2
+      coinMult: 1.9
+      clearReward: 150
+      clearXp: 90
+      unlockedByRouteId: frost
+      monsterIds:
+      - crab
+      - wolf
+      - shaman
+      - dragon
+      gatherIngredientIds:
+      - frost_berry
+      - ginger
+      - fish
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 2
+      hazardPct: 0.016
+      mutators: 05000000i
+      storyIntro: Not on the Ember Path. Just very cold, very dangerous, and full of frostberries. Pack something warming.
+      storyOutro: You made it out of Frost Hollow with frostberries to spare. Try them in a crumble.
+    weaponTiers:
+    - tier: 0
+      name: Wooden Spoon
+      price: 0
+      value: 4
+    - tier: 1
+      name: Iron Ladle
+      price: 40
+      value: 5
+    - tier: 2
+      name: Carving Knife
+      price: 90
+      value: 6
+    - tier: 3
+      name: Camp Cleaver
+      price: 160
+      value: 7.5
+    - tier: 4
+      name: Drakebone Skillet
+      price: 260
+      value: 9
+    armourTiers:
+    - tier: 0
+      name: Apron
+      price: 0
+      value: 0
+    - tier: 1
+      name: Quilted Apron
+      price: 40
+      value: 1
+    - tier: 2
+      name: Leather Smock
+      price: 90
+      value: 2
+    - tier: 3
+      name: Cast-Iron Vest
+      price: 160
+      value: 3
+    - tier: 4
+      name: Hearthguard Mail
+      price: 260
+      value: 4
+    starterPantry:
+    - ingredientId: herbs
+      count: 4
+    - ingredientId: wheat
+      count: 4
+    - ingredientId: berries
+      count: 3
+    - ingredientId: mushroom
+      count: 3
+    starterCoins: 30
+    moves:
+    - id: roll
+      name: Roll
+      emoji: "\U0001F4A8"
+      description: A quick dodge roll. You can't be hit mid-roll.
+      owner: 0
+      anyClass: 1
+      slot: 2
+      kind: 6
+      power: 0
+      cooldown: 0.7
+      range: 1
+      radius: 1
+      duration: 0
+      value: 0
+    - id: w_sweep
+      name: Sweep
+      emoji: "\u2694\uFE0F"
+      description: A broad sword swing in front of you.
+      owner: 0
+      anyClass: 0
+      slot: 0
+      kind: 0
+      power: 1
+      cooldown: 0.42
+      range: 0.85
+      radius: 0.85
+      duration: 0
+      value: 0
+    - id: w_lunge
+      name: Lunge
+      emoji: "\U0001F5E1\uFE0F"
+      description: Step forward with a long thrust. Great reach.
+      owner: 0
+      anyClass: 0
+      slot: 0
+      kind: 1
+      power: 1.2
+      cooldown: 0.55
+      range: 1.5
+      radius: 0.7
+      duration: 0
+      value: 0
+    - id: w_maul
+      name: Maul
+      emoji: "\U0001F528"
+      description: Slow, crushing blow. Stuns what it hits.
+      owner: 0
+      anyClass: 0
+      slot: 0
+      kind: 2
+      power: 2.3
+      cooldown: 1
+      range: 0.9
+      radius: 1
+      duration: 0.6
+      value: 0
+    - id: w_cleave
+      name: Cleave
+      emoji: "\U0001FA93"
+      description: "Spin your blade: \xD71.75 damage to everything around you."
+      owner: 0
+      anyClass: 0
+      slot: 1
+      kind: 10
+      power: 1.75
+      cooldown: 6
+      range: 1
+      radius: 2.2
+      duration: 0
+      value: 0
+    - id: w_slam
+      name: Ground Slam
+      emoji: "\U0001F4A5"
+      description: A shockwave rolls forward, damaging and stunning everything in its path.
+      owner: 0
+      anyClass: 0
+      slot: 1
+      kind: 11
+      power: 1.4
+      cooldown: 8
+      range: 4
+      radius: 0.9
+      duration: 1.2
+      value: 0
+    - id: w_warcry
+      name: War Cry
+      emoji: "\U0001F4EF"
+      description: 'Roar: +40% damage for 6 seconds.'
+      owner: 0
+      anyClass: 0
+      slot: 1
+      kind: 12
+      power: 0
+      cooldown: 14
+      range: 1
+      radius: 1
+      duration: 6
+      value: 0.4
+    - id: w_shieldwall
+      name: Shield Wall
+      emoji: "\U0001F6E1\uFE0F"
+      description: 'Brace: take 70% less damage for 3 seconds.'
+      owner: 0
+      anyClass: 0
+      slot: 1
+      kind: 13
+      power: 0
+      cooldown: 12
+      range: 1
+      radius: 1
+      duration: 3
+      value: 0.3
+    - id: w_whirl
+      name: Whirlwind
+      emoji: "\U0001F32A\uFE0F"
+      description: Spin for 1.5 seconds, hitting everything nearby again and again. You can still move.
+      owner: 0
+      anyClass: 0
+      slot: 1
+      kind: 14
+      power: 0.5
+      cooldown: 10
+      range: 1
+      radius: 1.6
+      duration: 1.5
+      value: 0.25
+    - id: w_charge
+      name: Shoulder Charge
+      emoji: "\U0001F402"
+      description: Barge forward, hurting and shoving anything you run through.
+      owner: 0
+      anyClass: 0
+      slot: 2
+      kind: 7
+      power: 0.8
+      cooldown: 1.1
+      range: 1
+      radius: 1
+      duration: 0
+      value: 0
+    - id: r_shot
+      name: Shot
+      emoji: "\U0001F3F9"
+      description: A single arrow.
+      owner: 1
+      anyClass: 0
+      slot: 0
+      kind: 3
+      power: 1
+      cooldown: 0.42
+      range: 13
+      radius: 1
+      duration: 0
+      value: 0
+    - id: r_spread
+      name: Spread Shot
+      emoji: "\U0001F390"
+      description: Three arrows in a fan. Weaker each, hard to dodge.
+      owner: 1
+      anyClass: 0
+      slot: 0
+      kind: 4
+      power: 0.55
+      cooldown: 0.6
+      range: 12
+      radius: 1
+      duration: 0
+      value: 12
+    - id: r_longbow
+      name: Longbow
+      emoji: "\U0001F3AF"
+      description: A slow, heavy arrow that flies through every enemy in a line.
+      owner: 1
+      anyClass: 0
+      slot: 0
+      kind: 5
+      power: 1.6
+      cooldown: 0.85
+      range: 18
+      radius: 1
+      duration: 0
+      value: 0
+    - id: r_volley
+      name: Volley
+      emoji: "\U0001F3F9"
+      description: "Two piercing arrows for \xD70.75 damage each."
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 15
+      power: 0.75
+      cooldown: 6
+      range: 1
+      radius: 1
+      duration: 0
+      value: 0
+    - id: r_trap
+      name: Snare Trap
+      emoji: "\U0001FAA4"
+      description: Set a snare at your feet. The first enemy to step in is hurt and pinned for 2.5 seconds.
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 16
+      power: 1
+      cooldown: 9
+      range: 1
+      radius: 0.9
+      duration: 2.5
+      value: 12
+    - id: r_mark
+      name: Hunter's Mark
+      emoji: "\U0001F516"
+      description: 'Mark the nearest enemy: it takes +50% damage for 6 seconds.'
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 17
+      power: 0
+      cooldown: 10
+      range: 8
+      radius: 1
+      duration: 6
+      value: 0.5
+    - id: r_rain
+      name: Arrow Rain
+      emoji: "\U0001F327\uFE0F"
+      description: Arrows fall on a spot ahead of you for 1.5 seconds.
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 18
+      power: 0.45
+      cooldown: 12
+      range: 3
+      radius: 1.8
+      duration: 1.5
+      value: 0
+    - id: r_smoke
+      name: Smoke Bomb
+      emoji: "\U0001F32B\uFE0F"
+      description: Enemies nearby are slowed by half for 3 seconds and you speed up.
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 19
+      power: 0
+      cooldown: 12
+      range: 1
+      radius: 3
+      duration: 3
+      value: 0.5
+    - id: r_vault
+      name: Back Vault
+      emoji: "\U0001F938"
+      description: Flip backwards and loose an arrow at whatever you were facing.
+      owner: 1
+      anyClass: 0
+      slot: 2
+      kind: 8
+      power: 0.8
+      cooldown: 1
+      range: 1
+      radius: 1
+      duration: 0
+      value: 0
+    - id: c_ladle
+      name: Ladle Bonk
+      emoji: "\U0001F944"
+      description: A quick bonk with the ladle.
+      owner: 2
+      anyClass: 0
+      slot: 0
+      kind: 0
+      power: 1
+      cooldown: 0.4
+      range: 0.75
+      radius: 0.75
+      duration: 0
+      value: 0
+    - id: c_skewer
+      name: Skewer
+      emoji: "\U0001F362"
+      description: Jab forward with a kebab skewer.
+      owner: 2
+      anyClass: 0
+      slot: 0
+      kind: 1
+      power: 1.1
+      cooldown: 0.5
+      range: 1.3
+      radius: 0.6
+      duration: 0
+      value: 0
+    - id: c_pan
+      name: Frying Pan
+      emoji: "\U0001F373"
+      description: A ringing pan to the head. Stuns.
+      owner: 2
+      anyClass: 0
+      slot: 0
+      kind: 2
+      power: 1.9
+      cooldown: 0.9
+      range: 0.85
+      radius: 0.95
+      duration: 0.8
+      value: 0
+    - id: c_snack
+      name: Hearty Snack
+      emoji: "\U0001F950"
+      description: Heal 12 and take half damage for 3 seconds.
+      owner: 2
+      anyClass: 0
+      slot: 1
+      kind: 20
+      power: 0
+      cooldown: 6
+      range: 1
+      radius: 1
+      duration: 3
+      value: 12
+    - id: c_pepper
+      name: Pepper Toss
+      emoji: "\U0001F336\uFE0F"
+      description: 'Fling pepper in a cone: hurts and slows enemies by half for 3 seconds.'
+      owner: 2
+      anyClass: 0
+      slot: 1
+      kind: 21
+      power: 0.6
+      cooldown: 7
+      range: 3
+      radius: 35
+      duration: 3
+      value: 0.5
+    - id: c_hotpot
+      name: Hot Pot
+      emoji: "\U0001F372"
+      description: Lob a pot ahead. It leaves a scalding puddle for 4 seconds.
+      owner: 2
+      anyClass: 0
+      slot: 1
+      kind: 22
+      power: 0.3
+      cooldown: 10
+      range: 4
+      radius: 1.5
+      duration: 4
+      value: 0.5
+    - id: c_picnic
+      name: Picnic
+      emoji: "\U0001F9FA"
+      description: Spread a blanket for 5 seconds. Stand on it to heal 2 HP every half second.
+      owner: 2
+      anyClass: 0
+      slot: 1
+      kind: 23
+      power: 0
+      cooldown: 18
+      range: 1
+      radius: 2
+      duration: 5
+      value: 2
+    - id: c_pin
+      name: Rolling Pin
+      emoji: "\U0001FAB5"
+      description: Throw a rolling pin that flies out and comes back, hitting everything twice.
+      owner: 2
+      anyClass: 0
+      slot: 1
+      kind: 24
+      power: 0.9
+      cooldown: 6
+      range: 5
+      radius: 1
+      duration: 0
+      value: 10
+    - id: c_slide
+      name: Butter Slide
+      emoji: "\U0001F9C8"
+      description: Slide along a buttery trail. Enemies on it are slowed for 3 seconds.
+      owner: 2
+      anyClass: 0
+      slot: 2
+      kind: 9
+      power: 0
+      cooldown: 1
+      range: 1
+      radius: 1
+      duration: 3
+      value: 0.6
+    skillNodes:
+    - id: w_whetstone
+      classId: 0
+      branch: 0
+      row: 0
+      minLevel: 1
+      name: Whetstone
+      emoji: "\U0001FAA8"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: w_n_lunge
+      classId: 0
+      branch: 0
+      row: 1
+      minLevel: 5
+      name: Lunge
+      emoji: "\U0001F5E1\uFE0F"
+      description: 'New attack: Step forward with a long thrust. Great reach.'
+      effect: 0
+      moveId: w_lunge
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_whetstone
+    - id: w_keen
+      classId: 0
+      branch: 0
+      row: 2
+      minLevel: 10
+      name: Keen Edge
+      emoji: "\u2728"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: w_n_lunge
+    - id: w_honed
+      classId: 0
+      branch: 0
+      row: 3
+      minLevel: 20
+      name: Honed Strikes
+      emoji: "\u2694\uFE0F"
+      description: Attacks hit 5% harder per rank.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: w_keen
+    - id: w_n_maul
+      classId: 0
+      branch: 0
+      row: 4
+      minLevel: 25
+      name: Maul
+      emoji: "\U0001F528"
+      description: 'New attack: Slow, crushing blow. Stuns what it hits.'
+      effect: 0
+      moveId: w_maul
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_honed
+    - id: w_brutal
+      classId: 0
+      branch: 0
+      row: 5
+      minLevel: 35
+      name: Brutal Force
+      emoji: "\U0001F4AA"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: w_n_maul
+    - id: w_warlord
+      classId: 0
+      branch: 0
+      row: 6
+      minLevel: 45
+      name: Warlord's Edge
+      emoji: "\U0001F451"
+      description: Attacks hit 15% harder.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: w_brutal
+    - id: w_hide
+      classId: 0
+      branch: 1
+      row: 0
+      minLevel: 1
+      name: Thick Hide
+      emoji: "\U0001F417"
+      description: +1 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: w_iron
+      classId: 0
+      branch: 1
+      row: 1
+      minLevel: 10
+      name: Iron Skin
+      emoji: "\U0001F529"
+      description: +1 armour per rank (5% less damage each).
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: w_hide
+    - id: w_n_charge
+      classId: 0
+      branch: 1
+      row: 2
+      minLevel: 15
+      name: Shoulder Charge
+      emoji: "\U0001F402"
+      description: 'New dash: Barge forward, hurting and shoving anything you run through.'
+      effect: 0
+      moveId: w_charge
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_iron
+    - id: w_n_shieldwall
+      classId: 0
+      branch: 1
+      row: 3
+      minLevel: 20
+      name: Shield Wall
+      emoji: "\U0001F6E1\uFE0F"
+      description: 'New skill: Brace: take 70% less damage for 3 seconds.'
+      effect: 0
+      moveId: w_shieldwall
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_n_charge
+    - id: w_secondwind
+      classId: 0
+      branch: 1
+      row: 4
+      minLevel: 30
+      name: Second Wind
+      emoji: "\U0001F32C\uFE0F"
+      description: Heal 1 HP per rank whenever you defeat an enemy.
+      effect: 7
+      moveId: 
+      stat: 0
+      valuePerRank: 1
+      maxRank: 3
+      cost: 1
+      requires: w_n_shieldwall
+    - id: w_bastion
+      classId: 0
+      branch: 1
+      row: 5
+      minLevel: 40
+      name: Bastion
+      emoji: "\U0001F3F0"
+      description: +2 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 2
+      maxRank: 3
+      cost: 1
+      requires: w_secondwind
+    - id: w_unbreakable
+      classId: 0
+      branch: 1
+      row: 6
+      minLevel: 50
+      name: Unbreakable
+      emoji: "\U0001F5FF"
+      description: +2 armour.
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 2
+      maxRank: 1
+      cost: 1
+      requires: w_bastion
+    - id: w_rhythm
+      classId: 0
+      branch: 2
+      row: 0
+      minLevel: 1
+      name: Battle Rhythm
+      emoji: "\U0001F941"
+      description: Skills recharge 4% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.04
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: w_n_slam
+      classId: 0
+      branch: 2
+      row: 1
+      minLevel: 5
+      name: Ground Slam
+      emoji: "\U0001F4A5"
+      description: 'New skill: A shockwave rolls forward, damaging and stunning everything in its path.'
+      effect: 0
+      moveId: w_slam
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_rhythm
+    - id: w_might
+      classId: 0
+      branch: 2
+      row: 2
+      minLevel: 10
+      name: Mighty Swings
+      emoji: "\U0001FA93"
+      description: Skills hit 5% harder per rank.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 5
+      cost: 1
+      requires: w_n_slam
+    - id: w_n_warcry
+      classId: 0
+      branch: 2
+      row: 3
+      minLevel: 15
+      name: War Cry
+      emoji: "\U0001F4EF"
+      description: 'New skill: Roar: +40% damage for 6 seconds.'
+      effect: 0
+      moveId: w_warcry
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_might
+    - id: w_n_whirl
+      classId: 0
+      branch: 2
+      row: 4
+      minLevel: 30
+      name: Whirlwind
+      emoji: "\U0001F32A\uFE0F"
+      description: 'New skill: Spin for 1.5 seconds, hitting everything nearby again and again. You can still move.'
+      effect: 0
+      moveId: w_whirl
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: w_n_warcry
+    - id: w_relentless
+      classId: 0
+      branch: 2
+      row: 5
+      minLevel: 35
+      name: Relentless
+      emoji: "\U0001F525"
+      description: Skills recharge 5% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: w_n_whirl
+    - id: w_berserker
+      classId: 0
+      branch: 2
+      row: 6
+      minLevel: 45
+      name: Berserker
+      emoji: "\U0001F624"
+      description: Skills hit 15% harder.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: w_relentless
+    - id: r_steady
+      classId: 1
+      branch: 0
+      row: 0
+      minLevel: 1
+      name: Steady Aim
+      emoji: "\U0001F3AF"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: r_n_spread
+      classId: 1
+      branch: 0
+      row: 1
+      minLevel: 5
+      name: Spread Shot
+      emoji: "\U0001F390"
+      description: 'New attack: Three arrows in a fan. Weaker each, hard to dodge.'
+      effect: 0
+      moveId: r_spread
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_steady
+    - id: r_fletching
+      classId: 1
+      branch: 0
+      row: 2
+      minLevel: 10
+      name: Fletching
+      emoji: "\U0001FAB6"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: r_n_spread
+    - id: r_quickdraw
+      classId: 1
+      branch: 0
+      row: 3
+      minLevel: 20
+      name: Quick Draw
+      emoji: "\U0001F3F9"
+      description: Attacks hit 5% harder per rank.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: r_fletching
+    - id: r_n_longbow
+      classId: 1
+      branch: 0
+      row: 4
+      minLevel: 25
+      name: Longbow
+      emoji: "\U0001F3AF"
+      description: 'New attack: A slow, heavy arrow that flies through every enemy in a line.'
+      effect: 0
+      moveId: r_longbow
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_quickdraw
+    - id: r_deadeye
+      classId: 1
+      branch: 0
+      row: 5
+      minLevel: 35
+      name: Deadeye
+      emoji: "\U0001F441\uFE0F"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: r_n_longbow
+    - id: r_hawkeye
+      classId: 1
+      branch: 0
+      row: 6
+      minLevel: 45
+      name: Hawkeye
+      emoji: "\U0001F985"
+      description: Attacks hit 15% harder.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: r_deadeye
+    - id: r_lightpack
+      classId: 1
+      branch: 1
+      row: 0
+      minLevel: 1
+      name: Light Pack
+      emoji: "\U0001F392"
+      description: Move 3% faster per rank.
+      effect: 6
+      moveId: 
+      stat: 0
+      valuePerRank: 0.03
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: r_eye
+      classId: 1
+      branch: 1
+      row: 1
+      minLevel: 10
+      name: Forager's Eye
+      emoji: "\U0001F33F"
+      description: Gather zones 8% wider per rank.
+      effect: 1
+      moveId: 
+      stat: 5
+      valuePerRank: 0.08
+      maxRank: 5
+      cost: 1
+      requires: r_lightpack
+    - id: r_n_vault
+      classId: 1
+      branch: 1
+      row: 2
+      minLevel: 15
+      name: Back Vault
+      emoji: "\U0001F938"
+      description: 'New dash: Flip backwards and loose an arrow at whatever you were facing.'
+      effect: 0
+      moveId: r_vault
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_eye
+    - id: r_n_mark
+      classId: 1
+      branch: 1
+      row: 3
+      minLevel: 20
+      name: Hunter's Mark
+      emoji: "\U0001F516"
+      description: 'New skill: Mark the nearest enemy: it takes +50% damage for 6 seconds.'
+      effect: 0
+      moveId: r_mark
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_n_vault
+    - id: r_scavenger
+      classId: 1
+      branch: 1
+      row: 4
+      minLevel: 30
+      name: Scavenger
+      emoji: "\U0001FA99"
+      description: +5% coins per rank.
+      effect: 1
+      moveId: 
+      stat: 6
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: r_n_mark
+    - id: r_hardened
+      classId: 1
+      branch: 1
+      row: 5
+      minLevel: 40
+      name: Trail Hardened
+      emoji: "\U0001F97E"
+      description: +2 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 2
+      maxRank: 3
+      cost: 1
+      requires: r_scavenger
+    - id: r_fleet
+      classId: 1
+      branch: 1
+      row: 6
+      minLevel: 50
+      name: Fleet Foot
+      emoji: "\U0001F343"
+      description: Dash recharges 25% faster.
+      effect: 5
+      moveId: 
+      stat: 0
+      valuePerRank: 0.25
+      maxRank: 1
+      cost: 1
+      requires: r_hardened
+    - id: r_nimble
+      classId: 1
+      branch: 2
+      row: 0
+      minLevel: 1
+      name: Nimble Fingers
+      emoji: "\U0001F590\uFE0F"
+      description: Skills recharge 4% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.04
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: r_n_trap
+      classId: 1
+      branch: 2
+      row: 1
+      minLevel: 5
+      name: Snare Trap
+      emoji: "\U0001FAA4"
+      description: 'New skill: Set a snare at your feet. The first enemy to step in is hurt and pinned for 2.5 seconds.'
+      effect: 0
+      moveId: r_trap
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_nimble
+    - id: r_barbed
+      classId: 1
+      branch: 2
+      row: 2
+      minLevel: 10
+      name: Barbed Tips
+      emoji: "\U0001FA9D"
+      description: Skills hit 5% harder per rank.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 5
+      cost: 1
+      requires: r_n_trap
+    - id: r_n_rain
+      classId: 1
+      branch: 2
+      row: 3
+      minLevel: 15
+      name: Arrow Rain
+      emoji: "\U0001F327\uFE0F"
+      description: 'New skill: Arrows fall on a spot ahead of you for 1.5 seconds.'
+      effect: 0
+      moveId: r_rain
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_barbed
+    - id: r_n_smoke
+      classId: 1
+      branch: 2
+      row: 4
+      minLevel: 30
+      name: Smoke Bomb
+      emoji: "\U0001F32B\uFE0F"
+      description: 'New skill: Enemies nearby are slowed by half for 3 seconds and you speed up.'
+      effect: 0
+      moveId: r_smoke
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: r_n_rain
+    - id: r_pockets
+      classId: 1
+      branch: 2
+      row: 5
+      minLevel: 35
+      name: Hidden Pockets
+      emoji: "\U0001F45D"
+      description: Skills recharge 5% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: r_n_smoke
+    - id: r_mastertrap
+      classId: 1
+      branch: 2
+      row: 6
+      minLevel: 45
+      name: Master Trapper
+      emoji: "\U0001F9F0"
+      description: Skills hit 15% harder.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: r_pockets
+    - id: c_grease
+      classId: 2
+      branch: 0
+      row: 0
+      minLevel: 1
+      name: Elbow Grease
+      emoji: "\U0001F4AA"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: c_n_skewer
+      classId: 2
+      branch: 0
+      row: 1
+      minLevel: 5
+      name: Skewer
+      emoji: "\U0001F362"
+      description: 'New attack: Jab forward with a kebab skewer.'
+      effect: 0
+      moveId: c_skewer
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_grease
+    - id: c_tenderiser
+      classId: 2
+      branch: 0
+      row: 2
+      minLevel: 10
+      name: Tenderiser
+      emoji: "\U0001F528"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: c_n_skewer
+    - id: c_heavyhand
+      classId: 2
+      branch: 0
+      row: 3
+      minLevel: 20
+      name: Heavy Hand
+      emoji: "\U0001F944"
+      description: Attacks hit 5% harder per rank.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: c_tenderiser
+    - id: c_n_pan
+      classId: 2
+      branch: 0
+      row: 4
+      minLevel: 25
+      name: Frying Pan
+      emoji: "\U0001F373"
+      description: 'New attack: A ringing pan to the head. Stuns.'
+      effect: 0
+      moveId: c_pan
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_heavyhand
+    - id: c_fury
+      classId: 2
+      branch: 0
+      row: 5
+      minLevel: 35
+      name: Chef's Fury
+      emoji: "\U0001F620"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: c_n_pan
+    - id: c_ironchef
+      classId: 2
+      branch: 0
+      row: 6
+      minLevel: 45
+      name: Iron Chef
+      emoji: "\U0001F468\u200D\U0001F373"
+      description: Attacks hit 15% harder.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: c_fury
+    - id: c_wellfed
+      classId: 2
+      branch: 1
+      row: 0
+      minLevel: 1
+      name: Well Fed
+      emoji: "\U0001F35E"
+      description: +1 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: c_apron
+      classId: 2
+      branch: 1
+      row: 1
+      minLevel: 10
+      name: Thick Apron
+      emoji: "\U0001F9E5"
+      description: +1 armour per rank (5% less damage each).
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: c_wellfed
+    - id: c_n_slide
+      classId: 2
+      branch: 1
+      row: 2
+      minLevel: 15
+      name: Butter Slide
+      emoji: "\U0001F9C8"
+      description: 'New dash: Slide along a buttery trail. Enemies on it are slowed for 3 seconds.'
+      effect: 0
+      moveId: c_slide
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_apron
+    - id: c_n_picnic
+      classId: 2
+      branch: 1
+      row: 3
+      minLevel: 20
+      name: Picnic
+      emoji: "\U0001F9FA"
+      description: 'New skill: Spread a blanket for 5 seconds. Stand on it to heal 2 HP every half second.'
+      effect: 0
+      moveId: c_picnic
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_n_slide
+    - id: c_leftovers
+      classId: 2
+      branch: 1
+      row: 4
+      minLevel: 30
+      name: Leftovers
+      emoji: "\U0001F961"
+      description: Heal 1 HP per rank whenever you defeat an enemy.
+      effect: 7
+      moveId: 
+      stat: 0
+      valuePerRank: 1
+      maxRank: 3
+      cost: 1
+      requires: c_n_picnic
+    - id: c_seconds
+      classId: 2
+      branch: 1
+      row: 5
+      minLevel: 40
+      name: Second Helpings
+      emoji: "\U0001F372"
+      description: +2 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 2
+      maxRank: 3
+      cost: 1
+      requires: c_leftovers
+    - id: c_homecooking
+      classId: 2
+      branch: 1
+      row: 6
+      minLevel: 50
+      name: Home Cooking
+      emoji: "\U0001F3E1"
+      description: +2 armour.
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 2
+      maxRank: 1
+      cost: 1
+      requires: c_seconds
+    - id: c_mise
+      classId: 2
+      branch: 2
+      row: 0
+      minLevel: 1
+      name: Mise en Place
+      emoji: "\U0001F52A"
+      description: Skills recharge 4% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.04
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: c_n_pepper
+      classId: 2
+      branch: 2
+      row: 1
+      minLevel: 5
+      name: Pepper Toss
+      emoji: "\U0001F336\uFE0F"
+      description: 'New skill: Fling pepper in a cone: hurts and slows enemies by half for 3 seconds.'
+      effect: 0
+      moveId: c_pepper
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_mise
+    - id: c_seasoning
+      classId: 2
+      branch: 2
+      row: 2
+      minLevel: 10
+      name: Seasoning
+      emoji: "\U0001F9C2"
+      description: Skills hit 5% harder per rank.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 5
+      cost: 1
+      requires: c_n_pepper
+    - id: c_n_hotpot
+      classId: 2
+      branch: 2
+      row: 3
+      minLevel: 15
+      name: Hot Pot
+      emoji: "\U0001F372"
+      description: 'New skill: Lob a pot ahead. It leaves a scalding puddle for 4 seconds.'
+      effect: 0
+      moveId: c_hotpot
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_seasoning
+    - id: c_n_pin
+      classId: 2
+      branch: 2
+      row: 4
+      minLevel: 30
+      name: Rolling Pin
+      emoji: "\U0001FAB5"
+      description: 'New skill: Throw a rolling pin that flies out and comes back, hitting everything twice.'
+      effect: 0
+      moveId: c_pin
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: c_n_hotpot
+    - id: c_preptime
+      classId: 2
+      branch: 2
+      row: 5
+      minLevel: 35
+      name: Prep Time
+      emoji: "\u23F2\uFE0F"
+      description: Skills recharge 5% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: c_n_pin
+    - id: c_signature
+      classId: 2
+      branch: 2
+      row: 6
+      minLevel: 45
+      name: Signature Dish
+      emoji: "\U0001F31F"
+      description: Skills hit 15% harder.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: c_preptime
+    contentVersion: 8
+    keyItems:
+    - id: glow_lantern
+      name: Firefly Lantern
+      emoji: "\U0001F3EE"
+      description: A jar of sleepy fireflies. Bright enough to light the Cavern's dark.
+    - id: bog_boots
+      name: Bog-Walker Boots
+      emoji: "\U0001F97E"
+      description: Waxed boots that never sink. The only way across Chili Ridge's red mud.
+    - id: watch_key
+      name: Watchtower Key
+      emoji: "\U0001F5DD\uFE0F"
+      description: A heavy iron key from the Wardens' old post. It fits the Ember Gate.
+    - id: climbing_rope
+      name: Thornsilk Rope
+      emoji: "\U0001FAA2"
+      description: Woven from canopy silk by the Thornwood Rangers. Strong enough for Frostfang's cliffs.
+    - id: everflame_recipe
+      name: Everflame Recipe
+      emoji: "\U0001F4DC"
+      description: Grandmother Hob's stew, hot enough to relight the Everflame itself.
+    bagTiers:
+    - tier: 0
+      name: Belt Pouch
+      price: 0
+      value: 6
+    - tier: 1
+      name: Satchel
+      price: 40
+      value: 9
+    - tier: 2
+      name: Forager's Basket
+      price: 90
+      value: 12
+    - tier: 3
+      name: Rucksack
+      price: 160
+      value: 16
+    - tier: 4
+      name: Backpack
+      price: 260
+      value: 20
+    - tier: 5
+      name: Expedition Pack
+      price: 400
+      value: 25
+    - tier: 6
+      name: Hollow-Walker's Pack
+      price: 600
+      value: 30
+    storyTitle: The Everflame
+    storyPrologue: 'Every hearth in the valley was lit from the Everflame, a fire that has burned in the Hollow Heart for a thousand winters. This autumn it guttered. The fog crept in, the hearths went cold, and the old roads closed. Old Wren, keeper of the camp, has one map left: the Ember Path. Cook well, travel light, and bring the flame home.'
+    headTiers:
+    - tier: 0
+      name: Cloth Cap
+      price: 0
+      value: 0
+    - tier: 1
+      name: Leather Cap
+      price: 35
+      value: 2
+    - tier: 2
+      name: Iron Pot Helm
+      price: 80
+      value: 4
+    - tier: 3
+      name: Horned Helm
+      price: 140
+      value: 6
+    - tier: 4
+      name: Hearthguard Helm
+      price: 230
+      value: 8
+    bootsTiers:
+    - tier: 0
+      name: Sandals
+      price: 0
+      value: 0
+    - tier: 1
+      name: Walking Boots
+      price: 35
+      value: 0.04
+    - tier: 2
+      name: Trail Boots
+      price: 80
+      value: 0.07
+    - tier: 3
+      name: Ranger's Boots
+      price: 140
+      value: 0.1
+    - tier: 4
+      name: Windstep Boots
+      price: 230
+      value: 0.14
+    trinkets:
+    - id: clover
+      name: Lucky Clover Charm
+      emoji: "\U0001F340"
+      description: A pressed four-leaf clover in resin.
+      buffs:
+      - stat: 4
+        value: 0.05
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 60
+      inWorkshop: 1
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: purse
+      name: Copper Coin Purse
+      emoji: "\U0001F45B"
+      description: Coins seem to find their way into it.
+      buffs:
+      - stat: 6
+        value: 0.15
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 60
+      inWorkshop: 1
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: pendant
+      name: Hearthstone Pendant
+      emoji: "\U0001F4FF"
+      description: Warm to the touch, like the camp fire.
+      buffs:
+      - stat: 1
+        value: 6
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 80
+      inWorkshop: 1
+      shopChapter: 2
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: twine
+      name: Forager's Twine
+      emoji: "\U0001F9F6"
+      description: "Ties bundles tight \u2014 nothing slips away."
+      buffs:
+      - stat: 5
+        value: 0.2
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 70
+      inWorkshop: 1
+      shopChapter: 2
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: feather
+      name: Feather Charm
+      emoji: "\U0001FAB6"
+      description: Light on your feet.
+      buffs: []
+      perk: 1
+      perkValue: 0.08
+      wardHazard: 0
+      price: 120
+      inWorkshop: 1
+      shopChapter: 3
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: whetstone
+      name: Pocket Whetstone
+      emoji: "\U0001FAA8"
+      description: A quick edge before every swing.
+      buffs: []
+      perk: 5
+      perkValue: 0.08
+      wardHazard: 0
+      price: 150
+      inWorkshop: 1
+      shopChapter: 4
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: bookmark
+      name: Scholar's Bookmark
+      emoji: "\U0001F516"
+      description: Every fight is a lesson.
+      buffs:
+      - stat: 7
+        value: 0.15
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 120
+      inWorkshop: 1
+      shopChapter: 4
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: hourglass
+      name: Hourglass Bead
+      emoji: "\u23F3"
+      description: Time runs a little kinder.
+      buffs: []
+      perk: 3
+      perkValue: 0.1
+      wardHazard: 0
+      price: 200
+      inWorkshop: 1
+      shopChapter: 5
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+    - id: rabbitfoot
+      name: Rabbit's Foot
+      emoji: "\U0001F407"
+      description: From the fastest hare on the run.
+      buffs:
+      - stat: 4
+        value: 0.04
+      perk: 2
+      perkValue: 0.15
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: harerun
+    - id: fireflyjar
+      name: Firefly Jar
+      emoji: "\U0001FAD9"
+      description: A few glade fireflies, happy in a jar.
+      buffs: []
+      perk: 7
+      perkValue: 1
+      wardHazard: 4
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: firefly
+    - id: mirecharm
+      name: Mire Charm
+      emoji: "\U0001F344"
+      description: Bitter spores the poison doesn't like.
+      buffs: []
+      perk: 7
+      perkValue: 1
+      wardHazard: 1
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: spore
+    - id: glowbrooch
+      name: Glowcap Brooch
+      emoji: "\U0001F4A1"
+      description: Hums when you use a skill.
+      buffs: []
+      perk: 6
+      perkValue: 0.1
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: glowcap
+    - id: signet
+      name: Warden's Signet
+      emoji: "\U0001F48D"
+      description: The old watch's seal.
+      buffs:
+      - stat: 3
+        value: 1
+      - stat: 1
+        value: 4
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: watchtower
+    - id: thunderstone
+      name: Thunder Stone
+      emoji: "\u26A1"
+      description: Crackles when you strike.
+      buffs:
+      - stat: 0
+        value: 0.12
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: thunder
+    - id: thornband
+      name: Thornsilk Band
+      emoji: "\U0001F33F"
+      description: Woven in the canopy.
+      buffs:
+      - stat: 4
+        value: 0.05
+      perk: 1
+      perkValue: 0.1
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: canopy
+    - id: honeylocket
+      name: Honey Locket
+      emoji: "\U0001F36F"
+      description: A sweet mouthful after every fight.
+      buffs: []
+      perk: 4
+      perkValue: 1
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: hive
+    - id: grannyspoon
+      name: Granny's Spoon
+      emoji: "\U0001F944"
+      description: Found in the Forgotten Larder.
+      buffs:
+      - stat: 6
+        value: 0.2
+      - stat: 7
+        value: 0.1
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: larder
+    - id: frostamulet
+      name: Frost Ward Amulet
+      emoji: "\u2744\uFE0F"
+      description: Never quite cold.
+      buffs: []
+      perk: 7
+      perkValue: 1
+      wardHazard: 2
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: frosthollow
+    - id: emberward
+      name: Ember Ward Charm
+      emoji: "\U0001F525"
+      description: A coal that never burns you.
+      buffs: []
+      perk: 7
+      perkValue: 1
+      wardHazard: 3
+      price: 180
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 1
+      drop: 1
+      fromRouteId: 
+    - id: slimeheart
+      name: Slime Heart
+      emoji: "\U0001F7E2"
+      description: Wobbly, but it keeps you going.
+      buffs:
+      - stat: 1
+        value: 8
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 1
+      fromRouteId: 
+    - id: wolffang
+      name: Wolf Fang Necklace
+      emoji: "\U0001F43A"
+      description: Trophy of a hard fight.
+      buffs:
+      - stat: 0
+        value: 0.1
+      - stat: 4
+        value: 0.03
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 1
+      fromRouteId: 
+    - id: dragonscale
+      name: Dragon Scale
+      emoji: "\U0001F409"
+      description: Still warm.
+      buffs:
+      - stat: 3
+        value: 2
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 1
+      fromRouteId: 
+    - id: fetish
+      name: Shaman's Fetish
+      emoji: "\U0001FAAC"
+      description: Mutters charms on its own.
+      buffs:
+      - stat: 7
+        value: 0.05
+      perk: 3
+      perkValue: 0.1
+      wardHazard: 0
+      price: 0
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 0
+      drop: 1
+      fromRouteId: 
+    - id: compass
+      name: Traveller's Compass
+      emoji: "\U0001F9ED"
+      description: Always points to the good stuff.
+      buffs:
+      - stat: 6
+        value: 0.1
+      - stat: 5
+        value: 0.1
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 150
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 1
+      drop: 0
+      fromRouteId: 
+    - id: spicetin
+      name: Merchant's Spice Tin
+      emoji: "\U0001FADA"
+      description: Smells of faraway markets.
+      buffs:
+      - stat: 0
+        value: 0.06
+      - stat: 1
+        value: 3
+      perk: 0
+      perkValue: 0
+      wardHazard: 0
+      price: 130
+      inWorkshop: 0
+      shopChapter: 1
+      merchant: 1
+      drop: 0
+      fromRouteId: 

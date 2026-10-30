@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Firefly Glade
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: firefly
+  displayName: Firefly Glade
+  floor: {fileID: 11400000, guid: 6bdd46eb8949c47c486ed46d337ec825, type: 2}
+  floorAlt: {fileID: 11400000, guid: 740258cb2a58343b990db0e53e4e27b7, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: 8859acb01e65a4eb0a63bc5152d4e5b4, type: 2}
+  wallFace: {fileID: 11400000, guid: 1fa9e8e8936cf41da950111b569da616, type: 2}
+  hazard: {fileID: 11400000, guid: 11055b3449e974c8fb1301e7db860385, type: 2}
+  decor:
+  - {fileID: 11400000, guid: c672a3a55412848a38797d6d7f57db3f, type: 2}
+  - {fileID: 11400000, guid: 82849a68877e44aa8a9fc5c993dc52e5, type: 2}
+  - {fileID: 11400000, guid: 5f5fb6145ed784cb4af2ed99dd9cc724, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.023529412, g: 0.0627451, b: 0.039215688, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 0.75, g: 0.95, b: 0.8, a: 1}
+  lightIntensity: 0.6
+  playerLight: 0.9
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 98349403f4a9d4064816770f54e2f49b, type: 3}
+  ladder: {fileID: 21300000, guid: 469b60e4976294cd1862b7197106eb46, type: 3}
+  exitPortal: {fileID: 21300000, guid: bbe7f3fa6b4594661bf13b4798061930, type: 3}
+  campfire: {fileID: 21300000, guid: d8f41642bd4254d93915cd6f234687fd, type: 3}
+  forage: {fileID: 21300000, guid: fe912d80f6ba54e6da3fc3d392d20313, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.05

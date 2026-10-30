@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Wild Hive
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: hive
+  displayName: Wild Hive
+  floor: {fileID: 11400000, guid: 386da24ba0e244597bdfffdb5343b3cb, type: 2}
+  floorAlt: {fileID: 11400000, guid: b1a501070a6224e118f7a8bbd627cdda, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: 55f5b7e3de8944ea2835fabe89d1c278, type: 2}
+  wallFace: {fileID: 11400000, guid: e2135a127f9f8419c811562e80bec847, type: 2}
+  hazard: {fileID: 11400000, guid: 9e18716f2ffcb4f0e9c099c20a207b42, type: 2}
+  decor:
+  - {fileID: 11400000, guid: d6d23dc9c8df14bb7967e85205b1cbc3, type: 2}
+  - {fileID: 11400000, guid: 7c0fa4be174474523a8d8d8723c699c0, type: 2}
+  - {fileID: 11400000, guid: d6858313329c944bf88a8e414278744f, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.11764706, g: 0.07058824, b: 0.015686275, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 1, g: 0.9, b: 0.62, a: 1}
+  lightIntensity: 0.95
+  playerLight: 0
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 077a54d0256ab45b1860346079cd7603, type: 3}
+  ladder: {fileID: 21300000, guid: 2fc8a376168514adb9427f95e5c146b1, type: 3}
+  exitPortal: {fileID: 21300000, guid: 52e9285cbd46f49ad888546c22951a94, type: 3}
+  campfire: {fileID: 21300000, guid: fec30690e1f4a489b889f13014b66130, type: 3}
+  forage: {fileID: 21300000, guid: 3e1118f7f0ad6427fa4eb96ed339269a, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.05

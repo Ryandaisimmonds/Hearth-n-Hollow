@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7eb6a313bfe4bef910ee2949279fca, type: 3}
+  m_Name: Theme Thunderpuff Hills
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
+  routeId: thunder
+  displayName: Thunderpuff Hills
+  floor: {fileID: 11400000, guid: 092430d832ee6467b827aed39fadc4bd, type: 2}
+  floorAlt: {fileID: 11400000, guid: deab7c8932787491d819f7d35de8edd9, type: 2}
+  floorAltChance: 0.18
+  wall: {fileID: 11400000, guid: d77078a3bc54647ce86c19cb532051b2, type: 2}
+  wallFace: {fileID: 11400000, guid: 7ece26cd12b3c4593bc32eb7e1609898, type: 2}
+  hazard: {fileID: 11400000, guid: b0c2744a7a62d49fb9fa46c1ea6c39ee, type: 2}
+  decor:
+  - {fileID: 11400000, guid: 5f21e2d3f4d504706b796e548511bfe4, type: 2}
+  - {fileID: 11400000, guid: cd59ac42a861f4c7eb443a5169dff0d3, type: 2}
+  - {fileID: 11400000, guid: 8ad4cbc7564a6475dbd49b75f4810040, type: 2}
+  decorDensity: 0.05
+  background: {r: 0.039215688, g: 0.047058824, b: 0.08627451, a: 1}
+  floorTint: {r: 1, g: 1, b: 1, a: 1}
+  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  lightColor: {r: 0.8, g: 0.85, b: 1, a: 1}
+  lightIntensity: 0.85
+  playerLight: 0
+  doorOpen: {fileID: 0}
+  doorClosed: {fileID: 21300000, guid: 5d879538dfedf4e47b5c0da75da3f827, type: 3}
+  ladder: {fileID: 21300000, guid: ab5b23f849aaa4dc1aa5f8c15632b175, type: 3}
+  exitPortal: {fileID: 21300000, guid: 3674f79f159ef4520b2aabf688820436, type: 3}
+  campfire: {fileID: 21300000, guid: 31c8b1fbfe45249669908886d00ef1bb, type: 3}
+  forage: {fileID: 21300000, guid: d88bdc5e5004f4514a391b3a4cf283bb, type: 3}
+  rooms: []
+  alsoUseSharedRooms: 1
+  enemySpeedMult: 1.08

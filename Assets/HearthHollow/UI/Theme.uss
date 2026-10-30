@@ -1,0 +1,26 @@
+/* Hearth & Hollow — THEME: the colour palette for every screen.
+   Edit a value here and everything that uses it changes (HearthHollow.uss uses var(--hh-...) for these).
+   Colours with transparency (rgba) are still written directly in HearthHollow.uss.
+   Tip: Unity reloads this live — change a colour, save, and look at the Game view (Play mode too). */
+
+:root, .hh-root {
+    --hh-text: #f3ead2;         /* default body text */
+    --hh-gold: #f0b44c;         /* headings, section titles, accents */
+    --hh-cream: #ffe3a8;        /* warm light text (names, values) */
+    --hh-gold-soft: #ffd77a;    /* buff numbers, prices, highlights */
+    --hh-parchment: #fff2d4;    /* text on ribbons and title bars */
+    --hh-gold-bright: #ffd23a;  /* selected / active outlines, stars */
+    --hh-gold-pale: #ffe08a;    /* pale gold accents */
+    --hh-ivory: #fffaf0;        /* big button text */
+    --hh-btn-text: #fff6e0;     /* button text */
+    --hh-sand: #e8dcbc;         /* story and flavour text */
+    --hh-sage: #b9c4b0;         /* muted / secondary text */
+    --hh-sage-light: #d5ddcc;   /* soft secondary text */
+    --hh-coral: #ff9f8a;        /* warnings, locked reasons */
+    --hh-bad: #ff6a5a;          /* damage taken, errors */
+    --hh-good: #7fe08a;         /* healing, success */
+    --hh-mint: #9bd6a8;         /* hollow-green accents */
+    --hh-sky: #cfe0ff;          /* cool info text */
+    --hh-white: #ffffff;        /* pure white */
+    --hh-bg-hearth: #1c140c;    /* camp background base */
+}

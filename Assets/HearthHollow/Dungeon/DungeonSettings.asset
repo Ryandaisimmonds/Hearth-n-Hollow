@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3851371650c1f46438872940e74eb384, type: 3}
+  m_Name: DungeonSettings
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonSettings
+  themes:
+  - {fileID: 11400000, guid: 1522d8cece52c4f8f9a5da6c061cdbf5, type: 2}
+  - {fileID: 11400000, guid: 05d92a8a6bf1d449e8cea58c664d98a8, type: 2}
+  - {fileID: 11400000, guid: 66eae970c873a43098563c6b9e940fcf, type: 2}
+  - {fileID: 11400000, guid: 713ae508b95514fb491ea33192c77ecf, type: 2}
+  - {fileID: 11400000, guid: 50f4b58df7c3e4350ae824e040571ec5, type: 2}
+  - {fileID: 11400000, guid: df746f0cc719c406bb55fe41d22acb34, type: 2}
+  - {fileID: 11400000, guid: 798ddb6fedc2c4ab199426db4fa3d606, type: 2}
+  - {fileID: 11400000, guid: 7b501758a80ee470fac4aaa758ac440c, type: 2}
+  - {fileID: 11400000, guid: 5528db7f4ef294b6e841e88acd5d0804, type: 2}
+  - {fileID: 11400000, guid: 44d1f7e57305f45af884dfcefa0634af, type: 2}
+  - {fileID: 11400000, guid: 69bec081914854a2d883df09b5ac0600, type: 2}
+  - {fileID: 11400000, guid: 36d6288ebd13444e78fba3494b77c434, type: 2}
+  - {fileID: 11400000, guid: 76d228c48e2b846c6b18602ff75fb42b, type: 2}
+  - {fileID: 11400000, guid: 1e0f939f4c1534f3082301c023bf0a99, type: 2}
+  - {fileID: 11400000, guid: ef6963beaa62740369ef0d2518a92efa, type: 2}
+  - {fileID: 11400000, guid: 7a9a87ab960664744be777e6c71f1c31, type: 2}
+  - {fileID: 11400000, guid: 4e766cc32164a4d71b3b1048dbed745d, type: 2}
+  - {fileID: 11400000, guid: 4ac7c746526d54fc78fadb9548f2781e, type: 2}
+  fallbackTheme: {fileID: 11400000, guid: 1522d8cece52c4f8f9a5da6c061cdbf5, type: 2}
+  rooms:
+  - {fileID: 7379659504770107242, guid: 8be5653f1fb48469f8b70fa0ec2b3d6e, type: 3}
+  - {fileID: 6490898455917980369, guid: 23193e4706bc44040a7968437436bbc3, type: 3}
+  - {fileID: 7579435984571820963, guid: 81c42c693455d4ccf8cfea5834896dcd, type: 3}
+  - {fileID: 5487709620707419010, guid: 2f1e33b988c9540a8993a8ebcb0fef35, type: 3}
+  - {fileID: 7455085421950478827, guid: fb1e0a5d82f324f55912e55139fc2a24, type: 3}
+  - {fileID: 5171888198107986406, guid: c26e3305d34754d05bdb50f9ed8a627f, type: 3}
+  - {fileID: 8220847955106001938, guid: c6aa2e7c9bcc74d56a4afd9ad5bf99ae, type: 3}
+  - {fileID: 9020732597556188026, guid: e471a0a0fd6174020baf275997d9c86b, type: 3}
+  - {fileID: 3391549017709039616, guid: 2c36659e6dbad49f2b04c7fe7b5850f2, type: 3}
+  - {fileID: 4372302154380018380, guid: 8b67ab23926ef401385d74a414aaf394, type: 3}
+  - {fileID: 3070748951915288929, guid: 9c1ba104772cf4c8d86b791da23c2622, type: 3}
+  - {fileID: 3059506221126206612, guid: cf8b706dc4f814d208ce6a1fea8f5599, type: 3}
+  - {fileID: 5953886014042435640, guid: 12b92a3941b8e4e5fbd534536eb15753, type: 3}
+  - {fileID: 2687567465881023310, guid: d2de9505ca7ca4e039856d7db43ed4e9, type: 3}
+  markerFloor: {fileID: 11400000, guid: 28587090ed11841bf8ed65e6d8f27b69, type: 2}
+  markerWall: {fileID: 11400000, guid: 921fa5381b6ac48e78421e196812691a, type: 2}
+  markerWallFace: {fileID: 11400000, guid: 9e4992df38d1e4f3b9e05a091960b874, type: 2}
+  markerHazard: {fileID: 11400000, guid: afdbe6358ecdf41aaba686199f97ae79, type: 2}
+  enemies:
+  - monsterId: slime
+    archetype: 0
+    moveSpeed: 1.8
+    attackRange: 0.9
+    windup: 0.45
+    cooldownMult: 1.1
+    projectileSpeed: 6
+    hits: 1
+    healsAllies: 0
+    scale: 1
+  - monsterId: boar
+    archetype: 1
+    moveSpeed: 2.2
+    attackRange: 1
+    windup: 0.6
+    cooldownMult: 1.3
+    projectileSpeed: 6
+    hits: 1
+    healsAllies: 0
+    scale: 1
+  - monsterId: bat
+    archetype: 2
+    moveSpeed: 3.2
+    attackRange: 2.4
+    windup: 0.3
+    cooldownMult: 0.9
+    projectileSpeed: 6
+    hits: 1
+    healsAllies: 0
+    scale: 1.5
+  - monsterId: crab
+    archetype: 0
+    moveSpeed: 2.9
+    attackRange: 1
+    windup: 0.3
+    cooldownMult: 1
+    projectileSpeed: 6
+    hits: 1
+    healsAllies: 0
+    scale: 1
+  - monsterId: wolf
+    archetype: 0
+    moveSpeed: 3.3
+    attackRange: 1
+    windup: 0.35
+    cooldownMult: 1.3
+    projectileSpeed: 6
+    hits: 2
+    healsAllies: 0
+    scale: 1
+  - monsterId: shaman
+    archetype: 3
+    moveSpeed: 2
+    attackRange: 6
+    windup: 0.6
+    cooldownMult: 1.5
+    projectileSpeed: 6
+    hits: 1
+    healsAllies: 1
+    scale: 1
+  - monsterId: dragon
+    archetype: 4
+    moveSpeed: 1.7
+    attackRange: 1.4
+    windup: 0.7
+    cooldownMult: 1.2
+    projectileSpeed: 7
+    hits: 1
+    healsAllies: 0
+    scale: 1.2
+  playerSpeed: 5.2
+  dashSpeed: 15
+  dashSeconds: 0.16
+  characterPixelsPerUnit: 32
+  cameraSize: 8.4
