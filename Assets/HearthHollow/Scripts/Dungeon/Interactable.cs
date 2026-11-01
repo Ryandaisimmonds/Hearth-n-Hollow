@@ -50,6 +50,8 @@ namespace HearthHollow.Dungeon
             SetAvailable(available);
         }
 
+        public void MarkUsed() { Used = true; }
+
         public void SetAvailable(bool on)
         {
             Available = on;
@@ -64,7 +66,7 @@ namespace HearthHollow.Dungeon
             {
                 case InteractKind.Forage: return "Forage";
                 case InteractKind.Campfire: return "Rest by the fire";
-                case InteractKind.Ladder: return "Climb down to floor " + (dc.Session.Run.floor + 1);
+                case InteractKind.Ladder: return "Floor " + (dc.Session.Run.floor + 1) + " below — go deeper or head home?";
                 default: return dc.Session.DungeonOnLastFloor ? "Leave — route cleared!" : "Head home with your haul";
             }
         }
@@ -87,8 +89,7 @@ namespace HearthHollow.Dungeon
                     _lightBase *= 0.45f;   // embers
                     return true;
                 case InteractKind.Ladder:
-                    if (!dc.Session.DungeonDescend()) return false;   // the controller builds the next floor
-                    Used = true;
+                    dc.AskLadder(this);   // go deeper or head home (contentVersion 14); descending marks it used
                     return true;
                 default:
                     Used = true;

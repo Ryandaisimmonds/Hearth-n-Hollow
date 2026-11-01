@@ -3,25 +3,11 @@
 --- !u!1386491679 &1
 PresetManager:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_DefaultPresets:
-  - first:
-      m_NativeTypeID: 1006
+  m_DefaultList:
+  - type:
+      m_NativeTypeID: 20
       m_ManagedTypePPtr: {fileID: 0}
       m_ManagedTypeFallback: 
-    second:
-    - m_Preset: {fileID: 2655988077585873504, guid: 27f252c1015724ff0a97f452b04d60e7, type: 2}
-      m_Filter: glob:"Assets/HearthHollow/Art/Custom/Icons/**"
-      m_Disabled: 0
-    - m_Preset: {fileID: 2655988077585873504, guid: 27f252c1015724ff0a97f452b04d60e7, type: 2}
-      m_Filter: glob:"Assets/HearthHollow/Art/Custom/Food/**"
-      m_Disabled: 0
-    - m_Preset: {fileID: 2655988077585873504, guid: 27f252c1015724ff0a97f452b04d60e7, type: 2}
-      m_Filter: glob:"Assets/HearthHollow/Art/Custom/Dungeon/**"
-      m_Disabled: 0
-    - m_Preset: {fileID: 2655988077585873504, guid: 8166228fd9dfb473d9d16b6ec2027a6e, type: 2}
-      m_Filter: glob:"Assets/HearthHollow/Art/Custom/Monsters/**"
-      m_Disabled: 0
-    - m_Preset: {fileID: 2655988077585873504, guid: 8166228fd9dfb473d9d16b6ec2027a6e, type: 2}
-      m_Filter: glob:"Assets/HearthHollow/Art/Custom/Characters/**"
-      m_Disabled: 0
+    defaultPresets:
+    - m_Preset: {fileID: 2655988077585873504, guid: bfcfc320427f8224bbb7a96f3d3aebad,
+        type: 2}

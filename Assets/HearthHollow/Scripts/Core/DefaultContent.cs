@@ -27,6 +27,8 @@ namespace HearthHollow.Core
             ApplyStory5(c);          // DefaultContentStory5.cs: darkness, mutators, 4 more side dungeons
             BuildGear7(c);           // DefaultContentGear.cs: head + boots tracks, trinkets
             AssignRarity(c);         // DefaultContentGear.cs: meal rarity
+            BuildCooking9(c);        // DefaultContentCooking.cs: the 21-dish menu + accelerators (replaces the recipes above)
+            BuildKitchen13(c);       // DefaultContentKitchen.cs: station levels, pantry shelves, building materials
 
             // Enough for Herb Stew (Pot) + Mushroom Skewer (BBQ) + Herb Butty (Sandwich) → Balanced Feast on day one,
             // or swap in Berry Porridge / Bramble Jam Sandwich.

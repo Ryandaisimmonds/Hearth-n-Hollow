@@ -14,23 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: salt
   displayName: Salt Marsh Trail
-  floor: {fileID: 11400000, guid: eb965f81033fc4af681046a3c3a90c06, type: 2}
-  floorAlt: {fileID: 11400000, guid: bb37f377cc8d04cf1afc1a06d08e6235, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 0ed74541015d44004958593cff54f6c6, type: 2}
-  wallFace: {fileID: 11400000, guid: b1799e9e1a3a44a4d8edae79f54731ce, type: 2}
+  floor: {fileID: 11400000, guid: af945401f6c354c9d9da149a8b801500, type: 2}
+  floorAlt: {fileID: 11400000, guid: 7371c6ea61f924f00ae34400c56d7ec2, type: 2}
+  floorAltChance: 0.15
+  wall: {fileID: 11400000, guid: 4938c5fdd8c3343c092af5bb80b04243, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 9e7d0864a42364cb8b35f020d214c539, type: 2}
   decor:
-  - {fileID: 11400000, guid: a6ca0f190fd3042cfaaa2263b5023453, type: 2}
-  - {fileID: 11400000, guid: 3dc5a444b60a44c1590316329a862208, type: 2}
-  - {fileID: 11400000, guid: 75654d1bf739640328eee54cb1560fab, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: f61d41d99aa4d4332a27445f970c0d53, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  decorDensity: 0.07
   background: {r: 0.05490196, g: 0.101960786, b: 0.1254902, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.86, g: 0.96, b: 1, a: 1}
+  wallTint: {r: 0.86, g: 0.96, b: 1, a: 1}
   lightColor: {r: 0.86, g: 0.95, b: 1, a: 1}
   lightIntensity: 1
   playerLight: 0
+  gradeTemperature: -12
+  gradeTint: -2
+  gradeSaturation: 0
+  gradeContrast: 8
+  gradeExposure: 0.05
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.32
+  gradeBloom: 1.12
+  ambient: 1
+  ambientColor: {r: 0.6, g: 1, b: 0.95, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 803ae67d538494cbc8d6648496d7d20a, type: 3}
   ladder: {fileID: 21300000, guid: 7e24e9f2dda314aa99b87b1b6bc73925, type: 3}

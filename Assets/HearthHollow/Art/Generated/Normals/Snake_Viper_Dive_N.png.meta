@@ -1,0 +1,652 @@
+fileFormatVersion: 2
+guid: 320c7a6ed3cfa424fadae6a66961eb4e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -349962963677459835
+    second: Snake_Viper_Dive_N_0
+  - first:
+      213: 125869818873101945
+    second: Snake_Viper_Dive_N_1
+  - first:
+      213: 1071325253878904731
+    second: Snake_Viper_Dive_N_2
+  - first:
+      213: -1248824497862625410
+    second: Snake_Viper_Dive_N_3
+  - first:
+      213: 7743074096616521185
+    second: Snake_Viper_Dive_N_4
+  - first:
+      213: -4470448348072133376
+    second: Snake_Viper_Dive_N_5
+  - first:
+      213: -5778913251728596248
+    second: Snake_Viper_Dive_N_6
+  - first:
+      213: 157105802072588197
+    second: Snake_Viper_Dive_N_7
+  - first:
+      213: -8640610464961366998
+    second: Snake_Viper_Dive_N_8
+  - first:
+      213: 7340670351380095645
+    second: Snake_Viper_Dive_N_9
+  - first:
+      213: -4930495755037245622
+    second: Snake_Viper_Dive_N_10
+  - first:
+      213: -2418046433942448229
+    second: Snake_Viper_Dive_N_11
+  - first:
+      213: 1986820830965862860
+    second: Snake_Viper_Dive_N_12
+  - first:
+      213: -1632344447419852102
+    second: Snake_Viper_Dive_N_13
+  - first:
+      213: 4451868122996936409
+    second: Snake_Viper_Dive_N_14
+  - first:
+      213: -4230840571684911183
+    second: Snake_Viper_Dive_N_15
+  - first:
+      213: -5007802509704966634
+    second: Snake_Viper_Dive_N_16
+  - first:
+      213: 8221355471270495581
+    second: Snake_Viper_Dive_N_17
+  - first:
+      213: -8115418187436639702
+    second: Snake_Viper_Dive_N_18
+  - first:
+      213: 6080009753343605519
+    second: Snake_Viper_Dive_N_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_0
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 430
+        width: 13
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58a4679e98ea42bf0800000000000000
+      internalID: -349962963677459835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_1
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 435
+        width: 12
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97ebfd1feed2fb100800000000000000
+      internalID: 125869818873101945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_2
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 427
+        width: 12
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b977b5c64ac1ede00800000000000000
+      internalID: 1071325253878904731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_3
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 424
+        width: 12
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e77b71a5cb84baee0800000000000000
+      internalID: -1248824497862625410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_4
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 424
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ed3b56cddce47b60800000000000000
+      internalID: 7743074096616521185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_5
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 303
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00dbd62b9e6c5f1c0800000000000000
+      internalID: -4470448348072133376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_6
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 303
+        width: 34
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e26beaf30d2dcfa0800000000000000
+      internalID: -5778913251728596248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_7
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 305
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5af70b405e62e2200800000000000000
+      internalID: 157105802072588197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_8
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 303
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a247471ef82661880800000000000000
+      internalID: -8640610464961366998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_9
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 303
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d92a043cacc4fd560800000000000000
+      internalID: 7340670351380095645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_10
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4ffe62db3c539bb0800000000000000
+      internalID: -4930495755037245622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_11
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 175
+        width: 34
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b97d576649f517ed0800000000000000
+      internalID: -2418046433942448229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_12
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 177
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc11116e40b929b10800000000000000
+      internalID: 1986820830965862860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_13
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 175
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aba5574af5fb859e0800000000000000
+      internalID: -1632344447419852102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_14
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 175
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9de0e1a887638cd30800000000000000
+      internalID: 4451868122996936409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_15
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 45
+        width: 14
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b7096f7ae80945c0800000000000000
+      internalID: -4230840571684911183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_16
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 50
+        width: 12
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61ec9bf5626b08ab0800000000000000
+      internalID: -5007802509704966634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_17
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 58
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d55ca451e3f181270800000000000000
+      internalID: 8221355471270495581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_18
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 58
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2a3816e72e306f80800000000000000
+      internalID: -8115418187436639702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Dive_N_19
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 58
+        width: 14
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0bb4fa48a8806450800000000000000
+      internalID: 6080009753343605519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Snake_Viper_Dive_N_0: -349962963677459835
+      Snake_Viper_Dive_N_1: 125869818873101945
+      Snake_Viper_Dive_N_10: -4930495755037245622
+      Snake_Viper_Dive_N_11: -2418046433942448229
+      Snake_Viper_Dive_N_12: 1986820830965862860
+      Snake_Viper_Dive_N_13: -1632344447419852102
+      Snake_Viper_Dive_N_14: 4451868122996936409
+      Snake_Viper_Dive_N_15: -4230840571684911183
+      Snake_Viper_Dive_N_16: -5007802509704966634
+      Snake_Viper_Dive_N_17: 8221355471270495581
+      Snake_Viper_Dive_N_18: -8115418187436639702
+      Snake_Viper_Dive_N_19: 6080009753343605519
+      Snake_Viper_Dive_N_2: 1071325253878904731
+      Snake_Viper_Dive_N_3: -1248824497862625410
+      Snake_Viper_Dive_N_4: 7743074096616521185
+      Snake_Viper_Dive_N_5: -4470448348072133376
+      Snake_Viper_Dive_N_6: -5778913251728596248
+      Snake_Viper_Dive_N_7: 157105802072588197
+      Snake_Viper_Dive_N_8: -8640610464961366998
+      Snake_Viper_Dive_N_9: 7340670351380095645
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

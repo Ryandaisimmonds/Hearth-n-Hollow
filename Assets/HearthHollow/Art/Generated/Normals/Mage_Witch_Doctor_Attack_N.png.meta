@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: de12d2865f1904d6eb936b0b8d1a4893
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6088830736191485269
+    second: Mage_Witch_Doctor_Attack_N_0
+  - first:
+      213: -5223159862390833307
+    second: Mage_Witch_Doctor_Attack_N_1
+  - first:
+      213: -2093091253218848066
+    second: Mage_Witch_Doctor_Attack_N_2
+  - first:
+      213: 3430738478873251802
+    second: Mage_Witch_Doctor_Attack_N_3
+  - first:
+      213: 1866522317991531406
+    second: Mage_Witch_Doctor_Attack_N_4
+  - first:
+      213: 7501640042158314646
+    second: Mage_Witch_Doctor_Attack_N_5
+  - first:
+      213: 2263073529247465741
+    second: Mage_Witch_Doctor_Attack_N_6
+  - first:
+      213: -3571765753393717040
+    second: Mage_Witch_Doctor_Attack_N_7
+  - first:
+      213: -7980215706459387773
+    second: Mage_Witch_Doctor_Attack_N_8
+  - first:
+      213: 862824262761873925
+    second: Mage_Witch_Doctor_Attack_N_9
+  - first:
+      213: -5026155591718715041
+    second: Mage_Witch_Doctor_Attack_N_10
+  - first:
+      213: -7662184434368192791
+    second: Mage_Witch_Doctor_Attack_N_11
+  - first:
+      213: -771998696578445429
+    second: Mage_Witch_Doctor_Attack_N_12
+  - first:
+      213: -3774249973398801302
+    second: Mage_Witch_Doctor_Attack_N_13
+  - first:
+      213: 9194250264058424324
+    second: Mage_Witch_Doctor_Attack_N_14
+  - first:
+      213: 7274460025396355285
+    second: Mage_Witch_Doctor_Attack_N_15
+  - first:
+      213: 7927338200500176135
+    second: Mage_Witch_Doctor_Attack_N_16
+  - first:
+      213: -3845471966724519292
+    second: Mage_Witch_Doctor_Attack_N_17
+  - first:
+      213: 1461374722887549471
+    second: Mage_Witch_Doctor_Attack_N_18
+  - first:
+      213: 3219685656151578488
+    second: Mage_Witch_Doctor_Attack_N_19
+  - first:
+      213: -5335481633809609006
+    second: Mage_Witch_Doctor_Attack_N_20
+  - first:
+      213: -3133718050846855180
+    second: Mage_Witch_Doctor_Attack_N_21
+  - first:
+      213: 6120001928421501834
+    second: Mage_Witch_Doctor_Attack_N_22
+  - first:
+      213: -8455430257468210312
+    second: Mage_Witch_Doctor_Attack_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 431
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: baa83d794b0208ba0800000000000000
+      internalID: -6088830736191485269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 431
+        width: 20
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56fbd1557cb9387b0800000000000000
+      internalID: -5223159862390833307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb2d9694898d3f2e0800000000000000
+      internalID: -2093091253218848066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 431
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adf018e387e6c9f20800000000000000
+      internalID: 3430738478873251802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e835931b82837e910800000000000000
+      internalID: 1866522317991531406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 431
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69451b97fdd2b1860800000000000000
+      internalID: 7501640042158314646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 303
+        width: 28
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d018263726d086f10800000000000000
+      internalID: 2263073529247465741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 303
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d0ef08a8f98e6ec0800000000000000
+      internalID: -3571765753393717040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 303
+        width: 23
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 388ce719814904190800000000000000
+      internalID: -7980215706459387773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 303
+        width: 22
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5028285781e59fb00800000000000000
+      internalID: 862824262761873925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 303
+        width: 23
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5143c97e128f3ab0800000000000000
+      internalID: -5026155591718715041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 303
+        width: 32
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9eed4f95ad37aa590800000000000000
+      internalID: -7662184434368192791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 28
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8f8063964f4945f0800000000000000
+      internalID: -771998696578445429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 175
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a64790265ab2f9bc0800000000000000
+      internalID: -3774249973398801302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 175
+        width: 23
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40c6e35e6e9889f70800000000000000
+      internalID: 9194250264058424324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 22
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d06782f9d214f460800000000000000
+      internalID: 7274460025396355285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 175
+        width: 23
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 705823fa710930e60800000000000000
+      internalID: 7927338200500176135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 175
+        width: 32
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48a89a5de9322aac0800000000000000
+      internalID: -3845471966724519292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 47
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1282795198d74410800000000000000
+      internalID: 1461374722887549471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 47
+        width: 19
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 877d55fab0f9eac20800000000000000
+      internalID: 3219685656151578488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 47
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2de482ff8bf84f5b0800000000000000
+      internalID: -5335481633809609006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 47
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ff2b01390cc284d0800000000000000
+      internalID: -3133718050846855180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 19
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8be448245d9ee450800000000000000
+      internalID: 6120001928421501834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 47
+        width: 19
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8738488caf648aa80800000000000000
+      internalID: -8455430257468210312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Witch_Doctor_Attack_N_0: -6088830736191485269
+      Mage_Witch_Doctor_Attack_N_1: -5223159862390833307
+      Mage_Witch_Doctor_Attack_N_10: -5026155591718715041
+      Mage_Witch_Doctor_Attack_N_11: -7662184434368192791
+      Mage_Witch_Doctor_Attack_N_12: -771998696578445429
+      Mage_Witch_Doctor_Attack_N_13: -3774249973398801302
+      Mage_Witch_Doctor_Attack_N_14: 9194250264058424324
+      Mage_Witch_Doctor_Attack_N_15: 7274460025396355285
+      Mage_Witch_Doctor_Attack_N_16: 7927338200500176135
+      Mage_Witch_Doctor_Attack_N_17: -3845471966724519292
+      Mage_Witch_Doctor_Attack_N_18: 1461374722887549471
+      Mage_Witch_Doctor_Attack_N_19: 3219685656151578488
+      Mage_Witch_Doctor_Attack_N_2: -2093091253218848066
+      Mage_Witch_Doctor_Attack_N_20: -5335481633809609006
+      Mage_Witch_Doctor_Attack_N_21: -3133718050846855180
+      Mage_Witch_Doctor_Attack_N_22: 6120001928421501834
+      Mage_Witch_Doctor_Attack_N_23: -8455430257468210312
+      Mage_Witch_Doctor_Attack_N_3: 3430738478873251802
+      Mage_Witch_Doctor_Attack_N_4: 1866522317991531406
+      Mage_Witch_Doctor_Attack_N_5: 7501640042158314646
+      Mage_Witch_Doctor_Attack_N_6: 2263073529247465741
+      Mage_Witch_Doctor_Attack_N_7: -3571765753393717040
+      Mage_Witch_Doctor_Attack_N_8: -7980215706459387773
+      Mage_Witch_Doctor_Attack_N_9: 862824262761873925
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,548 @@
+fileFormatVersion: 2
+guid: e8ea05bbb6e4e4c1b868e300434ebf5f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2991904469297042104
+    second: Dragon_Idle_N_0
+  - first:
+      213: -2611236738472741191
+    second: Dragon_Idle_N_1
+  - first:
+      213: -1040119565234957001
+    second: Dragon_Idle_N_2
+  - first:
+      213: -5690713356444480141
+    second: Dragon_Idle_N_3
+  - first:
+      213: -3934081249460653077
+    second: Dragon_Idle_N_4
+  - first:
+      213: 7216713334828484664
+    second: Dragon_Idle_N_5
+  - first:
+      213: -8949250040513214386
+    second: Dragon_Idle_N_6
+  - first:
+      213: 8209242837984175573
+    second: Dragon_Idle_N_7
+  - first:
+      213: -2657034710904200891
+    second: Dragon_Idle_N_8
+  - first:
+      213: 8351931937529949144
+    second: Dragon_Idle_N_9
+  - first:
+      213: -8797477379568775865
+    second: Dragon_Idle_N_10
+  - first:
+      213: 3204879044959135994
+    second: Dragon_Idle_N_11
+  - first:
+      213: -2163071779936364021
+    second: Dragon_Idle_N_12
+  - first:
+      213: -4740714478511379598
+    second: Dragon_Idle_N_13
+  - first:
+      213: -3902659663781648139
+    second: Dragon_Idle_N_14
+  - first:
+      213: 6830827808527608642
+    second: Dragon_Idle_N_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Dragon_Idle_N_0
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 429
+        width: 25
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84d65a9acbe9a76d0800000000000000
+      internalID: -2991904469297042104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_1
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 429
+        width: 25
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b6f1e2750603cbd0800000000000000
+      internalID: -2611236738472741191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_2
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 429
+        width: 25
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7359c3624c0c091f0800000000000000
+      internalID: -1040119565234957001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_3
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 429
+        width: 25
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37d4e8e5a568601b0800000000000000
+      internalID: -5690713356444480141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 303
+        width: 63
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be37f5082f55769c0800000000000000
+      internalID: -3934081249460653077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_5
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 303
+        width: 64
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 838c640da8ae62460800000000000000
+      internalID: 7216713334828484664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_6
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 303
+        width: 64
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e484f09d080edc380800000000000000
+      internalID: -8949250040513214386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_7
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 303
+        width: 63
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d567f0edd61de170800000000000000
+      internalID: 8209242837984175573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_8
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 175
+        width: 63
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5412cac0201502bd0800000000000000
+      internalID: -2657034710904200891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_9
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 175
+        width: 64
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8db66b4c8d508e370800000000000000
+      internalID: 8351931937529949144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_10
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 175
+        width: 64
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74dc44f2fe419e580800000000000000
+      internalID: -8797477379568775865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_11
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 175
+        width: 63
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af8e1eed2840a7c20800000000000000
+      internalID: 3204879044959135994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_12
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 38
+        width: 25
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0a98353da93bf1e0800000000000000
+      internalID: -2163071779936364021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_13
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 38
+        width: 25
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27b27c69c49953eb0800000000000000
+      internalID: -4740714478511379598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_14
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 38
+        width: 25
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f8ac0586b7f6d9c0800000000000000
+      internalID: -3902659663781648139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Idle_N_15
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 38
+        width: 25
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24be52953b9fbce50800000000000000
+      internalID: 6830827808527608642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Dragon_Idle_N_0: -2991904469297042104
+      Dragon_Idle_N_1: -2611236738472741191
+      Dragon_Idle_N_10: -8797477379568775865
+      Dragon_Idle_N_11: 3204879044959135994
+      Dragon_Idle_N_12: -2163071779936364021
+      Dragon_Idle_N_13: -4740714478511379598
+      Dragon_Idle_N_14: -3902659663781648139
+      Dragon_Idle_N_15: 6830827808527608642
+      Dragon_Idle_N_2: -1040119565234957001
+      Dragon_Idle_N_3: -5690713356444480141
+      Dragon_Idle_N_4: -3934081249460653077
+      Dragon_Idle_N_5: 7216713334828484664
+      Dragon_Idle_N_6: -8949250040513214386
+      Dragon_Idle_N_7: 8209242837984175573
+      Dragon_Idle_N_8: -2657034710904200891
+      Dragon_Idle_N_9: 8351931937529949144
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

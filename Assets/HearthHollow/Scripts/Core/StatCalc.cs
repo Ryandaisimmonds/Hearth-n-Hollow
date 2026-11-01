@@ -16,7 +16,7 @@ namespace HearthHollow.Core
         public static PlayerStats Compute(GameContent c, Profile p, RunState run)
         {
             ClassId classId = run != null ? run.classId : (p != null ? p.selectedClass : ClassId.Warden);
-            List<EatenMeal> meals = run != null ? run.eaten : Meals.TrayToMeals(c, p != null ? p.tray : null);
+            List<EatenMeal> meals = run != null ? run.eaten : Cooking.Packed(c, p);   // packed cooked meals (grades + accelerators)
             return ComputeWith(c, p, classId, meals);
         }
 

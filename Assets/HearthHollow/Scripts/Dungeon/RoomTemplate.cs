@@ -26,7 +26,7 @@ namespace HearthHollow.Dungeon
     public class RoomTemplate : MonoBehaviour
     {
         /// Standard footprint in cells: x 0..Width-1, y 0..Height-1 (walls included).
-        public const int Width = 23, Height = 14;
+        public const int Width = 21, Height = 13;   // Moonlighter-style single-screen rooms, sized for cameraSize 7 (31 Oct; was 23 × 14, briefly 19 × 11)
 
         [Tooltip("What this layout can be used as. A room can serve several roles.")]
         public List<RoomKind> usableAs = new List<RoomKind> { RoomKind.Combat };
@@ -42,7 +42,7 @@ namespace HearthHollow.Dungeon
         public static List<Vector3Int> DoorCells(Side side)
         {
             var list = new List<Vector3Int>();
-            int cx = Width / 2, cy = (Height - 3) / 2 + 1;   // cx = 11, cy = 6 (floor rows are 1..Height-3)
+            int cx = Width / 2, cy = (Height - 3) / 2 + 1;   // cx = 10, cy = 6 (floor rows are 1..Height-3)
             switch (side)
             {
                 case Side.North: for (int x = cx - 1; x <= cx + 1; x++) { list.Add(new Vector3Int(x, Height - 2, 0)); list.Add(new Vector3Int(x, Height - 1, 0)); } break;

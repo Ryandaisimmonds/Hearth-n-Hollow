@@ -1,5 +1,6 @@
 // Hearth & Hollow — a monster in the dungeon. HP and damage come from GameSession (difficulty-scaled);
 // how it moves and attacks comes from its EnemyProfile (Dungeon Settings asset).
+using System.Collections.Generic;
 using HearthHollow.Core;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ namespace HearthHollow.Dungeon
         St _st = St.Spawning;
         float _stT;            // time left in the current state
         float _cd;             // attack cooldown
+        float _ultChargeAt;    // when this enemy can next charge the player's ultimate
         float _speedMult = 1f;
         Vector2 _lockDir;      // charge / dart direction
         int _hitsLeft;
@@ -37,6 +39,20 @@ namespace HearthHollow.Dungeon
         float _stunT, _rootT, _slowT, _slowMult = 1f, _markT, _markBonus;
         public bool Stunned { get { return _stunT > 0f; } }
         public bool Spawning { get { return _st == St.Spawning; } }
+        // light plan step 6
+        public bool Shadow { get; private set; }   // a shadow creature: near-invisible and tough in the dark, weak and flinching once lit
+        public float Lit01 { get; private set; }   // 0 = in the dark … 1 = well lit (DungeonLight)
+        bool _wasLit; float _wispT;
+        float _nerveT, _nerveNeed = -1f, _orbit = 1f; bool _inSrc;   // light-shy: circle round a light, then push through
+        bool Brave { get { return _nerveNeed > 0f && _nerveT >= _nerveNeed; } }
+        // Break (step 8): shield pips only weak-type hits knock off; at 0 the monster is Broken (stunned, takes extra damage)
+        public static readonly HashSet<string> KnownWeak = new HashSet<string>();   // "monsterId:Type" found this session
+        int _shieldMax, _shield; float _brokenT, _pipCdUntil;
+        readonly List<HitType> _weak = new List<HitType>();
+        SpriteRenderer[] _pips, _weakIcons;
+        public bool Broken { get { return _brokenT > 0f; } }
+        public int Shield { get { return _shield; } }
+        public IList<HitType> Weaknesses { get { return _weak; } }
         /// Bosses shrug off most of a stun, elites some of it.
         float StatusResist { get { return Stats.boss ? 0.3f : Stats.elite ? 0.6f : 1f; } }
 
@@ -73,7 +89,9 @@ namespace HearthHollow.Dungeon
             hurt.offset = (Vector2)body.transform.InverseTransformPoint(Body);
 
             if (stats.elite && !stats.boss) _anim.Renderer.color = new Color(1f, 0.88f, 0.6f);
+            gameObject.AddComponent<EnemyGlow>().Setup(this, _anim, profile, stats, size, dc.Settings);   // silhouette, rim, eyes, carried lights
             MakeHpBar();
+            SetupShield(profile, stats);
             _stT = 0.7f;                 // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
@@ -115,6 +133,8 @@ namespace HearthHollow.Dungeon
                 return;
             }
             if (Player == null) return;
+            UpdateLight(dt);
+            if (_brokenT > 0f) { _brokenT -= dt; if (_brokenT <= 0f) { _shield = _shieldMax; DungeonFx.RingAt(Body, new Color(0.55f, 0.82f, 1f, 0.9f), 1f, 0.35f); } }   // guard back up
             if (_slowT > 0f) { _slowT -= dt; if (_slowT <= 0f) _slowMult = 1f; }
             if (_rootT > 0f) _rootT -= dt;
             if (_markT > 0f) _markT -= dt;
@@ -168,6 +188,11 @@ namespace HearthHollow.Dungeon
 
         void Think(float dist, Vector2 dir)
         {
+            if (Profile.lightReaction == LightReaction.Shy)
+            {
+                Vector2 src; float s;
+                if (!Brave && DungeonLight.StrongestSource(Body, 0.8f, out src, out s)) return;   // too bright to strike from here (until it loses patience)
+            }
             switch (Profile.archetype)
             {
                 case EnemyArchetype.Caster:
@@ -196,6 +221,7 @@ namespace HearthHollow.Dungeon
         void Release(float dist, Vector2 dir)
         {
             _cd = T.monsterAttackCooldown * Profile.cooldownMult * Random.Range(0.85f, 1.2f);
+            if (Profile.lightReaction == LightReaction.Shy && Lit01 < 0.15f) _cd /= Mathf.Max(1f, _dc.Settings.shyBoldness);   // bolder in the dark
             switch (Profile.archetype)
             {
                 case EnemyArchetype.Charger:
@@ -268,6 +294,8 @@ namespace HearthHollow.Dungeon
                             v = dist > Profile.attackRange * 0.8f ? dir * speed : Vector2.zero;
                             break;
                     }
+                    var steer = LightSteer(v, speed, dist);
+                    if (steer.HasValue) v = steer.Value;
                     v = Avoid(v);
                     break;
                 case St.Windup: v = Vector2.zero; break;
@@ -317,17 +345,204 @@ namespace HearthHollow.Dungeon
         public void TakeHit(float dmg, bool crit, Vector2 knockDir, float knock = 6f)
         {
             if (Dead || _st == St.Spawning) return;
+            if (_dc != null && _dc.Player != null && Time.time >= _ultChargeAt) { _ultChargeAt = Time.time + 0.15f; _dc.Player.ChargeUltimate(); }   // hits charge the ultimate
             if (_markT > 0f) dmg *= 1f + _markBonus;   // Hunter's Mark
+            // light: everything is easier to hurt in strong light; shadow creatures shrug off hits in the dark
+            var set = _dc.Settings;
+            dmg *= 1f + set.litDamageBonus * Lit01;
+            if (Shadow) dmg *= Mathf.Lerp(set.shadowDarkDamage, 1f + set.shadowLitBonus, Lit01);
+            if (Broken) dmg *= set.breakDamage;
             int d = Mathf.Max(1, Mathf.RoundToInt(dmg));
             Hp -= d;
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
+            // impact: sparks + a flash of light, a white flash on the body, a few frames' freeze (more for crits)
+            Color hitCol = crit ? new Color(1f, 0.9f, 0.45f) : new Color(1f, 0.62f, 0.25f);
+            DungeonFx.Sparks(Body, knockDir, hitCol, crit ? 18 : 10);
+            DungeonFx.Throw(Body, knockDir, hitCol, crit ? 12 : 6, 2f, 6f);
+            DungeonFx.FloorEmbers(transform.position, hitCol, crit ? 7 : 4);   // fire left burning on the floor (light only)
+            DungeonFx.Flash(Body, hitCol, crit ? 4.5f : 3f, crit ? 2.4f : 1.7f, crit ? 0.35f : 0.22f);
+            DungeonFx.Ghost(_anim.Renderer, new Color(1f, 1f, 1f, 0.8f), 0.1f, true, true);
+            GameFeel.HitStop(crit ? 0.075f : 0.035f);
+            if (crit) { if (_dc != null) _dc.Shake(0.08f, 0.07f); GameLook.Punch(0.35f); }
             if (Hp <= 0) { Die(); return; }
             if (!Stats.boss && !Stats.elite && _st != St.Charging)
             {
                 _st = St.Stagger; _stT = 0.16f;
                 if (_rb != null && knock > 0f) _rb.linearVelocity = knockDir.normalized * knock;
+            }
+        }
+
+        // ───────────────────────── light (step 6) ─────────────────────────
+        /// Turns this monster into a shadow creature (DungeonController picks them by floor depth).
+        public void MakeShadow()
+        {
+            Shadow = true;
+            DisplayName = "Shadow " + DisplayName;
+            if (!_weak.Contains(HitType.Light)) { _weak.Add(HitType.Light); _pips = null; }   // shadows always fear the light
+            name = "Shadow " + name;
+        }
+
+        void UpdateLight(float dt)
+        {
+            var set = _dc.Settings;
+            Lit01 = Mathf.Clamp01(Mathf.InverseLerp(set.silhouetteBelow, set.silhouetteAbove, DungeonLight.At(Body)));
+            if (!Shadow) return;
+            // caught in the light: a shadow creature recoils
+            if (!_wasLit && Lit01 > 0.6f)
+            {
+                _wasLit = true;
+                if (_st == St.Moving || _st == St.Windup) { _st = St.Stagger; _stT = 0.35f; }
+                DungeonFx.Puff(Body, new Color(0.25f, 0.1f, 0.4f, 0.8f), 8, 0.8f);
+                DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.7f), "Revealed!", "dnum--info");
+            }
+            else if (_wasLit && Lit01 < 0.3f) _wasLit = false;
+            // a wispy trail of shadow while it moves
+            _wispT -= dt;
+            if (_wispT <= 0f)
+            {
+                _wispT = 0.07f;
+                var fx = DungeonFx.Spawn(DungeonFx.Circle, (Vector3)Body + (Vector3)(Random.insideUnitCircle * 0.2f), new Color(0.12f, 0.04f, 0.2f, 0.55f * (1f - Lit01 * 0.6f)), 0.7f, 0.5f, 0.15f, 0f, DungeonController.SortOrder(transform.position.y) - 1);
+                fx.velocity = new Vector2(Random.Range(-0.2f, 0.2f), 0.5f); fx.drag = 1f;
+            }
+        }
+
+        /// Light-shy / drawn-to-light steering on top of the normal chase (null = no change).
+        Vector2? LightSteer(Vector2 v, float speed, float distToPlayer)
+        {
+            var reaction = Profile.lightReaction;
+            if (reaction == LightReaction.None) return null;
+            Vector2 src; float strength;
+            bool has = DungeonLight.StrongestSource(Body, 0.5f, out src, out strength);
+            if (reaction == LightReaction.Shy)
+            {
+                var set = _dc.Settings; float fdt = Time.fixedDeltaTime;
+                if (_nerveNeed < 0f) _nerveNeed = set.shyNerveSeconds * Random.Range(0.7f, 1.3f);
+                if (has)
+                {
+                    Vector2 away = (Body - src); away = away.sqrMagnitude > 0.001f ? away.normalized : Random.insideUnitCircle.normalized;
+                    Vector2 toP = Player.Feet - (Vector2)transform.position;
+                    Vector2 tan = new Vector2(-away.y, away.x);
+                    // pick which way to circle when it first meets the light (towards your side), and stick with it
+                    if (!_inSrc) { _inSrc = true; float d = Vector2.Dot(tan, toP); _orbit = Mathf.Abs(d) > 0.1f ? Mathf.Sign(d) : (Random.value < 0.5f ? -1f : 1f); }
+                    _nerveT += fdt;
+                    if (Brave) return v.sqrMagnitude > 0.0001f ? v.normalized * speed * set.shyBraveSpeed : Vector2.zero;   // lost patience: comes through, slowly
+                    // circle round the edge of the light (goes round a torch in the way, or orbits you if you stand on one)
+                    float outW = Mathf.Clamp01((strength - 0.5f) * 1.2f) * 0.7f + 0.15f;
+                    return (tan * _orbit + away * outW).normalized * speed * 0.9f;
+                }
+                _inSrc = false;
+                if (_nerveT > 0f) _nerveT = Mathf.Max(0f, _nerveT - fdt * 0.35f);   // calms down slowly once out of the light
+                if (_nerveT <= 0f) _nerveNeed = -1f;
+                if (Lit01 < 0.15f) return v * set.shyBoldness;   // bolder in the dark
+                return null;
+            }
+            // Drawn: off to the light unless you're right in its face
+            if (has && distToPlayer > 2.5f && Vector2.Distance(Body, src) > 1.1f) return (src - Body).normalized * speed;
+            return null;
+        }
+
+        // ───────────────────────── Break (step 8) ─────────────────────────
+        void SetupShield(EnemyProfile p, EnemyStats st)
+        {
+            int b = p != null && p.shields > 0 ? p.shields : 2;
+            _shieldMax = st.boss ? b * 2 + 2 : st.elite ? b + 2 : b;
+            _shield = _shieldMax;
+            if (p != null && p.weak != null) foreach (var w in p.weak) if (!_weak.Contains(w)) _weak.Add(w);
+            if (_weak.Count == 0) _weak.Add(HitType.Fire);
+        }
+
+        float BreakSeconds { get { return Stats.boss ? _dc.Settings.bossBreakSeconds : _dc.Settings.breakSeconds; } }
+
+        public static Color TypeColor(HitType t)
+        {
+            switch (t)
+            {
+                case HitType.Slash: return new Color(0.92f, 0.92f, 1f);
+                case HitType.Pierce: return new Color(0.5f, 1f, 0.55f);
+                case HitType.Blunt: return new Color(0.85f, 0.6f, 0.35f);
+                case HitType.Fire: return new Color(1f, 0.5f, 0.15f);
+                default: return new Color(1f, 0.95f, 0.5f);
+            }
+        }
+
+        /// A player hit of <paramref name="type"/> landed: if this monster is weak to it, knock off <paramref name="pips"/> shield pips.
+        public void ShieldHit(HitType type, int pips, bool force = false)
+        {
+            if (Dead || _st == St.Spawning || Broken || pips <= 0 || !_weak.Contains(type)) return;
+            KnownWeak.Add(Stats.monsterId + ":" + type);   // found a weakness: its icon lights up for every monster of this kind
+            if (!force && Time.time < _pipCdUntil) return;
+            _pipCdUntil = Time.time + _dc.Settings.shieldPipCooldown;
+            _shield = Mathf.Max(0, _shield - pips);
+            DungeonFx.Sparks(Body + Vector2.up * (_anim.FigureHeight * 0.5f), Vector2.up, TypeColor(type), 4 + pips * 2);
+            if (_shield <= 0) Break();
+            else DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.85f), "Weak!", "dnum--info");
+        }
+
+        void Break()
+        {
+            float secs = BreakSeconds;
+            _brokenT = secs;
+            _stunT = Mathf.Max(_stunT, secs);   // ignores stun resistance: bosses break properly
+            CancelInvoke("Bite");
+            if (_st == St.Windup || _st == St.Charging || _st == St.Striking) { _st = St.Recover; _stT = 0.1f; }
+            Color c = new Color(1f, 0.85f, 0.4f);
+            DungeonFx.Flash(Body, c, 5f, 2.4f, 0.5f);
+            DungeonFx.RingAt(Body, c, 2f, 0.45f);
+            DungeonFx.Sparks(Body, Vector2.up, c, 18);
+            for (int i = 0; i < 12; i++) DungeonFx.Throw(Body, Random.insideUnitCircle.normalized, new Color(0.6f, 0.85f, 1f), 1, 3f, 7f);   // shield shards
+            DungeonFx.Ghost(_anim.Renderer, new Color(1f, 0.9f, 0.5f, 0.9f), 0.2f, true, true);
+            GameFeel.HitStop(0.1f); GameLook.Punch(0.6f); _dc.Shake(0.15f, 0.12f);
+            DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), "BREAK!", "dnum--crit");
+            if (_dc.Player != null) _dc.Player.OnBreak(this);
+        }
+
+        void MakePips()
+        {
+            if (_pips != null) foreach (var p in _pips) if (p != null) Destroy(p.gameObject);
+            if (_weakIcons != null) foreach (var p in _weakIcons) if (p != null) Destroy(p.gameObject);
+            _pips = new SpriteRenderer[_shieldMax];
+            _weakIcons = new SpriteRenderer[_weak.Count];
+            float y = _anim.FigureHeight + 0.34f, s = 0.09f, gap = 0.035f;
+            float w = _shieldMax * s + (_shieldMax - 1) * gap;
+            for (int i = 0; i < _shieldMax; i++) _pips[i] = Pip("Shield", new Vector3(-w * 0.5f + s * 0.5f + i * (s + gap), y, 0), s, 0f);
+            float ws = 0.1f, wg = 0.09f, ww = _weak.Count * ws + (_weak.Count - 1) * wg;
+            for (int i = 0; i < _weak.Count; i++) _weakIcons[i] = Pip("Weak", new Vector3(-ww * 0.5f + ws * 0.5f + i * (ws + wg), y + 0.17f, 0), ws, 45f);
+        }
+
+        SpriteRenderer Pip(string n, Vector3 local, float size, float rot)
+        {
+            var g = new GameObject(n); g.transform.SetParent(transform, false);
+            g.transform.localPosition = local; g.transform.localRotation = Quaternion.Euler(0, 0, rot);
+            var b = DungeonFx.Pixel.bounds.size;
+            g.transform.localScale = new Vector3(size / b.x, size / b.y, 1f);
+            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel;
+            return sr;
+        }
+
+        void UpdatePips()
+        {
+            if (_anim == null || _shieldMax <= 0) return;
+            if (_pips == null) MakePips();
+            float a = Shadow ? Mathf.Lerp(0.15f, 1f, Lit01) : 1f;
+            int order = DungeonController.SortOrder(transform.position.y) + 3;
+            bool blink = Mathf.FloorToInt(Time.time * 8f) % 2 == 0;
+            int brokenShown = Broken ? Mathf.CeilToInt(_brokenT / Mathf.Max(0.01f, BreakSeconds) * _pips.Length) : 0;
+            for (int i = 0; i < _pips.Length; i++)
+            {
+                var p = _pips[i]; if (p == null) continue;
+                Color c;
+                if (Broken) c = i < brokenShown ? (blink ? new Color(1f, 0.85f, 0.3f) : new Color(1f, 0.6f, 0.2f)) : new Color(0.25f, 0.2f, 0.15f, 0.6f);
+                else c = i < _shield ? new Color(0.55f, 0.82f, 1f) : new Color(0.2f, 0.24f, 0.32f, 0.6f);
+                c.a *= a; p.color = c; p.sortingOrder = order;
+            }
+            for (int i = 0; i < _weakIcons.Length; i++)
+            {
+                var w = _weakIcons[i]; if (w == null) continue;
+                bool known = KnownWeak.Contains(Stats.monsterId + ":" + _weak[i]);
+                Color c = known ? TypeColor(_weak[i]) : new Color(0.32f, 0.32f, 0.38f);   // grey until you find it
+                c.a *= a * (Broken ? 0.4f : 1f); w.color = c; w.sortingOrder = order;
             }
         }
 
@@ -373,6 +588,14 @@ namespace HearthHollow.Dungeon
             CancelInvoke();
             DungeonFx.Puff(Body, Stats.boss ? new Color(1f, 0.6f, 0.3f) : new Color(0.85f, 0.85f, 0.85f), Stats.boss ? 18 : 8, Stats.boss ? 1.4f : 0.7f);
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
+            // death: a burst of light and embers; a boss going down slows time for a moment
+            Color deathCol = Stats.boss ? new Color(1f, 0.6f, 0.3f) : new Color(1f, 0.88f, 0.7f);
+            DungeonFx.Flash(Body, deathCol, Stats.boss ? 10f : 4.5f, Stats.boss ? 3f : 2f, Stats.boss ? 1.4f : 0.5f);
+            DungeonFx.Embers(Body, deathCol, Stats.boss ? 60 : (Stats.elite ? 26 : 14), Stats.boss ? 1f : 0.4f);
+            DungeonFx.Sparks(Body, Vector2.up, deathCol, Stats.boss ? 30 : 12);
+            for (int i = 0; i < (Stats.boss ? 40 : 14); i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, Stats.boss ? 10f : 7f); }
+            if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
+            else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
             var room = _room; var dc = _dc; var stats = Stats;
             Destroy(gameObject);
             if (dc != null) dc.Session.DungeonEnemyKilled(stats);   // rewards, loot (refreshes the HUD)
@@ -385,6 +608,7 @@ namespace HearthHollow.Dungeon
             if (sr == null) return;
             Color c = Stats.elite && !Stats.boss ? new Color(1f, 0.88f, 0.6f) : Color.white;
             if (_flashT > 0f) c = new Color(1f, 0.45f, 0.45f);
+            else if (_brokenT > 0f) c = Mathf.FloorToInt(Time.time * 10f) % 2 == 0 ? new Color(1f, 0.9f, 0.55f) : Color.white;
             else if (_stunT > 0f) c = new Color(0.75f, 0.8f, 1f);
             else if (_rootT > 0f) c = new Color(0.7f, 1f, 0.7f);
             else if (_markT > 0f && Mathf.FloorToInt(Time.time * 6f) % 2 == 0) c = new Color(1f, 0.6f, 0.55f);
@@ -395,6 +619,7 @@ namespace HearthHollow.Dungeon
 
         void UpdateHpBar()
         {
+            UpdatePips();
             if (_hpFill == null) return;
             bool show = Hp < Stats.maxHp;
             _hpBg.enabled = _hpFill.enabled = show;

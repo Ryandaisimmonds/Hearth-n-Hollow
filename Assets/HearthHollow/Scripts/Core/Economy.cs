@@ -11,7 +11,7 @@ namespace HearthHollow.Core
         {
             var p = new Profile();
             p.coins = c.starterCoins;
-            p.selectedClass = ClassId.Warden;
+            p.selectedClass = ClassId.Cook;   // a new game starts with the Cook; the others join through the story
             foreach (ClassId id in Enum.GetValues(typeof(ClassId))) p.Progress(id);
             for (int i = 0; i < c.classes.Count; i++) p.Progress(c.classes[i].id);
             if (c.starterPantry != null)
@@ -29,21 +29,50 @@ namespace HearthHollow.Core
             return n;
         }
 
-        public static void AddToPantry(Profile p, string ingredientId, int count)
+        /// How many of one ingredient at one grade (0 Plain · 1 Fine · 2 Prime).
+        public static int PantryCount(Profile p, string ingredientId, int grade)
         {
-            if (string.IsNullOrEmpty(ingredientId) || count <= 0) return;
-            ItemStack s = p.pantry.Find(x => x.ingredientId == ingredientId);
-            if (s == null) p.pantry.Add(new ItemStack { ingredientId = ingredientId, count = count });
-            else s.count += count;
+            int n = 0;
+            for (int i = 0; i < p.pantry.Count; i++) if (p.pantry[i].ingredientId == ingredientId && p.pantry[i].grade == grade) n += p.pantry[i].count;
+            return n;
         }
 
-        public static bool RemoveFromPantry(Profile p, string ingredientId, int count)
+        public static void AddToPantry(Profile p, string ingredientId, int count, int grade = 0)
         {
-            if (PantryCount(p, ingredientId) < count) return false;
+            if (string.IsNullOrEmpty(ingredientId) || count <= 0) return;
+            ItemStack s = p.pantry.Find(x => x.ingredientId == ingredientId && x.grade == grade);
+            if (s != null) { s.count += count; return; }
+            // keep each ingredient's grades together, Plain first
+            int at = p.pantry.Count;
+            for (int i = 0; i < p.pantry.Count; i++)
+                if (p.pantry[i].ingredientId == ingredientId) at = p.pantry[i].grade < grade ? i + 1 : Math.Min(at, i);
+            p.pantry.Insert(at, new ItemStack { ingredientId = ingredientId, count = count, grade = grade });
+        }
+
+        /// Removes from one grade only.
+        public static bool RemoveFromPantry(Profile p, string ingredientId, int count, int grade)
+        {
+            if (PantryCount(p, ingredientId, grade) < count) return false;
             for (int i = 0; i < p.pantry.Count && count > 0; i++)
             {
                 ItemStack s = p.pantry[i];
-                if (s.ingredientId != ingredientId) continue;
+                if (s.ingredientId != ingredientId || s.grade != grade) continue;
+                int n = Math.Min(count, s.count);
+                s.count -= n; count -= n;
+            }
+            p.pantry.RemoveAll(x => x.count <= 0);
+            return true;
+        }
+
+        /// Removes from any grade, lowest first.
+        public static bool RemoveFromPantry(Profile p, string ingredientId, int count)
+        {
+            if (PantryCount(p, ingredientId) < count) return false;
+            for (int g = 0; g < 3 && count > 0; g++)
+            for (int i = 0; i < p.pantry.Count && count > 0; i++)
+            {
+                ItemStack s = p.pantry[i];
+                if (s.ingredientId != ingredientId || s.grade != g) continue;
                 int n = Math.Min(count, s.count);
                 s.count -= n; count -= n;
             }
@@ -202,7 +231,7 @@ namespace HearthHollow.Core
                     if (IsRouteUnlocked(c, p, c.routes[i].id))
                         for (int k = 0; k < c.routes[i].gatherIngredientIds.Count; k++)
                             if (!pool.Contains(c.routes[i].gatherIngredientIds[k])) pool.Add(c.routes[i].gatherIngredientIds[k]);
-                if (pool.Count == 0) for (int i = 0; i < c.ingredients.Count; i++) pool.Add(c.ingredients[i].id);
+                if (pool.Count == 0) for (int i = 0; i < c.ingredients.Count; i++) if (!c.ingredients[i].material) pool.Add(c.ingredients[i].id);
                 for (int i = 0; i < t.foragerGiftCount && pool.Count > 0; i++)
                 {
                     string id = rng.Pick(pool);
@@ -213,7 +242,7 @@ namespace HearthHollow.Core
 
             if (h.campEvent == CampEvent.Merchant && c.ingredients.Count > 0)
             {
-                var pool = new List<IngredientData>(c.ingredients);
+                var pool = c.ingredients.FindAll(x => !x.material);   // building materials only come from the dungeons
                 int offers = Math.Min(pool.Count, rng.Range(3, 4));
                 for (int i = 0; i < offers; i++)
                 {
@@ -297,7 +326,19 @@ namespace HearthHollow.Core
 
             // Goods: unload bag into pantry
             s.goods = Bag.Contents(run);
-            for (int i = 0; i < s.goods.Count; i++) AddToPantry(p, s.goods[i].ingredientId, s.goods[i].count);
+            if (run.outcome == RunOutcome.Died)
+            {
+                // a fall costs most of the bag: keep deathKeepFraction of each stack (rounded down)
+                var kept = new List<ItemStack>();
+                foreach (var g in s.goods)
+                {
+                    int keep = (int)Math.Floor(g.count * Math.Max(0f, Math.Min(1f, t.deathKeepFraction)));
+                    if (g.count - keep > 0) s.lost.Add(new ItemStack { ingredientId = g.ingredientId, count = g.count - keep, grade = g.grade });
+                    if (keep > 0) kept.Add(new ItemStack { ingredientId = g.ingredientId, count = keep, grade = g.grade });
+                }
+                s.goods = kept;
+            }
+            for (int i = 0; i < s.goods.Count; i++) AddToPantry(p, s.goods[i].ingredientId, s.goods[i].count, s.goods[i].grade);
 
             // (Meals were all eaten at set-out, so there is nothing to return to the tray.)
 

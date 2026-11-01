@@ -32,6 +32,10 @@ namespace HearthHollow.Core
             if (Profile.saveVersion < 2) { Meals.RefundTray(Content, Profile); Profile.saveVersion = 2; }
             UpgradeProgression();   // skill trees + loadouts (saveVersion 3), kept valid every load
             Economy.UpgradeBag(Content, Profile);   // bag tiers (saveVersion 4)
+            Cooking.UpgradeSave(Profile);           // meal pantry + packed cooked meals (saveVersion 6)
+            Cooking.DropUnknownMeals(Content, Profile);   // meals whose recipe is gone
+            if (Profile.saveVersion < 7) { ClassRework7(); UpgradeProgression(); }   // class rework: a fresh start for every class (GameSessionClasses.cs)
+            EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
             _rng = new Rng(seed);
             // Reuse today's saved camp so relaunching doesn't reroll the merchant / events.
@@ -76,55 +80,151 @@ namespace HearthHollow.Core
         public void SelectClass(ClassId id)
         {
             if (Phase != Phase.Hearth) return;
+            if (!ClassJoined(id)) { Info(ClassJoinHint(id)); return; }
             Profile.selectedClass = id;
             Touch(true);
         }
 
+        // ───── cooking (v9): cook ahead into the meal pantry, pack cooked meals on the tray ─────
+        /// The recipe's ingredients are in the pantry (some grade of each) and the meal pantry has room.
         public bool CanCook(string recipeId, out string reason)
         {
             if (Phase != Phase.Hearth) { reason = "Cook at the hearth"; return false; }
-            return Meals.CanCook(Content, Profile, recipeId, out reason);
+            var r = Content.Recipe(recipeId);
+            if (r == null) { reason = "Unknown recipe"; return false; }
+            if (Cooking.MealPantryFull(Content, Profile)) { reason = "The meal pantry is full — pack or throw out a meal first"; return false; }
+            if (r.always) { reason = r.name + " is always available — no need to cook it"; return false; }
+            if (!Kitchen.Unlocked(Content, Profile, r)) { reason = "Needs the " + r.station + " at level " + r.stationLevel; return false; }
+            if (!Cooking.HaveIngredients(Content, Profile, r)) { reason = "Not enough ingredients"; return false; }
+            reason = null; return true;
         }
 
-        public bool Cook(string recipeId)
+        public bool CanCook(string recipeId, CookChoice choice, out string reason)
         {
+            if (Phase != Phase.Hearth) { reason = "Cook at the hearth"; return false; }
+            return Cooking.CanCook(Content, Profile, Content.Recipe(recipeId), choice, out reason);
+        }
+
+        /// Cook a meal with the chosen ingredient grades and accelerator. Returns the cooked meal (null if it couldn't).
+        public CookedMeal Cook(string recipeId, CookChoice choice)
+        {
+            if (Phase != Phase.Hearth) { Info("Cook at the hearth"); return null; }
             string reason;
-            if (!CanCook(recipeId, out reason)) { Info(reason); return false; }
-            bool ok = Meals.Cook(Content, Profile, recipeId);
+            var r = Content.Recipe(recipeId);
+            var meal = Cooking.Cook(Content, Profile, r, choice, _rng, out reason);
+            if (meal == null) { Info(reason); return null; }
+            Emit(new GameEvent(GameEventType.Info, meal.grade, false,
+                Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + r.emoji + " " + r.name + " — into the meal pantry"));
+            Touch(true);
+            return meal;
+        }
+
+        /// Pack a cooked meal from the meal pantry onto the tray.
+        public bool PackMeal(int pantryIndex)
+        {
+            if (Phase != Phase.Hearth) return false;
+            string reason;
+            if (!Cooking.Pack(Content, Profile, pantryIndex, out reason)) { Info(reason); return false; }
+            Touch(true); return true;
+        }
+
+        // ───── town fishing pond: one quick catch a day ─────
+        public bool CanFish { get { return Phase == Phase.Hearth && Fishing.CanFish(Profile); } }
+
+        public bool LandCatch(int grade)
+        {
+            if (!CanFish) { Info("You've had today's catch — come back after your next expedition"); return false; }
+            Fishing.Catch(Content, Profile, grade);
+            var ing = Content.Ingredient(T.fishIngredient);
+            Emit(new GameEvent(GameEventType.Loot, T.fishCatchCount, false, "+" + T.fishCatchCount + " " + Cooking.GradeGem(grade) + " " + Cooking.IngGradeName(grade) + " " + (ing != null ? ing.emoji + " " + ing.name : "fish")));
+            Touch(true);
+            return true;
+        }
+
+        // ───── kitchen upgrades (contentVersion 13) ─────
+        public bool UpgradeStation(Station st, out string reason)
+        {
+            if (Phase != Phase.Hearth) { reason = "Upgrade the kitchen at camp"; return false; }
+            bool ok = Kitchen.UpgradeStation(Content, Profile, st, out reason);
             if (ok)
             {
-                var r = Content.Recipe(recipeId);
-                Emit(new GameEvent(GameEventType.Info, 0, false, "Added " + (r != null ? r.emoji + " " + r.name : recipeId) + " to the tray"));
+                int lv = Kitchen.Level(Content, Profile, st);
+                var dishes = Kitchen.DishesAt(Content, st, lv);
+                var names = new List<string>();
+                foreach (var d in dishes) names.Add(d.emoji + " " + d.name);
+                Emit(new GameEvent(GameEventType.LevelUp, lv, false, st + " level " + lv + (names.Count > 0 ? " — new: " + string.Join(", ", names.ToArray()) : "")));
             }
+            else if (!string.IsNullOrEmpty(reason)) Info(reason);
             Touch(ok);
             return ok;
         }
 
-        /// Cook a recipe straight into a tray slot (drag a recipe card onto the tray).
-        public bool CookInto(string recipeId, int slot)
+        public bool UpgradePantry(out string reason)
         {
-            if (!Cook(recipeId)) return false;
-            int last = Profile.tray.Count - 1;
+            if (Phase != Phase.Hearth) { reason = "Upgrade the kitchen at camp"; return false; }
+            bool ok = Kitchen.UpgradePantry(Content, Profile, out reason);
+            if (ok) Emit(new GameEvent(GameEventType.LevelUp, 0, false, "Meal pantry: " + Kitchen.PantrySlots(Content, Profile) + " shelves"));
+            else if (!string.IsNullOrEmpty(reason)) Info(reason);
+            Touch(ok);
+            return ok;
+        }
+
+        // ───── ladder choice (contentVersion 14): what's below, and what you'd risk ─────
+        /// Fine / Prime chance for a normal pickup on <paramref name="floor"/> of the current route.
+        public void DropOddsOnFloor(int floor, out float fine, out float prime)
+        {
+            var rt = Run != null ? Content.Route(Run.routeId) : null;
+            Cooking.DropOdds(T, floor, rt != null ? rt.baseDifficulty : 0, false, false, false, Run != null && Run.mod == RouteMod.Lucky, out fine, out prime);
+        }
+
+        /// Pack an always-available meal (Camp Bread) onto the tray.
+        public bool PackAlwaysMeal(string recipeId)
+        {
+            if (Phase != Phase.Hearth) return false;
+            string reason;
+            if (!Cooking.PackAlways(Content, Profile, recipeId, out reason)) { Info(reason); return false; }
+            Touch(true); return true;
+        }
+
+        public bool PackAlwaysMealInto(string recipeId, int slot)
+        {
+            if (!PackAlwaysMeal(recipeId)) return false;
+            int last = Profile.packed.Count - 1;
             if (slot >= 0 && slot < last) MoveTrayMeal(last, slot);
             return true;
         }
 
+        /// Pack into a given tray slot (drag a meal onto the tray).
+        public bool PackMealInto(int pantryIndex, int slot)
+        {
+            if (!PackMeal(pantryIndex)) return false;
+            int last = Profile.packed.Count - 1;
+            if (slot >= 0 && slot < last) MoveTrayMeal(last, slot);
+            return true;
+        }
+
+        /// Take a packed meal off the tray, back into the meal pantry.
         public void DiscardTrayMeal(int slot)
         {
-            if (Phase != Phase.Hearth || slot < 0 || slot >= Profile.tray.Count) return;
-            var r = Content.Recipe(Profile.tray[slot]);
-            Profile.tray.RemoveAt(slot);   // nothing was spent yet, so its ingredients are simply free again
-            Info("Removed " + (r != null ? r.emoji + " " + r.name : "meal") + " — ingredients back in the pantry");
+            if (Phase != Phase.Hearth) return;
+            if (Cooking.Unpack(Content, Profile, slot)) Touch(true);
+        }
+
+        /// Throw a cooked meal away.
+        public void ThrowOutMeal(int pantryIndex)
+        {
+            if (Phase != Phase.Hearth || pantryIndex < 0 || pantryIndex >= Profile.mealPantry.Count) return;
+            var r = Content.Recipe(Profile.mealPantry[pantryIndex].recipeId);
+            Cooking.Discard(Profile, pantryIndex);
+            Info("Threw out " + (r != null ? r.emoji + " " + r.name : "a meal"));
             Touch(true);
         }
 
         public void MoveTrayMeal(int from, int to)
         {
-            var tray = Phase == Phase.Hearth ? Profile.tray : null;
-            if (tray == null || from < 0 || from >= tray.Count || from == to) return;
-            if (to < 0) to = 0; if (to >= tray.Count) to = tray.Count - 1;
-            var item = tray[from]; tray.RemoveAt(from); tray.Insert(to, item);
-            Touch(Phase == Phase.Hearth);
+            if (Phase != Phase.Hearth) return;
+            Cooking.MovePacked(Profile, from, to);
+            Touch(true);
         }
 
         public bool BuyWeapon(out string reason) { return Shop(Economy.BuyWeapon(Content, Profile, Hearth, out reason), reason, "New weapon!"); }
@@ -139,14 +239,14 @@ namespace HearthHollow.Core
         /// Workshop: next tier of a gear track for the selected class (bag: shared).
         public bool BuyGear(GearSlot slot, out string reason)
         {
-            if (Phase != Phase.Hearth) { reason = "The Workshop is at camp"; return false; }
+            if (Phase != Phase.Hearth) { reason = "Upgrades are bought at camp"; return false; }
             bool ok = Gear.Buy(Content, Profile, Hearth, slot, out reason);
             GearTier now = Gear.Current(Content, Profile, slot, Profile.selectedClass);
             return Shop(ok, reason, now != null ? now.name + " — " + Gear.ValueText(slot, now) : "New gear!");
         }
         public bool BuyTrinket(string id, out string reason)
         {
-            if (Phase != Phase.Hearth) { reason = "The Workshop is at camp"; return false; }
+            if (Phase != Phase.Hearth) { reason = "Upgrades are bought at camp"; return false; }
             var t = Gear.Trinket(Content, id);
             return Shop(Gear.BuyTrinket(Content, Profile, id, out reason), reason, t != null ? t.emoji + " " + t.name + "!" : "New trinket!");
         }
@@ -189,13 +289,14 @@ namespace HearthHollow.Core
         public bool StartRun(string routeId)
         {
             if (Phase != Phase.Hearth) return false;
+            if (!ClassJoined(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
             string block = Routes.EnterBlock(Content, Profile, routeId, Profile.selectedClass);
             if (block != null) { Info(block); return false; }
             RouteOffer offer = Hearth.routeOffers.Find(o => o.routeId == routeId) ?? new RouteOffer { routeId = routeId, mod = RouteMod.None };
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
-            foreach (var msg in Meals.PayForTray(Content, Profile)) Info(msg);   // ingredients are spent now
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
+            Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (grades + accelerators)
             Run.storm = storm;
             Run.harvestMoon = Hearth.campEvent == CampEvent.HarvestMoon;
             Emit(Meals.PackForRun(Content, Run));   // the tray is eaten at camp: buffs last the whole run
@@ -296,21 +397,44 @@ namespace HearthHollow.Core
 
         private void DropLoot(FightState f)
         {
+            DropMaterial(f.elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
             if (route == null || route.gatherIngredientIds.Count == 0) return;
             if (!f.elite && !_rng.Chance(T.monsterDropChance)) return;
             string id = _rng.Pick(route.gatherIngredientIds);
+            // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)
+            if (route.hazard != Hazard.None && _rng.Chance(T.guardDropChance))
+            {
+                var guards = Routes.CounterAccelerators(Content, route.hazard);
+                if (guards.Count > 0) id = _rng.Pick(guards).id;
+            }
             int count = (f.elite ? 2 : 1) * (Run.mod == RouteMod.Lucky ? 2 : 1);
-            AddLoot(id, count);
+            AddLoot(id, count, f.elite);
         }
 
-        private void AddLoot(string id, int count)
+        /// Building materials (kitchen upgrades): a chance from normal monsters, a few from elites and bosses.
+        private void DropMaterial(bool elite, bool boss)
+        {
+            var route = Content.Route(Run.routeId);
+            if (route == null || route.materialIds == null || route.materialIds.Count == 0) return;
+            int floor = Run.dungeon ? Run.floor : 1;
+            int n = boss ? T.bossMaterials : elite ? T.eliteMaterials + (floor >= 3 ? 1 : 0)
+                  : (_rng.Chance(T.materialDropChance + T.materialDropPerFloor * Math.Max(0, floor - 1)) ? 1 : 0);
+            // deeper floors lean to the route's own (better) material — the first in its list
+            string mat = floor >= 2 && _rng.Chance(0.7f) ? route.materialIds[0] : _rng.Pick(route.materialIds);
+            if (n > 0) AddLoot(mat, n);
+        }
+
+        private void AddLoot(string id, int count, bool elite = false, bool boss = false, bool perfect = false)
         {
             if (count <= 0) return;
-            int left = Bag.Add(Run, id, count, T.stackSize);
+            var rt = Content.Route(Run.routeId);
+            int grade = Kitchen.IsMaterial(Content, id) ? 0   // materials have no grade
+                : Cooking.RollDropGrade(T, Run.dungeon ? Run.floor : 1, rt != null ? rt.baseDifficulty : 0, elite, boss, perfect, Run.mod == RouteMod.Lucky, _rng);
+            int left = Bag.Add(Run, id, count, T.stackSize, grade);
             int got = count - left;
             var ing = Content.Ingredient(id);
-            string name = ing != null ? ing.emoji + " " + ing.name : id;
+            string name = (grade > 0 ? Cooking.GradeGem(grade) + " " + Cooking.IngGradeName(grade) + " " : "") + (ing != null ? ing.emoji + " " + ing.name : id);
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));
             if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
         }
@@ -327,7 +451,7 @@ namespace HearthHollow.Core
                 var tile = Run.TileAt(Run.px, Run.py);
                 tile.resolved = true; Run.roomsCleared++;
             }
-            if (yield > 0) AddLoot(g.ingredientId, yield);
+            if (yield > 0) AddLoot(g.ingredientId, yield, false, false, grade == GatherGrade.Perfect);   // a perfect pick is more likely to be Prime
             Emit(new GameEvent(GameEventType.Info, yield, true,
                 grade == GatherGrade.Perfect ? "Perfect pick! ✨" : grade == GatherGrade.Safe ? "Nice pick" : "It slipped away…"));
             Run.gather = null;
@@ -369,9 +493,11 @@ namespace HearthHollow.Core
         {
             Run.outcome = outcome;
             Recompute();  // stats including meals (xpMult) for settlement
-            Profile.tray.Clear();   // the tray was eaten at set-out (kept until now so quitting mid-run refunds it)
+            Profile.packed.Clear(); Profile.tray.Clear();   // the tray was eaten at set-out (kept until now so quitting mid-run keeps it)
             int levelBefore = Profile.Progress(Run.classId).level;
+            var joinedBefore = JoinedNow();
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
+            AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
             if (LastSummary != null && LastSummary.levelAfter > levelBefore)
                 Emit(new GameEvent(GameEventType.LevelUp, LastSummary.levelAfter, true, "Level " + LastSummary.levelAfter + "!"));
             Phase = Phase.RunEnd;

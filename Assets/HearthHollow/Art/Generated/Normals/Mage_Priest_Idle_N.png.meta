@@ -1,0 +1,652 @@
+fileFormatVersion: 2
+guid: 88241a4f2d75e438389294c491013965
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1344233774925771878
+    second: Mage_Priest_Idle_N_0
+  - first:
+      213: -6095776288994357852
+    second: Mage_Priest_Idle_N_1
+  - first:
+      213: 2624415949156380003
+    second: Mage_Priest_Idle_N_2
+  - first:
+      213: -6129877552152897484
+    second: Mage_Priest_Idle_N_3
+  - first:
+      213: 9191740938497606147
+    second: Mage_Priest_Idle_N_4
+  - first:
+      213: -2980409910719278436
+    second: Mage_Priest_Idle_N_5
+  - first:
+      213: 1905162329573371922
+    second: Mage_Priest_Idle_N_6
+  - first:
+      213: 100209642864222034
+    second: Mage_Priest_Idle_N_7
+  - first:
+      213: 3239169389871651886
+    second: Mage_Priest_Idle_N_8
+  - first:
+      213: 7738648750379511612
+    second: Mage_Priest_Idle_N_9
+  - first:
+      213: -8818391535764370106
+    second: Mage_Priest_Idle_N_10
+  - first:
+      213: -2019884000226225606
+    second: Mage_Priest_Idle_N_11
+  - first:
+      213: -842865699248102184
+    second: Mage_Priest_Idle_N_12
+  - first:
+      213: 1123794394769614309
+    second: Mage_Priest_Idle_N_13
+  - first:
+      213: -7661144352111021428
+    second: Mage_Priest_Idle_N_14
+  - first:
+      213: -1447606088479200254
+    second: Mage_Priest_Idle_N_15
+  - first:
+      213: -1579398174562886385
+    second: Mage_Priest_Idle_N_16
+  - first:
+      213: 1271732922374090100
+    second: Mage_Priest_Idle_N_17
+  - first:
+      213: 1890476469245920254
+    second: Mage_Priest_Idle_N_18
+  - first:
+      213: -1595476076763172672
+    second: Mage_Priest_Idle_N_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_0
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9b8776f082585de0800000000000000
+      internalID: -1344233774925771878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 431
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ad0e3013c3776ba0800000000000000
+      internalID: -6095776288994357852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_2
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 431
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36de558a66ccb6420800000000000000
+      internalID: 2624415949156380003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_3
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 438194308dc4eeaa0800000000000000
+      internalID: -6129877552152897484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_4
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 315
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 302c0920faf9f8f70800000000000000
+      internalID: 9191740938497606147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_5
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 303
+        width: 24
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9216822af473a6d0800000000000000
+      internalID: -2980409910719278436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_6
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 303
+        width: 33
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2103da57b0f707a10800000000000000
+      internalID: 1905162329573371922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_7
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 303
+        width: 33
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25f9df5a324046100800000000000000
+      internalID: 100209642864222034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_8
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 316
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2c5e92f567d3fc20800000000000000
+      internalID: 3239169389871651886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_9
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 303
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3f24ef8904356b60800000000000000
+      internalID: 7738648750379511612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_10
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 24
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64d047cbe97ce9580800000000000000
+      internalID: -8818391535764370106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_11
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 187
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a32550f143ee7f3e0800000000000000
+      internalID: -2019884000226225606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_12
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 175
+        width: 33
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d4a4fabc1a8d44f0800000000000000
+      internalID: -842865699248102184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_13
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 175
+        width: 33
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e561d44c05889f00800000000000000
+      internalID: 1123794394769614309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_14
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 175
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c82be6f5dc52ea590800000000000000
+      internalID: -7661144352111021428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_15
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 188
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20c2189aee119ebe0800000000000000
+      internalID: -1447606088479200254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_16
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0d574e6ab9d41ae0800000000000000
+      internalID: -1579398174562886385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_17
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 47
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47de64fda5a16a110800000000000000
+      internalID: 1271732922374090100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_18
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 47
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef343a525525c3a10800000000000000
+      internalID: 1890476469245920254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Idle_N_19
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c0b5ec16fabbd9e0800000000000000
+      internalID: -1595476076763172672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Priest_Idle_N_0: -1344233774925771878
+      Mage_Priest_Idle_N_1: -6095776288994357852
+      Mage_Priest_Idle_N_10: -8818391535764370106
+      Mage_Priest_Idle_N_11: -2019884000226225606
+      Mage_Priest_Idle_N_12: -842865699248102184
+      Mage_Priest_Idle_N_13: 1123794394769614309
+      Mage_Priest_Idle_N_14: -7661144352111021428
+      Mage_Priest_Idle_N_15: -1447606088479200254
+      Mage_Priest_Idle_N_16: -1579398174562886385
+      Mage_Priest_Idle_N_17: 1271732922374090100
+      Mage_Priest_Idle_N_18: 1890476469245920254
+      Mage_Priest_Idle_N_19: -1595476076763172672
+      Mage_Priest_Idle_N_2: 2624415949156380003
+      Mage_Priest_Idle_N_3: -6129877552152897484
+      Mage_Priest_Idle_N_4: 9191740938497606147
+      Mage_Priest_Idle_N_5: -2980409910719278436
+      Mage_Priest_Idle_N_6: 1905162329573371922
+      Mage_Priest_Idle_N_7: 100209642864222034
+      Mage_Priest_Idle_N_8: 3239169389871651886
+      Mage_Priest_Idle_N_9: 7738648750379511612
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

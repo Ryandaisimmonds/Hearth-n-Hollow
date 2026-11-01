@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 75b61267a2341451ba4994b3ffc9a93f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8765440425511899934
+    second: Bovine_Boar_Move_N_0
+  - first:
+      213: -7740357311696172971
+    second: Bovine_Boar_Move_N_1
+  - first:
+      213: 446622686640012522
+    second: Bovine_Boar_Move_N_2
+  - first:
+      213: 605778279023519421
+    second: Bovine_Boar_Move_N_3
+  - first:
+      213: -3921747868696196673
+    second: Bovine_Boar_Move_N_4
+  - first:
+      213: -4900084633778365923
+    second: Bovine_Boar_Move_N_5
+  - first:
+      213: -2514812013808154820
+    second: Bovine_Boar_Move_N_6
+  - first:
+      213: 8568955024851423983
+    second: Bovine_Boar_Move_N_7
+  - first:
+      213: -6824483129371161621
+    second: Bovine_Boar_Move_N_8
+  - first:
+      213: 6755650044505099879
+    second: Bovine_Boar_Move_N_9
+  - first:
+      213: 4021031581366051178
+    second: Bovine_Boar_Move_N_10
+  - first:
+      213: -21599270727977701
+    second: Bovine_Boar_Move_N_11
+  - first:
+      213: -5576188907567786286
+    second: Bovine_Boar_Move_N_12
+  - first:
+      213: 5011774799852861771
+    second: Bovine_Boar_Move_N_13
+  - first:
+      213: 3429160813925655149
+    second: Bovine_Boar_Move_N_14
+  - first:
+      213: -5767604138222468654
+    second: Bovine_Boar_Move_N_15
+  - first:
+      213: -9163535743175867021
+    second: Bovine_Boar_Move_N_16
+  - first:
+      213: 8271701685336289157
+    second: Bovine_Boar_Move_N_17
+  - first:
+      213: 2934438702883521516
+    second: Bovine_Boar_Move_N_18
+  - first:
+      213: 8438695759440566751
+    second: Bovine_Boar_Move_N_19
+  - first:
+      213: 8684879848640873045
+    second: Bovine_Boar_Move_N_20
+  - first:
+      213: -237591810266053368
+    second: Bovine_Boar_Move_N_21
+  - first:
+      213: 1045401918838761827
+    second: Bovine_Boar_Move_N_22
+  - first:
+      213: -7196946137682982122
+    second: Bovine_Boar_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 431
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e135c7e20a915a970800000000000000
+      internalID: 8765440425511899934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 431
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55880c1090ab49490800000000000000
+      internalID: -7740357311696172971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 432
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aecfec997f8b23600800000000000000
+      internalID: 446622686640012522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 432
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db628dd9228286800800000000000000
+      internalID: 605778279023519421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb9c7bb77172399c0800000000000000
+      internalID: -3921747868696196673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1a5a42ccf66ffbb0800000000000000
+      internalID: -4900084633778365923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3784182cc7991dd0800000000000000
+      internalID: -2514812013808154820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 303
+        width: 39
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe25190e13b0be670800000000000000
+      internalID: 8568955024851423983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 304
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: beb8f2260c09a41a0800000000000000
+      internalID: -6824483129371161621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 303
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76e04992ce3e0cd50800000000000000
+      internalID: 6755650044505099879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 303
+        width: 40
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6163fd3be29dc730800000000000000
+      internalID: 4021031581366051178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 303
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b15f9d4e39343bff0800000000000000
+      internalID: -21599270727977701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d6d2f38bb56d92b0800000000000000
+      internalID: -5576188907567786286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 175
+        width: 39
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b49fb7f70a66d8540800000000000000
+      internalID: 5011774799852861771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 176
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d626abf7793d69f20800000000000000
+      internalID: 3429160813925655149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 175
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d14d28289a55ffa0800000000000000
+      internalID: -5767604138222468654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 175
+        width: 40
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3754865cac494d080800000000000000
+      internalID: -9163535743175867021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 175
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58f28728bdcfac270800000000000000
+      internalID: 8271701685336289157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 47
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce3c784f37839b820800000000000000
+      internalID: 2934438702883521516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 47
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd9dc0545154c1570800000000000000
+      internalID: 8438695759440566751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 48
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55200373534e68870800000000000000
+      internalID: 8684879848640873045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 48
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 805cc83e187e3bcf0800000000000000
+      internalID: -237591810266053368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 47
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36965e3a183028e00800000000000000
+      internalID: 1045401918838761827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 47
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61b49cb6e9f4f1c90800000000000000
+      internalID: -7196946137682982122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bovine_Boar_Move_N_0: 8765440425511899934
+      Bovine_Boar_Move_N_1: -7740357311696172971
+      Bovine_Boar_Move_N_10: 4021031581366051178
+      Bovine_Boar_Move_N_11: -21599270727977701
+      Bovine_Boar_Move_N_12: -5576188907567786286
+      Bovine_Boar_Move_N_13: 5011774799852861771
+      Bovine_Boar_Move_N_14: 3429160813925655149
+      Bovine_Boar_Move_N_15: -5767604138222468654
+      Bovine_Boar_Move_N_16: -9163535743175867021
+      Bovine_Boar_Move_N_17: 8271701685336289157
+      Bovine_Boar_Move_N_18: 2934438702883521516
+      Bovine_Boar_Move_N_19: 8438695759440566751
+      Bovine_Boar_Move_N_2: 446622686640012522
+      Bovine_Boar_Move_N_20: 8684879848640873045
+      Bovine_Boar_Move_N_21: -237591810266053368
+      Bovine_Boar_Move_N_22: 1045401918838761827
+      Bovine_Boar_Move_N_23: -7196946137682982122
+      Bovine_Boar_Move_N_3: 605778279023519421
+      Bovine_Boar_Move_N_4: -3921747868696196673
+      Bovine_Boar_Move_N_5: -4900084633778365923
+      Bovine_Boar_Move_N_6: -2514812013808154820
+      Bovine_Boar_Move_N_7: 8568955024851423983
+      Bovine_Boar_Move_N_8: -6824483129371161621
+      Bovine_Boar_Move_N_9: 6755650044505099879
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

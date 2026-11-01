@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 1b28bc75a91f44f5d9463904fe6ee2b8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4781506187454073651
+    second: Canine_Wolf_Attack_N_0
+  - first:
+      213: 1330887825578758732
+    second: Canine_Wolf_Attack_N_1
+  - first:
+      213: -5117231369346091336
+    second: Canine_Wolf_Attack_N_2
+  - first:
+      213: -8620636552624243463
+    second: Canine_Wolf_Attack_N_3
+  - first:
+      213: 4134992427270669137
+    second: Canine_Wolf_Attack_N_4
+  - first:
+      213: 6007207800310485210
+    second: Canine_Wolf_Attack_N_5
+  - first:
+      213: 8277454449495205806
+    second: Canine_Wolf_Attack_N_6
+  - first:
+      213: -4417197274740433768
+    second: Canine_Wolf_Attack_N_7
+  - first:
+      213: 3357044093308560307
+    second: Canine_Wolf_Attack_N_8
+  - first:
+      213: 3677443721681675254
+    second: Canine_Wolf_Attack_N_9
+  - first:
+      213: 1413588504602307064
+    second: Canine_Wolf_Attack_N_10
+  - first:
+      213: 4686808367144896678
+    second: Canine_Wolf_Attack_N_11
+  - first:
+      213: 4997375570613782661
+    second: Canine_Wolf_Attack_N_12
+  - first:
+      213: -740578274358447989
+    second: Canine_Wolf_Attack_N_13
+  - first:
+      213: -7597136252331595153
+    second: Canine_Wolf_Attack_N_14
+  - first:
+      213: -5453321513751250022
+    second: Canine_Wolf_Attack_N_15
+  - first:
+      213: 5990908545792171964
+    second: Canine_Wolf_Attack_N_16
+  - first:
+      213: 2772299423265893165
+    second: Canine_Wolf_Attack_N_17
+  - first:
+      213: -318312595670934433
+    second: Canine_Wolf_Attack_N_18
+  - first:
+      213: 1139231440263273630
+    second: Canine_Wolf_Attack_N_19
+  - first:
+      213: -6388935144412227655
+    second: Canine_Wolf_Attack_N_20
+  - first:
+      213: -3761532623052659235
+    second: Canine_Wolf_Attack_N_21
+  - first:
+      213: -2290944355181734688
+    second: Canine_Wolf_Attack_N_22
+  - first:
+      213: 8762876085909122784
+    second: Canine_Wolf_Attack_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 434
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc4b77db47da4adb0800000000000000
+      internalID: -4781506187454073651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 432
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c42938f0d63487210800000000000000
+      internalID: 1330887825578758732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 431
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b6f3ac8e21fbf8b0800000000000000
+      internalID: -5117231369346091336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 431
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fc751fbab85d5880800000000000000
+      internalID: -8620636552624243463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 431
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153066854b1726930800000000000000
+      internalID: 4134992427270669137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 431
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad05675baa3ed5350800000000000000
+      internalID: 6007207800310485210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 304
+        width: 44
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea763aa47fc6fd270800000000000000
+      internalID: 8277454449495205806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 303
+        width: 44
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89cd5406b76f2b2c0800000000000000
+      internalID: -4417197274740433768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 303
+        width: 42
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b3eaf401dd969e20800000000000000
+      internalID: 3357044093308560307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 303
+        width: 35
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f3a358b497e80330800000000000000
+      internalID: 3677443721681675254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 303
+        width: 37
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f9656361431e9310800000000000000
+      internalID: 1413588504602307064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 303
+        width: 38
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a8000ec063ea0140800000000000000
+      internalID: 4686808367144896678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 176
+        width: 44
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58846afaa9e3a5540800000000000000
+      internalID: 4997375570613782661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 175
+        width: 44
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b803e74bbffe8b5f0800000000000000
+      internalID: -740578274358447989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 175
+        width: 42
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6a688174dc819690800000000000000
+      internalID: -7597136252331595153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 175
+        width: 35
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9b7cd6e9f8e154b0800000000000000
+      internalID: -5453321513751250022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 175
+        width: 37
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbf5bc9c49bf32350800000000000000
+      internalID: 5990908545792171964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 175
+        width: 38
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2ba8ce13af297620800000000000000
+      internalID: 2772299423265893165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 50
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5c50877160259bf0800000000000000
+      internalID: -318312595670934433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 48
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9c59d185fc5fcf00800000000000000
+      internalID: 1139231440263273630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 47
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b7dc401651f557a0800000000000000
+      internalID: -6388935144412227655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 47
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd527ef320a5ccbc0800000000000000
+      internalID: -3761532623052659235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 47
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e4d4353f3ee430e0800000000000000
+      internalID: -2290944355181734688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 47
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eee0675f5dfb9970800000000000000
+      internalID: 8762876085909122784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Canine_Wolf_Attack_N_0: -4781506187454073651
+      Canine_Wolf_Attack_N_1: 1330887825578758732
+      Canine_Wolf_Attack_N_10: 1413588504602307064
+      Canine_Wolf_Attack_N_11: 4686808367144896678
+      Canine_Wolf_Attack_N_12: 4997375570613782661
+      Canine_Wolf_Attack_N_13: -740578274358447989
+      Canine_Wolf_Attack_N_14: -7597136252331595153
+      Canine_Wolf_Attack_N_15: -5453321513751250022
+      Canine_Wolf_Attack_N_16: 5990908545792171964
+      Canine_Wolf_Attack_N_17: 2772299423265893165
+      Canine_Wolf_Attack_N_18: -318312595670934433
+      Canine_Wolf_Attack_N_19: 1139231440263273630
+      Canine_Wolf_Attack_N_2: -5117231369346091336
+      Canine_Wolf_Attack_N_20: -6388935144412227655
+      Canine_Wolf_Attack_N_21: -3761532623052659235
+      Canine_Wolf_Attack_N_22: -2290944355181734688
+      Canine_Wolf_Attack_N_23: 8762876085909122784
+      Canine_Wolf_Attack_N_3: -8620636552624243463
+      Canine_Wolf_Attack_N_4: 4134992427270669137
+      Canine_Wolf_Attack_N_5: 6007207800310485210
+      Canine_Wolf_Attack_N_6: 8277454449495205806
+      Canine_Wolf_Attack_N_7: -4417197274740433768
+      Canine_Wolf_Attack_N_8: 3357044093308560307
+      Canine_Wolf_Attack_N_9: 3677443721681675254
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

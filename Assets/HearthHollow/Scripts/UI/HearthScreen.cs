@@ -1,7 +1,7 @@
 // Hearth & Hollow — the camp.
 // Left: three tabs — 🍳 Cooking (tray across the top, filters, then every meal in one colour-coded 3-column grid;
-//       pantry in a pop-up), ⚒️ Workshop (gear tracks,
-//       trinkets, key items) and ⭐ Skills (the current class's tree and loadout).
+//       pantry in a pop-up), ⚒️ Upgrades (gear tracks, trinkets, key items), 🔨 Workshop (kitchen upgrades:
+//       station levels + meal-pantry shelves) and ⭐ Skills (the current class's tree and loadout).
 // Right: who's going (class, Change class, stats, skills, equipment), then Set out.
 // Meals are pre-run buffs: the tray is eaten as you set out and its buffs last the whole run, so the stats
 // preview "base → with meals". Rebuilt from session state on every Changed (cheap at this size).
@@ -13,33 +13,34 @@ using UnityEngine.UIElements;
 
 namespace HearthHollow.UI
 {
-    public enum CampTab { Cooking, Workshop, Skills }
+    public enum CampTab { Cooking, Upgrades, Workshop, Skills }   // Upgrades = gear/trinkets (was "Workshop"); Workshop = kitchen upgrades
 
     public class HearthScreen : UIScreen
     {
         // header
         readonly Label _day, _coins;
+        readonly Button _backToTown;   // shown when this screen is a building's menu in the town preview
         readonly VisualElement _eventChip, _eventIcon;
         readonly Label _eventText;
         // tabs
-        readonly Button[] _tabButtons = new Button[3];
+        readonly Button[] _tabButtons = new Button[4];
         readonly Label _skillsBadge;
-        readonly VisualElement[] _tabPages = new VisualElement[3];
+        readonly VisualElement[] _tabPages = new VisualElement[4];
         CampTab _tab = CampTab.Cooking;
         // cooking
         readonly VisualElement _recipeGrid, _filters;
         readonly Label _filterCount;
         readonly VisualElement _tray, _trayBuffs;
         readonly Button _pantryBtn;
+        readonly VisualElement _mealShelf;      // cooked meals waiting to be packed (cooking v9)
+        readonly Label _mealShelfTitle;
+        readonly VisualElement _kitchen;         // kitchen upgrades: station levels + pantry shelves (contentVersion 13)
         // cooking filters (kept while the game runs)
-        static readonly string[] RarityNames = { "Common", "Uncommon", "Rare", "Epic", "Legendary" };
-        static readonly string[] RarityGems = { "⚪", "🟢", "🔵", "🟣", "🟠" };
-        int _fRarity = -1;           // -1 = any rarity
         static readonly BuffStat[] FilterStats = { BuffStat.MaxHp, BuffStat.DamagePct, BuffStat.Armour, BuffStat.CritPct, BuffStat.GatherZonePct, BuffStat.CoinPct, BuffStat.XpPct };
         static readonly string[] FilterStatNames = { "HP", "Damage", "Armour", "Crit", "Gather", "Coins", "XP" };
         int _fStation = -1;          // -1 = all stations, else index into Stations
         int _fStat = -1;             // -1 = any bonus, else index into FilterStats
-        bool _fCanCook, _fFavourite, _fGuards;
+        bool _fCanCook, _fFavourite;
         // workshop
         readonly VisualElement _gear, _trinkets, _keyItems;
         readonly Label _gearTitle;
@@ -53,11 +54,11 @@ namespace HearthHollow.UI
         readonly Label _setOutHint;
         // drag & drop
         readonly SlotDragger _trayDrag;          // reorder / discard inside the tray
-        readonly DragToTargets _recipeDrag;      // recipe row → tray slot
+        readonly DragToTargets _recipeDrag;      // cooked meal (meal pantry) → tray slot
 
         static readonly Station[] Stations = { Station.Pot, Station.BBQ, Station.Sandwich };
         static readonly string[] StationLabels = { "🍲 Pot", "🍖 BBQ", "🥪 Sandwich" };
-        static readonly string[] TabNames = { "🍳 Cooking", "⚒️ Workshop", "⭐ Skills" };
+        static readonly string[] TabNames = { "🍳 Cooking", "⚒️ Upgrades", "🔨 Workshop", "⭐ Skills" };
 
         float _shownAt;
 
@@ -82,6 +83,9 @@ namespace HearthHollow.UI
             info.Add(_eventChip);
             info.Add(Art.Chip("day", "☀️", out _day));
             info.Add(Art.Chip("coin", "🪙", out _coins, "chip--coins"));
+            _backToTown = UIKit.B("🏘️ Back to town", () => Ui.CloseTownMenu(), "btn--secondary", "btn--small", "header__town");
+            _backToTown.tooltip = "Back to walking around Hearth's Hollow (Esc)";
+            info.Add(_backToTown);
             header.Add(info);
             Root.Add(header);
 
@@ -92,7 +96,7 @@ namespace HearthHollow.UI
             var left = UIKit.E("hearth__left");
             body.Add(left);
             var tabBar = UIKit.E("camp-tabs");
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < TabNames.Length; i++)
             {
                 CampTab t = (CampTab)i;
                 var b = UIKit.B(TabNames[i], () => ShowTab(t), "camp-tab");
@@ -102,12 +106,12 @@ namespace HearthHollow.UI
             }
             _skillsBadge = UIKit.L("", "camp-tab__badge");
             _skillsBadge.pickingMode = PickingMode.Ignore;
-            _tabButtons[2].Add(_skillsBadge);
+            _tabButtons[3].Add(_skillsBadge);
             left.Add(tabBar);
 
             var pages = UIKit.E("panel", "camp-page");
             left.Add(pages);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < TabNames.Length; i++)
             {
                 var sv = new ScrollView(ScrollViewMode.Vertical);
                 sv.AddToClassList("camp-page__scroll");
@@ -119,18 +123,36 @@ namespace HearthHollow.UI
             // ── Cooking: tray across the top (pantry on the right), filters, then one grid of every meal ──
             var trayBox = UIKit.E("tray-bar");
             var trayTitle = UIKit.L("🧺 Tray", "cook-col__title", "cook-col__title--tray", "tray-bar__title");
-            trayTitle.tooltip = "Eaten as you set out. Click or drag meals in · drag to reorder · × or right-click to remove.";
+            trayTitle.tooltip = "Eaten as you set out. Click or drag cooked meals in from the meal pantry · drag to reorder · × or right-click to take one off.";
             trayBox.Add(trayTitle);
             var trayRow = UIKit.E("tray-bar__row");
             _tray = UIKit.E("tray-bar__slots");
             trayRow.Add(_tray);
             _trayBuffs = UIKit.E("tray-sum", "tray-bar__sum");
             trayRow.Add(_trayBuffs);
-            _pantryBtn = Art.IconButton("pantry", "🥕", "Pantry", () => Ui.OpenPantry(), "btn--secondary", "tray-pantry-btn");
-            _pantryBtn.tooltip = "Everything you've gathered or bought";
+            _pantryBtn = Art.IconButton("pantry", "🥕", "Larder", () => Ui.OpenPantry(), "btn--secondary", "tray-pantry-btn");
+            _pantryBtn.tooltip = "Every ingredient you've gathered or bought, by grade";
             trayRow.Add(_pantryBtn);
             trayBox.Add(trayRow);
             _tabPages[0].Add(trayBox);
+
+            // meal pantry: cooked meals (with their rolled grade) waiting to be packed
+            var shelfBox = UIKit.E("meal-shelf");
+            _mealShelfTitle = UIKit.L("", "cook-col__title", "meal-shelf__title");
+            _mealShelfTitle.tooltip = "Meals you've cooked. Click or drag one onto the tray to pack it · × throws it out.";
+            shelfBox.Add(_mealShelfTitle);
+            _mealShelf = UIKit.E("meal-shelf__row");
+            shelfBox.Add(_mealShelf);
+            _tabPages[0].Add(shelfBox);
+
+            // ── Workshop tab: kitchen upgrades — each station's level (more dishes, better-meal chance) and the meal pantry's shelves ──
+            var kitchenBox = UIKit.E("kitchen");
+            var kTitle = UIKit.L("🔨 Kitchen", "cook-col__title", "kitchen__title");
+            kTitle.tooltip = "Upgrade with coins and building materials that monsters drop in the dungeons.";
+            kitchenBox.Add(kTitle);
+            _kitchen = UIKit.E("kitchen__row");
+            kitchenBox.Add(_kitchen);
+            _tabPages[2].Add(kitchenBox);   // the Workshop tab
 
             _filters = UIKit.E("meal-filters");
             _tabPages[0].Add(_filters);
@@ -144,10 +166,17 @@ namespace HearthHollow.UI
                 (from, to) => S.MoveTrayMeal(from, Mathf.Min(to, S.Profile.tray.Count - 1)),
                 null,
                 i => { if (i < S.Profile.tray.Count) S.DiscardTrayMeal(i); });
-            _recipeDrag = new DragToTargets(Ui.DragLayer, (recipeId, slot) => S.CookInto(recipeId, slot));
-            _recipeDrag.onClick = recipeId => S.Cook(recipeId);   // click anywhere on a recipe row to add it
+            // keys: "always:<recipeId>" for an always-available meal (Camp Bread), else the meal pantry index
+            _recipeDrag = new DragToTargets(Ui.DragLayer, (key, slot) =>
+            {
+                if (key.StartsWith("always:")) S.PackAlwaysMealInto(key.Substring(7), slot); else S.PackMealInto(int.Parse(key), slot);
+            });
+            _recipeDrag.onClick = key =>   // click a meal to pack it
+            {
+                if (key.StartsWith("always:")) S.PackAlwaysMeal(key.Substring(7)); else S.PackMeal(int.Parse(key));
+            };
 
-            // ── Workshop: gear + key items | trinkets ──
+            // ── Upgrades: gear + key items | trinkets ──
             var shopRow = UIKit.E("workshop");
             _tabPages[1].Add(shopRow);
             var shopA = UIKit.E("workshop__col");
@@ -165,7 +194,7 @@ namespace HearthHollow.UI
 
             // ── Skills ──
             _skills = new SkillsTab(ui);
-            _tabPages[2].Add(_skills.Root);
+            _tabPages[3].Add(_skills.Root);
 
             // ═════ right: who's going (class, stats, skills, equipment), then set out ═════
             var right = UIKit.E("hearth__right");
@@ -195,7 +224,7 @@ namespace HearthHollow.UI
             who.Add(SectionHead("⭐ Skills", "Edit", () => ShowTab(CampTab.Skills)));
             _loadout = UIKit.E("who__loadout");
             who.Add(_loadout);
-            who.Add(SectionHead("⚒️ Equipment", "Workshop", () => ShowTab(CampTab.Workshop)));
+            who.Add(SectionHead("⚒️ Equipment", "Upgrades", () => ShowTab(CampTab.Upgrades)));
             _equip = UIKit.E("who__equip");
             who.Add(_equip);
             right.Add(who);
@@ -216,7 +245,7 @@ namespace HearthHollow.UI
 
         void ApplyTab()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < TabNames.Length; i++)
             {
                 UIKit.Show(_tabPages[i], i == (int)_tab);
                 _tabButtons[i].EnableInClassList("camp-tab--on", i == (int)_tab);
@@ -244,6 +273,7 @@ namespace HearthHollow.UI
             var p = S.Profile;
             _day.text = "Day " + p.day;
             _coins.text = p.coins + " coins";
+            UIKit.Show(_backToTown, Ui.TownOpen);
             int free = S.SkillPointsFree(p.selectedClass);
             _skillsBadge.text = free > 0 ? free.ToString() : "";
             UIKit.Show(_skillsBadge, free > 0);
@@ -254,7 +284,8 @@ namespace HearthHollow.UI
             switch (_tab)
             {
                 case CampTab.Cooking: RefreshTray(); RefreshFilters(); RefreshRecipes(); break;
-                case CampTab.Workshop: RefreshWorkshop(); break;
+                case CampTab.Upgrades: RefreshWorkshop(); break;   // gear, trinkets, key items
+                case CampTab.Workshop: RefreshKitchen(); break;    // kitchen upgrades
                 case CampTab.Skills: _skills.Refresh(); break;
             }
         }
@@ -284,16 +315,22 @@ namespace HearthHollow.UI
                 if (i < p.tray.Count)
                 {
                     var r = C.Recipe(p.tray[i]);
+                    var pm = i < p.packed.Count ? p.packed[i] : null;
                     float pot = Meals.TrayPotency(C, p.tray, i);
                     slot.AddToClassList("slot--filled");
                     slot.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(p.tray[i]), r != null ? r.emoji : "🍽️", "slot__emoji"), "tray-slot__well"));
                     var txt = UIKit.E("tray-slot__text");
-                    txt.Add(UIKit.L(r != null ? r.name : p.tray[i], "slot__name"));
-                    if (r != null) txt.Add(UIKit.L(UIKit.BuffSummary(r.buffs, MealMult(r) * pot) + (pot < 0.99f ? " (×" + UIKit.Num(pot) + ")" : ""), "slot__sub"));
+                    var acc = pm != null && !string.IsNullOrEmpty(pm.accelId) ? C.Ingredient(pm.accelId) : null;
+                    txt.Add(UIKit.L((pm != null ? Cooking.GradeGem(pm.grade) + " " : "") + (r != null ? r.name : p.tray[i]) + (acc != null ? " + " + acc.emoji : ""), "slot__name"));
+                    if (r != null && pm != null)
+                    {
+                        var em = Cooking.AsEaten(pm); em.potency = pot;
+                        txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, C.Class(p.selectedClass), em)) + (pot < 0.99f ? " (×" + UIKit.Num(pot) + " repeat)" : ""), "slot__sub"));
+                    }
                     slot.Add(txt);
                     int idx = i;
                     var x = UIKit.B("×", () => S.DiscardTrayMeal(idx), "slot__x");
-                    x.tooltip = "Remove — ingredients go back to the pantry";
+                    x.tooltip = "Take off the tray — back into the meal pantry";
                     slot.Add(x);
                 }
                 else
@@ -301,7 +338,7 @@ namespace HearthHollow.UI
                     slot.AddToClassList("slot--empty");
                     slot.Add(Art.Framed(UIKit.L((i + 1).ToString(), "tray-slot__num"), "tray-slot__well", "item-frame--empty"));
                     var txt = UIKit.E("tray-slot__text");
-                    txt.Add(UIKit.L("Click or drag a meal here", "slot__sub", "muted"));
+                    txt.Add(UIKit.L("Pack a cooked meal here", "slot__sub", "muted"));
                     slot.Add(txt);
                 }
                 foreach (var child in slot.Children()) if (!(child is Button)) SetIgnore(child);
@@ -312,7 +349,7 @@ namespace HearthHollow.UI
 
             // What the packed tray adds — one total per stat, then any combos.
             _trayBuffs.Clear();
-            var meals = Meals.TrayToMeals(C, p.tray);
+            var meals = Cooking.Packed(C, p);
             var syns = Meals.ActiveSynergies(C, meals);
             if (meals.Count == 0) { _trayBuffs.Add(UIKit.L("Nothing packed — you'll set out on base stats.", "tray-bonus__head")); }
             else
@@ -339,6 +376,143 @@ namespace HearthHollow.UI
                     combos.Add(b);
                 }
                 _trayBuffs.Add(combos);
+            }
+            RefreshMealShelf();
+        }
+
+        /// Coin + material cost chips, each marked short when you don't have enough.
+        VisualElement CostRow(KitchenTier t)
+        {
+            var row = UIKit.E("kitchen__costs");
+            var p = S.Profile;
+            var coin = UIKit.L("🪙 " + t.price, "cost", "kitchen__cost");
+            coin.EnableInClassList("cost--short", p.coins < t.price);
+            row.Add(coin);
+            if (t.materials != null)
+                foreach (var m in t.materials)
+                {
+                    int have = Economy.PantryCount(p, m.ingredientId);
+                    var l = UIKit.L(UIKit.IngEmoji(C, m.ingredientId) + " " + have + "/" + m.count, "cost", "kitchen__cost");
+                    l.EnableInClassList("cost--short", have < m.count);
+                    l.tooltip = UIKit.IngName(C, m.ingredientId) + ": you have " + have + ", need " + m.count + Where(m.ingredientId);
+                    row.Add(l);
+                }
+            return row;
+        }
+
+        /// " — dropped in Meadow Trail, Berry Hunt…" for a material.
+        string Where(string materialId)
+        {
+            var names = new List<string>();
+            foreach (var r in C.routes) if (r.materialIds != null && r.materialIds.Contains(materialId)) names.Add(r.name);
+            return names.Count > 0 ? "\nDropped by monsters in: " + string.Join(", ", names.ToArray()) : "";
+        }
+
+        void RefreshKitchen()
+        {
+            _kitchen.Clear();
+            var p = S.Profile;
+            int max = Kitchen.MaxLevel(C);
+            for (int i = 0; i < Stations.Length; i++)
+            {
+                Station st = Stations[i];
+                int lv = Kitchen.Level(C, p, st);
+                var card = UIKit.E("kitchen-card", "kitchen-card--" + st.ToString().ToLowerInvariant());
+                card.Add(UIKit.L(StationLabels[i] + "  ·  Lv " + lv + "/" + max, "kitchen-card__name"));
+                card.Add(UIKit.L("Better-meal chance " + UIKit.Pct(Kitchen.Jackpot(C, p, st)), "kitchen-card__now"));
+                var next = Kitchen.NextStation(C, p, st);
+                if (next == null) card.Add(UIKit.L("Fully upgraded", "small", "muted"));
+                else
+                {
+                    var dishes = Kitchen.DishesAt(C, st, lv + 1);
+                    var names = new List<string>();
+                    foreach (var d in dishes) names.Add(d.emoji + " " + d.name);
+                    card.Add(UIKit.L("Lv " + (lv + 1) + ": " + (names.Count > 0 ? string.Join(", ", names.ToArray()) : "no new dishes") + " · " + UIKit.Pct(Kitchen.Jackpot(C, p, st) + C.tuning.stationJackpotPerLevel), "kitchen-card__next"));
+                    card.Add(CostRow(next));
+                    string why;
+                    bool can = Kitchen.CanAfford(C, p, next, out why);
+                    Station s2 = st;
+                    var b = UIKit.B("Upgrade", () => { string r; S.UpgradeStation(s2, out r); }, "btn--small", can ? "btn--primary" : "btn--ghost", "kitchen-card__btn");
+                    b.SetEnabled(can);
+                    b.tooltip = can ? "Upgrade the " + st + " to level " + (lv + 1) : why;
+                    card.Add(b);
+                }
+                _kitchen.Add(card);
+            }
+            // meal-pantry shelves
+            var pc = UIKit.E("kitchen-card", "kitchen-card--pantry");
+            pc.Add(UIKit.L("🍽️ Pantry shelves  ·  " + Kitchen.PantrySlots(C, p), "kitchen-card__name"));
+            pc.Add(UIKit.L("Cooked meals you can keep", "kitchen-card__now"));
+            var np = Kitchen.NextPantry(C, p);
+            if (np == null) pc.Add(UIKit.L("Fully upgraded", "small", "muted"));
+            else
+            {
+                pc.Add(UIKit.L("Next: " + np.name + " — " + (int)np.value + " shelves", "kitchen-card__next"));
+                pc.Add(CostRow(np));
+                string why;
+                bool can = Kitchen.CanAfford(C, p, np, out why);
+                var b = UIKit.B("Upgrade", () => { string r; S.UpgradePantry(out r); }, "btn--small", can ? "btn--primary" : "btn--ghost", "kitchen-card__btn");
+                b.SetEnabled(can);
+                b.tooltip = can ? "More shelves for cooked meals" : why;
+                pc.Add(b);
+            }
+            _kitchen.Add(pc);
+        }
+
+        /// The meal pantry: one card per cooked meal (grade, accelerator, what it gives this class).
+        void RefreshMealShelf()
+        {
+            var p = S.Profile;
+            var cls = C.Class(p.selectedClass);
+            _mealShelf.Clear();
+            int cap = Kitchen.PantrySlots(C, p);
+            _mealShelfTitle.text = "🍽️ Meal pantry  " + p.mealPantry.Count + "/" + cap;
+            // always-available meals (Camp Bread): a permanent card first, never runs out, doesn't use a slot
+            foreach (var ar in Cooking.AlwaysMeals(C))
+            {
+                var card = UIKit.E("meal-card", "clickable", "meal-card--always", "meal-card--" + ar.station.ToString().ToLowerInvariant());
+                card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(ar.id), ar.emoji, "meal-card__emoji"), "meal-card__well"));
+                var at = UIKit.E("meal-card__text");
+                at.Add(UIKit.L(ar.name + (Meals.IsFavourite(cls, ar) ? " ⭐" : "") + "  ∞", "meal-card__name"));
+                at.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f })), "meal-card__buffs"));
+                at.Add(UIKit.L("Always available · free", "meal-card__accel"));
+                card.Add(at);
+                card.tooltip = ar.name + " — " + ar.description + "\nAlways available: never runs out and doesn't use a pantry slot. Click or drag onto the tray to pack it.";
+                foreach (var child in card.Children()) SetIgnore(child);
+                _recipeDrag.AddSource(card, "always:" + ar.id, ar.emoji, () => p.packed.Count < C.tuning.traySize);
+                _mealShelf.Add(card);
+            }
+            for (int i = 0; i < p.mealPantry.Count; i++)
+            {
+                var m = p.mealPantry[i];
+                var r = C.Recipe(m.recipeId);
+                var acc = !string.IsNullOrEmpty(m.accelId) ? C.Ingredient(m.accelId) : null;
+                var card = UIKit.E("meal-card", "clickable", "meal-card--grade-" + m.grade, "meal-card--" + (r != null ? r.station.ToString().ToLowerInvariant() : "pot"));
+                card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(m.recipeId), r != null ? r.emoji : "🍽️", "meal-card__emoji"), "meal-card__well"));
+                var txt = UIKit.E("meal-card__text");
+                var nameRow = UIKit.E("meal-card__name-row");
+                nameRow.Add(UIKit.L(Cooking.GradeGem(m.grade) + " " + (r != null ? r.name : m.recipeId) + (Meals.IsFavourite(cls, r) ? " ⭐" : ""), "meal-card__name"));
+                txt.Add(nameRow);
+                string accTxt = acc != null ? acc.emoji + " " + acc.name + (acc.accelGuard != Hazard.None ? " " + Routes.HazardEmoji(acc.accelGuard) + " guard" : "") : "";
+                txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m))), "meal-card__buffs"));
+                if (acc != null) txt.Add(UIKit.L("+ " + accTxt, "meal-card__accel"));
+                card.Add(txt);
+                int idx = i;
+                var x = UIKit.B("×", () => S.ThrowOutMeal(idx), "slot__x", "meal-card__x");
+                x.tooltip = "Throw out";
+                card.Add(x);
+                card.tooltip = (r != null ? r.name + " — " + r.description + "\n" : "") + Cooking.GradeName(m.grade) + " — stats ×" + UIKit.Num(Cooking.GradeMult(C.tuning, m.grade)) +
+                    (acc != null ? "\nAccelerator: " + accTxt + (acc.accelGuard != Hazard.None ? " — guards against " + Routes.HazardName(acc.accelGuard).ToLower() : "") : "") +
+                    "\nClick or drag onto the tray to pack it";
+                foreach (var child in card.Children()) if (!(child is Button)) SetIgnore(child);
+                _recipeDrag.AddSource(card, i.ToString(), r != null ? r.emoji : "🍽️", () => p.packed.Count < C.tuning.traySize);
+                _mealShelf.Add(card);
+            }
+            for (int i = p.mealPantry.Count; i < cap; i++)
+            {
+                var empty = UIKit.E("meal-card", "meal-card--empty");
+                empty.Add(UIKit.L(i == p.mealPantry.Count ? "Cook a meal below" : "", "muted", "small"));
+                _mealShelf.Add(empty);
             }
         }
 
@@ -373,7 +547,6 @@ namespace HearthHollow.UI
             rowA.Add(Chip("✅ Can cook now", _fCanCook, () => _fCanCook = !_fCanCook, "Only meals you have the ingredients for"));
             if (cls != null && cls.favouriteBonus > 0f)
                 rowA.Add(Chip("⭐ Favourites", _fFavourite, () => _fFavourite = !_fFavourite, "Only the " + cls.name + "'s favourite station"));
-            rowA.Add(Chip("🛡️ Hazard guards", _fGuards, () => _fGuards = !_fGuards, "Only meals that guard against poison, cold, heat or darkness"));
             _filters.Add(rowA);
 
             var rowB = UIKit.E("meal-filters__row");
@@ -384,19 +557,11 @@ namespace HearthHollow.UI
                 int k = i;
                 rowB.Add(Chip(Art.StatEmoji(FilterStats[i]) + " " + FilterStatNames[i], _fStat == i, () => _fStat = _fStat == k ? -1 : k));
             }
-            rowB.Add(UIKit.E("meal-filters__gap"));
-            rowB.Add(UIKit.L("Rarity", "meal-filters__label"));
-            rowB.Add(Chip("Any", _fRarity < 0, () => _fRarity = -1));
-            for (int i = 0; i < RarityNames.Length; i++)
-            {
-                int k = i;
-                rowB.Add(Chip(RarityGems[i] + " " + RarityNames[i], _fRarity == i, () => _fRarity = _fRarity == k ? -1 : k, null, "filter-chip--rarity-" + i));
-            }
-            bool any = _fStation >= 0 || _fStat >= 0 || _fRarity >= 0 || _fCanCook || _fFavourite || _fGuards;
+            bool any = _fStation >= 0 || _fStat >= 0 || _fCanCook || _fFavourite;
             if (any)
             {
                 rowB.Add(UIKit.E("meal-filters__gap"));
-                rowB.Add(Chip("✖ Clear", false, () => { _fStation = -1; _fStat = -1; _fRarity = -1; _fCanCook = _fFavourite = _fGuards = false; }, "Show everything again", "filter-chip--clear"));
+                rowB.Add(Chip("✖ Clear", false, () => { _fStation = -1; _fStat = -1; _fCanCook = _fFavourite = false; }, "Show everything again", "filter-chip--clear"));
             }
             _filters.Add(rowB);
         }
@@ -414,25 +579,23 @@ namespace HearthHollow.UI
             var p = S.Profile;
             var cls = C.Class(p.selectedClass);
             _recipeGrid.Clear();
-            int hidden = 0, total = 0;
+            int hidden = 0, total = 0, locked = 0;
             var shown = new List<RecipeData>();
             foreach (var r in C.recipes)
             {
+                if (r.always) continue;   // always-available meals (Camp Bread) live beside the meal pantry, not on the menu
                 if (!Routes.RecipeKnown(C, p, r)) { hidden++; continue; }   // its ingredients aren't found yet
                 total++;
+                if (!Kitchen.Unlocked(C, p, r)) locked++;
                 string why;
                 bool can = S.CanCook(r.id, out why);
                 if (_fStation >= 0 && r.station != Stations[_fStation]) continue;
                 if (_fStat >= 0 && StatValue(r, FilterStats[_fStat]) <= 0f) continue;
-                if (_fRarity >= 0 && (int)r.rarity != _fRarity) continue;
                 if (_fCanCook && !can) continue;
                 if (_fFavourite && (cls == null || r.station != cls.favouriteStation)) continue;
-                if (_fGuards && r.counters == Hazard.None) continue;
                 shown.Add(r);
             }
-            // one column per station (Pot · BBQ · Sandwich), each common → legendary, then menu order
-            var order = new List<RecipeData>(C.recipes);
-            shown.Sort((a, b) => { int c = ((int)a.rarity).CompareTo((int)b.rarity); return c != 0 ? c : order.IndexOf(a).CompareTo(order.IndexOf(b)); });
+            // one column per station (Pot · BBQ · Sandwich), in menu order
             for (int st = 0; st < Stations.Length; st++)
             {
                 if (_fStation >= 0 && _fStation != st) continue;
@@ -448,7 +611,7 @@ namespace HearthHollow.UI
                 _recipeGrid.Clear();
                 _recipeGrid.Add(UIKit.L(total == 0 ? "No meals known yet." : "No meals match these filters.", "muted", "recipe-grid__empty"));
             }
-            _filterCount.text = "Showing " + shown.Count + " of " + total + " meals" + (hidden > 0 ? "  ·  🔒 " + hidden + " more to discover (find their ingredients on new routes)" : "");
+            _filterCount.text = "Showing " + shown.Count + " of " + total + " meals" + (locked > 0 ? "  ·  🔨 " + locked + " need a station upgrade" : "") + (hidden > 0 ? "  ·  🔒 " + hidden + " more to discover (find their ingredients on new routes)" : "");
         }
 
         /// One list row: picture · name and bonus · ingredient counts stacked on the right.
@@ -456,9 +619,11 @@ namespace HearthHollow.UI
         {
             string reason;
             bool can = S.CanCook(r.id, out reason);
-            var row = UIKit.E("recipe-row", "clickable", "recipe-row--" + r.station.ToString().ToLowerInvariant(), "recipe-row--rarity-" + (int)r.rarity);
+            var row = UIKit.E("recipe-row", "clickable", "recipe-row--" + r.station.ToString().ToLowerInvariant());
+            bool unlocked = Kitchen.Unlocked(C, p, r);
             row.EnableInClassList("recipe-row--ready", can);
             row.EnableInClassList("recipe-row--blocked", !can);
+            row.EnableInClassList("recipe-row--locked", !unlocked);
 
             row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(r.id), r.emoji, "recipe-row__emoji"), "recipe-row__well"));
             var mid = UIKit.E("recipe-row__mid");
@@ -466,13 +631,12 @@ namespace HearthHollow.UI
             bool fav = cls != null && cls.favouriteBonus > 0f && cls.favouriteStation == r.station;
             var nameRow = UIKit.E("recipe-row__name-row");
             nameRow.Add(UIKit.L(r.name + (fav ? " ⭐" : "") + (r.counters != Hazard.None ? "  " + Routes.HazardEmoji(r.counters) : ""), "recipe-row__name"));
-            var pill = UIKit.L(RarityNames[(int)r.rarity], "rarity-pill", "rarity-pill--" + (int)r.rarity);
-            nameRow.Add(pill);
             mid.Add(nameRow);
             mid.Add(UIKit.L(UIKit.BuffSummary(r.buffs, MealMult(r)), "recipe-row__buffs"));
             row.Add(mid);
 
             var costs = UIKit.E("recipe-row__costs");
+            if (!unlocked) costs.Add(UIKit.L(Kitchen.LockText(r), "cost", "cost--short", "recipe-row__cost", "recipe-row__lock"));
             for (int k = 0; k < r.ingredients.Count; k++)
             {
                 IngredientCost ic = r.ingredients[k];
@@ -485,15 +649,14 @@ namespace HearthHollow.UI
             row.Add(costs);
 
             string id = r.id;
-            if (!can) row.RegisterCallback<ClickEvent>(e => S.Cook(id));   // blocked rows explain why when clicked
+            row.RegisterCallback<ClickEvent>(e => Ui.OpenCook(id));   // open the stove: pick grades + accelerator, see the odds
             var ings = new List<string>();
             foreach (var ic in r.ingredients) ings.Add(ic.count + "× " + UIKit.IngName(C, ic.ingredientId));
             string tip = (r.description ?? "") + (ings.Count > 0 ? "\nNeeds " + string.Join(", ", ings.ToArray()) : "");
             if (r.counters != Hazard.None) tip += "\n" + Routes.HazardEmoji(r.counters) + " guards against " + Routes.HazardName(r.counters).ToLower();
             if (!can && !string.IsNullOrEmpty(reason)) tip += "\n" + reason;
-            row.tooltip = StationLabels[(int)r.station] + (fav ? " ⭐ favourite" : "") + "\n" + (can ? "Click or drag onto the tray to add\n" : "") + tip;
+            row.tooltip = StationLabels[(int)r.station] + (fav ? " ⭐ favourite" : "") + "\nClick to cook (choose ingredient grades and an accelerator)\n" + tip;
             foreach (var child in row.Children()) SetIgnore(child);
-            _recipeDrag.AddSource(row, r.id, r.emoji, () => { string why; return S.CanCook(id, out why); });
             return row;
         }
 
@@ -641,7 +804,7 @@ namespace HearthHollow.UI
             var later = Gear.WorkshopLater(C, p);
             _trinkets.Add(UIKit.L("For sale", "small", "workshop__sub"));
             var sale = UIKit.E("trinket-grid");
-            if (stock.Count == 0 && later.Count == 0) sale.Add(UIKit.L("Sold out — you've bought everything the Workshop makes.", "small", "muted"));
+            if (stock.Count == 0 && later.Count == 0) sale.Add(UIKit.L("Sold out — you've bought every trinket for sale.", "small", "muted"));
             foreach (var t in stock)
             {
                 var card = TrinketCard(t, "trinket--sale");
@@ -763,7 +926,7 @@ namespace HearthHollow.UI
             var p = S.Profile;
             var load = S.Loadout(p.selectedClass);
             var mods = S.Mods;
-            string[] keys = { "J", "K", "U", "Space" };
+            string[] keys = { "J", "K", "L", "Space" };
             string[] slots = { "Attack", "Skill", "Skill", "Dash" };
             for (int i = 0; i < 4; i++)
             {
@@ -790,7 +953,7 @@ namespace HearthHollow.UI
             }
         }
 
-        /// Current gear (weapon, body, head, boots, bag) and worn trinkets (click → Workshop tab).
+        /// Current gear (weapon, body, head, boots, bag) and worn trinkets (click → Upgrades tab).
         void RefreshEquipment()
         {
             _equip.Clear();
@@ -816,7 +979,7 @@ namespace HearthHollow.UI
                 txt.Add(UIKit.L(t != null ? t.name : "Empty trinket slot", "who-trinket__name"));
                 if (t != null) txt.Add(UIKit.L(Gear.EffectText(C, t), "who-trinket__sub"));
                 chip.Add(txt);
-                chip.RegisterCallback<ClickEvent>(e => ShowTab(CampTab.Workshop));
+                chip.RegisterCallback<ClickEvent>(e => ShowTab(CampTab.Upgrades));
                 foreach (var ch in chip.Children()) SetIgnore(ch);
                 tr.Add(chip);
             }
@@ -835,8 +998,8 @@ namespace HearthHollow.UI
             if (cur != null) txt.Add(UIKit.L(Gear.ValueText(slot, cur), "who-gear__value"));
             chip.Add(txt);
             var next = Gear.Next(C, p, slot, p.selectedClass);
-            chip.tooltip = next != null ? "Next: " + next.name + " — " + Gear.ValueText(slot, next) + " (" + S.GearPrice(next) + " coins in the Workshop)" : "Maxed";
-            chip.RegisterCallback<ClickEvent>(e => ShowTab(CampTab.Workshop));
+            chip.tooltip = next != null ? "Next: " + next.name + " — " + Gear.ValueText(slot, next) + " (" + S.GearPrice(next) + " coins in Upgrades)" : "Maxed";
+            chip.RegisterCallback<ClickEvent>(e => ShowTab(CampTab.Upgrades));
             foreach (var ch in chip.Children()) SetIgnore(ch);
             return chip;
         }
@@ -854,8 +1017,9 @@ namespace HearthHollow.UI
         {
             if (key == KeyCode.Return || key == KeyCode.KeypadEnter) { if (UIKit.Now - _shownAt > 0.8f) SetOut(); return true; }
             if (key == KeyCode.Alpha1 || key == KeyCode.Keypad1) { ShowTab(CampTab.Cooking); return true; }
-            if (key == KeyCode.Alpha2 || key == KeyCode.Keypad2) { ShowTab(CampTab.Workshop); return true; }
-            if (key == KeyCode.Alpha3 || key == KeyCode.Keypad3) { ShowTab(CampTab.Skills); return true; }
+            if (key == KeyCode.Alpha2 || key == KeyCode.Keypad2) { ShowTab(CampTab.Upgrades); return true; }
+            if (key == KeyCode.Alpha3 || key == KeyCode.Keypad3) { ShowTab(CampTab.Workshop); return true; }
+            if (key == KeyCode.Alpha4 || key == KeyCode.Keypad4) { ShowTab(CampTab.Skills); return true; }
             return false;
         }
     }

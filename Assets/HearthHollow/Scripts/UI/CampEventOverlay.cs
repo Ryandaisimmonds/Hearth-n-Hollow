@@ -157,7 +157,7 @@ namespace HearthHollow.UI
                 case CampEvent.Storm:
                     return "A storm rolls through the hollow — every route is Dangerous today (harder, but richer).";
                 case CampEvent.Armourer:
-                    return "A travelling armourer is visiting — weapons and armour in the Workshop are " + UIKit.Pct(c.tuning.armourerDiscount) + " cheaper today.";
+                    return "A travelling armourer is visiting — weapons and armour in Upgrades are " + UIKit.Pct(c.tuning.armourerDiscount) + " cheaper today.";
                 case CampEvent.Forager:
                     return "A passing forager left a gift in your pantry: " + GiftText(c, h) + ".";
                 case CampEvent.HarvestMoon:

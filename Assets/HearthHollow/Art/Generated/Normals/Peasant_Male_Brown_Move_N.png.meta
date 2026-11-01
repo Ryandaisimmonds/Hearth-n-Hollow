@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 7688e2ccff6154261abbe79372d2a9d8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -511816693614087927
+    second: Peasant_Male_Brown_Move_N_0
+  - first:
+      213: 5567790199247180863
+    second: Peasant_Male_Brown_Move_N_1
+  - first:
+      213: -3388718745618801052
+    second: Peasant_Male_Brown_Move_N_2
+  - first:
+      213: -7721868164638659016
+    second: Peasant_Male_Brown_Move_N_3
+  - first:
+      213: -3476341507007504906
+    second: Peasant_Male_Brown_Move_N_4
+  - first:
+      213: 7781548542251164749
+    second: Peasant_Male_Brown_Move_N_5
+  - first:
+      213: 1038855771469558152
+    second: Peasant_Male_Brown_Move_N_6
+  - first:
+      213: 4130091601537197399
+    second: Peasant_Male_Brown_Move_N_7
+  - first:
+      213: -1273552844514208590
+    second: Peasant_Male_Brown_Move_N_8
+  - first:
+      213: -7368008844698296397
+    second: Peasant_Male_Brown_Move_N_9
+  - first:
+      213: 8172257848359612013
+    second: Peasant_Male_Brown_Move_N_10
+  - first:
+      213: -5056554017331795458
+    second: Peasant_Male_Brown_Move_N_11
+  - first:
+      213: -2861410678786292976
+    second: Peasant_Male_Brown_Move_N_12
+  - first:
+      213: -5231206404239684252
+    second: Peasant_Male_Brown_Move_N_13
+  - first:
+      213: -2933345046748557180
+    second: Peasant_Male_Brown_Move_N_14
+  - first:
+      213: -6432549998287228482
+    second: Peasant_Male_Brown_Move_N_15
+  - first:
+      213: 8309876158547208200
+    second: Peasant_Male_Brown_Move_N_16
+  - first:
+      213: -7607248875088701860
+    second: Peasant_Male_Brown_Move_N_17
+  - first:
+      213: 8144281697387704501
+    second: Peasant_Male_Brown_Move_N_18
+  - first:
+      213: 3676376447621237077
+    second: Peasant_Male_Brown_Move_N_19
+  - first:
+      213: -1822807187098101581
+    second: Peasant_Male_Brown_Move_N_20
+  - first:
+      213: 8266461436500101820
+    second: Peasant_Male_Brown_Move_N_21
+  - first:
+      213: 3491444297870189158
+    second: Peasant_Male_Brown_Move_N_22
+  - first:
+      213: 8141281340591891276
+    second: Peasant_Male_Brown_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 431
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 901740bcd69a5e8f0800000000000000
+      internalID: -511816693614087927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 431
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f349702dfa3c44d40800000000000000
+      internalID: 5567790199247180863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46e1fab414ad8f0d0800000000000000
+      internalID: -3388718745618801052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 431
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83ea05401d966d490800000000000000
+      internalID: -7721868164638659016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fd1fdc51dd81cfc0800000000000000
+      internalID: -3476341507007504906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 431
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d44e657bb2d9dfb60800000000000000
+      internalID: 7781548542251164749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 303
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 881be4fe1d1ca6e00800000000000000
+      internalID: 1038855771469558152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 303
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 755e27fed68015930800000000000000
+      internalID: 4130091601537197399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 303
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b4da0c7f6e635ee0800000000000000
+      internalID: -1273552844514208590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 303
+        width: 22
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bf52dd3ef29fb990800000000000000
+      internalID: -7368008844698296397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 303
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6e6f50f631b96170800000000000000
+      internalID: 8172257848359612013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 303
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef92d5979e283d9b0800000000000000
+      internalID: -5056554017331795458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0130f66e52a3a48d0800000000000000
+      internalID: -2861410678786292976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 175
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46d8b80dd750767b0800000000000000
+      internalID: -5231206404239684252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 175
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48096e4b83aaa47d0800000000000000
+      internalID: -2933345046748557180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 22
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb176209bddfab6a0800000000000000
+      internalID: -6432549998287228482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 175
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 808a1bda65c925370800000000000000
+      internalID: 8309876158547208200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 175
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56195af37f9d6690800000000000000
+      internalID: -7607248875088701860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 47
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b07283bd0d460170800000000000000
+      internalID: 8144281697387704501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 47
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 559831d96ec150330800000000000000
+      internalID: 3676376447621237077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 47
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b81dfe558614b6e0800000000000000
+      internalID: -1822807187098101581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 47
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbacd0001ee58b270800000000000000
+      internalID: 8266461436500101820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 47
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 662ad97271a147030800000000000000
+      internalID: 3491444297870189158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Peasant_Male_Brown_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 47
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c43ee72be34abf070800000000000000
+      internalID: 8141281340591891276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Peasant_Male_Brown_Move_N_0: -511816693614087927
+      Peasant_Male_Brown_Move_N_1: 5567790199247180863
+      Peasant_Male_Brown_Move_N_10: 8172257848359612013
+      Peasant_Male_Brown_Move_N_11: -5056554017331795458
+      Peasant_Male_Brown_Move_N_12: -2861410678786292976
+      Peasant_Male_Brown_Move_N_13: -5231206404239684252
+      Peasant_Male_Brown_Move_N_14: -2933345046748557180
+      Peasant_Male_Brown_Move_N_15: -6432549998287228482
+      Peasant_Male_Brown_Move_N_16: 8309876158547208200
+      Peasant_Male_Brown_Move_N_17: -7607248875088701860
+      Peasant_Male_Brown_Move_N_18: 8144281697387704501
+      Peasant_Male_Brown_Move_N_19: 3676376447621237077
+      Peasant_Male_Brown_Move_N_2: -3388718745618801052
+      Peasant_Male_Brown_Move_N_20: -1822807187098101581
+      Peasant_Male_Brown_Move_N_21: 8266461436500101820
+      Peasant_Male_Brown_Move_N_22: 3491444297870189158
+      Peasant_Male_Brown_Move_N_23: 8141281340591891276
+      Peasant_Male_Brown_Move_N_3: -7721868164638659016
+      Peasant_Male_Brown_Move_N_4: -3476341507007504906
+      Peasant_Male_Brown_Move_N_5: 7781548542251164749
+      Peasant_Male_Brown_Move_N_6: 1038855771469558152
+      Peasant_Male_Brown_Move_N_7: 4130091601537197399
+      Peasant_Male_Brown_Move_N_8: -1273552844514208590
+      Peasant_Male_Brown_Move_N_9: -7368008844698296397
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

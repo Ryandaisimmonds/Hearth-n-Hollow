@@ -14,23 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: frost
   displayName: Frostfang Pass
-  floor: {fileID: 11400000, guid: 3fe76340de8284047942c0a9fed3d45b, type: 2}
-  floorAlt: {fileID: 11400000, guid: c8094805e072a435fb67b2e4c15d2800, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 4c167c308d7fa4ed5a32e6497556bdab, type: 2}
-  wallFace: {fileID: 11400000, guid: 7c1fa9eeeb99d4fbf98f695b009ae996, type: 2}
+  floor: {fileID: 11400000, guid: a9a4a1c4ea91448629a57cb5cacac97f, type: 2}
+  floorAlt: {fileID: 0}
+  floorAltChance: 0
+  wall: {fileID: 11400000, guid: 80870ada268884cb2a2dd43864ab3739, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 7e67eca8a5c6442918e89896f30ac09e, type: 2}
   decor:
-  - {fileID: 11400000, guid: 281fbf07979d44e8292572ea725766f6, type: 2}
-  - {fileID: 11400000, guid: 1bef62084af404403bb4c05c7ee2f109, type: 2}
-  - {fileID: 11400000, guid: 0472a0431f9ce4d46924a90573b4081c, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: d870ed6993a2540d5aba2d1a18f58de3, type: 2}
+  decorDensity: 0.04
   background: {r: 0.039215688, g: 0.0627451, b: 0.11764706, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.88, g: 0.95, b: 1, a: 1}
+  wallTint: {r: 0.88, g: 0.95, b: 1, a: 1}
   lightColor: {r: 0.86, g: 0.92, b: 1, a: 1}
   lightIntensity: 0.95
   playerLight: 0
+  gradeTemperature: -26
+  gradeTint: 0
+  gradeSaturation: -6
+  gradeContrast: 10
+  gradeExposure: 0.05
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.33999997
+  gradeBloom: 1.2800001
+  ambient: 3
+  ambientColor: {r: 0.6, g: 0.85, b: 1, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 06ed2fff2a83b400e8582a0a957c9ae4, type: 3}
   ladder: {fileID: 21300000, guid: c5a39fbff1fb54dac986677a49f8ae7c, type: 3}

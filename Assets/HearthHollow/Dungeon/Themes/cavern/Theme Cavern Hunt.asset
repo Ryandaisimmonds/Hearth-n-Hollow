@@ -14,23 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: cavern
   displayName: Cavern Hunt
-  floor: {fileID: 11400000, guid: af4479b93e25e4c45be4723406e9ff8b, type: 2}
-  floorAlt: {fileID: 11400000, guid: 2d5250cd5a9b6477e91ed0f831437cf7, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: c725b61e924704e6cb5ad103191a13d1, type: 2}
-  wallFace: {fileID: 11400000, guid: e9c39ad002f984ffbb1bcc7b2a225881, type: 2}
+  floor: {fileID: 11400000, guid: a9a4a1c4ea91448629a57cb5cacac97f, type: 2}
+  floorAlt: {fileID: 0}
+  floorAltChance: 0
+  wall: {fileID: 11400000, guid: 80870ada268884cb2a2dd43864ab3739, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 8b56f4790c7644f9b9612a644b9d3590, type: 2}
   decor:
-  - {fileID: 11400000, guid: 49c7fdece956c4696a4ded7d22d994ae, type: 2}
-  - {fileID: 11400000, guid: 410e06d2b22ec4be5a7a02cd899b9e19, type: 2}
-  - {fileID: 11400000, guid: fda3df2d8a3234f7a8dbe4aab7c61c48, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: d870ed6993a2540d5aba2d1a18f58de3, type: 2}
+  decorDensity: 0.04
   background: {r: 0.023529412, g: 0.03137255, b: 0.047058824, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.78, g: 0.84, b: 0.95, a: 1}
+  wallTint: {r: 0.78, g: 0.84, b: 0.95, a: 1}
   lightColor: {r: 0.55, g: 0.62, b: 0.85, a: 1}
   lightIntensity: 0.6
   playerLight: 1.4
+  gradeTemperature: -18
+  gradeTint: 0
+  gradeSaturation: -12
+  gradeContrast: 16
+  gradeExposure: -0.1
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.44
+  gradeBloom: 1.7600001
+  ambient: 2
+  ambientColor: {r: 0.35, g: 0.9, b: 1, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: c6ffc6d8e51814e5bb5b1efdb95816be, type: 3}
   ladder: {fileID: 21300000, guid: 5133c0542c8d34edc9027596e0f72d4f, type: 3}

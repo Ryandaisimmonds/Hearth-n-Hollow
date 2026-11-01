@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace HearthHollow.Core
 {
     // ───────────────────────── Enums ─────────────────────────
-    public enum ClassId { Warden, Ranger, Cook }
+    public enum ClassId { Warden, Ranger, Cook, Lamplighter, Emberfist }
     public enum Station { Pot, BBQ, Sandwich }
     public enum TileType { Empty, Start, Exit, Monster, Elite, Gather, Rest }
     public enum FightAction { Strike, Guard, Lucky, Skill }
@@ -38,7 +38,7 @@ namespace HearthHollow.Core
 
     // ── moves & skill trees (real-time dungeon) ──
     /// Which loadout slot a move fits: Attack (J), Skill (K or U), Dash (Space).
-    public enum MoveSlot { Attack, Skill, Dash }
+    public enum MoveSlot { Attack, Skill, Dash, Ultimate }   // Ultimate: one per class on its own button (contentVersion 20)
     /// The four loadout slots.
     public enum LoadSlot { Attack, Skill1, Skill2, Dash }
     /// How a move behaves in the dungeon (implemented by the Unity PlayerController). Append only — saved by value.
@@ -48,7 +48,10 @@ namespace HearthHollow.Core
         Roll, ChargeDash, Vault, SlickDash,                                   // dashes
         Cleave, Shockwave, WarCry, ShieldWall, Whirlwind,                     // Warden skills
         Volley, Trap, Mark, ArrowRain, Smoke,                                 // Ranger skills
-        Snack, PepperToss, HotPot, Picnic, RollingPin                         // Cook skills
+        Snack, PepperToss, HotPot, Picnic, RollingPin,                        // Cook skills
+        Combo, Sunshield, LeapSlam, EmberArrow, FlareArrow, Spotlight, Cookfire, SkewerToss,  // class rework (contentVersion 15). Append only.
+        Wisp, Lantern, Sunbeam, Prism, Kindle, Blink,                         // Lamplighter (contentVersion 16)
+        Phoenix, FlameWheel, Detonate, Counter, Flicker, Sunfall, Starfall, GrandFeast, Dawn, Supernova                       // Emberfist (contentVersion 17)
     }
     /// What a skill-tree node does. Append only.
     public enum NodeEffect
@@ -73,7 +76,9 @@ namespace HearthHollow.Core
         CritPct,       // +crit chance (fraction)
         GatherZonePct, // widens gather safe+perfect zones by %
         CoinPct,       // +% coins earned this run
-        XpPct          // +% XP earned this run
+        XpPct,         // +% XP earned this run
+        MoveSpeedPct,  // +% move speed this run (cooking v9)
+        HealOnKill     // + HP healed per kill this run (cooking v9)
     }
 
     public enum GameEventType
@@ -91,6 +96,10 @@ namespace HearthHollow.Core
     {
         public string id; public string name; public string emoji;
         public int tier;         // 0 common .. 3 rare (merchant price scales with tier)
+        // Accelerator (cooking v9): an ingredient with a boost can go in a meal's optional accelerator slot.
+        public List<StatMod> accelBuffs = new List<StatMod>();   // the boost (accelerators have no grade)
+        public bool material;   // a building material (contentVersion 13): found in dungeons, spent on kitchen upgrades, never cooked or sold
+        public Hazard accelGuard;                                // the meal also guards against this hazard
     }
 
     [Serializable] public class IngredientCost { public string ingredientId; public int count = 1; }
@@ -104,6 +113,8 @@ namespace HearthHollow.Core
         public string description;
         public Hazard counters;   // eating this meal protects against that dungeon hazard
         public Rarity rarity;     // contentVersion 8
+        public int stationLevel = 1;   // the station level that unlocks this dish (contentVersion 13; 1 = from the start)
+        public bool always;       // always available (Camp Bread, contentVersion 11): never cooked, never runs out, packed straight onto the tray as a Common meal
     }
 
     /// A tray synergy. Condition evaluated over meals EATEN this run.
@@ -141,7 +152,16 @@ namespace HearthHollow.Core
         // real-time dungeon: the moves a fresh character starts with, and the names of its three tree branches
         public string starterAttack, starterSkill, starterDash;
         public List<string> branchNames = new List<string>();
+        // story (class rework): joins your camp the first time you clear this route (empty = with you from the start)
+        public string joinRoute;
+        public string ultimate;   // move id on the Ultimate button (contentVersion 20)
+        public string joinText;   // a line for the "joins your camp" toast
     }
+
+    /// Break & Boost: what kind of hit a move deals. Monsters are weak to one or two kinds.
+    public enum HitType { Slash, Pierce, Blunt, Fire, Light }
+    /// What each Boost level adds to a move besides damage.
+    public enum BoostShape { Damage, Count, Radius, Hits, Duration }
 
     /// One move a loadout slot can hold. Numbers mean different things per kind (see DefaultContent.BuildMoves).
     [Serializable] public class MoveData
@@ -155,6 +175,18 @@ namespace HearthHollow.Core
         public float radius = 1f;     // area size, per kind
         public float duration;        // stun / buff / zone length, per kind
         public float value;           // extra number, per kind (heal, slow, bonus…)
+        // class rework (31 Oct): every move lights the world, reaches further and Boosts into a bigger shape
+        public HitType hitType;                 // Break: the kind of hit it deals
+        public HitType hitType2;                // a combo's finisher / a move's second kind of hit
+        public float lightRadius;               // how far its light reaches (0 = from the move's size)
+        public float lightIntensity = 1.4f;
+        public string lightColour = "";        // hex, e.g. "FFB060" (empty = the class's colour)
+        public int count = 1;                   // projectiles / hits per use
+        public float spread;                    // degrees between projectiles in a fan
+        public float homing;                    // degrees per second a projectile turns towards a target (0 = flies straight)
+        public float aimAssist = -1f;           // cone in degrees that snaps aim to the nearest enemy (-1 = the default for melee / ranged)
+        public BoostShape boostShape;           // what each Boost level adds besides damage
+        public float boostStep;                 // how much per level (Count: +N projectiles, Radius: +x share, …)
     }
 
     /// A node in a class's skill tree. Costs `cost` points per rank; needs the level and the node above it.
@@ -192,6 +224,7 @@ namespace HearthHollow.Core
         public string unlockedByRouteId;    // null/empty = unlocked from start; else clear that route first
         public List<string> monsterIds = new List<string>();
         public List<string> gatherIngredientIds = new List<string>();
+        public List<string> materialIds = new List<string>();   // building materials monsters here drop (contentVersion 13)
         // ── story & gates (contentVersion 4) ──
         public int chapter;                 // > 0 = a chapter of the main story (the Ember Path); 0 = side dungeon
         public string requiredKeyItem;      // also need this key item to enter (found in another dungeon)
@@ -209,6 +242,14 @@ namespace HearthHollow.Core
     [Serializable] public class KeyItemData { public string id; public string name; public string emoji; public string description; }
 
     [Serializable] public class GearTier { public int tier; public string name; public int price; public float value; }
+
+    /// A kitchen upgrade step (contentVersion 13): station levels and meal-pantry shelves. Costs coins + dungeon materials.
+    [Serializable] public class KitchenTier
+    {
+        public int level; public string name; public int price;
+        public List<IngredientCost> materials = new List<IngredientCost>();
+        public float value;   // pantry: shelf count · station: unused (better-meal chance comes from tuning.stationJackpotPerLevel)
+    }
     // weapon value = base damage · armour value = armour points
 
     /// A trinket: worn in a trinket slot (2, a 3rd after a story chapter). Found on first clears, rare boss/elite drops,
@@ -315,6 +356,26 @@ namespace HearthHollow.Core
         public string trinketSlotRoute = "cavern";            // clearing this route opens one more slot
         public float trinketBossDrop = 0.15f, trinketEliteDrop = 0.03f;   // chance a boss / elite drops a trinket you don't own
         public float merchantTrinketChance = 0.4f;            // chance the travelling merchant has a trinket for sale
+        // ── cooking v9: grades (ingredients Plain / Fine / Prime, meals Common / Uncommon / Rare), the rarity roll, accelerators, the meal pantry ──
+        public float gradeMultUncommon = 1.25f, gradeMultRare = 1.5f;   // a meal's stats × this
+        public float jackpotChance = 0.05f;                    // chance a cooked meal lands one grade higher than rolled
+        public int mealPantrySlots = 6;                        // cooked meals kept at camp
+        // ingredient grade drops (contentVersion 14): chance per pickup that it's Fine ("Uncommon") / Prime ("Rare").
+        // Rises with each floor down and the route's difficulty; elites, bosses, perfect gathers and Lucky routes add Prime.
+        public float dropUncommon = 0.10f, dropUncommonPerFloor = 0.15f, dropUncommonPerDifficulty = 0.03f;
+        public float dropRare = 0f, dropRarePerFloor = 0.08f, dropRarePerDifficulty = 0.015f;
+        public float dropEliteRareBonus = 0.10f, dropBossRareBonus = 0.35f, dropPerfectGatherRare = 0.15f, dropLuckyRare = 0.05f;
+        public float guardDropChance = 0.25f;                 // hazard routes: a monster's ingredient drop is the matching guard accelerator (nettle, mint…)
+        public float deathKeepFraction = 0.25f;               // falling: you keep this share of each stack in the bag (fleeing / heading home keeps it all)
+        // ── kitchen upgrades (contentVersion 13) ──
+        public float stationJackpotPerLevel = 0.03f;          // each station level above 1 adds this to that station's better-meal (jackpot) chance
+        public float materialDropChance = 0.15f, materialDropPerFloor = 0.10f;   // chance a normal monster drops a building material (+ per floor down)
+        public int eliteMaterials = 1, bossMaterials = 3;      // elites always drop this many, bosses this many
+        // ── town fishing pond: one quick catch a day ──
+        public string fishIngredient = "fish";
+        public int fishCatchCount = 2;
+        public float fishGoodWidth = 0.34f, fishPerfectWidth = 0.12f;   // timing bar: good zone → Fine, perfect (centre) → Prime, else Plain
+        public float fishBarSpeed = 1.1f;
     }
 
     [Serializable] public class GameContent
@@ -340,10 +401,19 @@ namespace HearthHollow.Core
         public List<GearTier> headTiers = new List<GearTier>();    // Workshop: value = max HP (contentVersion 7)
         public List<GearTier> bootsTiers = new List<GearTier>();   // Workshop: value = move speed fraction (0.05 = +5%)
         public List<TrinketData> trinkets = new List<TrinketData>();
+        public List<KitchenTier> stationTiers = new List<KitchenTier>();   // levels 1..5 for every station (index 0 = level 1, free)
+        public List<KitchenTier> pantryTiers = new List<KitchenTier>();    // meal-pantry shelves (value = slots; index 0 = the starting size)
     }
 
     // ───────────────────────── Persistent profile ─────────────────────────
-    [Serializable] public class ItemStack { public string ingredientId; public int count; }
+    [Serializable] public class ItemStack { public string ingredientId; public int count; public int grade; }   // ingredient grade 0 Plain · 1 Fine · 2 Prime
+
+    /// A cooked meal waiting in the meal pantry (or packed on the tray). Its grade was rolled when cooked.
+    [Serializable] public class CookedMeal
+    {
+        public string recipeId; public int grade;
+        public string accelId; public int accelGrade;   // optional accelerator (empty = none); accelGrade unused (accelerators have no grade)
+    }
 
     [Serializable] public class NodeRank { public string nodeId; public int rank; }
 
@@ -382,6 +452,12 @@ namespace HearthHollow.Core
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
         public List<string> equippedTrinkets = new List<string>();  // worn, shared by every class (max = Gear.TrinketSlots)
+        public List<CookedMeal> mealPantry = new List<CookedMeal>();  // cooked meals kept at camp (saveVersion 6)
+        public List<CookedMeal> packed = new List<CookedMeal>();      // the tray: cooked meals packed for the next run (tray mirrors their recipe ids)
+        public List<int> stationTier = new List<int>();               // kitchen: index per Station (Pot, BBQ, Sandwich); 0 = level 1
+        public int pantryTier;                                        // kitchen: index into content pantryTiers
+        public int lastFishDay;                                       // town fishing pond: the day of the last catch (one catch a day)
+        public bool metWren;                                          // town: Old Wren has given her first-meeting tutorial
     }
 
     // ───────────────────────── Camp (per visit) ─────────────────────────
@@ -404,7 +480,7 @@ namespace HearthHollow.Core
         public string monsterId;        // Monster / Elite tiles
     }
 
-    [Serializable] public class EatenMeal { public string recipeId; public float potency; } // potency after diminishing returns
+    [Serializable] public class EatenMeal { public string recipeId; public float potency; public int grade; public string accelId; public int accelGrade; } // potency after diminishing returns
 
     [Serializable] public class PlayerStats   // derived, recomputed by StatCalc
     {
@@ -430,7 +506,7 @@ namespace HearthHollow.Core
         public float barSpeed;
     }
 
-    [Serializable] public class BagSlot { public string ingredientId; public int count; } // empty: ingredientId null/"" and count 0
+    [Serializable] public class BagSlot { public string ingredientId; public int count; public int grade; } // empty: ingredientId null/"" and count 0
 
     [Serializable] public partial class RunState
     {
@@ -450,6 +526,7 @@ namespace HearthHollow.Core
         public RunOutcome outcome;
         public int skillCooldown;         // carried between fights
         public List<string> trinketsDropped = new List<string>();   // trinkets dropped this run (already added to the profile)
+        public int torches = -1;          // (unused since torches went unlimited on a cooldown — kept so saves load)
     }
 
     [Serializable] public class RunSummary
@@ -465,6 +542,7 @@ namespace HearthHollow.Core
         public string keyItemFound;             // key item given by this clear (null = none)
         public string storyText;                // the route's story outro on a first clear
         public List<string> trinketsFound = new List<string>();   // trinkets found this run (drops + first-clear reward)
+        public List<ItemStack> lost = new List<ItemStack>();       // bag contents lost in a fall (contentVersion 14)
     }
 
     [Serializable] public class GameEvent

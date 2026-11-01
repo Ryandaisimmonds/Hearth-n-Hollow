@@ -14,23 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: thunder
   displayName: Thunderpuff Hills
-  floor: {fileID: 11400000, guid: 092430d832ee6467b827aed39fadc4bd, type: 2}
-  floorAlt: {fileID: 11400000, guid: deab7c8932787491d819f7d35de8edd9, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: d77078a3bc54647ce86c19cb532051b2, type: 2}
-  wallFace: {fileID: 11400000, guid: 7ece26cd12b3c4593bc32eb7e1609898, type: 2}
+  floor: {fileID: 11400000, guid: af945401f6c354c9d9da149a8b801500, type: 2}
+  floorAlt: {fileID: 11400000, guid: 7371c6ea61f924f00ae34400c56d7ec2, type: 2}
+  floorAltChance: 0.15
+  wall: {fileID: 11400000, guid: 4938c5fdd8c3343c092af5bb80b04243, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: b0c2744a7a62d49fb9fa46c1ea6c39ee, type: 2}
   decor:
-  - {fileID: 11400000, guid: 5f21e2d3f4d504706b796e548511bfe4, type: 2}
-  - {fileID: 11400000, guid: cd59ac42a861f4c7eb443a5169dff0d3, type: 2}
-  - {fileID: 11400000, guid: 8ad4cbc7564a6475dbd49b75f4810040, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: f61d41d99aa4d4332a27445f970c0d53, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  decorDensity: 0.07
   background: {r: 0.039215688, g: 0.047058824, b: 0.08627451, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.84, g: 0.87, b: 1, a: 1}
+  wallTint: {r: 0.84, g: 0.87, b: 1, a: 1}
   lightColor: {r: 0.8, g: 0.85, b: 1, a: 1}
   lightIntensity: 0.85
   playerLight: 0
+  gradeTemperature: -14
+  gradeTint: 4
+  gradeSaturation: -6
+  gradeContrast: 16
+  gradeExposure: 0
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.38
+  gradeBloom: 1.4399999
+  ambient: 1
+  ambientColor: {r: 0.6, g: 0.8, b: 1, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 5d879538dfedf4e47b5c0da75da3f827, type: 3}
   ladder: {fileID: 21300000, guid: ab5b23f849aaa4dc1aa5f8c15632b175, type: 3}

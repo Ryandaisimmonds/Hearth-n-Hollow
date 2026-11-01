@@ -14,23 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: watchtower
   displayName: Old Watchtower
-  floor: {fileID: 11400000, guid: 8b0f6102ced0c4c309314d1fd382f3bb, type: 2}
-  floorAlt: {fileID: 11400000, guid: 522221d41c98943d6b26640240581c3f, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 8714b3e24c8ff4f0bb5867a2792359dd, type: 2}
-  wallFace: {fileID: 11400000, guid: f1e4b25d8140f4dd3954ce761e9745cf, type: 2}
+  floor: {fileID: 11400000, guid: 2af0d70a25c4b4a299bb84b149166a0f, type: 2}
+  floorAlt: {fileID: 0}
+  floorAltChance: 0
+  wall: {fileID: 11400000, guid: 05c8864fd125845b788f8a319092ca70, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: a53c22f4281d347e0b9881f935aa0029, type: 2}
   decor:
-  - {fileID: 11400000, guid: 06b4818be2c4247cbb3a0ac119429255, type: 2}
-  - {fileID: 11400000, guid: 96f418d7089524e82b5c24c38000e344, type: 2}
-  - {fileID: 11400000, guid: 8bd3aa948b39e40789a3ef755dd00441, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: d870ed6993a2540d5aba2d1a18f58de3, type: 2}
+  decorDensity: 0.04
   background: {r: 0.0627451, g: 0.0627451, b: 0.07058824, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 1, g: 0.97, b: 0.92, a: 1}
+  wallTint: {r: 1, g: 0.97, b: 0.92, a: 1}
   lightColor: {r: 1, g: 0.96, b: 0.9, a: 1}
   lightIntensity: 0.9
   playerLight: 0
+  gradeTemperature: 4
+  gradeTint: 0
+  gradeSaturation: -12
+  gradeContrast: 14
+  gradeExposure: 0
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.36
+  gradeBloom: 1.2800001
+  ambient: 0
+  ambientColor: {r: 1, g: 0.9, b: 0.5, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: a7807420c40744ce29f9a6694b38c922, type: 3}
   ladder: {fileID: 21300000, guid: 1aef19910feca4552827a3fef5291b16, type: 3}

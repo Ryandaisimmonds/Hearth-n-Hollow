@@ -1,0 +1,548 @@
+fileFormatVersion: 2
+guid: bf1cd925b172e4cebb91ad25880a963e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8816868023114073708
+    second: Canine_Wolf_Idle_N_0
+  - first:
+      213: -9130857527852084974
+    second: Canine_Wolf_Idle_N_1
+  - first:
+      213: -2353641303662076934
+    second: Canine_Wolf_Idle_N_2
+  - first:
+      213: 6668189012808265832
+    second: Canine_Wolf_Idle_N_3
+  - first:
+      213: 5447200498527719350
+    second: Canine_Wolf_Idle_N_4
+  - first:
+      213: 1998846544066782574
+    second: Canine_Wolf_Idle_N_5
+  - first:
+      213: 971391550503135375
+    second: Canine_Wolf_Idle_N_6
+  - first:
+      213: 1920194873895067575
+    second: Canine_Wolf_Idle_N_7
+  - first:
+      213: -4388894406858881504
+    second: Canine_Wolf_Idle_N_8
+  - first:
+      213: 7883524656821550422
+    second: Canine_Wolf_Idle_N_9
+  - first:
+      213: -1759811429621680252
+    second: Canine_Wolf_Idle_N_10
+  - first:
+      213: -305093210664351096
+    second: Canine_Wolf_Idle_N_11
+  - first:
+      213: 1399045610000110631
+    second: Canine_Wolf_Idle_N_12
+  - first:
+      213: 5259064258855432694
+    second: Canine_Wolf_Idle_N_13
+  - first:
+      213: -5979333504450744419
+    second: Canine_Wolf_Idle_N_14
+  - first:
+      213: 2509177432800491388
+    second: Canine_Wolf_Idle_N_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_0
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 431
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c660735d0cecb5a70800000000000000
+      internalID: 8816868023114073708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_1
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 431
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 211dcada47da84180800000000000000
+      internalID: -9130857527852084974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_2
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 431
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afbd88654bf265fd0800000000000000
+      internalID: -2353641303662076934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_3
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 431
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 860799bd39a2a8c50800000000000000
+      internalID: 6668189012808265832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_4
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 303
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bf431f2ef7589b40800000000000000
+      internalID: 5447200498527719350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_5
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 303
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e652e9b67545dbb10800000000000000
+      internalID: 1998846544066782574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_6
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 303
+        width: 37
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f882e81f7731b7d00800000000000000
+      internalID: 971391550503135375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_7
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 303
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bf9a0e6017e5aa10800000000000000
+      internalID: 1920194873895067575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_8
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 175
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0264a725ac38713c0800000000000000
+      internalID: -4388894406858881504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_9
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 175
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65db1eb18e7e76d60800000000000000
+      internalID: 7883524656821550422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_10
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 175
+        width: 37
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4873ab124d4e397e0800000000000000
+      internalID: -1759811429621680252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_11
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 175
+        width: 37
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88ac7f2675714cbf0800000000000000
+      internalID: -305093210664351096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_12
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 47
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72450a0e1986a6310800000000000000
+      internalID: 1399045610000110631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_13
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 47
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f1f7086413fbf840800000000000000
+      internalID: 5259064258855432694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_14
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 47
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9f2f998bd3250da0800000000000000
+      internalID: -5979333504450744419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Canine_Wolf_Idle_N_15
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 47
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c77ff78b49362d220800000000000000
+      internalID: 2509177432800491388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Canine_Wolf_Idle_N_0: 8816868023114073708
+      Canine_Wolf_Idle_N_1: -9130857527852084974
+      Canine_Wolf_Idle_N_10: -1759811429621680252
+      Canine_Wolf_Idle_N_11: -305093210664351096
+      Canine_Wolf_Idle_N_12: 1399045610000110631
+      Canine_Wolf_Idle_N_13: 5259064258855432694
+      Canine_Wolf_Idle_N_14: -5979333504450744419
+      Canine_Wolf_Idle_N_15: 2509177432800491388
+      Canine_Wolf_Idle_N_2: -2353641303662076934
+      Canine_Wolf_Idle_N_3: 6668189012808265832
+      Canine_Wolf_Idle_N_4: 5447200498527719350
+      Canine_Wolf_Idle_N_5: 1998846544066782574
+      Canine_Wolf_Idle_N_6: 971391550503135375
+      Canine_Wolf_Idle_N_7: 1920194873895067575
+      Canine_Wolf_Idle_N_8: -4388894406858881504
+      Canine_Wolf_Idle_N_9: 7883524656821550422
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

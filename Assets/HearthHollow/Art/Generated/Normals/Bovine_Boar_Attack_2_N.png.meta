@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: cbe5eacbf22de4bd1abe5e3fdbc3eb18
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5397396223671776329
+    second: Bovine_Boar_Attack_2_N_0
+  - first:
+      213: 1913816780640829546
+    second: Bovine_Boar_Attack_2_N_1
+  - first:
+      213: 1549159968844230277
+    second: Bovine_Boar_Attack_2_N_2
+  - first:
+      213: -3235492985499575452
+    second: Bovine_Boar_Attack_2_N_3
+  - first:
+      213: -756798466142851925
+    second: Bovine_Boar_Attack_2_N_4
+  - first:
+      213: -6236555915172321064
+    second: Bovine_Boar_Attack_2_N_5
+  - first:
+      213: 168987630965616007
+    second: Bovine_Boar_Attack_2_N_6
+  - first:
+      213: 2764365746518417758
+    second: Bovine_Boar_Attack_2_N_7
+  - first:
+      213: -4387012409536418218
+    second: Bovine_Boar_Attack_2_N_8
+  - first:
+      213: 2543385000272465786
+    second: Bovine_Boar_Attack_2_N_9
+  - first:
+      213: 1373758357174184971
+    second: Bovine_Boar_Attack_2_N_10
+  - first:
+      213: 7969435678221800199
+    second: Bovine_Boar_Attack_2_N_11
+  - first:
+      213: -3344344895598511543
+    second: Bovine_Boar_Attack_2_N_12
+  - first:
+      213: -8959376116560075432
+    second: Bovine_Boar_Attack_2_N_13
+  - first:
+      213: -164429215202518029
+    second: Bovine_Boar_Attack_2_N_14
+  - first:
+      213: 5674916471117385192
+    second: Bovine_Boar_Attack_2_N_15
+  - first:
+      213: 2585843900649070620
+    second: Bovine_Boar_Attack_2_N_16
+  - first:
+      213: -2175352669303771040
+    second: Bovine_Boar_Attack_2_N_17
+  - first:
+      213: -2569844002461304769
+    second: Bovine_Boar_Attack_2_N_18
+  - first:
+      213: 8288210971931583960
+    second: Bovine_Boar_Attack_2_N_19
+  - first:
+      213: -603613872199407351
+    second: Bovine_Boar_Attack_2_N_20
+  - first:
+      213: 6260932128511392640
+    second: Bovine_Boar_Attack_2_N_21
+  - first:
+      213: -8609979812399466638
+    second: Bovine_Boar_Attack_2_N_22
+  - first:
+      213: -7418551222717995449
+    second: Bovine_Boar_Attack_2_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 944bdffc44767ea40800000000000000
+      internalID: 5397396223671776329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_1
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 431
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a60474fd83e3f8a10800000000000000
+      internalID: 1913816780640829546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58e273ba8c8bf7510800000000000000
+      internalID: 1549159968844230277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_3
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46b9706a5483913d0800000000000000
+      internalID: -3235492985499575452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_4
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bacaef20ecf4f75f0800000000000000
+      internalID: -756798466142851925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_5
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 431
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d8ea46107d4379a0800000000000000
+      internalID: -6236555915172321064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_6
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78de323ea5d585200800000000000000
+      internalID: 168987630965616007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_7
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 303
+        width: 38
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51ec7e00000d5620800000000000000
+      internalID: 2764365746518417758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_8
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65ee958f4733e13c0800000000000000
+      internalID: -4387012409536418218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_9
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7f0c4cae2beb4320800000000000000
+      internalID: 2543385000272465786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_10
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0c679682f1901310800000000000000
+      internalID: 1373758357174184971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_11
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 303
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7031cb4868f199e60800000000000000
+      internalID: 7969435678221800199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_12
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94ab57b59008691d0800000000000000
+      internalID: -3344344895598511543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_13
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 175
+        width: 38
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 855615b04e6e9a380800000000000000
+      internalID: -8959376116560075432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_14
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fb582dff74d7bdf0800000000000000
+      internalID: -164429215202518029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_15
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ed07f6a67a51ce40800000000000000
+      internalID: 5674916471117385192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_16
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c106cc6c353c2e320800000000000000
+      internalID: 2585843900649070620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_17
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 175
+        width: 39
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06073f4d5489fc1e0800000000000000
+      internalID: -2175352669303771040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_18
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 47
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f383021de74165cd0800000000000000
+      internalID: -2569844002461304769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_19
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 47
+        width: 18
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d52a7557f3a50370800000000000000
+      internalID: 8288210971931583960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_20
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 47
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9096e0e91688f97f0800000000000000
+      internalID: -603613872199407351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_21
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 47
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08b70ca599c43e650800000000000000
+      internalID: 6260932128511392640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_22
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 47
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27735ae6af4338880800000000000000
+      internalID: -8609979812399466638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bovine_Boar_Attack_2_N_23
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 47
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746aad5d7f20c0990800000000000000
+      internalID: -7418551222717995449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bovine_Boar_Attack_2_N_0: 5397396223671776329
+      Bovine_Boar_Attack_2_N_1: 1913816780640829546
+      Bovine_Boar_Attack_2_N_10: 1373758357174184971
+      Bovine_Boar_Attack_2_N_11: 7969435678221800199
+      Bovine_Boar_Attack_2_N_12: -3344344895598511543
+      Bovine_Boar_Attack_2_N_13: -8959376116560075432
+      Bovine_Boar_Attack_2_N_14: -164429215202518029
+      Bovine_Boar_Attack_2_N_15: 5674916471117385192
+      Bovine_Boar_Attack_2_N_16: 2585843900649070620
+      Bovine_Boar_Attack_2_N_17: -2175352669303771040
+      Bovine_Boar_Attack_2_N_18: -2569844002461304769
+      Bovine_Boar_Attack_2_N_19: 8288210971931583960
+      Bovine_Boar_Attack_2_N_2: 1549159968844230277
+      Bovine_Boar_Attack_2_N_20: -603613872199407351
+      Bovine_Boar_Attack_2_N_21: 6260932128511392640
+      Bovine_Boar_Attack_2_N_22: -8609979812399466638
+      Bovine_Boar_Attack_2_N_23: -7418551222717995449
+      Bovine_Boar_Attack_2_N_3: -3235492985499575452
+      Bovine_Boar_Attack_2_N_4: -756798466142851925
+      Bovine_Boar_Attack_2_N_5: -6236555915172321064
+      Bovine_Boar_Attack_2_N_6: 168987630965616007
+      Bovine_Boar_Attack_2_N_7: 2764365746518417758
+      Bovine_Boar_Attack_2_N_8: -4387012409536418218
+      Bovine_Boar_Attack_2_N_9: 2543385000272465786
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -118,6 +118,8 @@ namespace HearthHollow.UI
                 case BuffStat.GatherZonePct: return "gather";
                 case BuffStat.CoinPct: return "coinpct";
                 case BuffStat.XpPct: return "xp";
+                case BuffStat.MoveSpeedPct: return "speed";
+                case BuffStat.HealOnKill: return "heal";
             }
             return null;
         }
@@ -133,6 +135,8 @@ namespace HearthHollow.UI
                 case BuffStat.GatherZonePct: return "🧺";
                 case BuffStat.CoinPct: return "🪙";
                 case BuffStat.XpPct: return "✨";
+                case BuffStat.MoveSpeedPct: return "👟";
+                case BuffStat.HealOnKill: return "💚";
             }
             return "•";
         }

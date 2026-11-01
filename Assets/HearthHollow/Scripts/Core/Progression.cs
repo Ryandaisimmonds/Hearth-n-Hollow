@@ -173,7 +173,7 @@ namespace HearthHollow.Core
                 if (slot == LoadSlot.Skill2 && CanBorrow(c, p, cls, m)) { }
                 else if (m.owner != cls && !m.anyClass)
                     return slot == LoadSlot.Skill2 ? "Borrow it once the " + m.owner + " reaches level " + c.tuning.borrowLevel + " and has unlocked it"
-                                                   : "Only the U slot can hold another class's skill";
+                                                   : "Only the second skill slot (L) can hold another class's skill";
                 else return "Not unlocked yet";
             }
             // the K skill into U only works as a swap with a skill K can hold (not empty, not borrowed)

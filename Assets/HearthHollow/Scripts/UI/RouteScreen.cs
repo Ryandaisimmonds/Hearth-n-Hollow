@@ -259,6 +259,14 @@ namespace HearthHollow.UI
                     chip.tooltip = "Forage: " + UIKit.IngName(C, ing);
                     row.Add(chip);
                 }
+            if (r.materialIds != null)
+                for (int k = 0; k < r.materialIds.Count; k++)
+                {
+                    string mat = r.materialIds[k];
+                    var chip = Art.Framed(Art.Pic(ArtLibrary.GetIngredient(mat), UIKit.IngEmoji(C, mat), "route-big__forage-pic"), "item-frame--sm", "route-big__forage-chip", "route-big__material-chip");
+                    chip.tooltip = "Building material (monsters drop it): " + UIKit.IngName(C, mat);
+                    row.Add(chip);
+                }
             card.Add(row);
 
             // today's modifier / why it's shut
@@ -335,17 +343,18 @@ namespace HearthHollow.UI
             {
                 var hz = UIKit.E("expedition__section", "expedition__hazard");
                 hz.Add(UIKit.L(Routes.HazardEmoji(r.hazard) + " " + Routes.HazardName(r.hazard) + " — " + Routes.HazardEffect(r.hazard) + " the whole way down", "subhead"));
-                var eaten = Meals.TrayToMeals(C, p.tray);
-                int n = Routes.CounterMeals(C, eaten, r.hazard);
+                var eaten = Cooking.Packed(C, p);
+                float n = Routes.CounterMeals(C, eaten, r.hazard);
                 float mit = Routes.Mitigation(C, S.Profile, eaten, r.hazard);
-                string state = mit >= 0.999f ? "Fully protected — " + n + " counter meals packed." :
-                               mit > 0f ? n + " counter meal packed: " + UIKit.Pct(mit) + " less. Pack one more to stop it." :
-                               r.hazard == Hazard.Darkness ? "No glowcap dish packed: you'll only see a few steps around you." :
-                               "No counter meal packed: it'll wear you down (it can't take you below 1 HP, but monsters can).";
+                string state = mit >= 0.999f ? "Fully protected." :
+                               mit > 0f ? "Partly protected: " + UIKit.Pct(mit) + " less. Pack another guard to stop it." :
+                               r.hazard == Hazard.Darkness ? "No glowcap guard packed: you'll only see a few steps around you." :
+                               "No guard packed: it'll wear you down (it can't take you below 1 HP, but monsters can).";
                 hz.Add(UIKit.L(state, "small", mit >= 0.999f ? "expedition__ok" : "expedition__warn"));
                 var names = new List<string>();
                 foreach (var rec in Routes.CounterRecipes(C, r.hazard)) names.Add(rec.emoji + " " + rec.name);
-                hz.Add(UIKit.L("Helps: " + string.Join(", ", names.ToArray()), "small", "expedition__note"));
+                foreach (var ing in Routes.CounterAccelerators(C, r.hazard)) names.Add(ing.emoji + " " + ing.name + " in a meal's accelerator slot");
+                hz.Add(UIKit.L("Helps: " + string.Join(", ", names.ToArray()) + " (one halves it, two stop it)", "small", "expedition__note"));
                 _expedition.Add(hz);
             }
 
@@ -390,21 +399,23 @@ namespace HearthHollow.UI
             }
             else
             {
+                var packed = Cooking.Packed(C, p);
                 for (int i = 0; i < p.tray.Count; i++)
                 {
                     var rec = C.Recipe(p.tray[i]);
-                    float pot = Meals.TrayPotency(C, p.tray, i);
+                    var pm = i < packed.Count ? packed[i] : null;
                     var row = UIKit.E("expedition__meal");
                     row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(p.tray[i]), rec != null ? rec.emoji : "🍽️", "expedition__meal-pic"), "item-frame--sm"));
-                    string tag = rec != null && rec.counters != Hazard.None ? "  " + Routes.HazardEmoji(rec.counters) + "✓" : "";
-                    row.Add(UIKit.L((rec != null ? rec.name : p.tray[i]) + tag, "expedition__meal-name"));
-                    if (rec != null) row.Add(UIKit.L(UIKit.BuffSummary(rec.buffs, Meals.ClassMult(cls, rec) * pot) + (Meals.IsFavourite(cls, rec) ? " ⭐" : ""), "expedition__meal-buffs"));
+                    var acc = pm != null && !string.IsNullOrEmpty(pm.accelId) ? C.Ingredient(pm.accelId) : null;
+                    string tag = acc != null && acc.accelGuard != Hazard.None ? "  " + Routes.HazardEmoji(acc.accelGuard) + "✓" : "";
+                    row.Add(UIKit.L((pm != null ? Cooking.GradeGem(pm.grade) + " " : "") + (rec != null ? rec.name : p.tray[i]) + (acc != null ? " + " + acc.emoji : "") + tag, "expedition__meal-name"));
+                    if (rec != null && pm != null) row.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, pm)) + (Meals.IsFavourite(cls, rec) ? " ⭐" : ""), "expedition__meal-buffs"));
                     mealBox.Add(row);
                 }
-                var syns = Meals.ActiveSynergies(C, Meals.TrayToMeals(C, p.tray));
+                var syns = Meals.ActiveSynergies(C, packed);
                 for (int i = 0; i < syns.Count; i++)
                     mealBox.Add(UIKit.L(syns[i].emoji + " " + syns[i].name + " — " + syns[i].description, "badge", "badge--synergy", "combo-badge"));
-                mealBox.Add(UIKit.L("Meals are eaten and their ingredients used as you enter.", "muted", "small", "expedition__note"));
+                mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
             }
             _expedition.Add(mealBox);
 

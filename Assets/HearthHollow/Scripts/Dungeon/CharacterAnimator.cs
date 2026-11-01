@@ -43,7 +43,7 @@ namespace HearthHollow.Dungeon
             Renderer = GetComponent<SpriteRenderer>();
             Sprite first = a != null ? a.Frame(0, 0, 0) : null;
             float spritePpu = first != null ? first.pixelsPerUnit : 100f;
-            float scale = spritePpu / Mathf.Max(1f, pixelsPerUnit) * sizeMult;
+            float scale = spritePpu / Mathf.Max(1f, pixelsPerUnit) * sizeMult * (a != null && a.scale > 0f ? a.scale : 1f);   // small packs draw bigger
             transform.localScale = new Vector3(scale, scale, 1f);
 
             // put the figure's feet (bottom of the crop) on the parent's origin, centred horizontally

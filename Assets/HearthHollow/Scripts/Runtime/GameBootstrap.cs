@@ -49,7 +49,10 @@ namespace HearthHollow.Runtime
             _ui = new GameUI(Session, root, firstLaunch);
 
             if (dungeon != null)
+            {
                 gameObject.AddComponent<HearthHollow.Dungeon.DungeonController>().Init(Session, _ui, dungeon);
+                gameObject.AddComponent<HearthHollow.Town.TownController>().Init(Session, _ui, dungeon);   // Hearth's Hollow (town preview)
+            }
             else
             {
                 Session.UseDungeon = false;   // no dungeon kit yet: fall back to the fog-grid runs

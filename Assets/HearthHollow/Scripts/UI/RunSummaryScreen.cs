@@ -86,7 +86,7 @@ namespace HearthHollow.UI
                     var t = Gear.Trinket(C, id);
                     if (t == null) continue;
                     tr.Add(UIKit.L("💍 Trinket found: " + t.emoji + " " + t.name, "subhead", "summary__key"));
-                    tr.Add(UIKit.L(Gear.EffectText(C, t) + (Gear.Worn(S.Profile, id) ? " — wearing it now" : " — wear it in the Workshop"), "small", "muted"));
+                    tr.Add(UIKit.L(Gear.EffectText(C, t) + (Gear.Worn(S.Profile, id) ? " — wearing it now" : " — wear it in Upgrades"), "small", "muted"));
                 }
                 _body.Add(tr);
             }
@@ -128,11 +128,19 @@ namespace HearthHollow.UI
                     var g = s.goods[i];
                     var item = UIKit.E("pantry-item");
                     item.Add(Art.Framed(Art.Pic(ArtLibrary.GetIngredient(g.ingredientId), UIKit.IngEmoji(C, g.ingredientId), "pantry-item__emoji"), "item-frame--sm"));
-                    item.Add(UIKit.L(UIKit.IngName(C, g.ingredientId), "pantry-item__name"));
+                    bool mat = HearthHollow.Core.Kitchen.IsMaterial(C, g.ingredientId);
+                    item.Add(UIKit.L((mat ? "" : HearthHollow.Core.Cooking.GradeGem(g.grade) + " ") + UIKit.IngName(C, g.ingredientId), "pantry-item__name"));
                     item.Add(UIKit.L("×" + g.count, "pantry-item__count"));
+                    if (!mat) item.AddToClassList("pantry-item--grade-" + g.grade);
                     row.Add(item);
                 }
             goods.Add(row);
+            if (s.lost != null && s.lost.Count > 0)
+            {
+                var lost = new System.Collections.Generic.List<string>();
+                foreach (var l in s.lost) lost.Add(l.count + "× " + (HearthHollow.Core.Kitchen.IsMaterial(C, l.ingredientId) ? "" : HearthHollow.Core.Cooking.GradeGem(l.grade) + " ") + UIKit.IngName(C, l.ingredientId));
+                goods.Add(UIKit.L("💀 Lost in the fall: " + string.Join(", ", lost.ToArray()), "small", "summary__lost"));
+            }
             _body.Add(goods);
 
             if (s.unlockedRouteIds != null && s.unlockedRouteIds.Count > 0)

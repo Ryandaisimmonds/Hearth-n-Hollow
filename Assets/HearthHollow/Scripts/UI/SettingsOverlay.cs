@@ -14,7 +14,9 @@ namespace HearthHollow.UI
         public const int DevIngredientCount = 99;
 
         readonly ConfirmButton _reset, _flee;
-        readonly VisualElement _runSection;
+        readonly VisualElement _runSection, _townSection;
+        readonly Button _townBtn;
+        readonly Label _townHint;
 
         public SettingsOverlay(GameUI ui) : base(ui, "overlay", "settings")
         {
@@ -33,6 +35,15 @@ namespace HearthHollow.UI
             _runSection.Add(_flee.Button);
             _runSection.Add(UIKit.L("The dungeon is paused while this menu is open.", "muted", "small", "settings__hint"));
             box.Add(_runSection);
+
+            // ── Hearth's Hollow: the walkable town, in preview until it does everything the camp does ──
+            _townSection = UIKit.E("settings__section");
+            _townSection.Add(UIKit.L("Hearth's Hollow (preview)", "subhead"));
+            _townBtn = UIKit.B("", () => { if (Ui.TownOpen) Ui.CloseTown(); else Ui.OpenTown(); Ui.CloseSettings(); }, "btn--secondary", "settings__btn");
+            _townSection.Add(_townBtn);
+            _townHint = UIKit.L("", "muted", "small", "settings__hint");
+            _townSection.Add(_townHint);
+            box.Add(_townSection);
 
             // ── Game ──
             var game = UIKit.E("settings__section");
@@ -58,8 +69,42 @@ namespace HearthHollow.UI
                 row3.Add(Art.IconButton("map", "📖", "Skip story chapter", () => S.DevClearChapter(), "btn--primary", "settings__btn"));
                 row3.Add(Art.IconButton("trophy", "🗝️", "All key items", () => S.DevGiveKeyItems(), "btn--primary", "settings__btn"));
                 dev.Add(row3);
+                var row3b = UIKit.E("settings__row");
+                row3b.Add(UIKit.B("📖 Reset story chapters", () => S.DevResetStory(), "btn--secondary", "btn--small", "settings__btn"));
+                row3b.Add(UIKit.B("🪵 +20 building materials", () => S.DevGiveMaterials(20), "btn--secondary", "btn--small", "settings__btn"));
+                dev.Add(row3b);
+
+                // ── today: weather & visitors (also what the town shows) ──
+                dev.Add(UIKit.L("Today's weather / event", "small", "settings__devhead"));
+                var wx = UIKit.E("settings__row");
+                wx.Add(UIKit.B("☀️ Calm", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.None), "btn--secondary", "btn--small", "settings__btn"));
+                wx.Add(UIKit.B("🌧️ Storm", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.Storm), "btn--secondary", "btn--small", "settings__btn"));
+                wx.Add(UIKit.B("🌕 Harvest moon", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.HarvestMoon), "btn--secondary", "btn--small", "settings__btn"));
+                dev.Add(wx);
+                var vis = UIKit.E("settings__row");
+                vis.Add(UIKit.B("🛒 Merchant", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.Merchant), "btn--secondary", "btn--small", "settings__btn"));
+                vis.Add(UIKit.B("🛡️ Armourer", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.Armourer), "btn--secondary", "btn--small", "settings__btn"));
+                vis.Add(UIKit.B("🧺 Forager", () => S.DevSetCampEvent(HearthHollow.Core.CampEvent.Forager), "btn--secondary", "btn--small", "settings__btn"));
+                vis.Add(UIKit.B("➡️ Next day", () => S.DevNewDay(), "btn--secondary", "btn--small", "settings__btn"));
+                dev.Add(vis);
+
+                // ── town & kitchen ──
+                dev.Add(UIKit.L("Town & kitchen", "small", "settings__devhead"));
+                var tw = UIKit.E("settings__row");
+                tw.Add(UIKit.B("🎣 Fish again today", () => S.DevResetFishing(), "btn--secondary", "btn--small", "settings__btn"));
+                tw.Add(UIKit.B("👵 Meet Old Wren again", () => S.DevResetWren(), "btn--secondary", "btn--small", "settings__btn"));
+                dev.Add(tw);
+                var kt = UIKit.E("settings__row");
+                kt.Add(UIKit.B("🔨 Kitchen: max all", () => S.DevKitchen(true), "btn--secondary", "btn--small", "settings__btn"));
+                kt.Add(UIKit.B("🔨 Kitchen: back to level 1", () => S.DevKitchen(false), "btn--secondary", "btn--small", "settings__btn"));
+                dev.Add(kt);
+
                 dev.Add(UIKit.L("Only shown in the Unity editor and development builds.", "muted", "small", "settings__hint"));
-                box.Add(dev);
+                var devScroll = new ScrollView(ScrollViewMode.Vertical);
+                devScroll.AddToClassList("settings__devscroll");
+                devScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+                devScroll.Add(dev);
+                box.Add(devScroll);
             }
         }
 
@@ -69,6 +114,9 @@ namespace HearthHollow.UI
         {
             var p = S.Phase;
             UIKit.Show(_runSection, S.Run != null && p != HearthHollow.Core.Phase.Hearth && p != HearthHollow.Core.Phase.RunEnd);
+            UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null);
+            _townBtn.text = Ui.TownOpen ? "🏕️ Back to the camp screen" : "🏘️ Visit Hearth's Hollow";
+            _townHint.text = Ui.TownOpen ? "Leave the town preview and go back to the usual camp screen." : "A walkable town that will replace the camp screen once it's finished. Uses your real save.";
         }
 
         public override bool HandleKey(KeyCode key)

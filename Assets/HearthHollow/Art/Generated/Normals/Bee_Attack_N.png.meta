@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 69fae2d2778564f259348d73a961c406
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3050488862528867098
+    second: Bee_Attack_N_0
+  - first:
+      213: -6352247391764625735
+    second: Bee_Attack_N_1
+  - first:
+      213: 8310975837741419183
+    second: Bee_Attack_N_2
+  - first:
+      213: -1563272174105081794
+    second: Bee_Attack_N_3
+  - first:
+      213: -4559671556496026355
+    second: Bee_Attack_N_4
+  - first:
+      213: 2723826776444127430
+    second: Bee_Attack_N_5
+  - first:
+      213: -878038094631732680
+    second: Bee_Attack_N_6
+  - first:
+      213: -5871036416891629450
+    second: Bee_Attack_N_7
+  - first:
+      213: -5201323523661325689
+    second: Bee_Attack_N_8
+  - first:
+      213: 4333361260164111053
+    second: Bee_Attack_N_9
+  - first:
+      213: -5593219197384697020
+    second: Bee_Attack_N_10
+  - first:
+      213: 6459213785063392447
+    second: Bee_Attack_N_11
+  - first:
+      213: -3977813976540575922
+    second: Bee_Attack_N_12
+  - first:
+      213: -1009148987350593007
+    second: Bee_Attack_N_13
+  - first:
+      213: -5819826819524117271
+    second: Bee_Attack_N_14
+  - first:
+      213: 3969451203011381426
+    second: Bee_Attack_N_15
+  - first:
+      213: -797232934096259752
+    second: Bee_Attack_N_16
+  - first:
+      213: 1637196163607548597
+    second: Bee_Attack_N_17
+  - first:
+      213: -6995599769682762559
+    second: Bee_Attack_N_18
+  - first:
+      213: 6604978239872138269
+    second: Bee_Attack_N_19
+  - first:
+      213: -8254091561334498245
+    second: Bee_Attack_N_20
+  - first:
+      213: -4511553800757863156
+    second: Bee_Attack_N_21
+  - first:
+      213: -1113027736340558978
+    second: Bee_Attack_N_22
+  - first:
+      213: 1617480518060775807
+    second: Bee_Attack_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bee_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 440
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e47eadaa8c7aa5d0800000000000000
+      internalID: -3050488862528867098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 438
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b6c77027a848d7a0800000000000000
+      internalID: -6352247391764625735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 437
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faa8e61bd74865370800000000000000
+      internalID: 8310975837741419183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 439
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e38c63f7d342e4ae0800000000000000
+      internalID: -1563272174105081794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 439
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d051a96a0eac8b0c0800000000000000
+      internalID: -4559671556496026355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 442
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c846af850afcc520800000000000000
+      internalID: 2723826776444127430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 309
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83af636410590d3f0800000000000000
+      internalID: -878038094631732680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 308
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 670dac32c73e58ea0800000000000000
+      internalID: -5871036416891629450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 308
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a984220df21d7b0800000000000000
+      internalID: -5201323523661325689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 309
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dca55836b11332c30800000000000000
+      internalID: 4333361260164111053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 309
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44b5dfc26c4e062b0800000000000000
+      internalID: -5593219197384697020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 313
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb4820317bcb3a950800000000000000
+      internalID: 6459213785063392447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 181
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4707b18347fbc8c0800000000000000
+      internalID: -3977813976540575922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 180
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112d58bb758cef1f0800000000000000
+      internalID: -1009148987350593007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ec39f7a752db3fa0800000000000000
+      internalID: -5819826819524117271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 181
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b88dbc86d2561730800000000000000
+      internalID: 3969451203011381426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 572
+        y: 181
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85533ffced8afe4f0800000000000000
+      internalID: -797232934096259752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 185
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b2d57f8c3d78b610800000000000000
+      internalID: 1637196163607548597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 53
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c42141e213aaee90800000000000000
+      internalID: -6995599769682762559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 55
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c73c8e6b899ab50800000000000000
+      internalID: 6604978239872138269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 56
+        width: 12
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3c9b1ff473937d80800000000000000
+      internalID: -8254091561334498245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 53
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0d93c0b8bdb361c0800000000000000
+      internalID: -4511553800757863156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 53
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7b834ebb2bbd80f0800000000000000
+      internalID: -1113027736340558978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 56
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f79902e16f1727610800000000000000
+      internalID: 1617480518060775807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bee_Attack_N_0: -3050488862528867098
+      Bee_Attack_N_1: -6352247391764625735
+      Bee_Attack_N_10: -5593219197384697020
+      Bee_Attack_N_11: 6459213785063392447
+      Bee_Attack_N_12: -3977813976540575922
+      Bee_Attack_N_13: -1009148987350593007
+      Bee_Attack_N_14: -5819826819524117271
+      Bee_Attack_N_15: 3969451203011381426
+      Bee_Attack_N_16: -797232934096259752
+      Bee_Attack_N_17: 1637196163607548597
+      Bee_Attack_N_18: -6995599769682762559
+      Bee_Attack_N_19: 6604978239872138269
+      Bee_Attack_N_2: 8310975837741419183
+      Bee_Attack_N_20: -8254091561334498245
+      Bee_Attack_N_21: -4511553800757863156
+      Bee_Attack_N_22: -1113027736340558978
+      Bee_Attack_N_23: 1617480518060775807
+      Bee_Attack_N_3: -1563272174105081794
+      Bee_Attack_N_4: -4559671556496026355
+      Bee_Attack_N_5: 2723826776444127430
+      Bee_Attack_N_6: -878038094631732680
+      Bee_Attack_N_7: -5871036416891629450
+      Bee_Attack_N_8: -5201323523661325689
+      Bee_Attack_N_9: 4333361260164111053
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

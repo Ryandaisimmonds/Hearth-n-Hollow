@@ -132,11 +132,18 @@ namespace HearthHollow.Core
         }
 
         // ───────────── hazards ─────────────
-        public static int CounterMeals(GameContent c, List<EatenMeal> eaten, Hazard h)
+        /// How many counter meals are eaten against a hazard: a meal that counters it, or a meal with a guarding accelerator, counts 1.
+        public static float CounterMeals(GameContent c, List<EatenMeal> eaten, Hazard h)
         {
             if (h == Hazard.None || eaten == null) return 0;
-            int n = 0;
-            foreach (var m in eaten) { var r = c.Recipe(m.recipeId); if (r != null && r.counters == h) n++; }
+            float n = 0;
+            foreach (var m in eaten)
+            {
+                var r = c.Recipe(m.recipeId);
+                if (r != null && r.counters == h) n++;
+                var a = string.IsNullOrEmpty(m.accelId) ? null : c.Ingredient(m.accelId);
+                if (a != null && a.accelGuard == h) n += 1f;
+            }
             return n;
         }
 
@@ -161,8 +168,9 @@ namespace HearthHollow.Core
         /// What helps: "nettle dishes (antidote)".
         public static string CounterHint(Hazard h)
         {
-            return h == Hazard.Poison ? "nettle dishes (antidote)" : h == Hazard.Cold ? "ginger dishes (warming)" : h == Hazard.Heat ? "mint dishes (cooling)" :
-                   h == Hazard.Darkness ? "glowcap dishes (light)" : "";
+            return h == Hazard.Poison ? "a meal with nettle in its accelerator slot (antidote)" : h == Hazard.Cold ? "a meal with ginger in its accelerator slot (warming)" :
+                   h == Hazard.Heat ? "a meal with mint in its accelerator slot (cooling)" :
+                   h == Hazard.Darkness ? "a meal with glowcap in its accelerator slot (light)" : "";
         }
 
         public static string HazardEffect(Hazard h)
@@ -212,6 +220,12 @@ namespace HearthHollow.Core
         public static List<RecipeData> CounterRecipes(GameContent c, Hazard h)
         {
             return c.recipes.FindAll(r => h != Hazard.None && r.counters == h);
+        }
+
+        /// Accelerators that guard against a hazard (put one in any meal's accelerator slot).
+        public static List<IngredientData> CounterAccelerators(GameContent c, Hazard h)
+        {
+            return c.ingredients.FindAll(i => h != Hazard.None && i.accelGuard == h);
         }
     }
 }

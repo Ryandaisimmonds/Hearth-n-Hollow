@@ -13,7 +13,7 @@ namespace HearthHollow.Core
 
         private static void Normalise(BagSlot s)
         {
-            if (IsEmpty(s)) { s.ingredientId = ""; s.count = 0; }
+            if (IsEmpty(s)) { s.ingredientId = ""; s.count = 0; s.grade = 0; }
         }
 
         public static void Init(RunState run, int slots)
@@ -22,7 +22,7 @@ namespace HearthHollow.Core
             for (int i = 0; i < slots; i++) run.bag.Add(new BagSlot { ingredientId = "", count = 0 });
         }
 
-        public static int Add(RunState run, string ingredientId, int count, int stackSize)
+        public static int Add(RunState run, string ingredientId, int count, int stackSize, int grade = 0)
         {
             if (string.IsNullOrEmpty(ingredientId) || count <= 0) return 0;
             if (stackSize < 1) stackSize = 1;
@@ -32,7 +32,7 @@ namespace HearthHollow.Core
                 BagSlot s = run.bag[i];
                 if (s == null) { s = new BagSlot(); run.bag[i] = s; }
                 Normalise(s);
-                if (s.ingredientId == ingredientId && s.count < stackSize)
+                if (s.ingredientId == ingredientId && s.grade == grade && s.count < stackSize)
                 {
                     int n = Math.Min(left, stackSize - s.count);
                     s.count += n; left -= n;
@@ -44,7 +44,7 @@ namespace HearthHollow.Core
                 if (IsEmpty(s))
                 {
                     int n = Math.Min(left, stackSize);
-                    s.ingredientId = ingredientId; s.count = n; left -= n;
+                    s.ingredientId = ingredientId; s.count = n; s.grade = grade; left -= n;
                 }
             }
             return left;
@@ -58,7 +58,7 @@ namespace HearthHollow.Core
             if (b == null) { b = new BagSlot(); run.bag[to] = b; }
             Normalise(a); Normalise(b);
             if (IsEmpty(a)) return;
-            if (!IsEmpty(b) && a.ingredientId == b.ingredientId && b.count < stackSize)
+            if (!IsEmpty(b) && a.ingredientId == b.ingredientId && a.grade == b.grade && b.count < stackSize)
             {
                 int n = Math.Min(a.count, stackSize - b.count);
                 b.count += n; a.count -= n;
@@ -98,8 +98,8 @@ namespace HearthHollow.Core
             {
                 BagSlot s = run.bag[i];
                 if (IsEmpty(s)) continue;
-                ItemStack st = list.Find(x => x.ingredientId == s.ingredientId);
-                if (st == null) list.Add(new ItemStack { ingredientId = s.ingredientId, count = s.count });
+                ItemStack st = list.Find(x => x.ingredientId == s.ingredientId && x.grade == s.grade);
+                if (st == null) list.Add(new ItemStack { ingredientId = s.ingredientId, count = s.count, grade = s.grade });
                 else st.count += s.count;
             }
             return list;

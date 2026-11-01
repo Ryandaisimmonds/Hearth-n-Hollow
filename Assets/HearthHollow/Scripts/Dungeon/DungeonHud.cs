@@ -23,6 +23,14 @@ namespace HearthHollow.Dungeon
         public static string BuffText;        // e.g. "🛡 Guard  📯 Fury" (null = none)
         public static HearthHollow.Core.MoveData Skill1Move, Skill2Move, DashMove;   // what's in K / U / Space
         public static float Skill2_01 = 1f;
+        public static HearthHollow.Core.MoveData AttackMove;   // what's on left click / J
+        public static float Attack01 = 1f;
+        public static HearthHollow.Core.MoveData UltMove;   // the class's ultimate (C / I)
+        public static float Ult01;
+        public static float TorchCooldown;    // seconds until you can throw another torch (T / LB)
+        public static float Torch01 = 1f;     // 1 = ready
+        public static float FlareCooldown;
+        public static int BoostPoints, BoostMax = 5, BoostSel;   // Break & Boost (step 8)    // seconds until Flare is ready (F / LT)
         public static string Prompt;          // e.g. "E  Forage" (null = none)
         public static string Status;          // e.g. "Clear the room!"
         public static bool Locked;            // doors shut

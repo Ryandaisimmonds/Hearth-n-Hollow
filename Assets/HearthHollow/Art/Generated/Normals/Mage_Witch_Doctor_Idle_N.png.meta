@@ -1,0 +1,548 @@
+fileFormatVersion: 2
+guid: b90e26d4bb05043db9d826f26e04d7bd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5016839566418773584
+    second: Mage_Witch_Doctor_Idle_N_0
+  - first:
+      213: -1252887372942621177
+    second: Mage_Witch_Doctor_Idle_N_1
+  - first:
+      213: 8765741015285391667
+    second: Mage_Witch_Doctor_Idle_N_2
+  - first:
+      213: -2805478677002298216
+    second: Mage_Witch_Doctor_Idle_N_3
+  - first:
+      213: -3961783876559263533
+    second: Mage_Witch_Doctor_Idle_N_4
+  - first:
+      213: -1559534320762561012
+    second: Mage_Witch_Doctor_Idle_N_5
+  - first:
+      213: -3201179137998054384
+    second: Mage_Witch_Doctor_Idle_N_6
+  - first:
+      213: -1705848269524199292
+    second: Mage_Witch_Doctor_Idle_N_7
+  - first:
+      213: -2133596136040490965
+    second: Mage_Witch_Doctor_Idle_N_8
+  - first:
+      213: 3811913694894630355
+    second: Mage_Witch_Doctor_Idle_N_9
+  - first:
+      213: 2478372948597428173
+    second: Mage_Witch_Doctor_Idle_N_10
+  - first:
+      213: 606424602142809788
+    second: Mage_Witch_Doctor_Idle_N_11
+  - first:
+      213: -6971312243606945580
+    second: Mage_Witch_Doctor_Idle_N_12
+  - first:
+      213: -7387434861463236199
+    second: Mage_Witch_Doctor_Idle_N_13
+  - first:
+      213: -3411834354522457624
+    second: Mage_Witch_Doctor_Idle_N_14
+  - first:
+      213: -378505733596316582
+    second: Mage_Witch_Doctor_Idle_N_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 431
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 056048b51056f9540800000000000000
+      internalID: 5016839566418773584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 431
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 706ce288299dc9ee0800000000000000
+      internalID: -1252887372942621177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_2
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 431
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3316821b20b26a970800000000000000
+      internalID: 8765741015285391667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_3
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 431
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89c5850e100f019d0800000000000000
+      internalID: -2805478677002298216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_4
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 303
+        width: 37
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d8a0d00e8ae409c0800000000000000
+      internalID: -3961783876559263533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_5
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 303
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0edaeb4ccb6b5ae0800000000000000
+      internalID: -1559534320762561012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_6
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 303
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01c1c39d8802393d0800000000000000
+      internalID: -3201179137998054384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 303
+        width: 37
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4889b4e690c9358e0800000000000000
+      internalID: -1705848269524199292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_8
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 37
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2819295e91f362e0800000000000000
+      internalID: -2133596136040490965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_9
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 175
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d524a22f43a6e430800000000000000
+      internalID: 3811913694894630355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_10
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 175
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf4616d013f46220800000000000000
+      internalID: 2478372948597428173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_11
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 37
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbe97c176f37a6800800000000000000
+      internalID: 606424602142809788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_12
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 47
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d00a75337ce04f90800000000000000
+      internalID: -6971312243606945580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_13
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 47
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9919521422f8a7990800000000000000
+      internalID: -7387434861463236199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_14
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 47
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e9f6323bbab6a0d0800000000000000
+      internalID: -3411834354522457624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Idle_N_15
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 47
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5cfa8b6a074fbaf0800000000000000
+      internalID: -378505733596316582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Witch_Doctor_Idle_N_0: 5016839566418773584
+      Mage_Witch_Doctor_Idle_N_1: -1252887372942621177
+      Mage_Witch_Doctor_Idle_N_10: 2478372948597428173
+      Mage_Witch_Doctor_Idle_N_11: 606424602142809788
+      Mage_Witch_Doctor_Idle_N_12: -6971312243606945580
+      Mage_Witch_Doctor_Idle_N_13: -7387434861463236199
+      Mage_Witch_Doctor_Idle_N_14: -3411834354522457624
+      Mage_Witch_Doctor_Idle_N_15: -378505733596316582
+      Mage_Witch_Doctor_Idle_N_2: 8765741015285391667
+      Mage_Witch_Doctor_Idle_N_3: -2805478677002298216
+      Mage_Witch_Doctor_Idle_N_4: -3961783876559263533
+      Mage_Witch_Doctor_Idle_N_5: -1559534320762561012
+      Mage_Witch_Doctor_Idle_N_6: -3201179137998054384
+      Mage_Witch_Doctor_Idle_N_7: -1705848269524199292
+      Mage_Witch_Doctor_Idle_N_8: -2133596136040490965
+      Mage_Witch_Doctor_Idle_N_9: 3811913694894630355
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

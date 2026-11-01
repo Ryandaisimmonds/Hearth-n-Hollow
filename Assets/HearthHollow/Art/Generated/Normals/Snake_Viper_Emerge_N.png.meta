@@ -1,0 +1,730 @@
+fileFormatVersion: 2
+guid: 8d4103a297c904181ba69ccc1ecd4160
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6494974027873867809
+    second: Snake_Viper_Emerge_N_0
+  - first:
+      213: 8069813298473132192
+    second: Snake_Viper_Emerge_N_1
+  - first:
+      213: 553383284263771683
+    second: Snake_Viper_Emerge_N_2
+  - first:
+      213: -3160312366775785523
+    second: Snake_Viper_Emerge_N_3
+  - first:
+      213: -850857368268369264
+    second: Snake_Viper_Emerge_N_4
+  - first:
+      213: -4210264228059927921
+    second: Snake_Viper_Emerge_N_5
+  - first:
+      213: -5085001872810372143
+    second: Snake_Viper_Emerge_N_6
+  - first:
+      213: 1130053716648506556
+    second: Snake_Viper_Emerge_N_7
+  - first:
+      213: 7619997447994854236
+    second: Snake_Viper_Emerge_N_8
+  - first:
+      213: 7037398548594874053
+    second: Snake_Viper_Emerge_N_9
+  - first:
+      213: 7338848344049857863
+    second: Snake_Viper_Emerge_N_10
+  - first:
+      213: -548284487512128610
+    second: Snake_Viper_Emerge_N_11
+  - first:
+      213: -4149580272409119196
+    second: Snake_Viper_Emerge_N_12
+  - first:
+      213: 4694746378972572486
+    second: Snake_Viper_Emerge_N_13
+  - first:
+      213: 5697390993386880986
+    second: Snake_Viper_Emerge_N_14
+  - first:
+      213: -4387899892347958417
+    second: Snake_Viper_Emerge_N_15
+  - first:
+      213: -7195363716704178353
+    second: Snake_Viper_Emerge_N_16
+  - first:
+      213: 6160599779681597877
+    second: Snake_Viper_Emerge_N_17
+  - first:
+      213: 6744436029673312687
+    second: Snake_Viper_Emerge_N_18
+  - first:
+      213: 7388222292281485041
+    second: Snake_Viper_Emerge_N_19
+  - first:
+      213: 6385852936261264526
+    second: Snake_Viper_Emerge_N_20
+  - first:
+      213: -8353591381566081119
+    second: Snake_Viper_Emerge_N_21
+  - first:
+      213: -6216691182003325880
+    second: Snake_Viper_Emerge_N_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_0
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 432
+        width: 139
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1285fcc6778c22a50800000000000000
+      internalID: 6494974027873867809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_1
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 432
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a0e633707cbdff60800000000000000
+      internalID: 8069813298473132192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_2
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 430
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32e5e234a230ea700800000000000000
+      internalID: 553383284263771683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_3
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 429
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc72e0f75a05424d0800000000000000
+      internalID: -3160312366775785523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_4
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 429
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09217d94bb52134f0800000000000000
+      internalID: -850857368268369264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_5
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 303
+        width: 13
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8a24f3ddf22295c0800000000000000
+      internalID: -4210264228059927921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_6
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 303
+        width: 19
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d311f8fcb17e69b0800000000000000
+      internalID: -5085001872810372143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_7
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 303
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb4b1f53ed1ceaf00800000000000000
+      internalID: 1130053716648506556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_8
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 303
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5bcd157e4bafb960800000000000000
+      internalID: 7619997447994854236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_9
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 303
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c6d8d7b1bcd9a160800000000000000
+      internalID: 7037398548594874053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_10
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 303
+        width: 23
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7453e8f9fa3d8d560800000000000000
+      internalID: 7338848344049857863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_11
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 175
+        width: 13
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e938bfdd92a1468f0800000000000000
+      internalID: -548284487512128610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_12
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 175
+        width: 19
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 426f5184abab966c0800000000000000
+      internalID: -4149580272409119196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_13
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 175
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64b263535f6172140800000000000000
+      internalID: 4694746378972572486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_14
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 175
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adfb5532ce2311f40800000000000000
+      internalID: 5697390993386880986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_15
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 175
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6b00a6cb4c0b13c0800000000000000
+      internalID: -4387899892347958417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_16
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 175
+        width: 23
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4fec1482dee42c90800000000000000
+      internalID: -7195363716704178353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_17
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 47
+        width: 12
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b9754ffbd8de7550800000000000000
+      internalID: 6160599779681597877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_18
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 48
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa1160fd5dc099d50800000000000000
+      internalID: 6744436029673312687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_19
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 48
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f66f05c70d388660800000000000000
+      internalID: 7388222292281485041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_20
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 44
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e84ecbd696b1f9850800000000000000
+      internalID: 6385852936261264526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_21
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 44
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a73dfec5e4121c80800000000000000
+      internalID: -8353591381566081119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snake_Viper_Emerge_N_22
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 44
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8447362be40e9b9a0800000000000000
+      internalID: -6216691182003325880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Snake_Viper_Emerge_N_0: 6494974027873867809
+      Snake_Viper_Emerge_N_1: 8069813298473132192
+      Snake_Viper_Emerge_N_10: 7338848344049857863
+      Snake_Viper_Emerge_N_11: -548284487512128610
+      Snake_Viper_Emerge_N_12: -4149580272409119196
+      Snake_Viper_Emerge_N_13: 4694746378972572486
+      Snake_Viper_Emerge_N_14: 5697390993386880986
+      Snake_Viper_Emerge_N_15: -4387899892347958417
+      Snake_Viper_Emerge_N_16: -7195363716704178353
+      Snake_Viper_Emerge_N_17: 6160599779681597877
+      Snake_Viper_Emerge_N_18: 6744436029673312687
+      Snake_Viper_Emerge_N_19: 7388222292281485041
+      Snake_Viper_Emerge_N_2: 553383284263771683
+      Snake_Viper_Emerge_N_20: 6385852936261264526
+      Snake_Viper_Emerge_N_21: -8353591381566081119
+      Snake_Viper_Emerge_N_22: -6216691182003325880
+      Snake_Viper_Emerge_N_3: -3160312366775785523
+      Snake_Viper_Emerge_N_4: -850857368268369264
+      Snake_Viper_Emerge_N_5: -4210264228059927921
+      Snake_Viper_Emerge_N_6: -5085001872810372143
+      Snake_Viper_Emerge_N_7: 1130053716648506556
+      Snake_Viper_Emerge_N_8: 7619997447994854236
+      Snake_Viper_Emerge_N_9: 7037398548594874053
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

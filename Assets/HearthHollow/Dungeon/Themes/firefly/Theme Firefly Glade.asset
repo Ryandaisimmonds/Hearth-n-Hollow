@@ -14,23 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: firefly
   displayName: Firefly Glade
-  floor: {fileID: 11400000, guid: 6bdd46eb8949c47c486ed46d337ec825, type: 2}
-  floorAlt: {fileID: 11400000, guid: 740258cb2a58343b990db0e53e4e27b7, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 8859acb01e65a4eb0a63bc5152d4e5b4, type: 2}
-  wallFace: {fileID: 11400000, guid: 1fa9e8e8936cf41da950111b569da616, type: 2}
+  floor: {fileID: 11400000, guid: af945401f6c354c9d9da149a8b801500, type: 2}
+  floorAlt: {fileID: 11400000, guid: 7371c6ea61f924f00ae34400c56d7ec2, type: 2}
+  floorAltChance: 0.15
+  wall: {fileID: 11400000, guid: 4938c5fdd8c3343c092af5bb80b04243, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 11055b3449e974c8fb1301e7db860385, type: 2}
   decor:
-  - {fileID: 11400000, guid: c672a3a55412848a38797d6d7f57db3f, type: 2}
-  - {fileID: 11400000, guid: 82849a68877e44aa8a9fc5c993dc52e5, type: 2}
-  - {fileID: 11400000, guid: 5f5fb6145ed784cb4af2ed99dd9cc724, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: f61d41d99aa4d4332a27445f970c0d53, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  decorDensity: 0.07
   background: {r: 0.023529412, g: 0.0627451, b: 0.039215688, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.78, g: 0.94, b: 0.84, a: 1}
+  wallTint: {r: 0.78, g: 0.94, b: 0.84, a: 1}
   lightColor: {r: 0.75, g: 0.95, b: 0.8, a: 1}
   lightIntensity: 0.6
   playerLight: 0.9
+  gradeTemperature: -8
+  gradeTint: -10
+  gradeSaturation: 14
+  gradeContrast: 10
+  gradeExposure: -0.05
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.39999998
+  gradeBloom: 1.9200001
+  ambient: 1
+  ambientColor: {r: 0.7, g: 1, b: 0.4, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 98349403f4a9d4064816770f54e2f49b, type: 3}
   ladder: {fileID: 21300000, guid: 469b60e4976294cd1862b7197106eb46, type: 3}

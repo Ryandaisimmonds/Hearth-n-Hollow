@@ -27,6 +27,8 @@ namespace HearthHollow.Data
             public List<Sprite> moveSheet = new List<Sprite>();
             public List<Sprite> attackSheet = new List<Sprite>();
             public int idleCols = 4, moveCols = 6, attackCols = 6;
+            [Tooltip("Extra size for small sprites (e.g. 16px Ninja Adventure characters drawn ×2.25 to stand ~1 tile tall). 1 = as drawn.")]
+            public float scale = 1f;
 
             /// Frame list for one direction row (0 Down, 1 Left, 2 Right, 3 Up); falls back sensibly.
             public Sprite Frame(int state, int dir, int frame)

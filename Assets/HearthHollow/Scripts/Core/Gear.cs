@@ -268,6 +268,8 @@ namespace HearthHollow.Core
                 case BuffStat.GatherZonePct: return "+" + Pct(m.value) + " gather zone";
                 case BuffStat.CoinPct: return "+" + Pct(m.value) + " coins";
                 case BuffStat.XpPct: return "+" + Pct(m.value) + " XP";
+                case BuffStat.MoveSpeedPct: return "+" + Pct(m.value) + " speed";
+                case BuffStat.HealOnKill: return "+" + Num(m.value) + " HP per kill";
             }
             return m.stat.ToString();
         }
@@ -281,7 +283,7 @@ namespace HearthHollow.Core
                 var r = c.Route(t.fromRouteId);
                 parts.Add("first clear of " + (r != null ? r.emoji + " " + r.name : t.fromRouteId));
             }
-            if (t.inWorkshop) parts.Add("Workshop" + (t.shopChapter > 1 ? " from chapter " + t.shopChapter : ""));
+            if (t.inWorkshop) parts.Add("Upgrades shop" + (t.shopChapter > 1 ? " from chapter " + t.shopChapter : ""));
             if (t.merchant) parts.Add("travelling merchant");
             if (t.drop) parts.Add("rare boss / elite drop");
             return parts.Count == 0 ? "" : string.Join(", ", parts.ToArray());

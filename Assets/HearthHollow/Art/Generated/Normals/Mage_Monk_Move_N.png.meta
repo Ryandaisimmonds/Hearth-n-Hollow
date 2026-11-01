@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 41639577b984d403bb16a3a21e520941
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5582887900819033929
+    second: Mage_Monk_Move_N_0
+  - first:
+      213: -4210250258638729014
+    second: Mage_Monk_Move_N_1
+  - first:
+      213: -2916687134427558410
+    second: Mage_Monk_Move_N_2
+  - first:
+      213: -54689028755592568
+    second: Mage_Monk_Move_N_3
+  - first:
+      213: 1033235184114727739
+    second: Mage_Monk_Move_N_4
+  - first:
+      213: -7480621778840829486
+    second: Mage_Monk_Move_N_5
+  - first:
+      213: -2986260288873273454
+    second: Mage_Monk_Move_N_6
+  - first:
+      213: 1186161797052064176
+    second: Mage_Monk_Move_N_7
+  - first:
+      213: 1799312208596234828
+    second: Mage_Monk_Move_N_8
+  - first:
+      213: 6082481485939931053
+    second: Mage_Monk_Move_N_9
+  - first:
+      213: -6128406238539144933
+    second: Mage_Monk_Move_N_10
+  - first:
+      213: 6411612148185596698
+    second: Mage_Monk_Move_N_11
+  - first:
+      213: -4819071864975441347
+    second: Mage_Monk_Move_N_12
+  - first:
+      213: 1422484608402364771
+    second: Mage_Monk_Move_N_13
+  - first:
+      213: -1533977344460111568
+    second: Mage_Monk_Move_N_14
+  - first:
+      213: -2092818417349179947
+    second: Mage_Monk_Move_N_15
+  - first:
+      213: 6628593576510836376
+    second: Mage_Monk_Move_N_16
+  - first:
+      213: -7536961627389833159
+    second: Mage_Monk_Move_N_17
+  - first:
+      213: 8840568411370578571
+    second: Mage_Monk_Move_N_18
+  - first:
+      213: 3598426353363515954
+    second: Mage_Monk_Move_N_19
+  - first:
+      213: 708529546276169006
+    second: Mage_Monk_Move_N_20
+  - first:
+      213: -6871528202625076086
+    second: Mage_Monk_Move_N_21
+  - first:
+      213: 6319837483589781489
+    second: Mage_Monk_Move_N_22
+  - first:
+      213: -6386993088830907193
+    second: Mage_Monk_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 431
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b0fada98099582b0800000000000000
+      internalID: -5582887900819033929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 431
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac0975652bf2295c0800000000000000
+      internalID: -4210250258638729014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fd4e772188d587d0800000000000000
+      internalID: -2916687134427558410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 431
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88a69eb3e94bd3ff0800000000000000
+      internalID: -54689028755592568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3bf796fce9c65e00800000000000000
+      internalID: 1033235184114727739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 431
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d1442d402e7f2890800000000000000
+      internalID: -7480621778840829486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 303
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2976ad2d61cae86d0800000000000000
+      internalID: -2986260288873273454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 303
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b16d6faed7167010800000000000000
+      internalID: 1186161797052064176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 303
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c42f669abe078f810800000000000000
+      internalID: 1799312208596234828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 303
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da7f6526fa0596450800000000000000
+      internalID: 6082481485939931053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 303
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b112698eef683faa0800000000000000
+      internalID: -6128406238539144933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 303
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a138e22574f9af850800000000000000
+      internalID: 6411612148185596698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 175
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d324f0ddba73f1db0800000000000000
+      internalID: -4819071864975441347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 175
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3699846f63eadb310800000000000000
+      internalID: 1422484608402364771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 175
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03145f98bb736bae0800000000000000
+      internalID: -1533977344460111568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 175
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d5c186dcb0d4f2e0800000000000000
+      internalID: -2092818417349179947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 175
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89e4d50fcbe7dfb50800000000000000
+      internalID: 6628593576510836376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 175
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 930dda91555576790800000000000000
+      internalID: -7536961627389833159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 47
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b82684c712200ba70800000000000000
+      internalID: 8840568411370578571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 47
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23af2aef3bd20f130800000000000000
+      internalID: 3598426353363515954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 47
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e25e8ae4ed335d900800000000000000
+      internalID: 708529546276169006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 47
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a843472b18d63a0a0800000000000000
+      internalID: -6871528202625076086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 19
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f7419715b294b750800000000000000
+      internalID: 6319837483589781489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 47
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ccdb5d10a7dc57a0800000000000000
+      internalID: -6386993088830907193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Monk_Move_N_0: -5582887900819033929
+      Mage_Monk_Move_N_1: -4210250258638729014
+      Mage_Monk_Move_N_10: -6128406238539144933
+      Mage_Monk_Move_N_11: 6411612148185596698
+      Mage_Monk_Move_N_12: -4819071864975441347
+      Mage_Monk_Move_N_13: 1422484608402364771
+      Mage_Monk_Move_N_14: -1533977344460111568
+      Mage_Monk_Move_N_15: -2092818417349179947
+      Mage_Monk_Move_N_16: 6628593576510836376
+      Mage_Monk_Move_N_17: -7536961627389833159
+      Mage_Monk_Move_N_18: 8840568411370578571
+      Mage_Monk_Move_N_19: 3598426353363515954
+      Mage_Monk_Move_N_2: -2916687134427558410
+      Mage_Monk_Move_N_20: 708529546276169006
+      Mage_Monk_Move_N_21: -6871528202625076086
+      Mage_Monk_Move_N_22: 6319837483589781489
+      Mage_Monk_Move_N_23: -6386993088830907193
+      Mage_Monk_Move_N_3: -54689028755592568
+      Mage_Monk_Move_N_4: 1033235184114727739
+      Mage_Monk_Move_N_5: -7480621778840829486
+      Mage_Monk_Move_N_6: -2986260288873273454
+      Mage_Monk_Move_N_7: 1186161797052064176
+      Mage_Monk_Move_N_8: 1799312208596234828
+      Mage_Monk_Move_N_9: 6082481485939931053
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

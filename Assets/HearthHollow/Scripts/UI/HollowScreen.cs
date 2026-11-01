@@ -360,7 +360,7 @@ namespace HearthHollow.UI
                 row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(m.recipeId), r != null ? r.emoji : "🍽️", "meal-row__emoji"), "item-frame--sm"));
                 var txt = UIKit.E("meal-row__text");
                 txt.Add(UIKit.L((r != null ? r.name : m.recipeId) + (m.potency < 0.99f ? "  (×" + UIKit.Num(m.potency) + ")" : ""), "meal-row__name"));
-                if (r != null) txt.Add(UIKit.L(UIKit.BuffSummary(r.buffs, Meals.ClassMult(cls, r) * m.potency), "meal-row__buffs"));
+                if (r != null) txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, m)), "meal-row__buffs"));
                 row.Add(txt);
                 _tray.Add(row);
             }

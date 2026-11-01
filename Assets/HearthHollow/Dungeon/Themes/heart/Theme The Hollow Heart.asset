@@ -14,23 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: heart
   displayName: The Hollow Heart
-  floor: {fileID: 11400000, guid: dcab3c5adaa464aa3a9188a0669a8356, type: 2}
-  floorAlt: {fileID: 11400000, guid: a743d61745c944df1a51ae6cd6d2f338, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 34cf1f22590dc44bca83391e043e64dd, type: 2}
-  wallFace: {fileID: 11400000, guid: 248e5eb87b0334d0c92bda7baa10e671, type: 2}
+  floor: {fileID: 11400000, guid: a9a4a1c4ea91448629a57cb5cacac97f, type: 2}
+  floorAlt: {fileID: 0}
+  floorAltChance: 0
+  wall: {fileID: 11400000, guid: 80870ada268884cb2a2dd43864ab3739, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 9da90612ea5cf4a0a90127d51b81281a, type: 2}
   decor:
-  - {fileID: 11400000, guid: 113df0a4596c44782b2407f0b50b6094, type: 2}
-  - {fileID: 11400000, guid: 7c33e014d17b9451bb62eb0e59272bdc, type: 2}
-  - {fileID: 11400000, guid: a9e1dd134a6ce4825aee11d8d2989bb9, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: d870ed6993a2540d5aba2d1a18f58de3, type: 2}
+  decorDensity: 0.04
   background: {r: 0.047058824, g: 0.023529412, b: 0.07058824, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.9, g: 0.78, b: 1, a: 1}
+  wallTint: {r: 0.9, g: 0.78, b: 1, a: 1}
   lightColor: {r: 0.9, g: 0.72, b: 1, a: 1}
   lightIntensity: 0.65
   playerLight: 1.2
+  gradeTemperature: -6
+  gradeTint: 18
+  gradeSaturation: 6
+  gradeContrast: 18
+  gradeExposure: -0.1
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.45999998
+  gradeBloom: 1.9200001
+  ambient: 2
+  ambientColor: {r: 0.75, g: 0.45, b: 1, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 39c89817c0b8049fcb0bcef796ce3a12, type: 3}
   ladder: {fileID: 21300000, guid: 9eeb425378c264bbfad8dc45de5bc226, type: 3}

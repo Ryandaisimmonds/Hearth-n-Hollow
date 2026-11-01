@@ -86,7 +86,7 @@ MonoBehaviour:
       roomsPerFloorMin: 7
       roomsPerFloorMax: 10
       enemiesPerRoomMin: 2
-      enemiesPerRoomMax: 4
+      enemiesPerRoomMax: 3
       dungeonEliteChance: 0.15
       bossHpMult: 2.5
       bossAtkMult: 1.2
@@ -122,6 +122,32 @@ MonoBehaviour:
       trinketBossDrop: 0.15
       trinketEliteDrop: 0.03
       merchantTrinketChance: 0.4
+      gradeMultUncommon: 1.25
+      gradeMultRare: 1.5
+      jackpotChance: 0.05
+      mealPantrySlots: 6
+      dropUncommon: 0.1
+      dropUncommonPerFloor: 0.15
+      dropUncommonPerDifficulty: 0.03
+      dropRare: 0
+      dropRarePerFloor: 0.08
+      dropRarePerDifficulty: 0.015
+      dropEliteRareBonus: 0.1
+      dropBossRareBonus: 0.35
+      dropPerfectGatherRare: 0.15
+      dropLuckyRare: 0.05
+      guardDropChance: 0.25
+      deathKeepFraction: 0.25
+      stationJackpotPerLevel: 0.03
+      materialDropChance: 0.15
+      materialDropPerFloor: 0.1
+      eliteMaterials: 1
+      bossMaterials: 3
+      fishIngredient: fish
+      fishCatchCount: 2
+      fishGoodWidth: 0.34
+      fishPerfectWidth: 0.12
+      fishBarSpeed: 1.1
     classes:
     - id: 0
       name: Warden
@@ -148,6 +174,9 @@ MonoBehaviour:
       - Blade
       - Bulwark
       - Fury
+      joinRoute: salt
+      ultimate: w_ult
+      joinText: They held the marsh boardwalk alone until you came.
     - id: 1
       name: Ranger
       emoji: "\U0001F3F9"
@@ -173,6 +202,9 @@ MonoBehaviour:
       - Marksman
       - Wayfinder
       - Trickster
+      joinRoute: meadow
+      ultimate: r_ult
+      joinText: They'd been tracking the meadow slimes, and they liked your bread.
     - id: 2
       name: Cook
       emoji: "\U0001F373"
@@ -198,75 +230,230 @@ MonoBehaviour:
       - Brawler
       - Comfort
       - Spice
+      joinRoute: 
+      ultimate: c_ult
+      joinText: 
+    - id: 3
+      name: Lamplighter
+      emoji: "\U0001F3EE"
+      role: Mage
+      description: 'Keeper of the old lamps. Fragile, but her light magic seeks out its targets and breaks guards with ease. Slow-cooked comfort suits her: pot meals are 50% stronger.'
+      baseMaxHp: 11
+      damageMult: 1
+      gatherZoneMult: 1
+      mealBuffMult: 1
+      favouriteStation: 0
+      favouriteBonus: 0.5
+      skill:
+        kind: 0
+        name: 
+        emoji: 
+        description: 
+        cooldownTurns: 3
+        value: 0
+      starterAttack: l_wisp
+      starterSkill: l_lantern
+      starterDash: l_blink
+      branchNames:
+      - Radiance
+      - Glow
+      - Prism
+      joinRoute: firefly
+      ultimate: l_ult
+      joinText: They tend the Firefly Glade's old lamps, and their light is yours now.
+    - id: 4
+      name: Emberfist
+      emoji: "\U0001F44A"
+      role: Brawler
+      description: 'A wandering monk who fights with burning fists. Every hit stokes her Heat, and her light grows from a candle to a bonfire. Grilled food fuels her: BBQ meals are 50% stronger.'
+      baseMaxHp: 14
+      damageMult: 1.05
+      gatherZoneMult: 1
+      mealBuffMult: 1
+      favouriteStation: 1
+      favouriteBonus: 0.5
+      skill:
+        kind: 0
+        name: 
+        emoji: 
+        description: 
+        cooldownTurns: 3
+        value: 0
+      starterAttack: e_fists
+      starterSkill: e_phoenix
+      starterDash: e_flicker
+      branchNames:
+      - Fists
+      - Ember
+      - Inferno
+      joinRoute: chili
+      ultimate: e_ult
+      joinText: A wandering monk you met on the red mud of Chili Ridge.
     ingredients:
     - id: herbs
       name: Wild Herbs
       emoji: "\U0001F33F"
       tier: 0
+      accelBuffs:
+      - stat: 1
+        value: 6
+      material: 0
+      accelGuard: 0
     - id: wheat
       name: Meadow Wheat
       emoji: "\U0001F33E"
       tier: 0
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: berries
       name: Bramble Berries
       emoji: "\U0001FAD0"
       tier: 0
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: mushroom
       name: Forest Mushroom
       emoji: "\U0001F344"
       tier: 1
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: salt
       name: Marsh Salt
       emoji: "\U0001F9C2"
       tier: 1
+      accelBuffs:
+      - stat: 3
+        value: 1
+      material: 0
+      accelGuard: 0
     - id: fish
       name: Reed Fish
       emoji: "\U0001F41F"
       tier: 1
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: cave_egg
       name: Glow Egg
       emoji: "\U0001F95A"
       tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: truffle
       name: Cave Truffle
       emoji: "\U0001F330"
       tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: chili
       name: Ridge Chili
       emoji: "\U0001F336\uFE0F"
       tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: garlic
       name: Smoky Garlic
       emoji: "\U0001F9C4"
       tier: 2
+      accelBuffs:
+      - stat: 0
+        value: 0.1
+      material: 0
+      accelGuard: 0
     - id: ember_meat
       name: Ember Haunch
       emoji: "\U0001F356"
       tier: 3
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
     - id: fire_honey
       name: Fire Honey
       emoji: "\U0001F36F"
       tier: 3
+      accelBuffs:
+      - stat: 4
+        value: 0.04
+      material: 0
+      accelGuard: 0
     - id: nettle
       name: Stinging Nettle
       emoji: "\U0001F331"
       tier: 1
+      accelBuffs: []
+      material: 0
+      accelGuard: 1
     - id: mint
       name: Glade Mint
       emoji: "\U0001F343"
       tier: 1
+      accelBuffs: []
+      material: 0
+      accelGuard: 3
     - id: ginger
       name: Snow Ginger
       emoji: "\U0001FADA"
       tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 2
     - id: frost_berry
       name: Frostberry
       emoji: "\U0001F347"
       tier: 3
+      accelBuffs:
+      - stat: 8
+        value: 0.04
+      material: 0
+      accelGuard: 0
     - id: glowcap
       name: Glowcap
       emoji: "\U0001F344"
       tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 4
+    - id: timber
+      name: Timber
+      emoji: "\U0001FAB5"
+      tier: 0
+      accelBuffs: []
+      material: 1
+      accelGuard: 0
+    - id: fieldstone
+      name: Fieldstone
+      emoji: "\U0001FAA8"
+      tier: 1
+      accelBuffs: []
+      material: 1
+      accelGuard: 0
+    - id: clay
+      name: River Clay
+      emoji: "\U0001F3FA"
+      tier: 2
+      accelBuffs: []
+      material: 1
+      accelGuard: 0
+    - id: iron_scrap
+      name: Iron Scrap
+      emoji: "\U0001F529"
+      tier: 3
+      accelBuffs: []
+      material: 1
+      accelGuard: 0
+    - id: ember_coal
+      name: Ember Coal
+      emoji: "\u26AB"
+      tier: 3
+      accelBuffs: []
+      material: 1
+      accelGuard: 0
     recipes:
     - id: herb_stew
       name: Herb Stew
@@ -279,13 +466,15 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 20
+        value: 18
       tags:
       - stone
       - veg
       description: A thick, earthy stew that sits in your belly like a warm stone. Sturdier all day.
       counters: 0
       rarity: 0
+      stationLevel: 1
+      always: 0
     - id: berry_porridge
       name: Berry Porridge
       emoji: "\U0001F963"
@@ -296,17 +485,17 @@ MonoBehaviour:
       - ingredientId: berries
         count: 2
       buffs:
-      - stat: 7
-        value: 0.25
       - stat: 1
-        value: 8
-      - stat: 0
-        value: 0.15
+        value: 10
+      - stat: 9
+        value: 1
       tags:
       - sweet
-      description: Creamy oats swirled with bramble berries. Clears the head.
+      description: Creamy oats swirled with bramble berries. Every win feels like a second breakfast.
       counters: 0
       rarity: 0
+      stationLevel: 1
+      always: 0
     - id: marsh_chowder
       name: Marsh Chowder
       emoji: "\U0001F35C"
@@ -318,7 +507,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 20
+        value: 16
       - stat: 3
         value: 2
       tags:
@@ -326,7 +515,30 @@ MonoBehaviour:
       - fish
       description: Salty, hearty and steaming. Tastes of foggy mornings.
       counters: 0
-      rarity: 1
+      rarity: 0
+      stationLevel: 2
+      always: 0
+    - id: nettle_soup
+      name: Nettle Soup
+      emoji: "\U0001F96C"
+      station: 0
+      ingredients:
+      - ingredientId: nettle
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 1
+        value: 10
+      - stat: 9
+        value: 2
+      tags:
+      - veg
+      description: Sharp, green and cleansing. Patches you up between fights.
+      counters: 0
+      rarity: 0
+      stationLevel: 3
+      always: 0
     - id: truffle_risotto
       name: Truffle Risotto
       emoji: "\U0001F35A"
@@ -342,34 +554,15 @@ MonoBehaviour:
       - stat: 3
         value: 3
       - stat: 1
-        value: 14
-      - stat: 0
-        value: 0.2
+        value: 12
       tags:
       - stone
       - veg
       description: Slow-stirred by lantern light. Rich enough to shrug off a blow.
       counters: 0
-      rarity: 2
-    - id: ember_chili
-      name: Ember Chili
-      emoji: "\U0001FAD5"
-      station: 0
-      ingredients:
-      - ingredientId: chili
-        count: 2
-      - ingredientId: garlic
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.5
-      - stat: 1
-        value: 12
-      tags:
-      - fire
-      description: A bubbling pot of fire. Your eyes water; your arms tingle.
-      counters: 0
-      rarity: 2
+      rarity: 0
+      stationLevel: 3
+      always: 0
     - id: lantern_soup
       name: Lantern Egg Soup
       emoji: "\U0001F375"
@@ -377,20 +570,70 @@ MonoBehaviour:
       ingredients:
       - ingredientId: cave_egg
         count: 1
-      - ingredientId: herbs
+      - ingredientId: ginger
         count: 1
       - ingredientId: salt
         count: 1
       buffs:
       - stat: 1
-        value: 32
+        value: 28
       - stat: 3
+        value: 1
+      tags:
+      - stone
+      description: Glowing egg ribbons in a ginger broth. Fortifies body and spirit.
+      counters: 0
+      rarity: 0
+      stationLevel: 4
+      always: 0
+    - id: drake_hotpot
+      name: Drake Hotpot
+      emoji: "\U0001F35B"
+      station: 0
+      ingredients:
+      - ingredientId: ember_meat
+        count: 2
+      - ingredientId: ginger
+        count: 1
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 1
+        value: 24
+      - stat: 3
+        value: 2
+      - stat: 9
         value: 2
       tags:
       - stone
-      description: Glowing egg ribbons in clear broth. Fortifies body and spirit.
+      - fire
+      description: Drake haunch simmered all night. The heartiest thing in the valley.
       counters: 0
-      rarity: 2
+      rarity: 0
+      stationLevel: 5
+      always: 0
+    - id: grilled_fish
+      name: Salt-Crust Fish
+      emoji: "\U0001F41F"
+      station: 1
+      ingredients:
+      - ingredientId: fish
+        count: 1
+      - ingredientId: salt
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.2
+      - stat: 4
+        value: 0.08
+      tags:
+      - smoky
+      - fish
+      description: Baked in a salt shell on the coals. Sharpens the senses.
+      counters: 0
+      rarity: 0
+      stationLevel: 1
+      always: 0
     - id: mushroom_skewer
       name: Mushroom Skewer
       emoji: "\U0001F362"
@@ -402,37 +645,63 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 0
-        value: 0.35
+        value: 0.3
       - stat: 4
-        value: 0.06
+        value: 0.04
       tags:
       - smoky
       - veg
       description: Charred caps on a stick, herby and smoky.
       counters: 0
       rarity: 0
-    - id: grilled_fish
-      name: Salt-Crust Fish
-      emoji: "\U0001F41F"
+      stationLevel: 1
+      always: 0
+    - id: truffle_caps
+      name: Charred Truffle Caps
+      emoji: "\U0001F344"
       station: 1
       ingredients:
-      - ingredientId: fish
+      - ingredientId: truffle
         count: 1
-      - ingredientId: salt
-        count: 1
+      - ingredientId: mushroom
+        count: 2
       buffs:
-      - stat: 4
-        value: 0.12
       - stat: 0
-        value: 0.25
-      - stat: 6
-        value: 0.15
+        value: 0.3
+      - stat: 4
+        value: 0.1
       tags:
       - smoky
-      - fish
-      description: Baked in a salt shell on the coals. Sharpens the senses.
+      - veg
+      description: Truffle shavings melting over blackened caps. Every swing finds the gap.
       counters: 0
-      rarity: 1
+      rarity: 0
+      stationLevel: 2
+      always: 0
+    - id: glowcap_kebab
+      name: Glowcap Kebab
+      emoji: "\U0001F361"
+      station: 1
+      ingredients:
+      - ingredientId: glowcap
+        count: 1
+      - ingredientId: mushroom
+        count: 1
+      - ingredientId: garlic
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.4
+      - stat: 4
+        value: 0.06
+      tags:
+      - smoky
+      - veg
+      description: Glowcaps charred until they sparkle.
+      counters: 0
+      rarity: 0
+      stationLevel: 3
+      always: 0
     - id: firecracker_skewer
       name: Firecracker Skewer
       emoji: "\U0001F336\uFE0F"
@@ -444,34 +713,15 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 0
-        value: 0.6
-      - stat: 4
-        value: 0.06
+        value: 0.55
       tags:
       - fire
       - smoky
       description: "Pops and crackles on the grill \u2014 and in your mouth."
       counters: 0
-      rarity: 2
-    - id: ember_steak
-      name: Ember Steak
-      emoji: "\U0001F969"
-      station: 1
-      ingredients:
-      - ingredientId: ember_meat
-        count: 2
-      - ingredientId: garlic
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.8
-      - stat: 1
-        value: 10
-      tags:
-      - fire
-      description: Seared over drake-coals. Pure, glowing strength.
-      counters: 0
-      rarity: 3
+      rarity: 0
+      stationLevel: 3
+      always: 0
     - id: honey_ribs
       name: Fire-Honey Ribs
       emoji: "\U0001F356"
@@ -482,31 +732,58 @@ MonoBehaviour:
       - ingredientId: fire_honey
         count: 2
       buffs:
-      - stat: 4
-        value: 0.18
       - stat: 0
-        value: 0.45
+        value: 0.4
+      - stat: 4
+        value: 0.14
       tags:
       - fire
       - sweet
       description: Sticky, spicy-sweet glaze. Every bite feels lucky.
       counters: 0
-      rarity: 3
+      rarity: 0
+      stationLevel: 4
+      always: 0
+    - id: ember_steak
+      name: Ember Steak
+      emoji: "\U0001F969"
+      station: 1
+      ingredients:
+      - ingredientId: ember_meat
+        count: 2
+      - ingredientId: garlic
+        count: 1
+      - ingredientId: chili
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.75
+      - stat: 4
+        value: 0.05
+      tags:
+      - fire
+      description: Seared over drake-coals. Pure, glowing strength.
+      counters: 0
+      rarity: 0
+      stationLevel: 5
+      always: 0
     - id: bread
       name: Camp Bread
       emoji: "\U0001F35E"
       station: 2
       ingredients: []
       buffs:
-      - stat: 1
-        value: 6
-      - stat: 0
+      - stat: 8
+        value: 0.03
+      - stat: 5
         value: 0.1
       tags:
       - plain
-      description: "Free \u2014 there's always a loaf by the fire. Plain, filling, better than nothing."
+      description: "Free \u2014 there's always a loaf by the fire. Simple, light, better than nothing. Always Plain."
       counters: 0
       rarity: 0
+      stationLevel: 1
+      always: 1
     - id: herb_butty
       name: Herb Butty
       emoji: "\U0001F96A"
@@ -519,15 +796,15 @@ MonoBehaviour:
       buffs:
       - stat: 5
         value: 0.3
-      - stat: 1
-        value: 8
-      - stat: 0
-        value: 0.2
+      - stat: 8
+        value: 0.05
       tags:
       - veg
       description: Fresh bread and a fistful of herbs. A forager's favourite.
       counters: 0
       rarity: 0
+      stationLevel: 1
+      always: 0
     - id: bramble_jam
       name: Bramble Jam Sandwich
       emoji: "\U0001F353"
@@ -540,15 +817,15 @@ MonoBehaviour:
       buffs:
       - stat: 6
         value: 0.2
-      - stat: 1
-        value: 8
-      - stat: 4
-        value: 0.08
+      - stat: 7
+        value: 0.1
       tags:
       - sweet
       description: Sticky fingers, sunny mood. Coins seem to find you.
       counters: 0
       rarity: 0
+      stationLevel: 1
+      always: 0
     - id: marsh_butty
       name: Marsh Fish Butty
       emoji: "\U0001F956"
@@ -561,17 +838,40 @@ MonoBehaviour:
       - ingredientId: salt
         count: 1
       buffs:
-      - stat: 3
-        value: 3
-      - stat: 0
-        value: 0.25
       - stat: 6
-        value: 0.15
+        value: 0.25
+      - stat: 8
+        value: 0.05
       tags:
       - fish
       description: Crispy fish in a crusty roll. Proper wanderer's food.
       counters: 0
-      rarity: 1
+      rarity: 0
+      stationLevel: 2
+      always: 0
+    - id: trail_wrap
+      name: Minty Trail Wrap
+      emoji: "\U0001F32F"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 1
+      - ingredientId: mint
+        count: 1
+      - ingredientId: herbs
+        count: 1
+      buffs:
+      - stat: 8
+        value: 0.1
+      - stat: 5
+        value: 0.15
+      tags:
+      - veg
+      description: Cool mint and herbs rolled tight. Puts a spring in your step.
+      counters: 0
+      rarity: 0
+      stationLevel: 3
+      always: 0
     - id: glow_egg_sandwich
       name: Glow-Egg Sandwich
       emoji: "\U0001F95A"
@@ -584,322 +884,42 @@ MonoBehaviour:
       - ingredientId: wheat
         count: 1
       buffs:
-      - stat: 1
-        value: 16
-      - stat: 0
-        value: 0.3
       - stat: 7
-        value: 0.25
+        value: 0.3
       - stat: 5
         value: 0.2
       tags:
       - stone
       description: Shimmering egg and truffle shavings. Oddly enlightening.
       counters: 0
-      rarity: 3
-    - id: ember_toastie
-      name: Ember Toastie
-      emoji: "\U0001F525"
-      station: 2
-      ingredients:
-      - ingredientId: wheat
-        count: 1
-      - ingredientId: ember_meat
-        count: 1
-      - ingredientId: chili
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.5
-      - stat: 4
-        value: 0.12
-      - stat: 1
-        value: 8
-      tags:
-      - fire
-      description: Pressed until it smoulders. Handle with oven gloves.
-      counters: 0
-      rarity: 4
-    - id: nettle_soup
-      name: Nettle Soup
-      emoji: "\U0001F96C"
-      station: 0
-      ingredients:
-      - ingredientId: nettle
-        count: 2
-      - ingredientId: herbs
-        count: 1
-      buffs:
-      - stat: 1
-        value: 16
-      - stat: 3
-        value: 1
-      tags:
-      - stone
-      - veg
-      description: Sharp, green and cleansing. Spores can't settle in a belly full of nettle. Protects against poison.
-      counters: 1
-      rarity: 1
-    - id: nettle_skewer
-      name: Nettle-Wrapped Skewer
-      emoji: "\U0001F361"
-      station: 1
-      ingredients:
-      - ingredientId: nettle
-        count: 1
-      - ingredientId: mushroom
-        count: 2
-      buffs:
-      - stat: 0
-        value: 0.35
-      - stat: 4
-        value: 0.05
-      tags:
-      - smoky
-      - veg
-      description: Mushrooms grilled in nettle leaves. Protects against poison.
-      counters: 1
-      rarity: 1
-    - id: nettle_wrap
-      name: Nettle & Herb Wrap
-      emoji: "\U0001F32F"
-      station: 2
-      ingredients:
-      - ingredientId: nettle
-        count: 1
-      - ingredientId: wheat
-        count: 1
-      - ingredientId: herbs
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.2
-      - stat: 1
-        value: 8
-      - stat: 5
-        value: 0.15
-      tags:
-      - veg
-      description: A forager's wrap, wilted nettle and herbs. Protects against poison.
-      counters: 1
-      rarity: 1
-    - id: mint_soup
-      name: Chilled Mint Soup
-      emoji: "\U0001F957"
-      station: 0
-      ingredients:
-      - ingredientId: mint
-        count: 2
-      - ingredientId: berries
-        count: 1
-      buffs:
-      - stat: 1
-        value: 18
-      - stat: 7
-        value: 0.1
-      tags:
-      - sweet
-      description: Cold, sweet and green. Keeps your head clear in the heat. Protects against heat.
-      counters: 3
-      rarity: 1
-    - id: mint_fish
-      name: Mint-Glazed Fish
-      emoji: "\U0001F420"
-      station: 1
-      ingredients:
-      - ingredientId: mint
-        count: 1
-      - ingredientId: fish
-        count: 1
-      - ingredientId: salt
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.45
-      - stat: 4
-        value: 0.08
-      tags:
-      - smoky
-      - fish
-      description: Charred outside, cool mint inside. Protects against heat.
-      counters: 3
-      rarity: 1
-    - id: mint_butty
-      name: Mint & Berry Butty
-      emoji: "\U0001F959"
-      station: 2
-      ingredients:
-      - ingredientId: mint
-        count: 1
-      - ingredientId: wheat
-        count: 1
-      - ingredientId: berries
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.25
-      - stat: 4
-        value: 0.06
-      - stat: 1
-        value: 8
-      tags:
-      - sweet
-      description: Squashed berries and fresh mint. Protects against heat.
-      counters: 3
-      rarity: 2
-    - id: ginger_stew
-      name: Ginger Hotpot
-      emoji: "\U0001F35B"
-      station: 0
-      ingredients:
-      - ingredientId: ginger
-        count: 1
-      - ingredientId: fish
-        count: 1
-      - ingredientId: garlic
-        count: 1
-      buffs:
-      - stat: 1
-        value: 26
-      - stat: 3
-        value: 2
-      tags:
-      - stone
-      - fire
-      description: Warms you from the toes up. Protects against the cold.
-      counters: 2
-      rarity: 2
-    - id: ginger_skewer
-      name: Ginger-Glazed Skewer
-      emoji: "\U0001F357"
-      station: 1
-      ingredients:
-      - ingredientId: ginger
-        count: 1
-      - ingredientId: ember_meat
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.7
-      - stat: 1
-        value: 8
-      tags:
-      - fire
-      description: Sticky, fiery ginger glaze over drake-coals. Protects against the cold.
-      counters: 2
-      rarity: 3
-    - id: ginger_toastie
-      name: Ginger & Honey Toastie
+      rarity: 0
+      stationLevel: 4
+      always: 0
+    - id: frostberry_toast
+      name: Frostberry Toast
       emoji: "\U0001F95E"
       station: 2
       ingredients:
-      - ingredientId: ginger
-        count: 1
       - ingredientId: wheat
         count: 1
-      - ingredientId: fire_honey
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.4
-      - stat: 4
-        value: 0.1
-      - stat: 1
-        value: 10
-      tags:
-      - fire
-      - sweet
-      description: Toasted until the honey bubbles. Protects against the cold.
-      counters: 2
-      rarity: 4
-    - id: frostberry_crumble
-      name: Frostberry Crumble
-      emoji: "\U0001F967"
-      station: 0
-      ingredients:
       - ingredientId: frost_berry
         count: 2
-      - ingredientId: wheat
-        count: 1
       - ingredientId: fire_honey
         count: 1
       buffs:
-      - stat: 1
-        value: 30
-      - stat: 0
-        value: 0.4
-      - stat: 4
-        value: 0.08
-      tags:
-      - sweet
-      description: Frostberries only grow in Frost Hollow. Worth every shiver.
-      counters: 0
-      rarity: 4
-    - id: glowcap_broth
-      name: Glowcap Broth
-      emoji: "\U0001FAD6"
-      station: 0
-      ingredients:
-      - ingredientId: glowcap
-        count: 2
-      - ingredientId: herbs
-        count: 1
-      buffs:
-      - stat: 1
-        value: 20
+      - stat: 8
+        value: 0.12
+      - stat: 6
+        value: 0.15
       - stat: 7
-        value: 0.1
-      tags:
-      - stone
-      - veg
-      description: A softly glowing broth. Your eyes shine for hours afterwards. Lights up the dark.
-      counters: 4
-      rarity: 2
-    - id: glowcap_kebab
-      name: Glowcap Kebab
-      emoji: "\U0001F362"
-      station: 1
-      ingredients:
-      - ingredientId: glowcap
-        count: 1
-      - ingredientId: mushroom
-        count: 1
-      - ingredientId: garlic
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.45
-      - stat: 4
-        value: 0.08
-      tags:
-      - smoky
-      - veg
-      description: Glowcaps charred until they sparkle. Lights up the dark.
-      counters: 4
-      rarity: 2
-    - id: glowcap_sandwich
-      name: Glow-in-the-Dark Sandwich
-      emoji: "\U0001F96A"
-      station: 2
-      ingredients:
-      - ingredientId: glowcap
-        count: 1
-      - ingredientId: cave_egg
-        count: 1
-      - ingredientId: wheat
-        count: 1
-      buffs:
-      - stat: 0
-        value: 0.3
-      - stat: 1
-        value: 12
-      - stat: 5
         value: 0.15
       tags:
-      - stone
-      description: Glow-egg and glowcap on a crusty roll. Lights up the dark.
-      counters: 4
-      rarity: 3
+      - sweet
+      description: Frostberries and fire honey on hot toast. You'll be halfway down the trail before it's cold.
+      counters: 0
+      rarity: 0
+      stationLevel: 5
+      always: 0
     synergies:
     - id: balanced_feast
       name: Balanced Feast
@@ -1077,6 +1097,8 @@ MonoBehaviour:
       gatherIngredientIds:
       - herbs
       - wheat
+      materialIds:
+      - timber
       chapter: 1
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1106,6 +1128,9 @@ MonoBehaviour:
       - berries
       - mushroom
       - herbs
+      materialIds:
+      - fieldstone
+      - timber
       chapter: 2
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1134,6 +1159,9 @@ MonoBehaviour:
       gatherIngredientIds:
       - salt
       - fish
+      materialIds:
+      - clay
+      - fieldstone
       chapter: 3
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1165,6 +1193,9 @@ MonoBehaviour:
       - truffle
       - mushroom
       - glowcap
+      materialIds:
+      - iron_scrap
+      - clay
       chapter: 4
       requiredKeyItem: glow_lantern
       rewardKeyItem: 
@@ -1194,6 +1225,9 @@ MonoBehaviour:
       - chili
       - garlic
       - wheat
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 5
       requiredKeyItem: bog_boots
       rewardKeyItem: 
@@ -1224,6 +1258,9 @@ MonoBehaviour:
       - ember_meat
       - fire_honey
       - chili
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 6
       requiredKeyItem: watch_key
       rewardKeyItem: 
@@ -1253,6 +1290,9 @@ MonoBehaviour:
       - ginger
       - frost_berry
       - salt
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 7
       requiredKeyItem: climbing_rope
       rewardKeyItem: 
@@ -1283,6 +1323,9 @@ MonoBehaviour:
       - ember_meat
       - frost_berry
       - fire_honey
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 8
       requiredKeyItem: everflame_recipe
       rewardKeyItem: 
@@ -1312,6 +1355,9 @@ MonoBehaviour:
       - wheat
       - berries
       - herbs
+      materialIds:
+      - fieldstone
+      - timber
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1340,6 +1386,9 @@ MonoBehaviour:
       - nettle
       - mint
       - berries
+      materialIds:
+      - clay
+      - fieldstone
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: glow_lantern
@@ -1369,6 +1418,9 @@ MonoBehaviour:
       - mushroom
       - nettle
       - fish
+      materialIds:
+      - iron_scrap
+      - clay
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: bog_boots
@@ -1398,6 +1450,9 @@ MonoBehaviour:
       - glowcap
       - cave_egg
       - truffle
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1427,6 +1482,9 @@ MonoBehaviour:
       - garlic
       - salt
       - herbs
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: watch_key
@@ -1457,6 +1515,9 @@ MonoBehaviour:
       - chili
       - garlic
       - mint
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1486,6 +1547,9 @@ MonoBehaviour:
       - ginger
       - berries
       - fire_honey
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: climbing_rope
@@ -1515,6 +1579,9 @@ MonoBehaviour:
       - fire_honey
       - berries
       - mint
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1544,6 +1611,9 @@ MonoBehaviour:
       - truffle
       - cave_egg
       - ginger
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: everflame_recipe
@@ -1574,6 +1644,9 @@ MonoBehaviour:
       - frost_berry
       - ginger
       - fish
+      materialIds:
+      - ember_coal
+      - iron_scrap
       chapter: 0
       requiredKeyItem: 
       rewardKeyItem: 
@@ -1651,20 +1724,42 @@ MonoBehaviour:
       radius: 1
       duration: 0
       value: 0
+      hitType: 0
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: 
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: w_sweep
-      name: Sweep
-      emoji: "\u2694\uFE0F"
-      description: A broad sword swing in front of you.
+      name: Blazing Combo
+      emoji: "\U0001F525"
+      description: 'Two wide flaming sword arcs, then a Lantern Bash (Blunt) that stuns. Boost: +1 bash per level.'
       owner: 0
       anyClass: 0
       slot: 0
-      kind: 0
-      power: 1
-      cooldown: 0.42
-      range: 0.85
-      radius: 0.85
-      duration: 0
-      value: 0
+      kind: 25
+      power: 0.9
+      cooldown: 0.36
+      range: 1.0925
+      radius: 1.3125
+      duration: 0.35
+      value: 1.8
+      hitType: 0
+      hitType2: 2
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FFB000
+      count: 3
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 3
+      boostStep: 1
     - id: w_lunge
       name: Lunge
       emoji: "\U0001F5E1\uFE0F"
@@ -1675,10 +1770,21 @@ MonoBehaviour:
       kind: 1
       power: 1.2
       cooldown: 0.55
-      range: 1.5
-      radius: 0.7
+      range: 1.875
+      radius: 0.90999997
       duration: 0
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FFC21A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.2
     - id: w_maul
       name: Maul
       emoji: "\U0001F528"
@@ -1689,66 +1795,121 @@ MonoBehaviour:
       kind: 2
       power: 2.3
       cooldown: 1
-      range: 0.9
-      radius: 1
+      range: 0.99
+      radius: 1.3
       duration: 0.6
       value: 0
+      hitType: 2
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FFD000
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
     - id: w_cleave
-      name: Cleave
-      emoji: "\U0001FA93"
-      description: "Spin your blade: \xD71.75 damage to everything around you."
+      name: Flame Cleave
+      emoji: "\U0001F525"
+      description: "Spin your blade in a ring of fire: \xD71.75 damage to everything around you (a Fire hit). Boost: a bigger ring."
       owner: 0
       anyClass: 0
       slot: 1
       kind: 10
       power: 1.75
-      cooldown: 6
+      cooldown: 4
       range: 1
-      radius: 2.2
+      radius: 2.64
       duration: 0
       value: 0
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF8C00
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
     - id: w_slam
-      name: Ground Slam
-      emoji: "\U0001F4A5"
-      description: A shockwave rolls forward, damaging and stunning everything in its path.
+      name: Dawnbreaker
+      emoji: "\U0001F305"
+      description: 'Leap ahead (onto the nearest enemy) and slam down: a ring of Light that hits and stuns everything around you. Boost: a bigger ring and a second shockwave.'
       owner: 0
       anyClass: 0
       slot: 1
-      kind: 11
-      power: 1.4
-      cooldown: 8
-      range: 4
-      radius: 0.9
-      duration: 1.2
+      kind: 27
+      power: 1.6
+      cooldown: 5.5
+      range: 3.5
+      radius: 1.8
+      duration: 0.8
       value: 0
+      hitType: 4
+      hitType2: 0
+      lightRadius: 7
+      lightIntensity: 2
+      lightColour: FFC800
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
     - id: w_warcry
-      name: War Cry
+      name: Rally
       emoji: "\U0001F4EF"
-      description: 'Roar: +40% damage for 6 seconds.'
+      description: 'Roar and blaze: +40% damage for 6 seconds, and your light flares up.'
       owner: 0
       anyClass: 0
       slot: 1
       kind: 12
       power: 0
-      cooldown: 14
+      cooldown: 10
       range: 1
       radius: 1
       duration: 6
       value: 0.4
+      hitType: 3
+      hitType2: 0
+      lightRadius: 6
+      lightIntensity: 1.9
+      lightColour: FFA000
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: w_shieldwall
-      name: Shield Wall
-      emoji: "\U0001F6E1\uFE0F"
-      description: 'Brace: take 70% less damage for 3 seconds.'
+      name: Sunshield
+      emoji: "\u2600\uFE0F"
+      description: 'Raise your lantern-shield for 2 s: take 70% less damage, bounce shots back, and throw a cone of light that lights every enemy in it (a Light hit). Boost: lasts longer and burns brighter.'
       owner: 0
       anyClass: 0
       slot: 1
-      kind: 13
+      kind: 26
       power: 0
-      cooldown: 12
-      range: 1
-      radius: 1
-      duration: 3
+      cooldown: 7
+      range: 5
+      radius: 35
+      duration: 2
       value: 0.3
+      hitType: 4
+      hitType2: 0
+      lightRadius: 6
+      lightIntensity: 1.9
+      lightColour: FFD54A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 4
+      boostStep: 0.5
     - id: w_whirl
       name: Whirlwind
       emoji: "\U0001F32A\uFE0F"
@@ -1758,11 +1919,22 @@ MonoBehaviour:
       slot: 1
       kind: 14
       power: 0.5
-      cooldown: 10
+      cooldown: 7
       range: 1
-      radius: 1.6
+      radius: 1.9200001
       duration: 1.5
       value: 0.25
+      hitType: 0
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FFB300
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: w_charge
       name: Shoulder Charge
       emoji: "\U0001F402"
@@ -1777,24 +1949,46 @@ MonoBehaviour:
       radius: 1
       duration: 0
       value: 0
+      hitType: 2
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: FFC21A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: r_shot
-      name: Shot
+      name: Triple Shot
       emoji: "\U0001F3F9"
-      description: A single arrow.
+      description: 'Three arrows in a fan, each carrying its own light. Boost: +2 arrows per level.'
       owner: 1
       anyClass: 0
       slot: 0
       kind: 3
-      power: 1
+      power: 0.65
       cooldown: 0.42
       range: 13
       radius: 1
       duration: 0
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: 00E676
+      count: 3
+      spread: 9
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 2
     - id: r_spread
       name: Spread Shot
       emoji: "\U0001F390"
-      description: Three arrows in a fan. Weaker each, hard to dodge.
+      description: 'Five arrows in a wide fan. Weaker each, hard to dodge. Boost: +2 arrows per level.'
       owner: 1
       anyClass: 0
       slot: 0
@@ -1805,6 +1999,17 @@ MonoBehaviour:
       radius: 1
       duration: 0
       value: 12
+      hitType: 1
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: 2BFF88
+      count: 5
+      spread: 12
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 2
     - id: r_longbow
       name: Longbow
       emoji: "\U0001F3AF"
@@ -1819,62 +2024,117 @@ MonoBehaviour:
       radius: 1
       duration: 0
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: 00E5C0
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: r_volley
-      name: Volley
-      emoji: "\U0001F3F9"
-      description: "Two piercing arrows for \xD70.75 damage each."
+      name: Ember Arrow
+      emoji: "\U0001F525"
+      description: 'A fire arrow that sticks where it lands and burns like a torch for 8 s: lights braziers and burns anything standing there (Fire). Boost: splits into more arrows.'
       owner: 1
       anyClass: 0
       slot: 1
-      kind: 15
-      power: 0.75
-      cooldown: 6
-      range: 1
-      radius: 1
-      duration: 0
-      value: 0
-    - id: r_trap
-      name: Snare Trap
-      emoji: "\U0001FAA4"
-      description: Set a snare at your feet. The first enemy to step in is hurt and pinned for 2.5 seconds.
-      owner: 1
-      anyClass: 0
-      slot: 1
-      kind: 16
+      kind: 28
       power: 1
-      cooldown: 9
-      range: 1
-      radius: 0.9
-      duration: 2.5
-      value: 12
-    - id: r_mark
-      name: Hunter's Mark
-      emoji: "\U0001F516"
-      description: 'Mark the nearest enemy: it takes +50% damage for 6 seconds.'
+      cooldown: 4
+      range: 15
+      radius: 1
+      duration: 8
+      value: 0.25
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: 7CFF00
+      count: 1
+      spread: 12
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 1
+    - id: r_trap
+      name: Flare Arrow
+      emoji: "\u2728"
+      description: 'An arrow that bursts into a ball of light: hits everything nearby (Light), stuns shadow creatures, and shows secrets and weaknesses. Boost: a bigger burst.'
       owner: 1
       anyClass: 0
       slot: 1
-      kind: 17
+      kind: 29
+      power: 1.1
+      cooldown: 6.5
+      range: 15
+      radius: 1.8
+      duration: 2
+      value: 0
+      hitType: 4
+      hitType2: 0
+      lightRadius: 6
+      lightIntensity: 2.2
+      lightColour: 00FFC8
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.3
+    - id: r_mark
+      name: Spotlight
+      emoji: "\U0001F526"
+      description: 'Pin a beam of light on the nearest enemy for 8 s: it''s lit, takes +30% damage and shows all its weaknesses.'
+      owner: 1
+      anyClass: 0
+      slot: 1
+      kind: 30
       power: 0
-      cooldown: 10
-      range: 8
+      cooldown: 7
+      range: 9
       radius: 1
-      duration: 6
-      value: 0.5
+      duration: 8
+      value: 0.3
+      hitType: 4
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: 00FFA0
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: r_rain
-      name: Arrow Rain
+      name: Arrow Storm
       emoji: "\U0001F327\uFE0F"
-      description: Arrows fall on a spot ahead of you for 1.5 seconds.
+      description: 'A storm of arrows over a wide area ahead for 2 seconds, lighting it up. Boost: a bigger storm.'
       owner: 1
       anyClass: 0
       slot: 1
       kind: 18
       power: 0.45
-      cooldown: 12
+      cooldown: 8.5
       range: 3
-      radius: 1.8
-      duration: 1.5
+      radius: 2.6
+      duration: 2
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 7
+      lightIntensity: 1.9
+      lightColour: 1DE9B6
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.3
     - id: r_smoke
       name: Smoke Bomb
       emoji: "\U0001F32B\uFE0F"
@@ -1884,15 +2144,26 @@ MonoBehaviour:
       slot: 1
       kind: 19
       power: 0
-      cooldown: 12
+      cooldown: 8.5
       range: 1
-      radius: 3
+      radius: 3.6000001
       duration: 3
       value: 0.5
+      hitType: 0
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: 00C896
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: r_vault
       name: Back Vault
       emoji: "\U0001F938"
-      description: Flip backwards and loose an arrow at whatever you were facing.
+      description: Flip backwards and loose a fan of 3 arrows at whatever you were facing.
       owner: 1
       anyClass: 0
       slot: 2
@@ -1903,20 +2174,42 @@ MonoBehaviour:
       radius: 1
       duration: 0
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: 00E676
+      count: 3
+      spread: 12
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: c_ladle
-      name: Ladle Bonk
-      emoji: "\U0001F944"
-      description: A quick bonk with the ladle.
+      name: Pan & Ladle
+      emoji: "\U0001F373"
+      description: 'A ladle bonk, then a flaming pan (Fire) that stuns. Boost: +1 flaming pan per level.'
       owner: 2
       anyClass: 0
       slot: 0
-      kind: 0
+      kind: 25
       power: 1
-      cooldown: 0.4
-      range: 0.75
-      radius: 0.75
-      duration: 0
-      value: 0
+      cooldown: 0.38
+      range: 0.9775
+      radius: 1.1875
+      duration: 0.5
+      value: 1.6
+      hitType: 2
+      hitType2: 3
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FF7A00
+      count: 2
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 3
+      boostStep: 1
     - id: c_skewer
       name: Skewer
       emoji: "\U0001F362"
@@ -1927,10 +2220,21 @@ MonoBehaviour:
       kind: 1
       power: 1.1
       cooldown: 0.5
-      range: 1.3
-      radius: 0.6
+      range: 1.625
+      radius: 0.78000003
       duration: 0
       value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FF9500
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.2
     - id: c_pan
       name: Frying Pan
       emoji: "\U0001F373"
@@ -1941,66 +2245,121 @@ MonoBehaviour:
       kind: 2
       power: 1.9
       cooldown: 0.9
-      range: 0.85
-      radius: 0.95
+      range: 0.93500006
+      radius: 1.2349999
       duration: 0.8
       value: 0
+      hitType: 2
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FFC400
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
     - id: c_snack
-      name: Hearty Snack
-      emoji: "\U0001F950"
-      description: Heal 12 and take half damage for 3 seconds.
+      name: Skewer Toss
+      emoji: "\U0001F362"
+      description: 'Throw 3 flaming skewers in a fan (Pierce). Boost: +2 skewers per level.'
       owner: 2
       anyClass: 0
       slot: 1
-      kind: 20
-      power: 0
-      cooldown: 6
-      range: 1
+      kind: 32
+      power: 0.8
+      cooldown: 3.5
+      range: 13
       radius: 1
-      duration: 3
-      value: 12
+      duration: 0
+      value: 0
+      hitType: 1
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF8C00
+      count: 3
+      spread: 11
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 2
     - id: c_pepper
-      name: Pepper Toss
-      emoji: "\U0001F336\uFE0F"
-      description: 'Fling pepper in a cone: hurts and slows enemies by half for 3 seconds.'
+      name: "Flamb\xE9"
+      emoji: "\U0001F525"
+      description: 'Blast a wide cone of flame (Fire): hurts and slows enemies by half for 3 s, with a huge burst of light. Boost: leaves the ground burning.'
       owner: 2
       anyClass: 0
       slot: 1
       kind: 21
-      power: 0.6
-      cooldown: 7
-      range: 3
-      radius: 35
+      power: 0.9
+      cooldown: 5
+      range: 3.6
+      radius: 40
       duration: 3
       value: 0.5
+      hitType: 3
+      hitType2: 0
+      lightRadius: 7
+      lightIntensity: 1.9
+      lightColour: FF3D00
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: c_hotpot
       name: Hot Pot
       emoji: "\U0001F372"
-      description: Lob a pot ahead. It leaves a scalding puddle for 4 seconds.
+      description: 'Lob a pot ahead. It leaves a glowing, scalding pool for 4 seconds (Fire). Boost: a bigger pool.'
       owner: 2
       anyClass: 0
       slot: 1
       kind: 22
       power: 0.3
-      cooldown: 10
+      cooldown: 7
       range: 4
       radius: 1.5
       duration: 4
       value: 0.5
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF6A00
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
     - id: c_picnic
-      name: Picnic
-      emoji: "\U0001F9FA"
-      description: Spread a blanket for 5 seconds. Stand on it to heal 2 HP every half second.
+      name: Cookfire
+      emoji: "\U0001F525"
+      description: 'Drop a cookfire for 8 s: heals 2 every half second while you stand in its light. Light-shy monsters keep away and it lights braziers. Boost: bigger, and heals more.'
       owner: 2
       anyClass: 0
       slot: 1
-      kind: 23
+      kind: 31
       power: 0
-      cooldown: 18
+      cooldown: 11
       range: 1
-      radius: 2
-      duration: 5
+      radius: 2.2
+      duration: 8
       value: 2
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FFAB00
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.3
     - id: c_pin
       name: Rolling Pin
       emoji: "\U0001FAB5"
@@ -2010,11 +2369,22 @@ MonoBehaviour:
       slot: 1
       kind: 24
       power: 0.9
-      cooldown: 6
+      cooldown: 4
       range: 5
       radius: 1
       duration: 0
       value: 10
+      hitType: 2
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FFC400
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
     - id: c_slide
       name: Butter Slide
       emoji: "\U0001F9C8"
@@ -2029,6 +2399,542 @@ MonoBehaviour:
       radius: 1
       duration: 3
       value: 0.6
+      hitType: 0
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: FFD600
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: l_wisp
+      name: Wisp Bolts
+      emoji: "\u2728"
+      description: 'Two homing motes of light that seek the nearest enemy. Boost: +2 wisps per level.'
+      owner: 3
+      anyClass: 0
+      slot: 0
+      kind: 33
+      power: 0.6
+      cooldown: 0.48
+      range: 9
+      radius: 1
+      duration: 0
+      value: 0
+      hitType: 4
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: 2EA8FF
+      count: 2
+      spread: 18
+      homing: 300
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 2
+    - id: l_lantern
+      name: Lantern
+      emoji: "\U0001F3EE"
+      description: 'Hang a floating lantern for 10 s: a strong light that looses a homing wisp at the nearest enemy every second. Boost: +1 lantern per level.'
+      owner: 3
+      anyClass: 0
+      slot: 1
+      kind: 34
+      power: 0.5
+      cooldown: 8.5
+      range: 7
+      radius: 1
+      duration: 10
+      value: 1
+      hitType: 4
+      hitType2: 0
+      lightRadius: 6
+      lightIntensity: 1.9
+      lightColour: 3D8BFF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 1
+    - id: l_sunbeam
+      name: Sunbeam
+      emoji: "\u2600\uFE0F"
+      description: 'Channel a beam of sunlight for 1.5 s and steer it as you move: it hits everything in its line again and again (Light). Boost: longer and wider.'
+      owner: 3
+      anyClass: 0
+      slot: 1
+      kind: 35
+      power: 0.35
+      cooldown: 6.5
+      range: 7
+      radius: 0.45
+      duration: 1.5
+      value: 0.15
+      hitType: 4
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: 40C4FF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.3
+    - id: l_prism
+      name: Prism
+      emoji: "\U0001F52E"
+      description: 'A crystal bolt that splits on impact: it strikes its target with every one of its weaknesses at once (great for Breaking) and showers the enemies nearby. Boost: knocks off more shield.'
+      owner: 3
+      anyClass: 0
+      slot: 1
+      kind: 36
+      power: 1.2
+      cooldown: 5
+      range: 14
+      radius: 2
+      duration: 0
+      value: 0
+      hitType: 4
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: B04DFF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: l_kindle
+      name: Kindle
+      emoji: "\U0001F56F\uFE0F"
+      description: Light every brazier in the room at once and flood it with warm light; heal 3 HP for each brazier (up to 12).
+      owner: 3
+      anyClass: 0
+      slot: 1
+      kind: 37
+      power: 0
+      cooldown: 11
+      range: 1
+      radius: 1
+      duration: 0
+      value: 3
+      hitType: 4
+      hitType2: 0
+      lightRadius: 8
+      lightIntensity: 1.9
+      lightColour: 5C6CFF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: l_blink
+      name: Blink
+      emoji: "\U0001F4AB"
+      description: Vanish in a flash and reappear a few steps away, leaving a light behind.
+      owner: 3
+      anyClass: 0
+      slot: 2
+      kind: 38
+      power: 0
+      cooldown: 1.1
+      range: 3.2
+      radius: 1
+      duration: 0
+      value: 0
+      hitType: 4
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: 9B5CFF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: e_fists
+      name: Ember Fists
+      emoji: "\U0001F44A"
+      description: 'A fast four-punch chain; the last punch bursts into flame (Fire). Every hit stokes your Heat. Boost: +1 fire burst per level.'
+      owner: 4
+      anyClass: 0
+      slot: 0
+      kind: 25
+      power: 0.6
+      cooldown: 0.22
+      range: 0.92
+      radius: 1.0625
+      duration: 0.25
+      value: 1.6
+      hitType: 2
+      hitType2: 3
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FF3B3B
+      count: 4
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 3
+      boostStep: 1
+    - id: e_phoenix
+      name: Rising Phoenix
+      emoji: "\U0001F985"
+      description: 'Rush forward through everything in your way and finish with a flaming uppercut that stuns, leaving fire behind (Fire). Boost: rush further.'
+      owner: 4
+      anyClass: 0
+      slot: 1
+      kind: 39
+      power: 1.2
+      cooldown: 4
+      range: 3.5
+      radius: 1.3
+      duration: 0.6
+      value: 0
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF4A2A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
+    - id: e_wheel
+      name: Flame Wheel
+      emoji: "\U0001F300"
+      description: 'A spinning kick that hits everything around you twice (Slash). Boost: a bigger wheel.'
+      owner: 4
+      anyClass: 0
+      slot: 1
+      kind: 40
+      power: 0.9
+      cooldown: 5
+      range: 1
+      radius: 1.9200001
+      duration: 0
+      value: 0
+      hitType: 0
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF5FA8
+      count: 2
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
+    - id: e_detonate
+      name: Detonate
+      emoji: "\U0001F4A5"
+      description: 'Spend all your Heat in one explosion of fire: the more Heat, the bigger and harder it hits (Fire). Needs at least 20 Heat.'
+      owner: 4
+      anyClass: 0
+      slot: 1
+      kind: 41
+      power: 1
+      cooldown: 5.5
+      range: 2.3
+      radius: 1.2
+      duration: 0
+      value: 2.5
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF2E2E
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: e_counter
+      name: Cinder Step
+      emoji: "\U0001F525"
+      description: 'Take a fighting stance for a moment: if anything hits you, you take no damage and strike back in a burst of fire (+20 Heat). Boost: a longer stance.'
+      owner: 4
+      anyClass: 0
+      slot: 1
+      kind: 42
+      power: 1.8
+      cooldown: 4
+      range: 1
+      radius: 1.5
+      duration: 0.8
+      value: 0
+      hitType: 3
+      hitType2: 0
+      lightRadius: 5.5
+      lightIntensity: 1.9
+      lightColour: FF7A9E
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 4
+      boostStep: 0.5
+    - id: e_flicker
+      name: Flicker
+      emoji: "\U0001F4A8"
+      description: A lightning-quick step that leaves a flame afterimage and singes anything you pass through.
+      owner: 4
+      anyClass: 0
+      slot: 2
+      kind: 43
+      power: 0.3
+      cooldown: 0.6
+      range: 1
+      radius: 1
+      duration: 0
+      value: 0
+      hitType: 3
+      hitType2: 0
+      lightRadius: 3.5
+      lightIntensity: 1.9
+      lightColour: FF3B6A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 0
+      boostStep: 0
+    - id: l_lance
+      name: Light Lance
+      emoji: "\U0001F506"
+      description: 'A fast bolt of light that pierces every enemy in a line. Boost: +1 lance per level.'
+      owner: 3
+      anyClass: 0
+      slot: 0
+      kind: 33
+      power: 1.25
+      cooldown: 0.6
+      range: 18
+      radius: 1
+      duration: 0
+      value: 1
+      hitType: 4
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: 4FC3FF
+      count: 1
+      spread: 6
+      homing: 0
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 1
+    - id: l_swarm
+      name: Ember Swarm
+      emoji: "\U0001F525"
+      description: 'Loose four little homing embers (Fire): weak alone, deadly together. Boost: +2 embers per level.'
+      owner: 3
+      anyClass: 0
+      slot: 0
+      kind: 33
+      power: 0.32
+      cooldown: 0.55
+      range: 7
+      radius: 1
+      duration: 0
+      value: 0
+      hitType: 3
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: A040FF
+      count: 4
+      spread: 22
+      homing: 420
+      aimAssist: -1
+      boostShape: 1
+      boostStep: 2
+    - id: e_kick
+      name: Ember Kick
+      emoji: "\U0001F9B6"
+      description: 'A long, sweeping kick that hits everything in a line (Slash). Boost: a wider kick.'
+      owner: 4
+      anyClass: 0
+      slot: 0
+      kind: 1
+      power: 1.15
+      cooldown: 0.45
+      range: 1.875
+      radius: 0.90999997
+      duration: 0
+      value: 0
+      hitType: 0
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FF5FA8
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.2
+    - id: e_palm
+      name: Burning Palm
+      emoji: "\U0001F590\uFE0F"
+      description: 'A slow, crushing palm strike that stuns (Blunt). Boost: a bigger blast.'
+      owner: 4
+      anyClass: 0
+      slot: 0
+      kind: 2
+      power: 2.1
+      cooldown: 0.95
+      range: 0.99
+      radius: 1.3
+      duration: 0.6
+      value: 0
+      hitType: 2
+      hitType2: 0
+      lightRadius: 4
+      lightIntensity: 1.9
+      lightColour: FF2E4E
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: -1
+      boostShape: 2
+      boostStep: 0.25
+    - id: w_ult
+      name: Sunfall
+      emoji: "\u2600\uFE0F"
+      description: 'Leap to where you''re aiming and bring the sun down: a huge ring of Light that hits and stuns everything in it, then a second shockwave. +50% damage for 6 s afterwards.'
+      owner: 0
+      anyClass: 0
+      slot: 3
+      kind: 44
+      power: 3
+      cooldown: 45
+      range: 6
+      radius: 3.4
+      duration: 2
+      value: 0.5
+      hitType: 4
+      hitType2: 4
+      lightRadius: 11
+      lightIntensity: 2.6
+      lightColour: FFC000
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
+    - id: r_ult
+      name: Starfall
+      emoji: "\U0001F320"
+      description: Call down a storm of falling stars where you're aiming for 3 s (Light). Everything caught in it is Spotlit and takes +30% damage.
+      owner: 1
+      anyClass: 0
+      slot: 3
+      kind: 45
+      power: 0.7
+      cooldown: 45
+      range: 6
+      radius: 3.4
+      duration: 3
+      value: 0.3
+      hitType: 4
+      hitType2: 4
+      lightRadius: 10
+      lightIntensity: 2.6
+      lightColour: 00FFB0
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
+    - id: c_ult
+      name: Grand Feast
+      emoji: "\U0001F372"
+      description: 'Bang the big pot: a ring of fire blasts and slows everything around you (Fire), you heal 30, and a great cookfire burns for 8 s, healing you while you stand in its light.'
+      owner: 2
+      anyClass: 0
+      slot: 3
+      kind: 46
+      power: 2
+      cooldown: 45
+      range: 1
+      radius: 3.2
+      duration: 8
+      value: 30
+      hitType: 3
+      hitType2: 3
+      lightRadius: 9
+      lightIntensity: 2.6
+      lightColour: FF8F00
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
+    - id: l_ult
+      name: Dawn
+      emoji: "\U0001F305"
+      description: 'Raise your lamp and call up the dawn: every brazier lights, the room floods with light, and every enemy in it takes a Light hit that knocks off 3 shield pips and stuns it.'
+      owner: 3
+      anyClass: 0
+      slot: 3
+      kind: 47
+      power: 2
+      cooldown: 45
+      range: 1
+      radius: 12
+      duration: 1.5
+      value: 3
+      hitType: 4
+      hitType2: 4
+      lightRadius: 14
+      lightIntensity: 2.6
+      lightColour: 8A4DFF
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
+    - id: e_ult
+      name: Supernova
+      emoji: "\U0001F4A5"
+      description: 'Pull in every ember: your Heat fills, then a huge explosion of fire around you (Fire) that stuns, and your Heat stays full for 6 s.'
+      owner: 4
+      anyClass: 0
+      slot: 3
+      kind: 48
+      power: 3.2
+      cooldown: 45
+      range: 1
+      radius: 3.6
+      duration: 1.5
+      value: 6
+      hitType: 3
+      hitType2: 3
+      lightRadius: 12
+      lightIntensity: 2.6
+      lightColour: FF2E6A
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
     skillNodes:
     - id: w_whetstone
       classId: 0
@@ -2185,9 +3091,9 @@ MonoBehaviour:
       branch: 1
       row: 3
       minLevel: 20
-      name: Shield Wall
-      emoji: "\U0001F6E1\uFE0F"
-      description: 'New skill: Brace: take 70% less damage for 3 seconds.'
+      name: Sunshield
+      emoji: "\u2600\uFE0F"
+      description: 'New skill: Raise your lantern-shield for 2 s: take 70% less damage, bounce shots back, and throw a cone of light that lights every enemy in it (a Light hit). Boost: lasts longer and burns brighter.'
       effect: 0
       moveId: w_shieldwall
       stat: 0
@@ -2260,9 +3166,9 @@ MonoBehaviour:
       branch: 2
       row: 1
       minLevel: 5
-      name: Ground Slam
-      emoji: "\U0001F4A5"
-      description: 'New skill: A shockwave rolls forward, damaging and stunning everything in its path.'
+      name: Dawnbreaker
+      emoji: "\U0001F305"
+      description: 'New skill: Leap ahead (onto the nearest enemy) and slam down: a ring of Light that hits and stuns everything around you. Boost: a bigger ring and a second shockwave.'
       effect: 0
       moveId: w_slam
       stat: 0
@@ -2290,9 +3196,9 @@ MonoBehaviour:
       branch: 2
       row: 3
       minLevel: 15
-      name: War Cry
+      name: Rally
       emoji: "\U0001F4EF"
-      description: 'New skill: Roar: +40% damage for 6 seconds.'
+      description: 'New skill: Roar and blaze: +40% damage for 6 seconds, and your light flares up.'
       effect: 0
       moveId: w_warcry
       stat: 0
@@ -2367,7 +3273,7 @@ MonoBehaviour:
       minLevel: 5
       name: Spread Shot
       emoji: "\U0001F390"
-      description: 'New attack: Three arrows in a fan. Weaker each, hard to dodge.'
+      description: 'New attack: Five arrows in a wide fan. Weaker each, hard to dodge. Boost: +2 arrows per level.'
       effect: 0
       moveId: r_spread
       stat: 0
@@ -2487,7 +3393,7 @@ MonoBehaviour:
       minLevel: 15
       name: Back Vault
       emoji: "\U0001F938"
-      description: 'New dash: Flip backwards and loose an arrow at whatever you were facing.'
+      description: 'New dash: Flip backwards and loose a fan of 3 arrows at whatever you were facing.'
       effect: 0
       moveId: r_vault
       stat: 0
@@ -2500,9 +3406,9 @@ MonoBehaviour:
       branch: 1
       row: 3
       minLevel: 20
-      name: Hunter's Mark
-      emoji: "\U0001F516"
-      description: 'New skill: Mark the nearest enemy: it takes +50% damage for 6 seconds.'
+      name: Spotlight
+      emoji: "\U0001F526"
+      description: 'New skill: Pin a beam of light on the nearest enemy for 8 s: it''s lit, takes +30% damage and shows all its weaknesses.'
       effect: 0
       moveId: r_mark
       stat: 0
@@ -2575,9 +3481,9 @@ MonoBehaviour:
       branch: 2
       row: 1
       minLevel: 5
-      name: Snare Trap
-      emoji: "\U0001FAA4"
-      description: 'New skill: Set a snare at your feet. The first enemy to step in is hurt and pinned for 2.5 seconds.'
+      name: Flare Arrow
+      emoji: "\u2728"
+      description: 'New skill: An arrow that bursts into a ball of light: hits everything nearby (Light), stuns shadow creatures, and shows secrets and weaknesses. Boost: a bigger burst.'
       effect: 0
       moveId: r_trap
       stat: 0
@@ -2605,9 +3511,9 @@ MonoBehaviour:
       branch: 2
       row: 3
       minLevel: 15
-      name: Arrow Rain
+      name: Arrow Storm
       emoji: "\U0001F327\uFE0F"
-      description: 'New skill: Arrows fall on a spot ahead of you for 1.5 seconds.'
+      description: 'New skill: A storm of arrows over a wide area ahead for 2 seconds, lighting it up. Boost: a bigger storm.'
       effect: 0
       moveId: r_rain
       stat: 0
@@ -2815,9 +3721,9 @@ MonoBehaviour:
       branch: 1
       row: 3
       minLevel: 20
-      name: Picnic
-      emoji: "\U0001F9FA"
-      description: 'New skill: Spread a blanket for 5 seconds. Stand on it to heal 2 HP every half second.'
+      name: Cookfire
+      emoji: "\U0001F525"
+      description: 'New skill: Drop a cookfire for 8 s: heals 2 every half second while you stand in its light. Light-shy monsters keep away and it lights braziers. Boost: bigger, and heals more.'
       effect: 0
       moveId: c_picnic
       stat: 0
@@ -2890,9 +3796,9 @@ MonoBehaviour:
       branch: 2
       row: 1
       minLevel: 5
-      name: Pepper Toss
-      emoji: "\U0001F336\uFE0F"
-      description: 'New skill: Fling pepper in a cone: hurts and slows enemies by half for 3 seconds.'
+      name: "Flamb\xE9"
+      emoji: "\U0001F525"
+      description: 'New skill: Blast a wide cone of flame (Fire): hurts and slows enemies by half for 3 s, with a huge burst of light. Boost: leaves the ground burning.'
       effect: 0
       moveId: c_pepper
       stat: 0
@@ -2922,7 +3828,7 @@ MonoBehaviour:
       minLevel: 15
       name: Hot Pot
       emoji: "\U0001F372"
-      description: 'New skill: Lob a pot ahead. It leaves a scalding puddle for 4 seconds.'
+      description: 'New skill: Lob a pot ahead. It leaves a glowing, scalding pool for 4 seconds (Fire).'
       effect: 0
       moveId: c_hotpot
       stat: 0
@@ -2975,7 +3881,637 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: c_preptime
-    contentVersion: 8
+    - id: l_focus
+      classId: 3
+      branch: 0
+      row: 0
+      minLevel: 1
+      name: Focus
+      emoji: "\U0001F3AF"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: l_bright
+      classId: 3
+      branch: 0
+      row: 1
+      minLevel: 5
+      name: Light Lance
+      emoji: "\U0001F506"
+      description: 'New attack: A fast bolt of light that pierces every enemy in a line. Boost: +1 lance per level.'
+      effect: 0
+      moveId: l_lance
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: l_focus
+    - id: l_kindled
+      classId: 3
+      branch: 0
+      row: 2
+      minLevel: 10
+      name: Kindled Mind
+      emoji: "\U0001F525"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: l_bright
+    - id: l_clarity
+      classId: 3
+      branch: 0
+      row: 3
+      minLevel: 20
+      name: Clarity
+      emoji: "\U0001F48E"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: l_kindled
+    - id: l_beacon
+      classId: 3
+      branch: 0
+      row: 4
+      minLevel: 25
+      name: Ember Swarm
+      emoji: "\U0001F525"
+      description: 'New attack: Loose four little homing embers (Fire): weak alone, deadly together. Boost: +2 embers per level.'
+      effect: 0
+      moveId: l_swarm
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: l_clarity
+    - id: l_brilliance
+      classId: 3
+      branch: 0
+      row: 5
+      minLevel: 35
+      name: Brilliance
+      emoji: "\U0001F31F"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: l_beacon
+    - id: l_dawn
+      classId: 3
+      branch: 0
+      row: 6
+      minLevel: 45
+      name: First Light
+      emoji: "\U0001F305"
+      description: Attacks hit 15% harder.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: l_brilliance
+    - id: l_warm
+      classId: 3
+      branch: 1
+      row: 0
+      minLevel: 1
+      name: Warm Hands
+      emoji: "\U0001F9E4"
+      description: +1 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: l_ward
+      classId: 3
+      branch: 1
+      row: 1
+      minLevel: 10
+      name: Lamp Ward
+      emoji: "\U0001F6E1\uFE0F"
+      description: +1 armour per rank (5% less damage each).
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: l_warm
+    - id: l_flicker
+      classId: 3
+      branch: 1
+      row: 2
+      minLevel: 15
+      name: Flicker
+      emoji: "\U0001F4AB"
+      description: Dash recharges 8% faster per rank.
+      effect: 5
+      moveId: 
+      stat: 0
+      valuePerRank: 0.08
+      maxRank: 3
+      cost: 1
+      requires: l_ward
+    - id: l_drift
+      classId: 3
+      branch: 1
+      row: 3
+      minLevel: 20
+      name: Drifting Light
+      emoji: "\U0001F343"
+      description: Move 3% faster per rank.
+      effect: 6
+      moveId: 
+      stat: 0
+      valuePerRank: 0.03
+      maxRank: 5
+      cost: 1
+      requires: l_flicker
+    - id: l_afterglow
+      classId: 3
+      branch: 1
+      row: 4
+      minLevel: 30
+      name: Afterglow
+      emoji: "\U0001F56F\uFE0F"
+      description: Heal 1 HP per rank whenever you defeat an enemy.
+      effect: 7
+      moveId: 
+      stat: 0
+      valuePerRank: 1
+      maxRank: 3
+      cost: 1
+      requires: l_drift
+    - id: l_hearthlight
+      classId: 3
+      branch: 1
+      row: 5
+      minLevel: 40
+      name: Hearthlight
+      emoji: "\U0001F3E1"
+      description: +2 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 2
+      maxRank: 3
+      cost: 1
+      requires: l_afterglow
+    - id: l_everflame
+      classId: 3
+      branch: 1
+      row: 6
+      minLevel: 50
+      name: Everflame
+      emoji: "\U0001F525"
+      description: +2 armour.
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 2
+      maxRank: 1
+      cost: 1
+      requires: l_hearthlight
+    - id: l_trim
+      classId: 3
+      branch: 2
+      row: 0
+      minLevel: 1
+      name: Trimmed Wick
+      emoji: "\u2702\uFE0F"
+      description: Skills recharge 4% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.04
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: l_n_sunbeam
+      classId: 3
+      branch: 2
+      row: 1
+      minLevel: 5
+      name: Sunbeam
+      emoji: "\u2600\uFE0F"
+      description: 'New skill: Channel a beam of sunlight for 1.5 s and steer it as you move: it hits everything in its line again and again (Light). Boost: longer and wider.'
+      effect: 0
+      moveId: l_sunbeam
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: l_trim
+    - id: l_lens
+      classId: 3
+      branch: 2
+      row: 2
+      minLevel: 10
+      name: Lens
+      emoji: "\U0001F50D"
+      description: Skills hit 5% harder per rank.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 5
+      cost: 1
+      requires: l_n_sunbeam
+    - id: l_n_prism
+      classId: 3
+      branch: 2
+      row: 3
+      minLevel: 15
+      name: Prism
+      emoji: "\U0001F52E"
+      description: 'New skill: A crystal bolt that splits on impact: it strikes its target with every one of its weaknesses at once (great for Breaking) and showers the enemies nearby. Boost: knocks off more shield.'
+      effect: 0
+      moveId: l_prism
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: l_lens
+    - id: l_n_kindle
+      classId: 3
+      branch: 2
+      row: 4
+      minLevel: 30
+      name: Kindle
+      emoji: "\U0001F56F\uFE0F"
+      description: 'New skill: Light every brazier in the room at once and flood it with warm light; heal 3 HP for each brazier (up to 12).'
+      effect: 0
+      moveId: l_kindle
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: l_n_prism
+    - id: l_oil
+      classId: 3
+      branch: 2
+      row: 5
+      minLevel: 35
+      name: Lamp Oil
+      emoji: "\U0001F6E2\uFE0F"
+      description: Skills recharge 5% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: l_n_kindle
+    - id: l_radiant
+      classId: 3
+      branch: 2
+      row: 6
+      minLevel: 45
+      name: Radiant
+      emoji: "\u2600\uFE0F"
+      description: Skills hit 15% harder.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: l_oil
+    - id: e_knuckles
+      classId: 4
+      branch: 0
+      row: 0
+      minLevel: 1
+      name: Iron Knuckles
+      emoji: "\U0001F4AA"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: e_jab
+      classId: 4
+      branch: 0
+      row: 1
+      minLevel: 5
+      name: Ember Kick
+      emoji: "\U0001F9B6"
+      description: 'New attack: A long, sweeping kick that hits everything in a line (Slash). Boost: a wider kick.'
+      effect: 0
+      moveId: e_kick
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: e_knuckles
+    - id: e_pressure
+      classId: 4
+      branch: 0
+      row: 2
+      minLevel: 10
+      name: Pressure Points
+      emoji: "\U0001F3AF"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: e_jab
+    - id: e_stoke
+      classId: 4
+      branch: 0
+      row: 3
+      minLevel: 20
+      name: Stoked
+      emoji: "\U0001F525"
+      description: +2% damage per rank.
+      effect: 1
+      moveId: 
+      stat: 0
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: e_pressure
+    - id: e_hammer
+      classId: 4
+      branch: 0
+      row: 4
+      minLevel: 25
+      name: Burning Palm
+      emoji: "\U0001F590\uFE0F"
+      description: 'New attack: A slow, crushing palm strike that stuns (Blunt). Boost: a bigger blast.'
+      effect: 0
+      moveId: e_palm
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: e_stoke
+    - id: e_focus
+      classId: 4
+      branch: 0
+      row: 5
+      minLevel: 35
+      name: Inner Focus
+      emoji: "\U0001F9D8"
+      description: +2% crit chance per rank.
+      effect: 1
+      moveId: 
+      stat: 4
+      valuePerRank: 0.02
+      maxRank: 5
+      cost: 1
+      requires: e_hammer
+    - id: e_dragonfist
+      classId: 4
+      branch: 0
+      row: 6
+      minLevel: 45
+      name: Dragon Fist
+      emoji: "\U0001F409"
+      description: Attacks hit 15% harder.
+      effect: 2
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: e_focus
+    - id: e_hardy
+      classId: 4
+      branch: 1
+      row: 0
+      minLevel: 1
+      name: Hardy
+      emoji: "\U0001FAA8"
+      description: +1 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: e_wraps
+      classId: 4
+      branch: 1
+      row: 1
+      minLevel: 10
+      name: Hand Wraps
+      emoji: "\U0001F9E3"
+      description: +1 armour per rank (5% less damage each).
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 1
+      maxRank: 5
+      cost: 1
+      requires: e_hardy
+    - id: e_light
+      classId: 4
+      branch: 1
+      row: 2
+      minLevel: 15
+      name: Light Feet
+      emoji: "\U0001F343"
+      description: Move 3% faster per rank.
+      effect: 6
+      moveId: 
+      stat: 0
+      valuePerRank: 0.03
+      maxRank: 5
+      cost: 1
+      requires: e_wraps
+    - id: e_quickstep
+      classId: 4
+      branch: 1
+      row: 3
+      minLevel: 20
+      name: Quickstep
+      emoji: "\U0001F4A8"
+      description: Dash recharges 8% faster per rank.
+      effect: 5
+      moveId: 
+      stat: 0
+      valuePerRank: 0.08
+      maxRank: 3
+      cost: 1
+      requires: e_light
+    - id: e_feast
+      classId: 4
+      branch: 1
+      row: 4
+      minLevel: 30
+      name: Burning Appetite
+      emoji: "\U0001F356"
+      description: Heal 1 HP per rank whenever you defeat an enemy.
+      effect: 7
+      moveId: 
+      stat: 0
+      valuePerRank: 1
+      maxRank: 3
+      cost: 1
+      requires: e_quickstep
+    - id: e_tough
+      classId: 4
+      branch: 1
+      row: 5
+      minLevel: 40
+      name: Tempered
+      emoji: "\u2692\uFE0F"
+      description: +2 max HP per rank.
+      effect: 1
+      moveId: 
+      stat: 1
+      valuePerRank: 2
+      maxRank: 3
+      cost: 1
+      requires: e_feast
+    - id: e_unburnt
+      classId: 4
+      branch: 1
+      row: 6
+      minLevel: 50
+      name: Unburnt
+      emoji: "\U0001F6E1\uFE0F"
+      description: +2 armour.
+      effect: 1
+      moveId: 
+      stat: 3
+      valuePerRank: 2
+      maxRank: 1
+      cost: 1
+      requires: e_tough
+    - id: e_breath
+      classId: 4
+      branch: 2
+      row: 0
+      minLevel: 1
+      name: Steady Breath
+      emoji: "\U0001F32C\uFE0F"
+      description: Skills recharge 4% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.04
+      maxRank: 5
+      cost: 1
+      requires: 
+    - id: e_n_wheel
+      classId: 4
+      branch: 2
+      row: 1
+      minLevel: 5
+      name: Flame Wheel
+      emoji: "\U0001F300"
+      description: 'New skill: A spinning kick that hits everything around you twice (Slash). Boost: a bigger wheel.'
+      effect: 0
+      moveId: e_wheel
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: e_breath
+    - id: e_kindling
+      classId: 4
+      branch: 2
+      row: 2
+      minLevel: 10
+      name: Kindling
+      emoji: "\U0001FAB5"
+      description: Skills hit 5% harder per rank.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 5
+      cost: 1
+      requires: e_n_wheel
+    - id: e_n_detonate
+      classId: 4
+      branch: 2
+      row: 3
+      minLevel: 15
+      name: Detonate
+      emoji: "\U0001F4A5"
+      description: 'New skill: Spend all your Heat in one explosion of fire: the more Heat, the bigger and harder it hits (Fire). Needs at least 20 Heat.'
+      effect: 0
+      moveId: e_detonate
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: e_kindling
+    - id: e_n_counter
+      classId: 4
+      branch: 2
+      row: 4
+      minLevel: 30
+      name: Cinder Step
+      emoji: "\U0001F525"
+      description: 'New skill: Take a fighting stance for a moment: if anything hits you, you take no damage and strike back in a burst of fire (+20 Heat). Boost: a longer stance.'
+      effect: 0
+      moveId: e_counter
+      stat: 0
+      valuePerRank: 0
+      maxRank: 1
+      cost: 1
+      requires: e_n_detonate
+    - id: e_bellows
+      classId: 4
+      branch: 2
+      row: 5
+      minLevel: 35
+      name: Bellows
+      emoji: "\U0001F525"
+      description: Skills recharge 5% faster per rank.
+      effect: 4
+      moveId: 
+      stat: 0
+      valuePerRank: 0.05
+      maxRank: 3
+      cost: 1
+      requires: e_n_counter
+    - id: e_inferno
+      classId: 4
+      branch: 2
+      row: 6
+      minLevel: 45
+      name: Inferno
+      emoji: "\U0001F30B"
+      description: Skills hit 15% harder.
+      effect: 3
+      moveId: 
+      stat: 0
+      valuePerRank: 0.15
+      maxRank: 1
+      cost: 1
+      requires: e_bellows
+    contentVersion: 22
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -3463,3 +4999,74 @@ MonoBehaviour:
       merchant: 1
       drop: 0
       fromRouteId: 
+    stationTiers:
+    - level: 1
+      name: Camp fire
+      price: 0
+      materials: []
+      value: 0
+    - level: 2
+      name: Stone ring
+      price: 50
+      materials:
+      - ingredientId: timber
+        count: 4
+      value: 0
+    - level: 3
+      name: Fieldstone hearth
+      price: 100
+      materials:
+      - ingredientId: fieldstone
+        count: 4
+      - ingredientId: timber
+        count: 2
+      value: 0
+    - level: 4
+      name: Clay oven-hood
+      price: 180
+      materials:
+      - ingredientId: clay
+        count: 4
+      - ingredientId: iron_scrap
+        count: 3
+      value: 0
+    - level: 5
+      name: Ember forge-hearth
+      price: 300
+      materials:
+      - ingredientId: ember_coal
+        count: 4
+      - ingredientId: iron_scrap
+        count: 4
+      value: 0
+    pantryTiers:
+    - level: 1
+      name: Crate shelf
+      price: 0
+      materials: []
+      value: 6
+    - level: 2
+      name: Plank shelves
+      price: 40
+      materials:
+      - ingredientId: timber
+        count: 3
+      value: 8
+    - level: 3
+      name: Stone larder
+      price: 90
+      materials:
+      - ingredientId: fieldstone
+        count: 3
+      - ingredientId: clay
+        count: 2
+      value: 10
+    - level: 4
+      name: Cool cellar
+      price: 160
+      materials:
+      - ingredientId: iron_scrap
+        count: 3
+      - ingredientId: ember_coal
+        count: 2
+      value: 12

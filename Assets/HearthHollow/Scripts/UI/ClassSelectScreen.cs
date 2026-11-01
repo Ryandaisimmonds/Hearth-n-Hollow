@@ -37,6 +37,7 @@ namespace HearthHollow.UI
 
         void Confirm()
         {
+            if (!S.ClassJoined(_pending)) return;
             S.SelectClass(_pending);
             Ui.CloseClassSelect();
         }
@@ -51,6 +52,7 @@ namespace HearthHollow.UI
                 ClassData cd = C.classes[i];
                 ClassProgress cp = p.Progress(cd.id);
                 bool picked = _pending == cd.id;
+                bool joined = S.ClassJoined(cd.id);
 
                 var card = UIKit.E("card", "class-card", "clickable");
                 card.EnableInClassList("class-card--selected", picked);
@@ -63,13 +65,22 @@ namespace HearthHollow.UI
                 card.Add(UIKit.L(BonusText(cd), "class-card__bonus"));
                 if (cd.favouriteBonus > 0f) card.Add(UIKit.L("⭐ Favourite: " + StationName(cd.favouriteStation) + " meals +" + UIKit.Pct(cd.favouriteBonus), "class-card__bonus"));
                 if (!string.IsNullOrEmpty(cd.description)) card.Add(UIKit.L(cd.description, "muted", "class-card__desc"));
+                if (!joined)   // not in your camp yet: say where they join
+                {
+                    card.Add(Art.IconText("lock", "🔒", S.ClassJoinHint(cd.id), "small", "class-card__locked"));
+                    portrait.style.opacity = 0.35f;
+                    card.style.opacity = 0.75f;
+                }
 
                 var skill = UIKit.E("class-card__skill");
                 var skillHead = UIKit.E("class-card__skill-head");
-                skillHead.Add(Art.Framed(Art.Icon(Art.SkillIconId(cd.skill), cd.skill != null ? cd.skill.emoji : "✨", "ico", "ico--lg"), "item-frame--sm"));
+                // the class's real starting skill (the dungeon kit), not the old turn-based one
+                var sm = C.moves.Find(x => x.id == cd.starterSkill);
+                skillHead.Add(Art.Framed(Art.Icon(sm != null ? "move_" + sm.id : Art.SkillIconId(cd.skill), sm != null ? sm.emoji : (cd.skill != null ? cd.skill.emoji : "✨"), "ico", "ico--lg"), "item-frame--sm"));
                 var skillText = UIKit.E("class-card__skill-text");
-                skillText.Add(UIKit.L((cd.skill != null ? cd.skill.name : "Skill"), "class-card__skill-name"));
-                if (cd.skill != null) skillText.Add(UIKit.L(cd.skill.description, "muted", "small"));
+                skillText.Add(UIKit.L(sm != null ? sm.name : (cd.skill != null ? cd.skill.name : "Skill"), "class-card__skill-name"));
+                string sdesc = sm != null ? sm.description : (cd.skill != null ? cd.skill.description : null);
+                if (!string.IsNullOrEmpty(sdesc)) skillText.Add(UIKit.L(sdesc, "muted", "small"));
                 skillHead.Add(skillText);
                 skill.Add(skillHead);
                 bool skillOpen = cp.level >= t.skillUnlockLevel;
@@ -94,7 +105,9 @@ namespace HearthHollow.UI
             }
 
             var pend = C.Class(_pending);
-            _play.text = "Play as " + (pend != null ? pend.name : _pending.ToString()) + "  (Enter)";
+            bool ok = S.ClassJoined(_pending);
+            _play.text = ok ? "Play as " + (pend != null ? pend.name : _pending.ToString()) + "  (Enter)" : "🔒 " + S.ClassJoinHint(_pending);
+            _play.SetEnabled(ok);
         }
 
         static void SetIgnore(VisualElement e)
@@ -122,6 +135,8 @@ namespace HearthHollow.UI
             if (key == KeyCode.Alpha1) idx = 0;
             else if (key == KeyCode.Alpha2) idx = 1;
             else if (key == KeyCode.Alpha3) idx = 2;
+            else if (key == KeyCode.Alpha4) idx = 3;
+            else if (key == KeyCode.Alpha5) idx = 4;
             if (idx >= 0 && idx < C.classes.Count) { Pick(C.classes[idx].id); return true; }
             if (key == KeyCode.LeftArrow || key == KeyCode.RightArrow)
             {

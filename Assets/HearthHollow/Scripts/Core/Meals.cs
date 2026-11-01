@@ -9,81 +9,14 @@ namespace HearthHollow.Core
 {
     public static class Meals
     {
-        // The tray is a plan: meals in it only RESERVE ingredients. Nothing leaves the pantry until you
-        // set out (PayForTray), so removing a meal from the tray simply frees its ingredients again.
+        // Cooking v9: meals are cooked ahead (Cooking.Cook spends the ingredients and rolls a grade) and wait in the
+        // meal pantry; the tray holds packed cooked meals, so it no longer reserves any ingredients.
 
-        /// Ingredients currently promised to meals in the tray.
-        public static Dictionary<string, int> Reserved(GameContent c, Profile p)
-        {
-            var res = new Dictionary<string, int>();
-            for (int i = 0; i < p.tray.Count; i++)
-            {
-                RecipeData r = c.Recipe(p.tray[i]);
-                if (r == null) continue;
-                foreach (var kv in Needs(r)) { int n; res.TryGetValue(kv.Key, out n); res[kv.Key] = n + kv.Value; }
-            }
-            return res;
-        }
+        /// Nothing is reserved any more (kept for older callers).
+        public static Dictionary<string, int> Reserved(GameContent c, Profile p) { return new Dictionary<string, int>(); }
 
-        /// Pantry count minus what the tray has reserved.
-        public static int Available(GameContent c, Profile p, string ingredientId)
-        {
-            int n; Reserved(c, p).TryGetValue(ingredientId, out n);
-            return Economy.PantryCount(p, ingredientId) - n;
-        }
-
-        public static bool CanCook(GameContent c, Profile p, string recipeId, out string reason)
-        {
-            RecipeData recipe = c.Recipe(recipeId);
-            if (recipe == null) { reason = "Unknown recipe"; return false; }
-            if (p.tray.Count >= c.tuning.traySize) { reason = "Tray is full"; return false; }
-            Dictionary<string, int> reserved = Reserved(c, p);
-            foreach (var kv in Needs(recipe))
-            {
-                int taken; reserved.TryGetValue(kv.Key, out taken);
-                if (Economy.PantryCount(p, kv.Key) - taken < kv.Value)
-                {
-                    IngredientData ing = c.Ingredient(kv.Key);
-                    reason = "Missing " + (ing != null ? ing.name : kv.Key);
-                    return false;
-                }
-            }
-            reason = null;
-            return true;
-        }
-
-        /// Adds a meal to the tray. Its ingredients are reserved, not spent.
-        public static bool Cook(GameContent c, Profile p, string recipeId)
-        {
-            string reason;
-            if (!CanCook(c, p, recipeId, out reason)) return false;
-            p.tray.Add(recipeId);
-            return true;
-        }
-
-        /// Set-out: spend the tray's ingredients in tray order. A meal that can't be paid for any more is
-        /// left behind (returns one message per dropped meal).
-        public static List<string> PayForTray(GameContent c, Profile p)
-        {
-            var dropped = new List<string>();
-            for (int i = 0; i < p.tray.Count; )
-            {
-                RecipeData recipe = c.Recipe(p.tray[i]);
-                if (recipe == null) { p.tray.RemoveAt(i); continue; }
-                Dictionary<string, int> need = Needs(recipe);
-                bool ok = true;
-                foreach (var kv in need) if (Economy.PantryCount(p, kv.Key) < kv.Value) { ok = false; break; }
-                if (!ok)
-                {
-                    dropped.Add("Not enough ingredients for " + recipe.emoji + " " + recipe.name + " — left it at camp");
-                    p.tray.RemoveAt(i);
-                    continue;
-                }
-                foreach (var kv in need) Economy.RemoveFromPantry(p, kv.Key, kv.Value);
-                i++;
-            }
-            return dropped;
-        }
+        /// Pantry count of an ingredient (all grades).
+        public static int Available(GameContent c, Profile p, string ingredientId) { return Economy.PantryCount(p, ingredientId); }
 
         /// Old saves spent ingredients when cooking: hand them back so the tray can reserve them instead.
         public static void RefundTray(GameContent c, Profile p)
@@ -148,7 +81,7 @@ namespace HearthHollow.Core
         public static List<GameEvent> PackForRun(GameContent c, RunState run)
         {
             var ev = new List<GameEvent>();
-            run.eaten = TrayToMeals(c, run.tray);
+            if (run.eaten == null || run.eaten.Count == 0) run.eaten = TrayToMeals(c, run.tray);   // StartRun fills eaten from the packed cooked meals
             run.tray.Clear();
             run.activeSynergyIds.Clear();
             for (int i = 0; i < run.eaten.Count; i++)
@@ -216,16 +149,22 @@ namespace HearthHollow.Core
             {
                 RecipeData r = c.Recipe(meals[i].recipeId);
                 if (r == null || r.buffs == null) continue;
-                float own = ClassMult(cls, r);
+                float own = ClassMult(cls, r) * Cooking.GradeMult(c.tuning, meals[i].grade);   // a better-graded meal: bigger numbers
                 for (int b = 0; b < r.buffs.Count; b++)
                     sum[(int)r.buffs[b].stat] += r.buffs[b].value * meals[i].potency * own * synMult;
+                // the accelerator's boost: always its base value, no grade, class or combo bonus
+                IngredientData acc = string.IsNullOrEmpty(meals[i].accelId) ? null : c.Ingredient(meals[i].accelId);
+                if (acc != null && acc.accelBuffs != null)
+                    for (int b = 0; b < acc.accelBuffs.Count; b++)
+                        sum[(int)acc.accelBuffs[b].stat] += acc.accelBuffs[b].value * meals[i].potency;
             }
             for (int i = 0; i < active.Count; i++)
             {
                 if (active[i].sameRecipeBonus <= 0f) continue;
                 int n; RecipeData rep = MostRepeated(recipes, out n);
                 if (rep == null || rep.buffs == null) continue;
-                float repMult = ClassMult(cls, rep);
+                EatenMeal first = meals.Find(x => x.recipeId == rep.id);
+                float repMult = ClassMult(cls, rep) * Cooking.GradeMult(c.tuning, first != null ? first.grade : 0);
                 for (int b = 0; b < rep.buffs.Count; b++)
                     sum[(int)rep.buffs[b].stat] += rep.buffs[b].value * active[i].sameRecipeBonus * repMult * synMult;
             }

@@ -159,7 +159,7 @@ namespace HearthHollow.Core
             Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
             Emit(new GameEvent(GameEventType.Xp, xp, false, "+" + xp + " XP"));
             DropLoot(f);
-            if (e.boss) { string ing = PickRouteIngredient(); if (ing != null) AddLoot(ing, 2); }
+            if (e.boss) { string ing = PickRouteIngredient(); if (ing != null) AddLoot(ing, 2, false, true); DropMaterial(false, true); }
             string trinket = Gear.RollDrop(Content, Profile, e.boss, e.elite, _rng);   // rare: kept straight away, even if you fall
             if (trinket != null && Gear.Give(Content, Profile, trinket))
             {
@@ -184,6 +184,41 @@ namespace HearthHollow.Core
         {
             if (!InDungeon) return;
             Run.roomsCleared++;
+            Touch(false);
+        }
+
+        // ───────────── secrets (light plan step 7) ─────────────
+        /// Hidden forage found by light: two of the route's ingredients, with elite odds of a good grade.
+        public void DungeonHiddenForage()
+        {
+            if (!InDungeon) return;
+            string ing = PickRouteIngredient();
+            if (ing != null) AddLoot(ing, 2, true);
+            Touch(false);
+        }
+
+        /// A secret chest: tier 1 behind a cracked wall, tier 2 for a brazier puzzle. Coins, ingredients, materials, a shot at a trinket.
+        public void DungeonSecretChest(int tier)
+        {
+            if (!InDungeon) return;
+            tier = Math.Max(1, tier);
+            var pool = DungeonRules.NormalPool(Content, Run);
+            int baseCoins = 10;
+            if (pool.Count > 0) baseCoins = Combat.KillCoins(Content, Run, Stats, new FightState { monsterId = pool[0], elite = true, difficulty = DungeonDifficulty });
+            int coins = Math.Max(5, (int)Math.Round(baseCoins * T.dungeonKillCoinMult * (1.5f + tier) * (Run.mod == RouteMod.Lucky ? 1.5f : 1f)));
+            Run.coinsEarned += coins;
+            Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
+            string ing = PickRouteIngredient();
+            if (ing != null) AddLoot(ing, 1 + tier, true, tier >= 2);
+            DropMaterial(true, false);
+            string trinket = Gear.RollDrop(Content, Profile, tier >= 2, true, _rng);
+            if (trinket != null && Gear.Give(Content, Profile, trinket))
+            {
+                if (Run.trinketsDropped == null) Run.trinketsDropped = new List<string>();
+                Run.trinketsDropped.Add(trinket);
+                var td = Gear.Trinket(Content, trinket);
+                Emit(new GameEvent(GameEventType.Loot, 0, true, "Trinket! " + td.emoji + " " + td.name));
+            }
             Touch(false);
         }
 

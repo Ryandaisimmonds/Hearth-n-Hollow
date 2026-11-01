@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 9c51ec415f0874a40a40cf191568eb9d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3792508517206185197
+    second: Bee_Move_N_0
+  - first:
+      213: 4502363166808958399
+    second: Bee_Move_N_1
+  - first:
+      213: 3365321691575817107
+    second: Bee_Move_N_2
+  - first:
+      213: -1004811625854765563
+    second: Bee_Move_N_3
+  - first:
+      213: 6360667815132636430
+    second: Bee_Move_N_4
+  - first:
+      213: -5459239490071370317
+    second: Bee_Move_N_5
+  - first:
+      213: 4784402618695612359
+    second: Bee_Move_N_6
+  - first:
+      213: 3610195749691974082
+    second: Bee_Move_N_7
+  - first:
+      213: 7535086357316318792
+    second: Bee_Move_N_8
+  - first:
+      213: -385758273830766649
+    second: Bee_Move_N_9
+  - first:
+      213: 4232592105711479672
+    second: Bee_Move_N_10
+  - first:
+      213: 659684525877958316
+    second: Bee_Move_N_11
+  - first:
+      213: -317375959865929734
+    second: Bee_Move_N_12
+  - first:
+      213: 7588553783254104951
+    second: Bee_Move_N_13
+  - first:
+      213: -5573234593830045653
+    second: Bee_Move_N_14
+  - first:
+      213: -7667652352824922376
+    second: Bee_Move_N_15
+  - first:
+      213: -3344827605961389166
+    second: Bee_Move_N_16
+  - first:
+      213: 2954484182856447442
+    second: Bee_Move_N_17
+  - first:
+      213: 7758563523114853911
+    second: Bee_Move_N_18
+  - first:
+      213: -669135137942962966
+    second: Bee_Move_N_19
+  - first:
+      213: 5206637460375943521
+    second: Bee_Move_N_20
+  - first:
+      213: 4846411642860451428
+    second: Bee_Move_N_21
+  - first:
+      213: 272902183702283961
+    second: Bee_Move_N_22
+  - first:
+      213: -8527820894370401455
+    second: Bee_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bee_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 443
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31b2840e89d4e5bc0800000000000000
+      internalID: -3792508517206185197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 443
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb56377127b9b7e30800000000000000
+      internalID: 4502363166808958399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 443
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3931b4d8f3604be20800000000000000
+      internalID: 3365321691575817107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 444
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5067eb666213e02f0800000000000000
+      internalID: -1004811625854765563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 443
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e05ad377da1a54850800000000000000
+      internalID: 6360667815132636430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 443
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b5e28aab92ec34b0800000000000000
+      internalID: -5459239490071370317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 317
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c7fcc535dc956240800000000000000
+      internalID: 4784402618695612359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 316
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c1e30e18edf91230800000000000000
+      internalID: 3610195749691974082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 317
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8463bbf8e11029860800000000000000
+      internalID: 7535086357316318792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 318
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c7362fc4e285aaf0800000000000000
+      internalID: -385758273830766649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 318
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87b2e0c48103dba30800000000000000
+      internalID: 4232592105711479672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 317
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca617c4c49ba72900800000000000000
+      internalID: 659684525877958316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 189
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aff41fbfe34789bf0800000000000000
+      internalID: -317375959865929734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 188
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77bbec1c575ff4960800000000000000
+      internalID: 7588553783254104951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 189
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2877d84aa4e7a2b0800000000000000
+      internalID: -5573234593830045653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 190
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8feaea06fc6079590800000000000000
+      internalID: -7667652352824922376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 190
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29b40c79309c491d0800000000000000
+      internalID: -3344827605961389166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 189
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d53ba5f5bf600920800000000000000
+      internalID: 2954484182856447442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 60
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 716609aea64fbab60800000000000000
+      internalID: 7758563523114853911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 59
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aec7d242321c6b6f0800000000000000
+      internalID: -669135137942962966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 59
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16933fb2f21b14840800000000000000
+      internalID: 5206637460375943521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 60
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 466b30836b9e14340800000000000000
+      internalID: 4846411642860451428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 59
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b6c006171b89c300800000000000000
+      internalID: 272902183702283961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bee_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 60
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153f5e2341817a980800000000000000
+      internalID: -8527820894370401455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bee_Move_N_0: -3792508517206185197
+      Bee_Move_N_1: 4502363166808958399
+      Bee_Move_N_10: 4232592105711479672
+      Bee_Move_N_11: 659684525877958316
+      Bee_Move_N_12: -317375959865929734
+      Bee_Move_N_13: 7588553783254104951
+      Bee_Move_N_14: -5573234593830045653
+      Bee_Move_N_15: -7667652352824922376
+      Bee_Move_N_16: -3344827605961389166
+      Bee_Move_N_17: 2954484182856447442
+      Bee_Move_N_18: 7758563523114853911
+      Bee_Move_N_19: -669135137942962966
+      Bee_Move_N_2: 3365321691575817107
+      Bee_Move_N_20: 5206637460375943521
+      Bee_Move_N_21: 4846411642860451428
+      Bee_Move_N_22: 272902183702283961
+      Bee_Move_N_23: -8527820894370401455
+      Bee_Move_N_3: -1004811625854765563
+      Bee_Move_N_4: 6360667815132636430
+      Bee_Move_N_5: -5459239490071370317
+      Bee_Move_N_6: 4784402618695612359
+      Bee_Move_N_7: 3610195749691974082
+      Bee_Move_N_8: 7535086357316318792
+      Bee_Move_N_9: -385758273830766649
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

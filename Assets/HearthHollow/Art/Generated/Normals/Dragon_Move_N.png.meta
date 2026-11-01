@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 9bc1c71a655ae4173900a5030c89c948
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4319006593183999146
+    second: Dragon_Move_N_0
+  - first:
+      213: -8576430373731864203
+    second: Dragon_Move_N_1
+  - first:
+      213: 5174525467148928984
+    second: Dragon_Move_N_2
+  - first:
+      213: 1874705016848854704
+    second: Dragon_Move_N_3
+  - first:
+      213: -2297300415134666554
+    second: Dragon_Move_N_4
+  - first:
+      213: 1852288640108907045
+    second: Dragon_Move_N_5
+  - first:
+      213: -1403072085195312727
+    second: Dragon_Move_N_6
+  - first:
+      213: -8547579343192814143
+    second: Dragon_Move_N_7
+  - first:
+      213: 186370283685280178
+    second: Dragon_Move_N_8
+  - first:
+      213: -7221371111822387566
+    second: Dragon_Move_N_9
+  - first:
+      213: -829688986310094196
+    second: Dragon_Move_N_10
+  - first:
+      213: -7685031933074509693
+    second: Dragon_Move_N_11
+  - first:
+      213: 2787112840123696735
+    second: Dragon_Move_N_12
+  - first:
+      213: 2592012099055222060
+    second: Dragon_Move_N_13
+  - first:
+      213: -3486882768464051869
+    second: Dragon_Move_N_14
+  - first:
+      213: -2351265066809482550
+    second: Dragon_Move_N_15
+  - first:
+      213: 661340433851797733
+    second: Dragon_Move_N_16
+  - first:
+      213: -5064418661444591317
+    second: Dragon_Move_N_17
+  - first:
+      213: -2005077356161035135
+    second: Dragon_Move_N_18
+  - first:
+      213: 2533681625712062004
+    second: Dragon_Move_N_19
+  - first:
+      213: 7741139942643734028
+    second: Dragon_Move_N_20
+  - first:
+      213: 8086509615217073876
+    second: Dragon_Move_N_21
+  - first:
+      213: 8475899026639224912
+    second: Dragon_Move_N_22
+  - first:
+      213: 6648610358239635318
+    second: Dragon_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Dragon_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 397
+        width: 63
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa46d490d9130fb30800000000000000
+      internalID: 4319006593183999146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 397
+        width: 41
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57177d4d3066af880800000000000000
+      internalID: -8576430373731864203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 397
+        width: 55
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d7cf9e1f7b9fc740800000000000000
+      internalID: 5174525467148928984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 398
+        width: 67
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0be2bebb74a440a10800000000000000
+      internalID: 1874705016848854704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 398
+        width: 45
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c07a8da1795e10e0800000000000000
+      internalID: -2297300415134666554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 397
+        width: 59
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52ace2f44b6a4b910800000000000000
+      internalID: 1852288640108907045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 306
+        width: 96
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a1baaf4f59478ce0800000000000000
+      internalID: -1403072085195312727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 310
+        width: 95
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cd8687dfd5e06980800000000000000
+      internalID: -8547579343192814143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 312
+        width: 96
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b9ffbb19ce169200800000000000000
+      internalID: 186370283685280178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 310
+        width: 96
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2961f88fb3988cb90800000000000000
+      internalID: -7221371111822387566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 311
+        width: 96
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c82dee8434a5c74f0800000000000000
+      internalID: -829688986310094196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 311
+        width: 96
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3807f858c28495590800000000000000
+      internalID: -7685031933074509693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 178
+        width: 96
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f56c0808c50dda620800000000000000
+      internalID: 2787112840123696735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 182
+        width: 95
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2d73b1654da8f320800000000000000
+      internalID: 2592012099055222060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 184
+        width: 96
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 361054ca89a1c9fc0800000000000000
+      internalID: -3486882768464051869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 182
+        width: 96
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac2290811e0ae5fd0800000000000000
+      internalID: -2351265066809482550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 183
+        width: 96
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e0d653ee9d8d2900800000000000000
+      internalID: 661340433851797733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 183
+        width: 96
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b216cb25f0297b9b0800000000000000
+      internalID: -5064418661444591317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 33
+        width: 63
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18497d694c88c24e0800000000000000
+      internalID: -2005077356161035135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 34
+        width: 41
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43e608ab302792320800000000000000
+      internalID: 2533681625712062004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 34
+        width: 55
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c061ed573cd0e6b60800000000000000
+      internalID: 7741139942643734028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 35
+        width: 67
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4de5bcf96ad093070800000000000000
+      internalID: 8086509615217073876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 33
+        width: 45
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05009eae14170a570800000000000000
+      internalID: 8475899026639224912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dragon_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 33
+        width: 59
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6772bdc15eb944c50800000000000000
+      internalID: 6648610358239635318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Dragon_Move_N_0: 4319006593183999146
+      Dragon_Move_N_1: -8576430373731864203
+      Dragon_Move_N_10: -829688986310094196
+      Dragon_Move_N_11: -7685031933074509693
+      Dragon_Move_N_12: 2787112840123696735
+      Dragon_Move_N_13: 2592012099055222060
+      Dragon_Move_N_14: -3486882768464051869
+      Dragon_Move_N_15: -2351265066809482550
+      Dragon_Move_N_16: 661340433851797733
+      Dragon_Move_N_17: -5064418661444591317
+      Dragon_Move_N_18: -2005077356161035135
+      Dragon_Move_N_19: 2533681625712062004
+      Dragon_Move_N_2: 5174525467148928984
+      Dragon_Move_N_20: 7741139942643734028
+      Dragon_Move_N_21: 8086509615217073876
+      Dragon_Move_N_22: 8475899026639224912
+      Dragon_Move_N_23: 6648610358239635318
+      Dragon_Move_N_3: 1874705016848854704
+      Dragon_Move_N_4: -2297300415134666554
+      Dragon_Move_N_5: 1852288640108907045
+      Dragon_Move_N_6: -1403072085195312727
+      Dragon_Move_N_7: -8547579343192814143
+      Dragon_Move_N_8: 186370283685280178
+      Dragon_Move_N_9: -7221371111822387566
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

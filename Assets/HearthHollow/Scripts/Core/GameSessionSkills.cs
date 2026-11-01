@@ -69,7 +69,14 @@ namespace HearthHollow.Core
         /// Bonuses for the class in the current run (or the selected class at camp).
         public CombatMods Mods
         {
-            get { return Progression.Mods(Content, Profile, Run != null ? Run.classId : Profile.selectedClass); }
+            get
+            {
+                ClassId cls = Run != null ? Run.classId : Profile.selectedClass;
+                var m = Progression.Mods(Content, Profile, cls);
+                // meals add speed and heal-on-kill (cooking v9): the run's eaten meals, or the packed tray at camp
+                Cooking.AddMealMods(Content, Content.Class(cls), Run != null ? Run.eaten : Cooking.Packed(Content, Profile), m);
+                return m;
+            }
         }
     }
 }

@@ -14,23 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: ember
   displayName: Ember Hunt
-  floor: {fileID: 11400000, guid: 8541d3ab1d3be4e00a3761d1d4ab3f65, type: 2}
-  floorAlt: {fileID: 11400000, guid: 5e6eeaa29ab67417899f0576c299663c, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: e24d5396faf364aaa868401c68a6fdab, type: 2}
-  wallFace: {fileID: 11400000, guid: d07128121d56341f4b121d4b2a5100ba, type: 2}
+  floor: {fileID: 11400000, guid: a9a4a1c4ea91448629a57cb5cacac97f, type: 2}
+  floorAlt: {fileID: 0}
+  floorAltChance: 0
+  wall: {fileID: 11400000, guid: 80870ada268884cb2a2dd43864ab3739, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 30b7b4c16e758406293f5f4eb210e864, type: 2}
   decor:
-  - {fileID: 11400000, guid: 2bfab1e8586c049189ac2670cba751c3, type: 2}
-  - {fileID: 11400000, guid: 4ea54c17fd12e4cc39d57c4295798540, type: 2}
-  - {fileID: 11400000, guid: 6c408d0b4bd114d15b6c8d683a1545dd, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  - {fileID: 11400000, guid: d870ed6993a2540d5aba2d1a18f58de3, type: 2}
+  decorDensity: 0.04
   background: {r: 0.07058824, g: 0.023529412, b: 0.015686275, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 1, g: 0.74, b: 0.64, a: 1}
+  wallTint: {r: 1, g: 0.74, b: 0.64, a: 1}
   lightColor: {r: 1, g: 0.62, b: 0.46, a: 1}
   lightIntensity: 0.75
   playerLight: 1
+  gradeTemperature: 28
+  gradeTint: 4
+  gradeSaturation: 10
+  gradeContrast: 18
+  gradeExposure: -0.05
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.42000002
+  gradeBloom: 2.08
+  ambient: 4
+  ambientColor: {r: 1, g: 0.4, b: 0.12, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 12875ea1e4c704a9b9a586eeba59c58a, type: 3}
   ladder: {fileID: 21300000, guid: 3c3c0177fd869490188e87345673e310, type: 3}

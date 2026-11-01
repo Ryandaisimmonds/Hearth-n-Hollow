@@ -87,6 +87,8 @@ namespace HearthHollow.UI
                 case BuffStat.GatherZonePct: return "+" + Pct(v) + " gather zone";
                 case BuffStat.CoinPct: return "+" + Pct(v) + " coins";
                 case BuffStat.XpPct: return "+" + Pct(v) + " XP";
+                case BuffStat.MoveSpeedPct: return "+" + Pct(v) + " speed";
+                case BuffStat.HealOnKill: return "+" + Num(Mathf.Round(v * 10f) / 10f) + " HP per kill";
             }
             return m.stat + " " + Num(v);
         }

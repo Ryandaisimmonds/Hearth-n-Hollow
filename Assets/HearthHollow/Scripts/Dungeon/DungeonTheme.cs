@@ -36,6 +36,20 @@ namespace HearthHollow.Dungeon
         [Tooltip("Small light that follows the player (0 = off). Nice for caves.")]
         [Range(0f, 3f)] public float playerLight = 0f;
 
+        [Header("Camera look (HD-2D colour grade — see GameLook)")]
+        [Range(-100f, 100f)] public float gradeTemperature;
+        [Range(-100f, 100f)] public float gradeTint;
+        [Range(-100f, 100f)] public float gradeSaturation;
+        [Range(-100f, 100f)] public float gradeContrast;
+        [Range(-2f, 2f)] public float gradeExposure;
+        public Color gradeFilter = Color.white;
+        [Range(0f, 0.6f)] public float gradeVignette = 0.28f;
+        [Range(0f, 3f)] public float gradeBloom = 0.8f;
+
+        [Header("Room light (light plan step 4)")]
+        [Tooltip("The route's own light sources scattered round each room.")] public RoomGlow ambient = RoomGlow.None;
+        public Color ambientColor = new Color(1f, 0.9f, 0.5f);
+
         [Header("Props")]
         public Sprite doorOpen;
         public Sprite doorClosed;

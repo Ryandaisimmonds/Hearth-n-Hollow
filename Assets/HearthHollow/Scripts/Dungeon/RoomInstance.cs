@@ -21,6 +21,9 @@ namespace HearthHollow.Dungeon
         public IList<EnemyController> Enemies { get { return _enemies; } }
         public IList<Interactable> Props { get { return _props; } }
         public EnemyController Boss { get; private set; }
+        public RoomLights Lights { get; private set; }   // braziers, the route's glow, torch pickups (step 4)
+        public Vector2 LastKill { get; private set; }
+        public RoomSecrets Secrets { get; private set; }   // hidden forage, cracked walls, brazier puzzles (step 7)
 
         readonly DoorGate[] _doors = new DoorGate[4];
         readonly List<EnemyController> _enemies = new List<EnemyController>();
@@ -43,6 +46,10 @@ namespace HearthHollow.Dungeon
             ApplyTheme();
             BuildDoors();
             PlaceProps();
+            Lights = gameObject.AddComponent<RoomLights>();
+            Lights.Setup(this, theme, seed);
+            Secrets = gameObject.AddComponent<RoomSecrets>();
+            Secrets.Setup(this, theme, seed, dc.Session.Run != null ? dc.Session.Run.floor : 1);
             Cleared = !HasEvent;
         }
 
@@ -65,17 +72,18 @@ namespace HearthHollow.Dungeon
             if (floor != null)
             {
                 floor.color = _theme.floorTint;
-                var fr = floor.GetComponent<TilemapRenderer>(); if (fr != null) fr.sortingOrder = 0;
+                var fr = floor.GetComponent<TilemapRenderer>(); if (fr != null) { fr.sortingOrder = 0; SetLayer(fr, "Ground"); }
             }
             if (walls != null)
             {
                 walls.color = _theme.wallTint;
-                var wr = walls.GetComponent<TilemapRenderer>(); if (wr != null) wr.sortingOrder = 2;
+                var wr = walls.GetComponent<TilemapRenderer>(); if (wr != null) { wr.sortingOrder = 2; SetLayer(wr, "Walls"); }   // own layer: walls catch light from further away
+                DungeonController.AddWallShadows(walls);   // walls and pillars block light
             }
             if (decor != null)
             {
                 decor.color = _theme.floorTint;
-                var dr = decor.GetComponent<TilemapRenderer>(); if (dr != null) dr.sortingOrder = 1;
+                var dr = decor.GetComponent<TilemapRenderer>(); if (dr != null) { dr.sortingOrder = 1; SetLayer(dr, "Ground"); }
             }
 
             if (floor == null) return;
@@ -94,12 +102,18 @@ namespace HearthHollow.Dungeon
                 }
         }
 
+        static void SetLayer(Renderer r, string layer)
+        {
+            int id = SortingLayer.NameToID(layer);
+            if (SortingLayer.IsValid(id)) r.sortingLayerID = id;
+        }
+
         static void Swap(Tilemap tm, TileBase marker, TileBase replacement)
         {
             if (tm != null && marker != null && replacement != null && marker != replacement) tm.SwapTile(marker, replacement);
         }
 
-        bool NearDoor(Vector3Int p)
+        public bool NearDoor(Vector3Int p)
         {
             int cx = RoomTemplate.Width / 2, cy = (RoomTemplate.Height - 3) / 2 + 1;
             if (Mathf.Abs(p.x - cx) <= 2 && (p.y <= 2 || p.y >= RoomTemplate.Height - 4)) return true;
@@ -331,6 +345,7 @@ namespace HearthHollow.Dungeon
         public void OnEnemyDied(EnemyController e)
         {
             _enemies.Remove(e);
+            if (e != null) LastKill = e.Body;
             if (e == Boss) Boss = null;
             if (EventRunning && !_spawning && _enemies.Count == 0) Clear();
         }

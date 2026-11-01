@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 53f0b24fbd7fa4c3bbda4edfe641ddd8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2307614645931980991
+    second: Mage_Witch_Doctor_Move_N_0
+  - first:
+      213: 8379093741730441081
+    second: Mage_Witch_Doctor_Move_N_1
+  - first:
+      213: -2244622973035471672
+    second: Mage_Witch_Doctor_Move_N_2
+  - first:
+      213: -3539438522838032387
+    second: Mage_Witch_Doctor_Move_N_3
+  - first:
+      213: -8874876363993570670
+    second: Mage_Witch_Doctor_Move_N_4
+  - first:
+      213: -2378527560316384657
+    second: Mage_Witch_Doctor_Move_N_5
+  - first:
+      213: -7778178674387979101
+    second: Mage_Witch_Doctor_Move_N_6
+  - first:
+      213: 7332116317327818712
+    second: Mage_Witch_Doctor_Move_N_7
+  - first:
+      213: 6968149637676841013
+    second: Mage_Witch_Doctor_Move_N_8
+  - first:
+      213: -7990304978072527684
+    second: Mage_Witch_Doctor_Move_N_9
+  - first:
+      213: 5977345059957607516
+    second: Mage_Witch_Doctor_Move_N_10
+  - first:
+      213: -5443321396670137182
+    second: Mage_Witch_Doctor_Move_N_11
+  - first:
+      213: -8967984674317646251
+    second: Mage_Witch_Doctor_Move_N_12
+  - first:
+      213: 6524430016415693857
+    second: Mage_Witch_Doctor_Move_N_13
+  - first:
+      213: -6069828960681783476
+    second: Mage_Witch_Doctor_Move_N_14
+  - first:
+      213: -5653473450197943388
+    second: Mage_Witch_Doctor_Move_N_15
+  - first:
+      213: 6187958732991467838
+    second: Mage_Witch_Doctor_Move_N_16
+  - first:
+      213: -2483488883081500792
+    second: Mage_Witch_Doctor_Move_N_17
+  - first:
+      213: -7972684114785285844
+    second: Mage_Witch_Doctor_Move_N_18
+  - first:
+      213: -1020965323206268954
+    second: Mage_Witch_Doctor_Move_N_19
+  - first:
+      213: 7702701037522415031
+    second: Mage_Witch_Doctor_Move_N_20
+  - first:
+      213: -4546538877961648098
+    second: Mage_Witch_Doctor_Move_N_21
+  - first:
+      213: 3105032764437965101
+    second: Mage_Witch_Doctor_Move_N_22
+  - first:
+      213: 4225977506882683832
+    second: Mage_Witch_Doctor_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1474cbea4b4b9ffd0800000000000000
+      internalID: -2307614645931980991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 431
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 977aa8f1d55884470800000000000000
+      internalID: 8379093741730441081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cc1a8d6c4f79d0e0800000000000000
+      internalID: -2244622973035471672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 431
+        width: 18
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dffd7ed8a6361eec0800000000000000
+      internalID: -3539438522838032387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29227a2d7fa16d480800000000000000
+      internalID: -8874876363993570670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 431
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6a8dde29c5cdfed0800000000000000
+      internalID: -2378527560316384657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 303
+        width: 43
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a4f599c4bb5e0490800000000000000
+      internalID: -7778178674387979101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 303
+        width: 39
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8df7b2281f8e0c560800000000000000
+      internalID: 7332116317327818712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 303
+        width: 38
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 538be773d27d3b060800000000000000
+      internalID: 6968149637676841013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 303
+        width: 41
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc93f6f4fbbc1190800000000000000
+      internalID: -7990304978072527684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 303
+        width: 43
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5c85b6a9abc3f250800000000000000
+      internalID: 5977345059957607516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 303
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ac713997007574b0800000000000000
+      internalID: -5443321396670137182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 43
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 556462004715b8380800000000000000
+      internalID: -8967984674317646251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 175
+        width: 39
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12c7a52388e6b8a50800000000000000
+      internalID: 6524430016415693857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 175
+        width: 38
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4f0f2738b2a3cba0800000000000000
+      internalID: -6069828960681783476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 175
+        width: 41
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab79d5b9d3da81b0800000000000000
+      internalID: -5653473450197943388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 175
+        width: 43
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e319bb4beab00e550800000000000000
+      internalID: 6187958732991467838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 175
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 887ab48d400e88dd0800000000000000
+      internalID: -2483488883081500792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 47
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c29c2d7e9065b5190800000000000000
+      internalID: -7972684114785285844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 47
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e76c46a27dc4d1f0800000000000000
+      internalID: -1020965323206268954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 47
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bd6e8078cd75ea60800000000000000
+      internalID: 7702701037522415031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 47
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e18c795aaf277e0c0800000000000000
+      internalID: -4546538877961648098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d29264c19da471b20800000000000000
+      internalID: 3105032764437965101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Witch_Doctor_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 47
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3888ef620b5aa30800000000000000
+      internalID: 4225977506882683832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Witch_Doctor_Move_N_0: -2307614645931980991
+      Mage_Witch_Doctor_Move_N_1: 8379093741730441081
+      Mage_Witch_Doctor_Move_N_10: 5977345059957607516
+      Mage_Witch_Doctor_Move_N_11: -5443321396670137182
+      Mage_Witch_Doctor_Move_N_12: -8967984674317646251
+      Mage_Witch_Doctor_Move_N_13: 6524430016415693857
+      Mage_Witch_Doctor_Move_N_14: -6069828960681783476
+      Mage_Witch_Doctor_Move_N_15: -5653473450197943388
+      Mage_Witch_Doctor_Move_N_16: 6187958732991467838
+      Mage_Witch_Doctor_Move_N_17: -2483488883081500792
+      Mage_Witch_Doctor_Move_N_18: -7972684114785285844
+      Mage_Witch_Doctor_Move_N_19: -1020965323206268954
+      Mage_Witch_Doctor_Move_N_2: -2244622973035471672
+      Mage_Witch_Doctor_Move_N_20: 7702701037522415031
+      Mage_Witch_Doctor_Move_N_21: -4546538877961648098
+      Mage_Witch_Doctor_Move_N_22: 3105032764437965101
+      Mage_Witch_Doctor_Move_N_23: 4225977506882683832
+      Mage_Witch_Doctor_Move_N_3: -3539438522838032387
+      Mage_Witch_Doctor_Move_N_4: -8874876363993570670
+      Mage_Witch_Doctor_Move_N_5: -2378527560316384657
+      Mage_Witch_Doctor_Move_N_6: -7778178674387979101
+      Mage_Witch_Doctor_Move_N_7: 7332116317327818712
+      Mage_Witch_Doctor_Move_N_8: 6968149637676841013
+      Mage_Witch_Doctor_Move_N_9: -7990304978072527684
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

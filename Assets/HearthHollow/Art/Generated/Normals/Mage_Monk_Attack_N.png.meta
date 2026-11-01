@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: 835dd6be351bd4a638769bda3c8f0574
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3785875890959376024
+    second: Mage_Monk_Attack_N_0
+  - first:
+      213: 2785570551058866242
+    second: Mage_Monk_Attack_N_1
+  - first:
+      213: -8571820045283042890
+    second: Mage_Monk_Attack_N_2
+  - first:
+      213: -3721831066661917976
+    second: Mage_Monk_Attack_N_3
+  - first:
+      213: 8960294250016129520
+    second: Mage_Monk_Attack_N_4
+  - first:
+      213: -5639369712180591807
+    second: Mage_Monk_Attack_N_5
+  - first:
+      213: 3508983638824560702
+    second: Mage_Monk_Attack_N_6
+  - first:
+      213: 1812523434177852867
+    second: Mage_Monk_Attack_N_7
+  - first:
+      213: -2011521947768995446
+    second: Mage_Monk_Attack_N_8
+  - first:
+      213: 7624590452023451214
+    second: Mage_Monk_Attack_N_9
+  - first:
+      213: 2278060827132913343
+    second: Mage_Monk_Attack_N_10
+  - first:
+      213: 3200925010763337653
+    second: Mage_Monk_Attack_N_11
+  - first:
+      213: 1955219809372023997
+    second: Mage_Monk_Attack_N_12
+  - first:
+      213: -7359098623208593870
+    second: Mage_Monk_Attack_N_13
+  - first:
+      213: -249040931598068963
+    second: Mage_Monk_Attack_N_14
+  - first:
+      213: 2361268595521470912
+    second: Mage_Monk_Attack_N_15
+  - first:
+      213: -3251176552829050905
+    second: Mage_Monk_Attack_N_16
+  - first:
+      213: 5387016014109103461
+    second: Mage_Monk_Attack_N_17
+  - first:
+      213: -2102680595486989618
+    second: Mage_Monk_Attack_N_18
+  - first:
+      213: 5353067677070605617
+    second: Mage_Monk_Attack_N_19
+  - first:
+      213: -1494058646860002532
+    second: Mage_Monk_Attack_N_20
+  - first:
+      213: 2517109335911209646
+    second: Mage_Monk_Attack_N_21
+  - first:
+      213: -3005949747425260425
+    second: Mage_Monk_Attack_N_22
+  - first:
+      213: -2894348464976993246
+    second: Mage_Monk_Attack_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 431
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89e595c70122a8430800000000000000
+      internalID: 3785875890959376024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24027a858a558a620800000000000000
+      internalID: 2785570551058866242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b9d4529517ca0980800000000000000
+      internalID: -8571820045283042890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ea6a9d2d56695cc0800000000000000
+      internalID: -3721831066661917976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f1cf2f852c595c70800000000000000
+      internalID: 8960294250016129520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 431
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 143016c102fecb1b0800000000000000
+      internalID: -5639369712180591807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 303
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e38abc2370a62b030800000000000000
+      internalID: 3508983638824560702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 303
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c5fd31d570672910800000000000000
+      internalID: 1812523434177852867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 303
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a81c35d2273a514e0800000000000000
+      internalID: -2011521947768995446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 303
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4e51ba8e9cffc960800000000000000
+      internalID: 7624590452023451214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 303
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb66df9a04c4d9f10800000000000000
+      internalID: 2278060827132913343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 303
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bf463b8658fb6c20800000000000000
+      internalID: 3200925010763337653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbc2d63be06522b10800000000000000
+      internalID: 1955219809372023997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 175
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 236e598daca3fd990800000000000000
+      internalID: -7359098623208593870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 175
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d139099979a3b8cf0800000000000000
+      internalID: -249040931598068963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c1c75fe649e4c020800000000000000
+      internalID: 2361268595521470912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 175
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ef9b82962081e2d0800000000000000
+      internalID: -3251176552829050905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 175
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5655050f58682ca40800000000000000
+      internalID: 5387016014109103461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 47
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec224ed8327c1d2e0800000000000000
+      internalID: -2102680595486989618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13d3b66c0bae94a40800000000000000
+      internalID: 5353067677070605617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1b0f489399044be0800000000000000
+      internalID: -1494058646860002532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaa9ec3da919ee220800000000000000
+      internalID: 2517109335911209646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77cca0481a8b846d0800000000000000
+      internalID: -3005949747425260425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Monk_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 47
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22469d0f76535d7d0800000000000000
+      internalID: -2894348464976993246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Monk_Attack_N_0: 3785875890959376024
+      Mage_Monk_Attack_N_1: 2785570551058866242
+      Mage_Monk_Attack_N_10: 2278060827132913343
+      Mage_Monk_Attack_N_11: 3200925010763337653
+      Mage_Monk_Attack_N_12: 1955219809372023997
+      Mage_Monk_Attack_N_13: -7359098623208593870
+      Mage_Monk_Attack_N_14: -249040931598068963
+      Mage_Monk_Attack_N_15: 2361268595521470912
+      Mage_Monk_Attack_N_16: -3251176552829050905
+      Mage_Monk_Attack_N_17: 5387016014109103461
+      Mage_Monk_Attack_N_18: -2102680595486989618
+      Mage_Monk_Attack_N_19: 5353067677070605617
+      Mage_Monk_Attack_N_2: -8571820045283042890
+      Mage_Monk_Attack_N_20: -1494058646860002532
+      Mage_Monk_Attack_N_21: 2517109335911209646
+      Mage_Monk_Attack_N_22: -3005949747425260425
+      Mage_Monk_Attack_N_23: -2894348464976993246
+      Mage_Monk_Attack_N_3: -3721831066661917976
+      Mage_Monk_Attack_N_4: 8960294250016129520
+      Mage_Monk_Attack_N_5: -5639369712180591807
+      Mage_Monk_Attack_N_6: 3508983638824560702
+      Mage_Monk_Attack_N_7: 1812523434177852867
+      Mage_Monk_Attack_N_8: -2011521947768995446
+      Mage_Monk_Attack_N_9: 7624590452023451214
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

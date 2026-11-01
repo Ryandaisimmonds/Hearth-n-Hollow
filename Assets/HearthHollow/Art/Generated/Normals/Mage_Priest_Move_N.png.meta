@@ -1,0 +1,1068 @@
+fileFormatVersion: 2
+guid: a870d9a2a999b40d2861692da04209b6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7667397493210506999
+    second: Mage_Priest_Move_N_0
+  - first:
+      213: 5343024598835512555
+    second: Mage_Priest_Move_N_1
+  - first:
+      213: 9139774393730600848
+    second: Mage_Priest_Move_N_2
+  - first:
+      213: 7970732299669165891
+    second: Mage_Priest_Move_N_3
+  - first:
+      213: -7294918399244890660
+    second: Mage_Priest_Move_N_4
+  - first:
+      213: 1826226462593308105
+    second: Mage_Priest_Move_N_5
+  - first:
+      213: 6520520854567516043
+    second: Mage_Priest_Move_N_6
+  - first:
+      213: -4941702219268027916
+    second: Mage_Priest_Move_N_7
+  - first:
+      213: 7372699336596695598
+    second: Mage_Priest_Move_N_8
+  - first:
+      213: -6688185092089111672
+    second: Mage_Priest_Move_N_9
+  - first:
+      213: -8900975374220308307
+    second: Mage_Priest_Move_N_10
+  - first:
+      213: -3566734764487123890
+    second: Mage_Priest_Move_N_11
+  - first:
+      213: 1350963448367312677
+    second: Mage_Priest_Move_N_12
+  - first:
+      213: -3618138987670233745
+    second: Mage_Priest_Move_N_13
+  - first:
+      213: 3805788274381859250
+    second: Mage_Priest_Move_N_14
+  - first:
+      213: 8370486038718038205
+    second: Mage_Priest_Move_N_15
+  - first:
+      213: 2604690137573754461
+    second: Mage_Priest_Move_N_16
+  - first:
+      213: 3324141889916128986
+    second: Mage_Priest_Move_N_17
+  - first:
+      213: 2031564908770972900
+    second: Mage_Priest_Move_N_18
+  - first:
+      213: 9073637634770688273
+    second: Mage_Priest_Move_N_19
+  - first:
+      213: 2600786272672877573
+    second: Mage_Priest_Move_N_20
+  - first:
+      213: -1368946457887162181
+    second: Mage_Priest_Move_N_21
+  - first:
+      213: 3947730525288585124
+    second: Mage_Priest_Move_N_22
+  - first:
+      213: 7863601275450162891
+    second: Mage_Priest_Move_N_23
+  - first:
+      213: -4077993693872550496
+    second: Mage_Priest_Move_N_24
+  - first:
+      213: -2187258865467835937
+    second: Mage_Priest_Move_N_25
+  - first:
+      213: 6289909094544725242
+    second: Mage_Priest_Move_N_26
+  - first:
+      213: 2966532355229523721
+    second: Mage_Priest_Move_N_27
+  - first:
+      213: -1185481607002508240
+    second: Mage_Priest_Move_N_28
+  - first:
+      213: -4951711092832778223
+    second: Mage_Priest_Move_N_29
+  - first:
+      213: -2649226789053860351
+    second: Mage_Priest_Move_N_30
+  - first:
+      213: 1395028456923244566
+    second: Mage_Priest_Move_N_31
+  - first:
+      213: 4481696809700926622
+    second: Mage_Priest_Move_N_32
+  - first:
+      213: 5801004721457108508
+    second: Mage_Priest_Move_N_33
+  - first:
+      213: 5040366447517000071
+    second: Mage_Priest_Move_N_34
+  - first:
+      213: -1123622363018820988
+    second: Mage_Priest_Move_N_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90997718a9ee79590800000000000000
+      internalID: -7667397493210506999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be4c3c7609c362a40800000000000000
+      internalID: 5343024598835512555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 431
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09f0681f26007de70800000000000000
+      internalID: 9139774393730600848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 431
+        width: 29
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3475389bbcabd9e60800000000000000
+      internalID: 7970732299669165891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 431
+        width: 29
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdd0c83bd5e33ca90800000000000000
+      internalID: -7294918399244890660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 431
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c5da4eba4f085910800000000000000
+      internalID: 1826226462593308105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 315
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b87f5078b2b8d7a50800000000000000
+      internalID: 6520520854567516043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 303
+        width: 22
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f905ca830c8b6bb0800000000000000
+      internalID: -4941702219268027916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 314
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2aaa910cf6115660800000000000000
+      internalID: 7372699336596695598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 303
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88b17f1281bce23a0800000000000000
+      internalID: -6688185092089111672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 314
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da059197e02697480800000000000000
+      internalID: -8900975374220308307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 303
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4c55ba01a9608ec0800000000000000
+      internalID: -3566734764487123890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 315
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52f687c39169fb210800000000000000
+      internalID: 1350963448367312677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 303
+        width: 22
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6d9ceba2c9c9cdc0800000000000000
+      internalID: -3618138987670233745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 552
+        y: 316
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b9a0e88540e0d430800000000000000
+      internalID: 3805788274381859250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 303
+        width: 20
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db0c72714b0f92470800000000000000
+      internalID: 8370486038718038205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 316
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d560c0041e7b52420800000000000000
+      internalID: 2604690137573754461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 303
+        width: 21
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ade4273df69b12e20800000000000000
+      internalID: 3324141889916128986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 175
+        width: 22
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e451755581913c10800000000000000
+      internalID: 2031564908770972900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 187
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1195f19ca590ced70800000000000000
+      internalID: 9073637634770688273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 175
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50c016fd559d71420800000000000000
+      internalID: 2600786272672877573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 186
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb04b151376800de0800000000000000
+      internalID: -1368946457887162181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 175
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a7dacc2ff729c630800000000000000
+      internalID: 3947730525288585124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 186
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcef38662bf112d60800000000000000
+      internalID: 7863601275450162891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_24
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 175
+        width: 22
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad8170775e0867c0800000000000000
+      internalID: -4077993693872550496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_25
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 187
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd937f386ab45a1e0800000000000000
+      internalID: -2187258865467835937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_26
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 175
+        width: 20
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af456d10ffe3a4750800000000000000
+      internalID: 6289909094544725242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_27
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 188
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90f9820b57d3b2920800000000000000
+      internalID: 2966532355229523721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_28
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 175
+        width: 21
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0343bd662c25c8fe0800000000000000
+      internalID: -1185481607002508240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_29
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 188
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11847511ffcf74bb0800000000000000
+      internalID: -4951711092832778223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_30
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 106fef4854e0c3bd0800000000000000
+      internalID: -2649226789053860351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_31
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 47
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 618a87a8df22c5310800000000000000
+      internalID: 1395028456923244566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_32
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 47
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e94a93dd08f223e30800000000000000
+      internalID: 4481696809700926622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_33
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 47
+        width: 29
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1690d22f0f418050800000000000000
+      internalID: 5801004721457108508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_34
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 47
+        width: 29
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7816c0a349af2f540800000000000000
+      internalID: 5040366447517000071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Move_N_35
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 47
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 482049ef9671860f0800000000000000
+      internalID: -1123622363018820988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Priest_Move_N_0: -7667397493210506999
+      Mage_Priest_Move_N_1: 5343024598835512555
+      Mage_Priest_Move_N_10: -8900975374220308307
+      Mage_Priest_Move_N_11: -3566734764487123890
+      Mage_Priest_Move_N_12: 1350963448367312677
+      Mage_Priest_Move_N_13: -3618138987670233745
+      Mage_Priest_Move_N_14: 3805788274381859250
+      Mage_Priest_Move_N_15: 8370486038718038205
+      Mage_Priest_Move_N_16: 2604690137573754461
+      Mage_Priest_Move_N_17: 3324141889916128986
+      Mage_Priest_Move_N_18: 2031564908770972900
+      Mage_Priest_Move_N_19: 9073637634770688273
+      Mage_Priest_Move_N_2: 9139774393730600848
+      Mage_Priest_Move_N_20: 2600786272672877573
+      Mage_Priest_Move_N_21: -1368946457887162181
+      Mage_Priest_Move_N_22: 3947730525288585124
+      Mage_Priest_Move_N_23: 7863601275450162891
+      Mage_Priest_Move_N_24: -4077993693872550496
+      Mage_Priest_Move_N_25: -2187258865467835937
+      Mage_Priest_Move_N_26: 6289909094544725242
+      Mage_Priest_Move_N_27: 2966532355229523721
+      Mage_Priest_Move_N_28: -1185481607002508240
+      Mage_Priest_Move_N_29: -4951711092832778223
+      Mage_Priest_Move_N_3: 7970732299669165891
+      Mage_Priest_Move_N_30: -2649226789053860351
+      Mage_Priest_Move_N_31: 1395028456923244566
+      Mage_Priest_Move_N_32: 4481696809700926622
+      Mage_Priest_Move_N_33: 5801004721457108508
+      Mage_Priest_Move_N_34: 5040366447517000071
+      Mage_Priest_Move_N_35: -1123622363018820988
+      Mage_Priest_Move_N_4: -7294918399244890660
+      Mage_Priest_Move_N_5: 1826226462593308105
+      Mage_Priest_Move_N_6: 6520520854567516043
+      Mage_Priest_Move_N_7: -4941702219268027916
+      Mage_Priest_Move_N_8: 7372699336596695598
+      Mage_Priest_Move_N_9: -6688185092089111672
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

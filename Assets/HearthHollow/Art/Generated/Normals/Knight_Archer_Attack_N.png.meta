@@ -1,0 +1,912 @@
+fileFormatVersion: 2
+guid: 98f5dda500cc4451ea486bc8e91a2c7d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4663804882009792960
+    second: Knight_Archer_Attack_N_0
+  - first:
+      213: 599366606719692422
+    second: Knight_Archer_Attack_N_1
+  - first:
+      213: 846294015939089897
+    second: Knight_Archer_Attack_N_2
+  - first:
+      213: 6686124326015321876
+    second: Knight_Archer_Attack_N_3
+  - first:
+      213: 9169337983143697135
+    second: Knight_Archer_Attack_N_4
+  - first:
+      213: -1138431415669943338
+    second: Knight_Archer_Attack_N_5
+  - first:
+      213: -3252132299066492151
+    second: Knight_Archer_Attack_N_6
+  - first:
+      213: 724178741591244721
+    second: Knight_Archer_Attack_N_7
+  - first:
+      213: 7452195284125133002
+    second: Knight_Archer_Attack_N_8
+  - first:
+      213: -2414758130465050149
+    second: Knight_Archer_Attack_N_9
+  - first:
+      213: -6480669549430704939
+    second: Knight_Archer_Attack_N_10
+  - first:
+      213: 6150539573244694256
+    second: Knight_Archer_Attack_N_11
+  - first:
+      213: -3285819418986230127
+    second: Knight_Archer_Attack_N_12
+  - first:
+      213: 4902596183425454852
+    second: Knight_Archer_Attack_N_13
+  - first:
+      213: -8949430519911910310
+    second: Knight_Archer_Attack_N_14
+  - first:
+      213: -7701503294542221866
+    second: Knight_Archer_Attack_N_15
+  - first:
+      213: 8672727429321306121
+    second: Knight_Archer_Attack_N_16
+  - first:
+      213: 8853991583053672953
+    second: Knight_Archer_Attack_N_17
+  - first:
+      213: 1813251673972056755
+    second: Knight_Archer_Attack_N_18
+  - first:
+      213: -7891434810875345528
+    second: Knight_Archer_Attack_N_19
+  - first:
+      213: 8842632106059348895
+    second: Knight_Archer_Attack_N_20
+  - first:
+      213: 7962642080879263521
+    second: Knight_Archer_Attack_N_21
+  - first:
+      213: 4529500295029908921
+    second: Knight_Archer_Attack_N_22
+  - first:
+      213: -1497031099277977188
+    second: Knight_Archer_Attack_N_23
+  - first:
+      213: 8028474136915752253
+    second: Knight_Archer_Attack_N_24
+  - first:
+      213: 3612152001792628850
+    second: Knight_Archer_Attack_N_25
+  - first:
+      213: -3514143527372894400
+    second: Knight_Archer_Attack_N_26
+  - first:
+      213: -8529135584668563879
+    second: Knight_Archer_Attack_N_27
+  - first:
+      213: -4251432557619430557
+    second: Knight_Archer_Attack_N_28
+  - first:
+      213: -2598327320901817589
+    second: Knight_Archer_Attack_N_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04ed2127b26d64fb0800000000000000
+      internalID: -4663804882009792960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 431
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68e22c3d0c0615800800000000000000
+      internalID: 599366606719692422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e596937ce3aebb00800000000000000
+      internalID: 846294015939089897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 419
+        width: 20
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 417cd3066a2e9cc50800000000000000
+      internalID: 6686124326015321876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 432
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fead6ce7058004f70800000000000000
+      internalID: 9169337983143697135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 427
+        width: 19
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d319dbb8aa7330f0800000000000000
+      internalID: -1138431415669943338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 407
+        width: 19
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90b319f87ea1ed2d0800000000000000
+      internalID: -3252132299066492151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 411
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bf7f668abccc0a00800000000000000
+      internalID: 724178741591244721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 303
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac8ae13a0248b6760800000000000000
+      internalID: 7452195284125133002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 303
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd1f427364e0d7ed0800000000000000
+      internalID: -2414758130465050149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 303
+        width: 30
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d4fd7f71690016a0800000000000000
+      internalID: -6480669549430704939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 303
+        width: 43
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fe8b38a72b1b5550800000000000000
+      internalID: 6150539573244694256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 316
+        width: 16
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19ece3fb5ac6662d0800000000000000
+      internalID: -3285819418986230127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 303
+        width: 33
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4039246f045890440800000000000000
+      internalID: 4902596183425454852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 303
+        width: 53
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a547c96bb5c3dc380800000000000000
+      internalID: -8949430519911910310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dd6f44de83ce1590800000000000000
+      internalID: -7701503294542221866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 175
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 900bb7a95a7bb5870800000000000000
+      internalID: 8672727429321306121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 175
+        width: 30
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f176303f62bfda70800000000000000
+      internalID: 8853991583053672953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 175
+        width: 43
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b2ac7b5ac6f92910800000000000000
+      internalID: 1813251673972056755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 175
+        width: 23
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8858f91a9ddfb7290800000000000000
+      internalID: -7891434810875345528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 188
+        width: 23
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9bb129dc0757ba70800000000000000
+      internalID: 8842632106059348895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 175
+        width: 53
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12fb260e8ccf08e60800000000000000
+      internalID: 7962642080879263521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b5e84f15840cde30800000000000000
+      internalID: 4529500295029908921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 47
+        width: 19
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c99d2d5952a793be0800000000000000
+      internalID: -1497031099277977188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_24
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 72
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d35364bd0beda6f60800000000000000
+      internalID: 8028474136915752253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_25
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 47
+        width: 20
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 278d09d8b11f02230800000000000000
+      internalID: 3612152001792628850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_26
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04f4331a4114b3fc0800000000000000
+      internalID: -3514143527372894400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_27
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 78
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 956cfa2006c62a980800000000000000
+      internalID: -8529135584668563879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_28
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 47
+        width: 21
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36b30982d90eff4c0800000000000000
+      internalID: -4251432557619430557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Attack_N_29
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 47
+        width: 18
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0b64737113e0fbd0800000000000000
+      internalID: -2598327320901817589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Knight_Archer_Attack_N_0: -4663804882009792960
+      Knight_Archer_Attack_N_1: 599366606719692422
+      Knight_Archer_Attack_N_10: -6480669549430704939
+      Knight_Archer_Attack_N_11: 6150539573244694256
+      Knight_Archer_Attack_N_12: -3285819418986230127
+      Knight_Archer_Attack_N_13: 4902596183425454852
+      Knight_Archer_Attack_N_14: -8949430519911910310
+      Knight_Archer_Attack_N_15: -7701503294542221866
+      Knight_Archer_Attack_N_16: 8672727429321306121
+      Knight_Archer_Attack_N_17: 8853991583053672953
+      Knight_Archer_Attack_N_18: 1813251673972056755
+      Knight_Archer_Attack_N_19: -7891434810875345528
+      Knight_Archer_Attack_N_2: 846294015939089897
+      Knight_Archer_Attack_N_20: 8842632106059348895
+      Knight_Archer_Attack_N_21: 7962642080879263521
+      Knight_Archer_Attack_N_22: 4529500295029908921
+      Knight_Archer_Attack_N_23: -1497031099277977188
+      Knight_Archer_Attack_N_24: 8028474136915752253
+      Knight_Archer_Attack_N_25: 3612152001792628850
+      Knight_Archer_Attack_N_26: -3514143527372894400
+      Knight_Archer_Attack_N_27: -8529135584668563879
+      Knight_Archer_Attack_N_28: -4251432557619430557
+      Knight_Archer_Attack_N_29: -2598327320901817589
+      Knight_Archer_Attack_N_3: 6686124326015321876
+      Knight_Archer_Attack_N_4: 9169337983143697135
+      Knight_Archer_Attack_N_5: -1138431415669943338
+      Knight_Archer_Attack_N_6: -3252132299066492151
+      Knight_Archer_Attack_N_7: 724178741591244721
+      Knight_Archer_Attack_N_8: 7452195284125133002
+      Knight_Archer_Attack_N_9: -2414758130465050149
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -14,23 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: spore
   displayName: Spore Mire
-  floor: {fileID: 11400000, guid: ae090944c25ca411393cde814e4d365b, type: 2}
-  floorAlt: {fileID: 11400000, guid: f0bf7ecf05d774fa8842e899d9540b3b, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: 85f422740c980477d8fb6c0e2a22f050, type: 2}
-  wallFace: {fileID: 11400000, guid: 1030039b1762b4787b71f52beff42e9b, type: 2}
+  floor: {fileID: 11400000, guid: af945401f6c354c9d9da149a8b801500, type: 2}
+  floorAlt: {fileID: 11400000, guid: 7371c6ea61f924f00ae34400c56d7ec2, type: 2}
+  floorAltChance: 0.15
+  wall: {fileID: 11400000, guid: 4938c5fdd8c3343c092af5bb80b04243, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: ac16beabebc9f4661bf4e3b56da060a9, type: 2}
   decor:
-  - {fileID: 11400000, guid: 3037c2a25dfad4015835d266f6a98fb6, type: 2}
-  - {fileID: 11400000, guid: 09966813352e448b7a0301e98961cca3, type: 2}
-  - {fileID: 11400000, guid: edc3f948efb7d4017addae810bf56b36, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: f61d41d99aa4d4332a27445f970c0d53, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  decorDensity: 0.07
   background: {r: 0.05490196, g: 0.07058824, b: 0.03137255, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.9, g: 1, b: 0.74, a: 1}
+  wallTint: {r: 0.9, g: 1, b: 0.74, a: 1}
   lightColor: {r: 0.82, g: 1, b: 0.7, a: 1}
   lightIntensity: 0.85
   playerLight: 0
+  gradeTemperature: 0
+  gradeTint: -14
+  gradeSaturation: 6
+  gradeContrast: 8
+  gradeExposure: 0
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.36
+  gradeBloom: 1.4399999
+  ambient: 2
+  ambientColor: {r: 0.55, g: 1, b: 0.35, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 615354d2ceb9248be90d843727527e84, type: 3}
   ladder: {fileID: 21300000, guid: 4cae8e8dfd76942bd84496be9e40f702, type: 3}

@@ -14,10 +14,15 @@ namespace HearthHollow.UI
         readonly SpriteAnimView _portrait;
         readonly Label _name;
         readonly Bar _hp;
-        readonly VisualElement _skill, _skillFill, _skill2, _skill2Fill, _dash, _dashFill;
-        readonly VisualElement _skillIcon, _skill2Icon, _dashIcon;
+        readonly VisualElement _atk, _atkFill, _atkIcon;
+        readonly Label _atkKey;
+        readonly VisualElement _skill, _skillFill, _skill2, _skill2Fill, _dash, _dashFill, _ult, _ultFill;
+        readonly VisualElement _skillIcon, _skill2Icon, _dashIcon, _ultIcon;
         readonly Label _guard;
-        readonly Label _skillKey, _skill2Key;
+        Label _torch;   // torch cooldown (step 4)
+        Label _flare;   // Flare cooldown (step 5)
+        Label _boost;   // Boost points (step 8)
+        readonly Label _skillKey, _skill2Key, _ultKey;
         string _iconKey;
         // top-centre
         readonly VisualElement _routeIcon;
@@ -61,6 +66,10 @@ namespace HearthHollow.UI
             _hp = new Bar("bar--hp"); _hp.AddToClassList("dhud__hp");
             info.Add(_hp);
             var abil = UIKit.E("dhud__abilities");
+            _atk = UIKit.E("dhud__ability", "dhud__ability--attack");   // left click / J, first in the row
+            _atkIcon = UIKit.E("dhud__icon-slot"); _atk.Add(_atkIcon);
+            _atkFill = UIKit.E("dhud__cool"); _atk.Add(_atkFill);
+            _atkKey = UIKit.L("J", "dhud__key"); _atk.Add(_atkKey);
             _skill = UIKit.E("dhud__ability", "dhud__ability--skill");
             _skillIcon = UIKit.E("dhud__icon-slot"); _skill.Add(_skillIcon);
             _skillFill = UIKit.E("dhud__cool"); _skill.Add(_skillFill);
@@ -68,13 +77,23 @@ namespace HearthHollow.UI
             _skill2 = UIKit.E("dhud__ability", "dhud__ability--skill");
             _skill2Icon = UIKit.E("dhud__icon-slot"); _skill2.Add(_skill2Icon);
             _skill2Fill = UIKit.E("dhud__cool"); _skill2.Add(_skill2Fill);
-            _skill2Key = UIKit.L("U", "dhud__key"); _skill2.Add(_skill2Key);
+            _skill2Key = UIKit.L("L", "dhud__key"); _skill2.Add(_skill2Key);
+            _ult = UIKit.E("dhud__ability", "dhud__ability--skill", "dhud__ability--ult");
+            _ultIcon = UIKit.E("dhud__icon-slot"); _ult.Add(_ultIcon);
+            _ultFill = UIKit.E("dhud__cool"); _ult.Add(_ultFill);
+            _ultKey = UIKit.L("I", "dhud__key"); _ult.Add(_ultKey);
             _dash = UIKit.E("dhud__ability", "dhud__ability--dash");
             _dashIcon = UIKit.E("dhud__icon-slot"); _dash.Add(_dashIcon);
             _dashFill = UIKit.E("dhud__cool"); _dash.Add(_dashFill);
             _dash.Add(UIKit.L("Space", "dhud__key"));
             _guard = UIKit.L("", "badge", "dhud__guard");
-            abil.Add(_skill); abil.Add(_skill2); abil.Add(_dash); abil.Add(_guard);
+            _torch = UIKit.L("", "badge", "dhud__guard");
+            _torch.tooltip = "Torch — R / (LB) throws one where you're aiming (unlimited, on a cooldown). It burns for a while and lights braziers.";
+            _flare = UIKit.L("", "badge", "dhud__guard");
+            _flare.tooltip = "Flare — F / (LT): a burst of light round you. Pot meals shorten its cooldown.";
+            _boost = UIKit.L("", "badge", "dhud__guard");
+            _boost.tooltip = "Boost — hold Shift / (RT) to charge 1–3 Boost points, then attack or use a skill: more damage, and it knocks off more shield pips. +1 every few seconds in a fight and +1 for every Break.";
+            abil.Add(_atk); abil.Add(_skill); abil.Add(_skill2); abil.Add(_ult); abil.Add(_dash); abil.Add(_torch); abil.Add(_flare); abil.Add(_boost); abil.Add(_guard);
             info.Add(abil);
             row.Add(info);
             card.Add(row);
@@ -116,7 +135,7 @@ namespace HearthHollow.UI
             _prompt = UIKit.L("", "dhud__prompt");
             _prompt.pickingMode = PickingMode.Ignore;
             Root.Add(_prompt);
-            var help = UIKit.L("WASD move · J attack · K / U skills · Space dash · E use · Tab bag · Esc menu", "dhud__help");
+            var help = UIKit.L("WASD move · mouse aim · Click / J attack · Right-click / K skill · Q / L skill · C / I ultimate · Space dash · E use · F flare · R torch · Shift boost · Tab bag", "dhud__help");
             help.pickingMode = PickingMode.Ignore;
             Root.Add(help);
             var mapBox = UIKit.E("panel", "dhud__mapbox");
@@ -190,21 +209,33 @@ namespace HearthHollow.UI
         // ───────────────────────── per-frame bits (from DungeonHud) ─────────────────────────
         void Tick()
         {
-            var m1 = DungeonHud.Skill1Move; var m2 = DungeonHud.Skill2Move; var md = DungeonHud.DashMove;
-            string key = (m1 != null ? m1.id : "-") + "|" + (m2 != null ? m2.id : "-") + "|" + (md != null ? md.id : "-");
+            var m1 = DungeonHud.Skill1Move; var m2 = DungeonHud.Skill2Move; var md = DungeonHud.DashMove; var mu = DungeonHud.UltMove; var ma = DungeonHud.AttackMove;
+            string key = (m1 != null ? m1.id : "-") + "|" + (m2 != null ? m2.id : "-") + "|" + (md != null ? md.id : "-") + "|" + (mu != null ? mu.id : "-") + "|" + (ma != null ? ma.id : "-") + "|" + DungeonInput.MouseAim;
             if (key != _iconKey)
             {
                 _iconKey = key;
                 SetMoveIcon(_skill, _skillIcon, m1);
                 SetMoveIcon(_skill2, _skill2Icon, m2);
                 SetMoveIcon(_dash, _dashIcon, md);
+                SetMoveIcon(_ult, _ultIcon, mu);
+                SetMoveIcon(_atk, _atkIcon, ma);
+                _atkKey.text = DungeonInput.AttackKey;
+                UIKit.Show(_ult, mu != null);
+                _skillKey.text = DungeonInput.Skill1Key; _ultKey.text = DungeonInput.UltKey;
                 bool open2 = S.Run != null && S.Profile.Progress(S.Run.classId).level >= C.tuning.secondSkillLevel;
-                _skill2Key.text = m2 != null ? "U" : open2 ? "U —" : "Lv " + C.tuning.secondSkillLevel;
+                _skill2Key.text = m2 != null ? DungeonInput.Skill2Key : open2 ? DungeonInput.Skill2Key + " —" : "Lv " + C.tuning.secondSkillLevel;
                 if (m2 == null) _skill2.tooltip = open2 ? "Empty — pick a second skill in the Skills page at camp" : "Opens at level " + C.tuning.secondSkillLevel;
             }
             Cool(_skill, _skillFill, m1 != null, DungeonHud.Skill01);
             Cool(_skill2, _skill2Fill, m2 != null, DungeonHud.Skill2_01);
+            Cool(_atk, _atkFill, ma != null, DungeonHud.Attack01);
+            if (mu != null) { Cool(_ult, _ultFill, true, DungeonHud.Ult01); _ult.EnableInClassList("dhud__ability--ult-ready", DungeonHud.Ult01 >= 1f); }
             _dashFill.style.height = Length.Percent((1f - DungeonHud.Dash01) * 100f);
+            _torch.text = DungeonHud.TorchCooldown > 0.05f ? "🔥 " + Mathf.CeilToInt(DungeonHud.TorchCooldown) + "s" : "🔥 R";
+            _torch.style.opacity = DungeonHud.TorchCooldown > 0.05f ? 0.55f : 1f;
+            _flare.text = DungeonHud.FlareCooldown > 0.05f ? "✨ " + Mathf.CeilToInt(DungeonHud.FlareCooldown) + "s" : "✨ F";
+            _flare.style.opacity = DungeonHud.FlareCooldown > 0.05f ? 0.55f : 1f;
+            { var bp = new System.Text.StringBuilder("⚡ "); for (int i = 0; i < DungeonHud.BoostMax; i++) bp.Append(i < DungeonHud.BoostSel ? "◆" : i < DungeonHud.BoostPoints ? "●" : "○"); _boost.text = bp.ToString(); _boost.style.opacity = DungeonHud.BoostPoints > 0 ? 1f : 0.55f; }
             _guard.text = DungeonHud.BuffText ?? "";
             UIKit.Show(_guard, !string.IsNullOrEmpty(DungeonHud.BuffText));
 
@@ -304,7 +335,9 @@ namespace HearthHollow.UI
                 {
                     slot.Add(Art.Pic(ArtLibrary.GetIngredient(b.ingredientId), UIKit.IngEmoji(C, b.ingredientId), "slot__emoji"));
                     slot.Add(UIKit.L(b.count.ToString(), "slot__count"));
-                    slot.tooltip = UIKit.IngName(C, b.ingredientId) + " ×" + b.count;
+                    bool mat = Kitchen.IsMaterial(C, b.ingredientId);
+                    if (!mat) { slot.AddToClassList("bag-slot--grade-" + b.grade); slot.Add(UIKit.L(Cooking.GradeGem(b.grade), "bag-slot__grade")); }
+                    slot.tooltip = (mat ? "" : Cooking.IngGradeName(b.grade) + " ") + UIKit.IngName(C, b.ingredientId) + " ×" + b.count + (mat ? " (building material)" : "");
                     int idx = i;
                     slot.RegisterCallback<PointerDownEvent>(e => { if (e.button == 1) S.BagDiscard(idx); });
                 }

@@ -95,8 +95,127 @@ namespace HearthHollow.EditorTools
         };
         static readonly string[,] ClassMap =
         {
-            { "Warden", "Knight" }, { "Ranger", "Knight Archer" }, { "Cook", "Peasant Male Brown" },
+            { "Warden", "Knight" }, { "Ranger", "Knight Archer" },   // Cook: Ninja Adventure "Villager" (NinjaClassMap below)
+            { "Lamplighter", "Mage Priest" }, { "Emberfist", "Mage Monk" },   // class rework (31 Oct), from the 100 Monsters pack
         };
+
+        // ───── Ninja Adventure (Assets/Ninja Adventure - Asset Pack, CC0) ─────
+        // Each character has SeparateAnim/Idle.png (64×16), Walk.png (64×64) and Attack.png (64×16): 16px cells, one COLUMN per
+        // direction (Down, Up, Left, Right) and walk frames down the rows. They're sliced here and re-ordered into the
+        // Anim layout (rows Down, Left, Right, Up; frames across), and drawn ×NinjaScale so they stand about a tile tall.
+        // Monster folders (Actor/Monster/<Name>/<Name>.png or SpriteSheet.png, 64×64) use the same layout as Walk.png:
+        // one column per direction, 4 walk frames down the rows. Map entries: { our id, folder under Actor/, scale }.
+        // An entry whose folder is missing is skipped, so the older art (ClassMap / MonsterMap) stays as the fallback.
+        const string NINJA = "Assets/Ninja Adventure - Asset Pack/Actor/";
+        const float NinjaScale = 1.8f;   // was 2.25, cut 20% (31 Oct) so figures sit better in the rooms
+        static readonly string[,] NinjaClassMap =
+        {
+            { "Cook", "Character/Villager", "1.8" },
+            { "Warden", "Character/Knight", "1.8" },
+            { "Ranger", "Character/Hunter", "1.8" },
+            { "Lamplighter", "Character/SorcererOrange", "1.8" },
+            { "Emberfist", "Character/FighterRed", "1.8" },
+            // town folk (TownController looks these up by name, falling back to a tinted class)
+            { "Wren", "Character/Woman", "1.8" },
+            { "Merchant", "Character/Noble", "1.8" },
+            { "Armourer", "Character/KnightGold", "1.8" },
+        };
+        static readonly string[,] NinjaMonsterMap =
+        {
+            { "slime", "Monster/Slime4", "1.8" },        // Moss Slime
+            { "boar", "Monster/Beast", "1.8" },          // Bramble Boar
+            { "bat", "Monster/LanternRed", "1.8" },      // Lantern Bee
+            { "crab", "Monster/Snake3", "1.8" },         // Marsh Viper
+            { "wolf", "Monster/Beast2", "1.8" },         // Fog Wolf
+            { "shaman", "Character/Shaman", "1.8" },     // Bog Shaman
+            { "dragon", "Monster/DragonYellow", "2.56" },  // Ember Drake (elite: bigger)
+        };
+
+        static void FillNinja(List<ArtLibrary.Anim> list, string[,] map, List<string> missing)
+        {
+            int[] colFor = { 0, 2, 3, 1 };   // our rows Down, Left, Right, Up → Ninja columns Down(0), Up(1), Left(2), Right(3)
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                string id = map[i, 0], folder = NINJA + map[i, 1], dir = folder + "/SeparateAnim/";
+                float scale = map.GetLength(1) > 2 ? float.Parse(map[i, 2], System.Globalization.CultureInfo.InvariantCulture) : NinjaScale;
+                Sprite[,] idle, walk, atk;
+                var sheets = new List<string>();
+                if (File.Exists(dir + "Idle.png"))   // characters: separate Idle / Walk / Attack sheets
+                {
+                    idle = NinjaCells(dir + "Idle.png"); walk = NinjaCells(dir + "Walk.png"); atk = NinjaCells(dir + "Attack.png");
+                    sheets.Add(dir + "Idle.png"); sheets.Add(dir + "Walk.png"); sheets.Add(dir + "Attack.png");
+                }
+                else   // monsters: one walk sheet; idle bobs on its first two frames, attack lunges on the third
+                {
+                    string sheet = null;
+                    if (Directory.Exists(folder))
+                        foreach (var f in Directory.GetFiles(folder, "*.png"))
+                            if (!Path.GetFileName(f).StartsWith("Faceset")) { sheet = f.Replace('\\', '/'); break; }
+                    walk = sheet != null ? NinjaCells(sheet) : null;
+                    idle = null; atk = null;
+                    if (walk != null)
+                    {
+                        idle = new Sprite[4, 2]; atk = new Sprite[4, 1];
+                        for (int c = 0; c < 4; c++) { idle[c, 0] = walk[c, 0]; idle[c, 1] = walk[c, 1]; atk[c, 0] = walk[c, Mathf.Min(2, walk.GetLength(1) - 1)]; }
+                        sheets.Add(sheet);
+                    }
+                }
+                if (idle == null || walk == null) { missing.Add(id + " (Ninja " + map[i, 1] + ")"); continue; }
+                var a = list.Find(x => x.id == id);
+                if (a == null) { a = new ArtLibrary.Anim { id = id }; list.Add(a); }
+                a.idleSheet = new List<Sprite>(); a.moveSheet = new List<Sprite>(); a.attackSheet = new List<Sprite>();
+                int walkRows = walk.GetLength(1);
+                foreach (int c in colFor)
+                {
+                    for (int r = 0; r < idle.GetLength(1); r++) a.idleSheet.Add(idle[c, r]);
+                    for (int r = 0; r < walkRows; r++) a.moveSheet.Add(walk[c, r]);
+                    a.attackSheet.Add(atk != null ? atk[c, 0] : idle[c, 0]);
+                }
+                a.idleCols = idle.GetLength(1); a.moveCols = walkRows; a.attackCols = 1;
+                a.idle = new List<Sprite> { idle[0, 0] };
+                a.attack = new List<Sprite> { atk != null ? atk[0, 0] : idle[0, 0] };
+                a.fps = 6f; a.crop = new Rect(0, 0, 16, 16); a.scale = scale;
+                // normal maps, like the rest of the art, so the sprites shade in the dungeon light instead of glowing flat-white
+                foreach (var sheet in sheets)
+                    if (AssetImporter.GetAtPath(sheet) != null) NormalMapBuilder.Make(sheet);
+            }
+        }
+
+        /// Slices a Ninja Adventure sheet into 16px cells (pixel-art import settings) and returns them as [column, row from the top].
+        static Sprite[,] NinjaCells(string path)
+        {
+            var imp = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (imp == null) return null;
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            if (tex == null) return null;
+            int cols = tex.width / 16, rows = tex.height / 16;
+            bool dirty = imp.textureType != TextureImporterType.Sprite || imp.spriteImportMode != SpriteImportMode.Multiple || imp.filterMode != FilterMode.Point
+                         || imp.textureCompression != TextureImporterCompression.Uncompressed || !Mathf.Approximately(imp.spritePixelsPerUnit, 16f) || imp.mipmapEnabled;
+#pragma warning disable 0618
+            if (imp.spritesheet == null || imp.spritesheet.Length != cols * rows) dirty = true;
+            if (dirty)
+            {
+                imp.textureType = TextureImporterType.Sprite; imp.spriteImportMode = SpriteImportMode.Multiple;
+                imp.filterMode = FilterMode.Point; imp.textureCompression = TextureImporterCompression.Uncompressed;
+                imp.spritePixelsPerUnit = 16f; imp.mipmapEnabled = false;
+                var metas = new List<SpriteMetaData>();
+                for (int r = 0; r < rows; r++)
+                    for (int c = 0; c < cols; c++)
+                        metas.Add(new SpriteMetaData { name = Path.GetFileNameWithoutExtension(path) + "_c" + c + "_r" + r, rect = new Rect(c * 16, tex.height - (r + 1) * 16, 16, 16),
+                                                        alignment = (int)SpriteAlignment.BottomCenter, pivot = new Vector2(0.5f, 0f) });
+                imp.spritesheet = metas.ToArray();
+                imp.SaveAndReimport();
+            }
+#pragma warning restore 0618
+            var cells = new Sprite[cols, rows];
+            foreach (var o in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+            {
+                var s = o as Sprite; if (s == null) continue;
+                int c = Mathf.RoundToInt(s.rect.x / 16f), r = Mathf.RoundToInt((tex.height - s.rect.y - 16f) / 16f);
+                if (c >= 0 && c < cols && r >= 0 && r < rows) cells[c, r] = s;
+            }
+            return cells;
+        }
 
         [MenuItem("Hearth & Hollow/Build Art Library", false, 3)]
         public static void Build()
@@ -111,6 +230,8 @@ namespace HearthHollow.EditorTools
             Fill(lib.gear, GearMap, missing);
             FillAnims(lib.monsters, MonsterMap, missing);
             FillAnims(lib.classes, ClassMap, missing);
+            FillNinja(lib.classes, NinjaClassMap, missing);
+            FillNinja(lib.monsters, NinjaMonsterMap, missing);   // Ninja Adventure characters (16px, sliced and re-ordered here)
             // ingredients / recipes: the packs have no food art — slots are listed so you can drop sprites in.
             EnsureIds(lib.ingredients, "ingredients");
             EnsureIds(lib.recipes, "recipes");
@@ -170,7 +291,7 @@ namespace HearthHollow.EditorTools
                 if (a == null) { a = new ArtLibrary.Anim { id = id }; list.Add(a); }
                 a.idle = FrontRow(idlePath);
                 a.attack = attackPath != null ? FrontRow(attackPath) : new List<Sprite>();
-                a.fps = 6f;
+                a.fps = 6f; a.scale = 1f;
                 a.crop = ComputeCrop(a);
                 // every direction (rows Down, Left, Right, Up) for the real-time dungeon
                 string movePath = FindSheet(folder, "_Move");

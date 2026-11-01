@@ -14,23 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Dungeon.DungeonTheme
   routeId: canopy
   displayName: Thornwood Canopy
-  floor: {fileID: 11400000, guid: 626667cfc274d48f0b0310dac0842ea6, type: 2}
-  floorAlt: {fileID: 11400000, guid: f11248cb3857546bb8f57bbdcf8b4e0d, type: 2}
-  floorAltChance: 0.18
-  wall: {fileID: 11400000, guid: e7825bdbe9d004168b0bb8d325fe0f51, type: 2}
-  wallFace: {fileID: 11400000, guid: c71914523ab104ef09a8a3b68a419831, type: 2}
+  floor: {fileID: 11400000, guid: af945401f6c354c9d9da149a8b801500, type: 2}
+  floorAlt: {fileID: 11400000, guid: 7371c6ea61f924f00ae34400c56d7ec2, type: 2}
+  floorAltChance: 0.15
+  wall: {fileID: 11400000, guid: 4938c5fdd8c3343c092af5bb80b04243, type: 2}
+  wallFace: {fileID: 11400000, guid: 885583890251d485cb338cf983da763c, type: 2}
   hazard: {fileID: 11400000, guid: 1a85fc644d9974d529d29b31a6676350, type: 2}
   decor:
-  - {fileID: 11400000, guid: 12e333b5fb7b64c2aba44524ea856f21, type: 2}
-  - {fileID: 11400000, guid: 29aa8f9d3326b45a0b385e636638fae5, type: 2}
-  - {fileID: 11400000, guid: e9e58f2e5b830464daf367befb5001f7, type: 2}
-  decorDensity: 0.05
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: d0dedff57e0e643ef9e3bec986784fae, type: 2}
+  - {fileID: 11400000, guid: f61d41d99aa4d4332a27445f970c0d53, type: 2}
+  - {fileID: 11400000, guid: 7138fc10e8ebd441a8743253370d8b1a, type: 2}
+  decorDensity: 0.07
   background: {r: 0.07058824, g: 0.10980392, b: 0.05490196, a: 1}
-  floorTint: {r: 1, g: 1, b: 1, a: 1}
-  wallTint: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 0.84, g: 0.95, b: 0.78, a: 1}
+  wallTint: {r: 0.84, g: 0.95, b: 0.78, a: 1}
   lightColor: {r: 1, g: 0.97, b: 0.85, a: 1}
   lightIntensity: 1
   playerLight: 0
+  gradeTemperature: 6
+  gradeTint: -8
+  gradeSaturation: 12
+  gradeContrast: 8
+  gradeExposure: 0
+  gradeFilter: {r: 1, g: 1, b: 1, a: 1}
+  gradeVignette: 0.36
+  gradeBloom: 1.2800001
+  ambient: 1
+  ambientColor: {r: 0.85, g: 1, b: 0.5, a: 1}
   doorOpen: {fileID: 0}
   doorClosed: {fileID: 21300000, guid: 4389edeb54404426d9d4f4a74f5e1927, type: 3}
   ladder: {fileID: 21300000, guid: 031f87abcd8614352b0214f17a937b11, type: 3}

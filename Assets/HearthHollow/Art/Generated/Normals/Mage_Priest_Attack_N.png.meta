@@ -1,0 +1,1016 @@
+fileFormatVersion: 2
+guid: 80ccb10c9b1164b6396777d0a8db6193
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9218321095892368239
+    second: Mage_Priest_Attack_N_0
+  - first:
+      213: -697502417657233233
+    second: Mage_Priest_Attack_N_1
+  - first:
+      213: 1672248658085386859
+    second: Mage_Priest_Attack_N_2
+  - first:
+      213: -2625893277513095098
+    second: Mage_Priest_Attack_N_3
+  - first:
+      213: 7636062229665694708
+    second: Mage_Priest_Attack_N_4
+  - first:
+      213: 9055768137721252446
+    second: Mage_Priest_Attack_N_5
+  - first:
+      213: 9075958446858572344
+    second: Mage_Priest_Attack_N_6
+  - first:
+      213: 7802108551031067658
+    second: Mage_Priest_Attack_N_7
+  - first:
+      213: -6320038972914217076
+    second: Mage_Priest_Attack_N_8
+  - first:
+      213: -7610094410976412984
+    second: Mage_Priest_Attack_N_9
+  - first:
+      213: 3576086544903105045
+    second: Mage_Priest_Attack_N_10
+  - first:
+      213: 1098931929612728290
+    second: Mage_Priest_Attack_N_11
+  - first:
+      213: -5306957297304654852
+    second: Mage_Priest_Attack_N_12
+  - first:
+      213: -94711128612740122
+    second: Mage_Priest_Attack_N_13
+  - first:
+      213: 7732843475818045248
+    second: Mage_Priest_Attack_N_14
+  - first:
+      213: -2843755014569773937
+    second: Mage_Priest_Attack_N_15
+  - first:
+      213: -6858767287193794299
+    second: Mage_Priest_Attack_N_16
+  - first:
+      213: -1700935657737749841
+    second: Mage_Priest_Attack_N_17
+  - first:
+      213: 4341990544119397216
+    second: Mage_Priest_Attack_N_18
+  - first:
+      213: -2515567091391514381
+    second: Mage_Priest_Attack_N_19
+  - first:
+      213: -6377231257027680642
+    second: Mage_Priest_Attack_N_20
+  - first:
+      213: -8269618860123568341
+    second: Mage_Priest_Attack_N_21
+  - first:
+      213: 2785145375482061360
+    second: Mage_Priest_Attack_N_22
+  - first:
+      213: -4299193302228576373
+    second: Mage_Priest_Attack_N_23
+  - first:
+      213: -4363602348714312594
+    second: Mage_Priest_Attack_N_24
+  - first:
+      213: 252539670808531736
+    second: Mage_Priest_Attack_N_25
+  - first:
+      213: -5988604475662471830
+    second: Mage_Priest_Attack_N_26
+  - first:
+      213: -8546218504813841811
+    second: Mage_Priest_Attack_N_27
+  - first:
+      213: -3606408221430826146
+    second: Mage_Priest_Attack_N_28
+  - first:
+      213: -2572499818098210306
+    second: Mage_Priest_Attack_N_29
+  - first:
+      213: 3297807376262044324
+    second: Mage_Priest_Attack_N_30
+  - first:
+      213: 9205374712688338394
+    second: Mage_Priest_Attack_N_31
+  - first:
+      213: 7301403193531607398
+    second: Mage_Priest_Attack_N_32
+  - first:
+      213: 844802533177212027
+    second: Mage_Priest_Attack_N_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_0
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19488d5ddc1f11080800000000000000
+      internalID: -9218321095892368239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 431
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa080952f39f156f0800000000000000
+      internalID: -697502417657233233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_2
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 431
+        width: 29
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6a9d496b45053710800000000000000
+      internalID: 1672248658085386859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_3
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 431
+        width: 29
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 648eeb70af3fe8bd0800000000000000
+      internalID: -2625893277513095098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_4
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 431
+        width: 29
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3400ae32eb8f960800000000000000
+      internalID: 7636062229665694708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_5
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 431
+        width: 29
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5a0d29442d8cad70800000000000000
+      internalID: 9055768137721252446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_6
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 315
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8321635fe1844fd70800000000000000
+      internalID: 9075958446858572344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_7
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 303
+        width: 22
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a049e3bc368a64c60800000000000000
+      internalID: 7802108551031067658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_8
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 313
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8fc2d40a06ba48a0800000000000000
+      internalID: -6320038972914217076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_9
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 303
+        width: 22
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cab0960473836690800000000000000
+      internalID: -7610094410976412984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_10
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 303
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51ae00304cfc0a130800000000000000
+      internalID: 3576086544903105045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_11
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 310
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e7b6e084c0304f00800000000000000
+      internalID: 1098931929612728290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_12
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 303
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfb2dff9476e956b0800000000000000
+      internalID: -5306957297304654852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_13
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 311
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e3e2c6fab48faef0800000000000000
+      internalID: -94711128612740122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_14
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 303
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04fd4dfbb24905b60800000000000000
+      internalID: 7732843475818045248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_15
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 314
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f84355091e3f888d0800000000000000
+      internalID: -2843755014569773937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_16
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 303
+        width: 21
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5098eb9dd73c0d0a0800000000000000
+      internalID: -6858767287193794299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_17
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 22
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faafebef7001568e0800000000000000
+      internalID: -1700935657737749841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_18
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 187
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06b77502569d14c30800000000000000
+      internalID: 4341990544119397216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_19
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 175
+        width: 22
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f832f4fe09e61dd0800000000000000
+      internalID: -2515567091391514381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_20
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 185
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e76e852b5f58f77a0800000000000000
+      internalID: -6377231257027680642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_21
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 175
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b27c67606796c3d80800000000000000
+      internalID: -8269618860123568341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_22
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0322e6176f2d6a620800000000000000
+      internalID: 2785145375482061360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_23
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 182
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b875def38723654c0800000000000000
+      internalID: -4299193302228576373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_24
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 175
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6cb2df78ce5173c0800000000000000
+      internalID: -4363602348714312594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_25
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 183
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8139c3a1e73318300800000000000000
+      internalID: 252539670808531736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_26
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 175
+        width: 21
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6de2d755f334eca0800000000000000
+      internalID: -5988604475662471830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_27
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 186
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6273b7bc8bb56980800000000000000
+      internalID: -8546218504813841811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_28
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5b319684d673fdc0800000000000000
+      internalID: -3606408221430826146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_29
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef9cf7d8b05ac4cd0800000000000000
+      internalID: -2572499818098210306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_30
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4aa13cf065a24cd20800000000000000
+      internalID: 3297807376262044324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_31
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad5e62e678f00cf70800000000000000
+      internalID: 9205374712688338394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_32
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 47
+        width: 29
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 669aa50258bc35560800000000000000
+      internalID: 7301403193531607398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage_Priest_Attack_N_33
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 47
+        width: 29
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7cb06f8d6759bb00800000000000000
+      internalID: 844802533177212027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mage_Priest_Attack_N_0: -9218321095892368239
+      Mage_Priest_Attack_N_1: -697502417657233233
+      Mage_Priest_Attack_N_10: 3576086544903105045
+      Mage_Priest_Attack_N_11: 1098931929612728290
+      Mage_Priest_Attack_N_12: -5306957297304654852
+      Mage_Priest_Attack_N_13: -94711128612740122
+      Mage_Priest_Attack_N_14: 7732843475818045248
+      Mage_Priest_Attack_N_15: -2843755014569773937
+      Mage_Priest_Attack_N_16: -6858767287193794299
+      Mage_Priest_Attack_N_17: -1700935657737749841
+      Mage_Priest_Attack_N_18: 4341990544119397216
+      Mage_Priest_Attack_N_19: -2515567091391514381
+      Mage_Priest_Attack_N_2: 1672248658085386859
+      Mage_Priest_Attack_N_20: -6377231257027680642
+      Mage_Priest_Attack_N_21: -8269618860123568341
+      Mage_Priest_Attack_N_22: 2785145375482061360
+      Mage_Priest_Attack_N_23: -4299193302228576373
+      Mage_Priest_Attack_N_24: -4363602348714312594
+      Mage_Priest_Attack_N_25: 252539670808531736
+      Mage_Priest_Attack_N_26: -5988604475662471830
+      Mage_Priest_Attack_N_27: -8546218504813841811
+      Mage_Priest_Attack_N_28: -3606408221430826146
+      Mage_Priest_Attack_N_29: -2572499818098210306
+      Mage_Priest_Attack_N_3: -2625893277513095098
+      Mage_Priest_Attack_N_30: 3297807376262044324
+      Mage_Priest_Attack_N_31: 9205374712688338394
+      Mage_Priest_Attack_N_32: 7301403193531607398
+      Mage_Priest_Attack_N_33: 844802533177212027
+      Mage_Priest_Attack_N_4: 7636062229665694708
+      Mage_Priest_Attack_N_5: 9055768137721252446
+      Mage_Priest_Attack_N_6: 9075958446858572344
+      Mage_Priest_Attack_N_7: 7802108551031067658
+      Mage_Priest_Attack_N_8: -6320038972914217076
+      Mage_Priest_Attack_N_9: -7610094410976412984
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

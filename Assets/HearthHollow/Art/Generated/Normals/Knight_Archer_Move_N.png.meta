@@ -1,0 +1,756 @@
+fileFormatVersion: 2
+guid: cd7648a28b722454a92d4aa4b46425bb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9025622914664576742
+    second: Knight_Archer_Move_N_0
+  - first:
+      213: 2810369886432112593
+    second: Knight_Archer_Move_N_1
+  - first:
+      213: 5434410426934613429
+    second: Knight_Archer_Move_N_2
+  - first:
+      213: -2452939136122251754
+    second: Knight_Archer_Move_N_3
+  - first:
+      213: 5830061695246247776
+    second: Knight_Archer_Move_N_4
+  - first:
+      213: 6316409269612795147
+    second: Knight_Archer_Move_N_5
+  - first:
+      213: 5649361556332467490
+    second: Knight_Archer_Move_N_6
+  - first:
+      213: -6159640413559945156
+    second: Knight_Archer_Move_N_7
+  - first:
+      213: 4977335535087367962
+    second: Knight_Archer_Move_N_8
+  - first:
+      213: -5985887691783256079
+    second: Knight_Archer_Move_N_9
+  - first:
+      213: 2121328758736697179
+    second: Knight_Archer_Move_N_10
+  - first:
+      213: 6058665613686079969
+    second: Knight_Archer_Move_N_11
+  - first:
+      213: 413662601336420881
+    second: Knight_Archer_Move_N_12
+  - first:
+      213: -171251461992119889
+    second: Knight_Archer_Move_N_13
+  - first:
+      213: 4836907778510477913
+    second: Knight_Archer_Move_N_14
+  - first:
+      213: -962528709850011717
+    second: Knight_Archer_Move_N_15
+  - first:
+      213: 1160239323387655171
+    second: Knight_Archer_Move_N_16
+  - first:
+      213: 4054224017355969886
+    second: Knight_Archer_Move_N_17
+  - first:
+      213: 749342617941068489
+    second: Knight_Archer_Move_N_18
+  - first:
+      213: 4891691698516837619
+    second: Knight_Archer_Move_N_19
+  - first:
+      213: 1426836900044680242
+    second: Knight_Archer_Move_N_20
+  - first:
+      213: 2102059358365587274
+    second: Knight_Archer_Move_N_21
+  - first:
+      213: 118378357552806842
+    second: Knight_Archer_Move_N_22
+  - first:
+      213: 917483521502384574
+    second: Knight_Archer_Move_N_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 431
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e635399834714d70800000000000000
+      internalID: 9025622914664576742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_1
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 431
+        width: 17
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dfad309580700720800000000000000
+      internalID: 2810369886432112593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 431
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b5dd159d77ea6b40800000000000000
+      internalID: 5434410426934613429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_3
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 431
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61697c71ad865fdd0800000000000000
+      internalID: -2452939136122251754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 431
+        width: 19
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 067a3cb093a88e050800000000000000
+      internalID: 5830061695246247776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_5
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 431
+        width: 18
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b055143d3c468a750800000000000000
+      internalID: 6316409269612795147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_6
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 303
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 225d1f46760966e40800000000000000
+      internalID: 5649361556332467490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_7
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 303
+        width: 27
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c388e95ddaf848aa0800000000000000
+      internalID: -6159640413559945156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_8
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 303
+        width: 24
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a17bfc05c4c031540800000000000000
+      internalID: 4977335535087367962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 303
+        width: 25
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f740e1ebdaddeca0800000000000000
+      internalID: -5985887691783256079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_10
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 303
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b57325c4449707d10800000000000000
+      internalID: 2121328758736697179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_11
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 303
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e102a48644b41450800000000000000
+      internalID: 6058665613686079969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_12
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 175
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11a7589b1ff9db500800000000000000
+      internalID: 413662601336420881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_13
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 175
+        width: 27
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa181b0e3b79f9df0800000000000000
+      internalID: -171251461992119889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_14
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 175
+        width: 24
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95ad07d5ff5202340800000000000000
+      internalID: 4836907778510477913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_15
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 175
+        width: 25
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb76643fc3964a2f0800000000000000
+      internalID: -962528709850011717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_16
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 175
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 304f5f4748ff91010800000000000000
+      internalID: 1160239323387655171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_17
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 175
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e551c5a734f734830800000000000000
+      internalID: 4054224017355969886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_18
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 47
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ca407d0423366a00800000000000000
+      internalID: 749342617941068489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_19
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 47
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f4c2d8bea7c2e340800000000000000
+      internalID: 4891691698516837619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_20
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 47
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23c2593d9942dc310800000000000000
+      internalID: 1426836900044680242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_21
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 47
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a479a2869d30c2d10800000000000000
+      internalID: 2102059358365587274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_22
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 20
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abb770f2d7094a100800000000000000
+      internalID: 118378357552806842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knight_Archer_Move_N_23
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 47
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb19c6ad66e8bbc00800000000000000
+      internalID: 917483521502384574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Knight_Archer_Move_N_0: 9025622914664576742
+      Knight_Archer_Move_N_1: 2810369886432112593
+      Knight_Archer_Move_N_10: 2121328758736697179
+      Knight_Archer_Move_N_11: 6058665613686079969
+      Knight_Archer_Move_N_12: 413662601336420881
+      Knight_Archer_Move_N_13: -171251461992119889
+      Knight_Archer_Move_N_14: 4836907778510477913
+      Knight_Archer_Move_N_15: -962528709850011717
+      Knight_Archer_Move_N_16: 1160239323387655171
+      Knight_Archer_Move_N_17: 4054224017355969886
+      Knight_Archer_Move_N_18: 749342617941068489
+      Knight_Archer_Move_N_19: 4891691698516837619
+      Knight_Archer_Move_N_2: 5434410426934613429
+      Knight_Archer_Move_N_20: 1426836900044680242
+      Knight_Archer_Move_N_21: 2102059358365587274
+      Knight_Archer_Move_N_22: 118378357552806842
+      Knight_Archer_Move_N_23: 917483521502384574
+      Knight_Archer_Move_N_3: -2452939136122251754
+      Knight_Archer_Move_N_4: 5830061695246247776
+      Knight_Archer_Move_N_5: 6316409269612795147
+      Knight_Archer_Move_N_6: 5649361556332467490
+      Knight_Archer_Move_N_7: -6159640413559945156
+      Knight_Archer_Move_N_8: 4977335535087367962
+      Knight_Archer_Move_N_9: -5985887691783256079
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

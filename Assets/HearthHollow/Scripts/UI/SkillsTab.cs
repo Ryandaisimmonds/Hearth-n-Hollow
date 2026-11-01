@@ -92,7 +92,7 @@ namespace HearthHollow.UI
         /// Percent with one decimal when it isn't whole (0.005 → "0.5%").
         static string Pct1(float f) { float v = f * 100f; return (Mathf.Abs(v - Mathf.Round(v)) < 0.05f ? Mathf.Round(v).ToString("0") : v.ToString("0.0")) + "%"; }
 
-        static string SlotKey(LoadSlot s) { return s == LoadSlot.Attack ? "J" : s == LoadSlot.Skill1 ? "K" : s == LoadSlot.Skill2 ? "U" : "Space"; }
+        static string SlotKey(LoadSlot s) { return s == LoadSlot.Attack ? "J" : s == LoadSlot.Skill1 ? "K" : s == LoadSlot.Skill2 ? "L" : "Space"; }
         static string SlotName(LoadSlot s) { return s == LoadSlot.Attack ? "Attack" : s == LoadSlot.Skill1 ? "Skill" : s == LoadSlot.Skill2 ? "Skill (can borrow)" : "Dash"; }
 
         void BuildLoadout(ClassProgress cp)
@@ -136,7 +136,7 @@ namespace HearthHollow.UI
             }
             string equipped = Progression.Equipped(cp, _slot);
             if (_slot == LoadSlot.Skill2 && !string.IsNullOrEmpty(equipped))
-                _choices.Add(UIKit.B("Empty the U slot", () => S.EquipMove(_cls, LoadSlot.Skill2, null), "btn--small", "btn--ghost", "loadout__clear"));
+                _choices.Add(UIKit.B("Empty the L slot", () => S.EquipMove(_cls, LoadSlot.Skill2, null), "btn--small", "btn--ghost", "loadout__clear"));
             foreach (var m in S.SlotChoices(_cls, _slot))
             {
                 string block = S.EquipBlock(_cls, _slot, m.id);
@@ -321,6 +321,8 @@ namespace HearthHollow.UI
                         case BuffStat.GatherZonePct: return "+" + UIKit.Pct(v) + " gather zone";
                         case BuffStat.CoinPct: return "+" + UIKit.Pct(v) + " coins";
                         case BuffStat.XpPct: return "+" + UIKit.Pct(v) + " XP";
+                case BuffStat.MoveSpeedPct: return "+" + UIKit.Pct(v) + " speed";
+                case BuffStat.HealOnKill: return "+" + Mathf.RoundToInt(v) + " HP per kill";
                     }
                     return "+" + v;
                 case NodeEffect.AttackPower: return "attacks +" + UIKit.Pct(v);
@@ -345,7 +347,7 @@ namespace HearthHollow.UI
             _levelInfo.Add(UIKit.L("Levels are small on purpose — your meals are where the real strength comes from.", "small", "muted"));
             _levelInfo.Add(UIKit.L("From your " + (lv - 1) + " levels: +" + StatCalc.LevelHp(t, lv) + " HP, +" + Pct1((lv - 1) * t.damagePerLevel) + " damage", "small", "muted"));
             var miles = UIKit.E("skill-levels__miles");
-            Mile(miles, t.secondSkillLevel, "Second skill slot (U)", lv);
+            Mile(miles, t.secondSkillLevel, "Second skill slot (L)", lv);
             Mile(miles, t.borrowLevel, "Lends its skills to the other classes", lv);
             Mile(miles, t.levelCap, "Max level", lv);
             _levelInfo.Add(miles);

@@ -39,6 +39,11 @@ namespace HearthHollow.UI
         readonly SettingsOverlay _settings;
         readonly CampEventOverlay _campEvent;
         readonly PantryOverlay _pantry;
+        readonly CookOverlay _cook;
+        readonly TownHud _townHud;   // Hearth's Hollow (town preview)
+        readonly FishingOverlay _fishing;   // town fishing pond
+        readonly DialogueOverlay _dialogue;   // town people talking
+        readonly LadderChoiceOverlay _ladder;  // dungeon: go deeper or head home
         readonly Button _gear;
         readonly UIScreen[] _all;
 
@@ -46,6 +51,9 @@ namespace HearthHollow.UI
         bool _settingsOpen;
         bool _campEventOpen;
         bool _pantryOpen;
+        bool _cookOpen;
+        bool _fishOpen, _dialogueOpen, _ladderOpen;
+        bool _townOpen, _townMenuOpen;   // town preview: walking around, or a building's menu (the camp screen) on top
         bool _routesOpen;
         Phase _lastPhase;
         IVisualElementScheduledItem _pulse;
@@ -83,7 +91,8 @@ namespace HearthHollow.UI
             _rest = new RestOverlay(this);
             _gather = new GatherOverlay(this);
             _fight = new FightOverlay(this);
-            _all = new UIScreen[] { _classSelect, _hearth, _routes, _dungeon, _hollow, _summary, _rest, _gather, _fight };
+            _townHud = new TownHud(this);
+            _all = new UIScreen[] { _townHud, _classSelect, _hearth, _routes, _dungeon, _hollow, _summary, _rest, _gather, _fight };
             for (int i = 0; i < _all.Length; i++) Stage.Add(_all[i].Root);
 
             // Settings: a modal overlay above the stage (not shaken) plus the gear button that opens it.
@@ -92,6 +101,14 @@ namespace HearthHollow.UI
             Root.Insert(Root.IndexOf(DragLayer), _campEvent.Root);
             _pantry = new PantryOverlay(this);
             Root.Insert(Root.IndexOf(DragLayer), _pantry.Root);
+            _cook = new CookOverlay(this);
+            Root.Insert(Root.IndexOf(DragLayer), _cook.Root);
+            _fishing = new FishingOverlay(this);
+            Root.Insert(Root.IndexOf(DragLayer), _fishing.Root);
+            _dialogue = new DialogueOverlay(this);
+            Root.Insert(Root.IndexOf(DragLayer), _dialogue.Root);
+            _ladder = new LadderChoiceOverlay(this);
+            Root.Insert(Root.IndexOf(DragLayer), _ladder.Root);
             _settings = new SettingsOverlay(this);
             Root.Insert(Root.IndexOf(DragLayer), _settings.Root);
             _gear = UIKit.B("", ToggleSettings, "hh-gear");
@@ -142,11 +159,44 @@ namespace HearthHollow.UI
         // ───────── skills & loadout page ─────────
         /// Skills live on the camp's Skills tab now.
         public void OpenSkills() { if (Session.Phase == Phase.Hearth) { _routesOpen = false; ApplyLayout(); _hearth.ShowTab(CampTab.Skills); } }
-        public void ShowCampTab(CampTab t) { if (Session.Phase == Phase.Hearth) { _routesOpen = false; ApplyLayout(); _hearth.ShowTab(t); } }
+        public void ShowCampTab(CampTab t) { if (Session.Phase == Phase.Hearth) { _routesOpen = false; if (_townOpen) _townMenuOpen = true; ApplyLayout(); _hearth.ShowTab(t); } }
+
+        // ───────── Hearth's Hollow (town preview) ─────────
+        /// The town is open (walking, or one of its menus on top).
+        public bool TownOpen { get { return _townOpen; } }
+        /// The town's world is on screen (not covered by the camp screen, route board or class select).
+        public bool TownWorldVisible { get { return _townOpen && Session.Phase == Phase.Hearth && !_townMenuOpen && !_routesOpen && !_classSelectOpen; } }
+        /// You can walk around: the world is showing and no pop-up is open.
+        public bool TownWalking { get { return TownWorldVisible && !_settingsOpen && !_campEventOpen && !_pantryOpen && !_cookOpen && !_fishOpen && !_dialogueOpen; } }
+        /// Someone in town talks to you (pages of text; the last page may offer an action).
+        public void OpenDialogue(string speaker, string face, System.Collections.Generic.List<string> pages, string actionLabel = null, Action onAction = null)
+        {
+            if (!TownWorldVisible) return;
+            _dialogue.Show(speaker, face, pages, actionLabel, onAction);
+            _dialogueOpen = true; ApplyLayout();
+        }
+        public void CloseDialogue() { _dialogueOpen = false; ApplyLayout(); }
+
+        /// Dungeon ladder: go deeper or head home (the dungeon pauses while it's open).
+        public bool LadderChoiceOpen { get { return _ladderOpen; } }
+        public void OpenLadderChoice(Action deeper, Action home) { if (!InDungeonView) return; _ladder.Set(deeper, home); _ladderOpen = true; ApplyLayout(); }
+        public void CloseLadderChoice() { _ladderOpen = false; ApplyLayout(); }
+        public void OpenFishing() { if (TownWorldVisible) { _fishOpen = true; ApplyLayout(); } }
+        public void CloseFishing() { _fishOpen = false; ApplyLayout(); }
+        public void OpenTown() { if (Session.Phase != Phase.Hearth) return; _townOpen = true; _townMenuOpen = false; _routesOpen = false; _settingsOpen = false; ApplyLayout(); }
+        public void CloseTown() { _townOpen = false; _townMenuOpen = false; ApplyLayout(); }
+        /// A building in town opens its menu (the camp screen on that tab). Esc goes back to walking.
+        public void OpenTownMenu(CampTab t) { if (!_townOpen || Session.Phase != Phase.Hearth) return; _townMenuOpen = true; ApplyLayout(); _hearth.ShowTab(t); }
+        public void CloseTownMenu() { _townMenuOpen = false; ApplyLayout(); }
+        public void Toast(string text) { Juice.Toast(text, null, 4f); }
 
         // ───────── pantry pop-up (camp) ─────────
         public void OpenPantry() { if (Session.Phase == Phase.Hearth) { _pantryOpen = true; ApplyLayout(); } }
         public void ClosePantry() { _pantryOpen = false; ApplyLayout(); }
+
+        // ───────── the stove (camp): cook one recipe ─────────
+        public void OpenCook(string recipeId) { if (Session.Phase == Phase.Hearth) { _cook.SetRecipe(recipeId); _cookOpen = true; ApplyLayout(); } }
+        public void CloseCook() { _cookOpen = false; ApplyLayout(); }
 
         // ───────── settings ─────────
         public void OpenSettings() { _settingsOpen = true; ApplyLayout(); }
@@ -177,6 +227,10 @@ namespace HearthHollow.UI
             _campEventOpen = false;
             _routesOpen = false;
             _pantryOpen = false;
+            _cookOpen = false;
+            _townMenuOpen = false;
+            _fishOpen = false;
+            _dialogueOpen = false;
             Session.ResetGame();
             _classSelectOpen = true;
             ApplyLayout();
@@ -193,9 +247,10 @@ namespace HearthHollow.UI
                 RunOutcome ended = (p == Phase.RunEnd && Session.LastSummary != null) ? Session.LastSummary.outcome : RunOutcome.None;
                 _fight.PlayOutro(ended, ApplyLayout);
             }
-            if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; }
+            if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
-            else if (_lastPhase != Phase.Hearth && Session.Hearth != null && Session.Hearth.campEvent != CampEvent.None)
+            // (In the town, events are visitors and weather you walk into instead — no pop-up.)
+            else if (_lastPhase != Phase.Hearth && !_townOpen && Session.Hearth != null && Session.Hearth.campEvent != CampEvent.None)
             {
                 _campEventOpen = true;
                 _routesOpen = false; _pantryOpen = false;
@@ -208,11 +263,13 @@ namespace HearthHollow.UI
         {
             Phase p = Session.Phase;
             bool dungeon = InDungeonView;
+            bool world = dungeon || TownWorldVisible;   // the camera draws the world (dungeon or town) behind a transparent UI
             bool inRun = !dungeon && (p == Phase.Explore || p == Phase.Fight || p == Phase.Gather || p == Phase.Rest);
             bool outro = _fight.InOutro;
 
             _classSelect.SetVisible(p == Phase.Hearth && _classSelectOpen);
-            _hearth.SetVisible(p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
+            _hearth.SetVisible(p == Phase.Hearth && !_classSelectOpen && !_routesOpen && (!_townOpen || _townMenuOpen));
+            _townHud.SetVisible(TownWorldVisible);
             _routes.SetVisible(p == Phase.Hearth && !_classSelectOpen && _routesOpen);
             _hollow.SetVisible(inRun || (p == Phase.RunEnd && outro));
             _dungeon.SetVisible(dungeon);
@@ -222,15 +279,20 @@ namespace HearthHollow.UI
             _fight.SetVisible(p == Phase.Fight || outro);
             _campEvent.SetVisible(_campEventOpen && p == Phase.Hearth && !_classSelectOpen);
             _pantry.SetVisible(_pantryOpen && !_campEventOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
+            _cook.SetVisible(_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
+            _fishing.SetVisible(_fishOpen && TownWorldVisible && !_campEventOpen);
+            _dialogue.SetVisible(_dialogueOpen && TownWorldVisible && !_campEventOpen);
+            if (_ladderOpen && !(dungeon && p == Phase.Dungeon)) _ladderOpen = false;
+            _ladder.SetVisible(_ladderOpen && !_settingsOpen);
             _settings.SetVisible(_settingsOpen);
             _gear.EnableInClassList("hh-gear--open", _settingsOpen);
 
             bool hollowTheme = inRun || (p == Phase.RunEnd && outro);
-            Root.EnableInClassList("theme-dungeon", dungeon);   // transparent: the dungeon is drawn by the camera
-            Root.EnableInClassList("theme-hollow", hollowTheme && !dungeon);
-            Root.EnableInClassList("theme-hearth", !hollowTheme && !dungeon);
+            Root.EnableInClassList("theme-dungeon", world);   // transparent: the dungeon / town is drawn by the camera
+            Root.EnableInClassList("theme-hollow", hollowTheme && !world);
+            Root.EnableInClassList("theme-hearth", !hollowTheme && !world);
             // Inline override: the root's colour transition never settles on fully transparent, so force it here.
-            if (dungeon)
+            if (world)
             {
                 Root.style.transitionDuration = new StyleList<TimeValue>(new System.Collections.Generic.List<TimeValue> { new TimeValue(0) });
                 Root.style.backgroundColor = new Color(0, 0, 0, 0);
@@ -289,8 +351,13 @@ namespace HearthHollow.UI
         {
             // Settings are modal; Esc opens them from anywhere except class select / route board (where Esc goes back).
             if (_settings.Visible) { _settings.HandleKey(k); return true; }
+            if (_ladder.Visible) { _ladder.HandleKey(k); return true; }
             if (_campEvent.Visible) { _campEvent.HandleKey(k); return true; }
             if (_pantry.Visible) { _pantry.HandleKey(k); return true; }
+            if (_cook.Visible) { _cook.HandleKey(k); return true; }
+            if (_fishing.Visible) { _fishing.HandleKey(k); return true; }
+            if (_dialogue.Visible) { _dialogue.HandleKey(k); return true; }
+            if (k == KeyCode.Escape && _townOpen && _townMenuOpen && _hearth.Visible) { CloseTownMenu(); return true; }   // town: back to walking
             if (k == KeyCode.Escape && !_classSelect.Visible && !_routes.Visible) { OpenSettings(); return true; }
             // Top-most first.
             UIScreen[] order = { _fight, _gather, _rest, _summary, _dungeon, _hollow, _classSelect, _routes, _hearth };
@@ -309,6 +376,13 @@ namespace HearthHollow.UI
             var g = UnityEngine.InputSystem.Gamepad.current;
             if (g == null) return;
             if (g.startButton.wasPressedThisFrame) { RouteKey(KeyCode.Escape); return; }
+            if (_ladder.Visible && !_settings.Visible)
+            {
+                if (g.buttonSouth.wasPressedThisFrame) RouteKey(KeyCode.Return);
+                else if (g.buttonWest.wasPressedThisFrame) RouteKey(KeyCode.H);
+                else if (g.buttonEast.wasPressedThisFrame) RouteKey(KeyCode.Escape);
+                return;
+            }
             // A = confirm, only on the overlays a gamepad player can reach from the dungeon (camp screens stay mouse/keyboard)
             if (g.buttonEast.wasPressedThisFrame && _campEvent.Visible && !_settings.Visible) { CloseCampEvent(); return; }
             if (g.buttonSouth.wasPressedThisFrame && (_gather.Visible || _rest.Visible || _summary.Visible || (_campEvent.Visible && !_settings.Visible)))
