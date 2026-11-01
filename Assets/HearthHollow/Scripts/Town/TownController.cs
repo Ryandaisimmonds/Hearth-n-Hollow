@@ -202,6 +202,7 @@ namespace HearthHollow.Town
             BuildPond();
             BuildDecor();   // lanterns, flowers and bunting by chapters cleared
             if (Art != null) BuildScenery();   // trees round the edge, the well, benches, stones by the pond
+            BuildWorkAreas();   // the smithy, workshop, cooking area and training yard come to life (TownWorkAreas.cs)
             if (ev == CampEvent.Merchant) Visitor("Merchant", "Ranger", new Color(0.8f, 0.6f, 1f), TownLayout.MerchantStand);
             if (ev == CampEvent.Armourer) Visitor("Armourer", "Warden", new Color(0.75f, 0.75f, 0.8f), TownLayout.ArmourerStand);
             ApplyWeather(light, theme, ev);

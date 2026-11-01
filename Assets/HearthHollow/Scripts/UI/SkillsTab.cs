@@ -123,6 +123,25 @@ namespace HearthHollow.UI
                 foreach (var c in card.Children()) c.pickingMode = PickingMode.Ignore;
                 _loadout.Add(card);
             }
+            // the class's ultimate (C / I): fixed per class, shown here so you know it before a run
+            var cdat = C.classes.Find(x => x.id == _cls);
+            var um = cdat != null && !string.IsNullOrEmpty(cdat.ultimate) ? C.moves.Find(x => x.id == cdat.ultimate) : null;
+            if (um != null)
+            {
+                var card = UIKit.E("load-slot", "load-slot--ult");
+                card.Add(UIKit.L("C / I", "load-slot__key"));
+                var icon = UIKit.E("load-slot__icon");
+                icon.Add(UIKit.L(um.emoji, "load-slot__emoji"));
+                card.Add(icon);
+                var txt = UIKit.E("load-slot__text");
+                txt.Add(UIKit.L("Ultimate · " + um.cooldown.ToString("0.#") + "s, hits charge it", "load-slot__slot"));
+                txt.Add(UIKit.L(um.name, "load-slot__name"));
+                card.Add(txt);
+                card.tooltip = um.name + "\n" + um.description;
+                card.RegisterCallback<PointerEnterEvent>(e => FocusMove(um.id));
+                foreach (var c in card.Children()) c.pickingMode = PickingMode.Ignore;
+                _loadout.Add(card);
+            }
         }
 
         void BuildChoices(ClassProgress cp)

@@ -57,6 +57,7 @@ namespace HearthHollow.Data
         public List<Icon> gear = new List<Icon>();      // weapon_0..weapon_4, armour_0..armour_4, backpack
         [Header("Animated characters")]
         public List<Anim> monsters = new List<Anim>();  // by monster id
+        public List<Anim> bosses = new List<Anim>();    // by monster id: drawn when that monster is a route's boss (Ninja Adventure bosses)
         public List<Anim> classes = new List<Anim>();   // by class id: Warden / Ranger / Cook
 
         /// The library the running game uses (set by GameBootstrap).
@@ -81,6 +82,8 @@ namespace HearthHollow.Data
         public Sprite Route(string id) { return Find(routes, id); }
         public Sprite Gear(string id) { return Find(gear, id); }
         public Anim Monster(string id) { return FindAnim(monsters, id); }
+        public Anim Boss(string id) { return FindAnim(bosses, id); }
+        public static Anim GetBoss(string id) { return Active != null ? Active.Boss(id) : null; }
         public Anim Class(string id) { return FindAnim(classes, id); }
 
         // ── static shortcuts for the UI (null-safe when no library is assigned) ──

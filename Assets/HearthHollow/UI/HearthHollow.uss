@@ -1654,3 +1654,6 @@ Label { white-space: normal; color: var(--hh-text); }
 .dhud__abilities .dhud__ability--attack { border-color: rgba(255, 236, 200, 0.75); }
 .dhud__abilities .dhud__guard { font-size: 17px; padding-left: 8px; padding-right: 8px; padding-top: 5px; padding-bottom: 5px; margin-right: 5px; }
 .dhud__help { font-size: 13px; }
+
+/* ultimate cards in camp (gold) */
+.load-slot--ult, .who-move--ult { border-left-color: rgb(214, 160, 60); border-right-color: rgb(214, 160, 60); border-top-color: rgb(214, 160, 60); border-bottom-color: rgb(214, 160, 60); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; background-color: rgba(120, 80, 20, 0.35); }

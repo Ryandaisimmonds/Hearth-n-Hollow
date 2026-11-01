@@ -1,0 +1,548 @@
+fileFormatVersion: 2
+guid: b5be13cdaca6a4e7cb6f98560620a9ff
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4337201299958886133
+    second: Ninja_Caveman2_Walk_N_0
+  - first:
+      213: -9092715118799270837
+    second: Ninja_Caveman2_Walk_N_1
+  - first:
+      213: -1733245548531885290
+    second: Ninja_Caveman2_Walk_N_2
+  - first:
+      213: -2732771618247604886
+    second: Ninja_Caveman2_Walk_N_3
+  - first:
+      213: 6681732755095263430
+    second: Ninja_Caveman2_Walk_N_4
+  - first:
+      213: -60413921129368954
+    second: Ninja_Caveman2_Walk_N_5
+  - first:
+      213: -5332555312749086436
+    second: Ninja_Caveman2_Walk_N_6
+  - first:
+      213: -8179925876872046740
+    second: Ninja_Caveman2_Walk_N_7
+  - first:
+      213: 8576374062324306003
+    second: Ninja_Caveman2_Walk_N_8
+  - first:
+      213: -7610468551501928620
+    second: Ninja_Caveman2_Walk_N_9
+  - first:
+      213: -153662549385659948
+    second: Ninja_Caveman2_Walk_N_10
+  - first:
+      213: 417892296013403206
+    second: Ninja_Caveman2_Walk_N_11
+  - first:
+      213: 2969656672919937599
+    second: Ninja_Caveman2_Walk_N_12
+  - first:
+      213: -4287854901098408967
+    second: Ninja_Caveman2_Walk_N_13
+  - first:
+      213: -5809765827212968966
+    second: Ninja_Caveman2_Walk_N_14
+  - first:
+      213: -3710774723310223330
+    second: Ninja_Caveman2_Walk_N_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 47
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b01969ca56a2fc3c0800000000000000
+      internalID: -4337201299958886133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 31
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4c452456cf20d180800000000000000
+      internalID: -9092715118799270837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 47
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61bda335b5642f7e0800000000000000
+      internalID: -1733245548531885290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 31
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a65051a21be331ad0800000000000000
+      internalID: -2732771618247604886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_4
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 47
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c89b871a884abc50800000000000000
+      internalID: 6681732755095263430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_5
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 31
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 682789bdbdd592ff0800000000000000
+      internalID: -60413921129368954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_6
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 47
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19f7763235fef5b0800000000000000
+      internalID: -5332555312749086436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 31
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c67140c01c01b7e80800000000000000
+      internalID: -8179925876872046740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 15
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 350d6b525c6650770800000000000000
+      internalID: 8576374062324306003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4572275ac2f226690800000000000000
+      internalID: -7610468551501928620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_10
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 15
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d93698b9b41eddf0800000000000000
+      internalID: -153662549385659948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_11
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 644504244d6acc500800000000000000
+      internalID: 417892296013403206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_12
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 15
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f32e2469207563920800000000000000
+      internalID: 2969656672919937599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_13
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 0
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f39c9b7faa7e74c0800000000000000
+      internalID: -4287854901098408967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_14
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 0
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afb74c8f2c09f5fa0800000000000000
+      internalID: -5809765827212968966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_Caveman2_Walk_N_15
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 15
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e108897bc0ea08cc0800000000000000
+      internalID: -3710774723310223330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ninja_Caveman2_Walk_N_0: -4337201299958886133
+      Ninja_Caveman2_Walk_N_1: -9092715118799270837
+      Ninja_Caveman2_Walk_N_10: -153662549385659948
+      Ninja_Caveman2_Walk_N_11: 417892296013403206
+      Ninja_Caveman2_Walk_N_12: 2969656672919937599
+      Ninja_Caveman2_Walk_N_13: -4287854901098408967
+      Ninja_Caveman2_Walk_N_14: -5809765827212968966
+      Ninja_Caveman2_Walk_N_15: -3710774723310223330
+      Ninja_Caveman2_Walk_N_2: -1733245548531885290
+      Ninja_Caveman2_Walk_N_3: -2732771618247604886
+      Ninja_Caveman2_Walk_N_4: 6681732755095263430
+      Ninja_Caveman2_Walk_N_5: -60413921129368954
+      Ninja_Caveman2_Walk_N_6: -5332555312749086436
+      Ninja_Caveman2_Walk_N_7: -8179925876872046740
+      Ninja_Caveman2_Walk_N_8: 8576374062324306003
+      Ninja_Caveman2_Walk_N_9: -7610468551501928620
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -71,6 +71,7 @@ namespace HearthHollow.Dungeon
 
         [Header("Feel")]
         [Tooltip("Player walk speed (tiles per second).")] public float playerSpeed = 5.2f;
+        [Tooltip("Walking speed in town, as a multiple of playerSpeed (the town's big: get about quicker).")] public float townSpeedMult = 1.5f;
         public float dashSpeed = 15f;
         public float dashSeconds = 0.16f;
         [Tooltip("Character art: source pixels per world unit (tiles are 32 px).")] public float characterPixelsPerUnit = 32f;

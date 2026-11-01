@@ -96,6 +96,30 @@ namespace HearthHollow.Dungeon
             return false;
         }
 
+        // ───────── is the mouse over the HUD / a menu? ─────────
+        static UnityEngine.UIElements.UIDocument[] _docs;
+        static int _uiFrame = -1; static bool _uiOver;
+
+        /// True when the cursor is over a HUD panel, badge, ability button or any button, so a click there doesn't also attack.
+        public static bool PointerOverUI()
+        {
+            if (_uiFrame == Time.frameCount) return _uiOver;
+            _uiFrame = Time.frameCount; _uiOver = false;
+            var m = Mouse.current; if (m == null) return false;
+            if (_docs == null || _docs.Length == 0 || _docs[0] == null) _docs = Object.FindObjectsByType<UnityEngine.UIElements.UIDocument>(FindObjectsSortMode.None);
+            Vector2 sp = m.position.ReadValue();
+            foreach (var d in _docs)
+            {
+                if (d == null || d.rootVisualElement == null || d.rootVisualElement.panel == null) continue;
+                var panel = d.rootVisualElement.panel;
+                Vector2 pp = UnityEngine.UIElements.RuntimePanelUtils.ScreenToPanel(panel, new Vector2(sp.x, Screen.height - sp.y));
+                for (var e = panel.Pick(pp); e != null; e = e.parent)
+                    if (e is UnityEngine.UIElements.Button || e.ClassListContains("panel") || e.ClassListContains("dhud__ability") || e.ClassListContains("badge"))
+                    { _uiOver = true; return true; }
+            }
+            return false;
+        }
+
         // ───────── buttons ─────────
         static Mouse M { get { return Mouse.current; } }
 
@@ -105,7 +129,7 @@ namespace HearthHollow.Dungeon
             {
                 var k = Keyboard.current; var g = Gamepad.current; var m = M;
                 return (k != null && (k.jKey.wasPressedThisFrame || k.zKey.wasPressedThisFrame))
-                    || (m != null && m.leftButton.wasPressedThisFrame)
+                    || (m != null && m.leftButton.wasPressedThisFrame && !PointerOverUI())
                     || (g != null && g.buttonSouth.wasPressedThisFrame);
             }
         }
@@ -116,7 +140,7 @@ namespace HearthHollow.Dungeon
             get
             {
                 var k = Keyboard.current; var g = Gamepad.current; var m = M;
-                return (k != null && (k.jKey.isPressed || k.zKey.isPressed)) || (m != null && m.leftButton.isPressed) || (g != null && g.buttonSouth.isPressed);
+                return (k != null && (k.jKey.isPressed || k.zKey.isPressed)) || (m != null && m.leftButton.isPressed && !PointerOverUI()) || (g != null && g.buttonSouth.isPressed);
             }
         }
 
@@ -127,7 +151,7 @@ namespace HearthHollow.Dungeon
             {
                 var k = Keyboard.current; var g = Gamepad.current; var m = M;
                 return (k != null && (k.kKey.wasPressedThisFrame || k.xKey.wasPressedThisFrame))
-                    || (m != null && m.rightButton.wasPressedThisFrame)
+                    || (m != null && m.rightButton.wasPressedThisFrame && !PointerOverUI())
                     || (g != null && g.buttonWest.wasPressedThisFrame);
             }
         }

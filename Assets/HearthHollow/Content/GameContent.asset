@@ -2819,7 +2819,7 @@ MonoBehaviour:
       slot: 3
       kind: 44
       power: 3
-      cooldown: 45
+      cooldown: 22.5
       range: 6
       radius: 3.4
       duration: 2
@@ -2844,7 +2844,7 @@ MonoBehaviour:
       slot: 3
       kind: 45
       power: 0.7
-      cooldown: 45
+      cooldown: 22.5
       range: 6
       radius: 3.4
       duration: 3
@@ -2869,7 +2869,7 @@ MonoBehaviour:
       slot: 3
       kind: 46
       power: 2
-      cooldown: 45
+      cooldown: 22.5
       range: 1
       radius: 3.2
       duration: 8
@@ -2894,7 +2894,7 @@ MonoBehaviour:
       slot: 3
       kind: 47
       power: 2
-      cooldown: 45
+      cooldown: 22.5
       range: 1
       radius: 12
       duration: 1.5
@@ -2919,7 +2919,7 @@ MonoBehaviour:
       slot: 3
       kind: 48
       power: 3.2
-      cooldown: 45
+      cooldown: 22.5
       range: 1
       radius: 3.6
       duration: 1.5
@@ -4511,7 +4511,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 22
+    contentVersion: 23
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

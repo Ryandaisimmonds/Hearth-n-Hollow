@@ -20,6 +20,8 @@ namespace HearthHollow.UI
         // header
         readonly Label _day, _coins;
         readonly Button _backToTown;   // shown when this screen is a building's menu in the town preview
+        readonly Label _titleL;               // "The Hearth", or the station's name in town
+        readonly VisualElement _tabBarEl, _rightEl;   // hidden in town: each station shows only its own page
         readonly VisualElement _eventChip, _eventIcon;
         readonly Label _eventText;
         // tabs
@@ -70,7 +72,8 @@ namespace HearthHollow.UI
             var header = UIKit.E("header", "header--hearth");
             var brand = UIKit.E("header__brand");
             brand.Add(Art.Icon("event_none", "🔥", "ico", "header__icon"));
-            brand.Add(UIKit.L("The Hearth", "header__title"));
+            _titleL = UIKit.L("The Hearth", "header__title");
+            brand.Add(_titleL);
             header.Add(brand);
             var info = UIKit.E("header__info");
             // Today's camp event: click to reopen its pop-up (the merchant's wares live there).
@@ -108,6 +111,7 @@ namespace HearthHollow.UI
             _skillsBadge.pickingMode = PickingMode.Ignore;
             _tabButtons[3].Add(_skillsBadge);
             left.Add(tabBar);
+            _tabBarEl = tabBar;
 
             var pages = UIKit.E("panel", "camp-page");
             left.Add(pages);
@@ -199,6 +203,7 @@ namespace HearthHollow.UI
             // ═════ right: who's going (class, stats, skills, equipment), then set out ═════
             var right = UIKit.E("hearth__right");
             body.Add(right);
+            _rightEl = right;
 
             var who = UIKit.E("panel", "panel--who");
             var whoRow = UIKit.E("who");
@@ -274,6 +279,7 @@ namespace HearthHollow.UI
             _day.text = "Day " + p.day;
             _coins.text = p.coins + " coins";
             UIKit.Show(_backToTown, Ui.TownOpen);
+            ApplyStationMode(Ui.TownOpen);
             int free = S.SkillPointsFree(p.selectedClass);
             _skillsBadge.text = free > 0 ? free.ToString() : "";
             UIKit.Show(_skillsBadge, free > 0);
@@ -951,6 +957,23 @@ namespace HearthHollow.UI
                 foreach (var ch in card.Children()) SetIgnore(ch);
                 _loadout.Add(card);
             }
+            // the ultimate (C / I), fixed per class
+            var cdat = C.classes.Find(x => x.id == p.selectedClass);
+            var um = cdat != null && !string.IsNullOrEmpty(cdat.ultimate) ? C.moves.Find(x => x.id == cdat.ultimate) : null;
+            if (um != null)
+            {
+                var card = UIKit.E("who-move", "who-move--ult", "clickable");
+                card.Add(UIKit.L("C / I", "who-move__key"));
+                card.Add(UIKit.L(um.emoji, "who-move__emoji"));
+                var txt = UIKit.E("who-move__text");
+                txt.Add(UIKit.L(um.name, "who-move__name"));
+                txt.Add(UIKit.L("Ultimate · " + um.cooldown.ToString("0.#") + "s", "who-move__sub"));
+                card.Add(txt);
+                card.tooltip = um.name + "\n" + um.description + "\nEvery hit you land charges it faster.";
+                card.RegisterCallback<ClickEvent>(e => ShowTab(CampTab.Skills));
+                foreach (var ch in card.Children()) SetIgnore(ch);
+                _loadout.Add(card);
+            }
         }
 
         /// Current gear (weapon, body, head, boots, bag) and worn trinkets (click → Upgrades tab).
@@ -1013,8 +1036,37 @@ namespace HearthHollow.UI
 
         void SetOut() { Ui.OpenRoutes(); }
 
+        /// Town: this screen is one station's window over the town — just that page (no tabs, no class column, no Set out:
+        /// runs start at the Route board by the gate). At the camp screen everything is as before.
+        void ApplyStationMode(bool on)
+        {
+            Root.EnableInClassList("hearth--station", on);
+            UIKit.Show(_tabBarEl, !on);
+            UIKit.Show(_rightEl, !on);
+            _titleL.text = on ? StationTitle(_tab) : "The Hearth";
+            _backToTown.text = on ? "✕ Close" : "🏘️ Back to town";
+            if (on)
+            {
+                Root.style.backgroundColor = new Color(0.02f, 0.015f, 0.01f, 0.55f);   // the town, dimmed, behind the window
+                Root.style.paddingLeft = Length.Percent(8); Root.style.paddingRight = Length.Percent(8);
+                Root.style.paddingTop = Length.Percent(4); Root.style.paddingBottom = Length.Percent(4);
+            }
+            else
+            {
+                Root.style.backgroundColor = StyleKeyword.Null;
+                Root.style.paddingLeft = StyleKeyword.Null; Root.style.paddingRight = StyleKeyword.Null;
+                Root.style.paddingTop = StyleKeyword.Null; Root.style.paddingBottom = StyleKeyword.Null;
+            }
+        }
+
+        static string StationTitle(CampTab t)
+        {
+            return t == CampTab.Cooking ? "🍳 Cooking area" : t == CampTab.Upgrades ? "⚒️ Smithy" : t == CampTab.Workshop ? "🔨 Workshop" : "⭐ Training yard";
+        }
+
         public override bool HandleKey(KeyCode key)
         {
+            if (Ui.TownOpen) return false;   // in town: no tab hotkeys, and no Enter-to-set-out (that's the Route board's job)
             if (key == KeyCode.Return || key == KeyCode.KeypadEnter) { if (UIKit.Now - _shownAt > 0.8f) SetOut(); return true; }
             if (key == KeyCode.Alpha1 || key == KeyCode.Keypad1) { ShowTab(CampTab.Cooking); return true; }
             if (key == KeyCode.Alpha2 || key == KeyCode.Keypad2) { ShowTab(CampTab.Upgrades); return true; }

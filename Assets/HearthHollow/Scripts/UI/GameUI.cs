@@ -166,6 +166,8 @@ namespace HearthHollow.UI
         public bool TownOpen { get { return _townOpen; } }
         /// The town's world is on screen (not covered by the camp screen, route board or class select).
         public bool TownWorldVisible { get { return _townOpen && Session.Phase == Phase.Hearth && !_townMenuOpen && !_routesOpen && !_classSelectOpen; } }
+        /// A town station's page (cooking, smithy, workshop, training yard) is open as a window over the town.
+        public bool TownStationOpen { get { return _townOpen && _townMenuOpen && Session.Phase == Phase.Hearth && !_routesOpen && !_classSelectOpen; } }
         /// You can walk around: the world is showing and no pop-up is open.
         public bool TownWalking { get { return TownWorldVisible && !_settingsOpen && !_campEventOpen && !_pantryOpen && !_cookOpen && !_fishOpen && !_dialogueOpen; } }
         /// Someone in town talks to you (pages of text; the last page may offer an action).
@@ -263,7 +265,7 @@ namespace HearthHollow.UI
         {
             Phase p = Session.Phase;
             bool dungeon = InDungeonView;
-            bool world = dungeon || TownWorldVisible;   // the camera draws the world (dungeon or town) behind a transparent UI
+            bool world = dungeon || TownWorldVisible || TownStationOpen;   // the camera draws the world (dungeon or town) behind a transparent UI (town stations open over it)
             bool inRun = !dungeon && (p == Phase.Explore || p == Phase.Fight || p == Phase.Gather || p == Phase.Rest);
             bool outro = _fight.InOutro;
 

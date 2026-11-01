@@ -110,7 +110,7 @@ namespace HearthHollow.Town
             s.Add(Spot("smithy", "Smithy", "⚒️", "Gear & trinkets", TownAction.Upgrades, 42f, 25f, 3f, 1.6f, new Color(0.35f, 0.35f, 0.38f)));
             s.Add(Spot("workshop", "Workshop", "🔨", "Kitchen upgrades", TownAction.Workshop, 42f, 15f, 3f, 1.6f, new Color(0.6f, 0.42f, 0.22f)));
             s.Add(Spot("training", "Training yard", "⭐", "Skills & loadout", TownAction.Training, 7f, 20f, 1f, 1.5f, new Color(0.85f, 0.75f, 0.4f)));
-            s.Add(Spot("gate", "Town gate", "🚪", "Set out", TownAction.Gate, 25f, 3.2f, 3f, 0.8f, new Color(0.45f, 0.3f, 0.18f)));
+            s.Add(Spot("gate", "Route board", "🗺️", "Choose a route & set out", TownAction.Gate, 25f, 3.2f, 3f, 0.8f, new Color(0.45f, 0.3f, 0.18f)));
             s.Add(Spot("bed", "Lean-to & hammock", "🛏️", "Rest", TownAction.Bed, 21f, 35f, 3f, 1.5f, new Color(0.45f, 0.55f, 0.3f)));
             var wren = Spot("wren", "Old Wren", "👵", "Talk", TownAction.Wren, 28f, 34f, 0f, 0f, Color.white);
             wren.reach = 1.4f;

@@ -119,6 +119,11 @@ namespace HearthHollow.EditorTools
             { "Wren", "Character/Woman", "1.8" },
             { "Merchant", "Character/Noble", "1.8" },
             { "Armourer", "Character/KnightGold", "1.8" },
+            // townsfolk at work (TownWorkAreas)
+            { "TownSmith", "Character/Caveman2", "1.8" },
+            { "TownCarpenter", "Character/Villager3", "1.8" },
+            { "TownCook", "Character/OldMan2", "1.8" },
+            { "TownTrainer", "Character/SamuraiBlue", "1.8" },
         };
         static readonly string[,] NinjaMonsterMap =
         {
@@ -182,6 +187,108 @@ namespace HearthHollow.EditorTools
         }
 
         /// Slices a Ninja Adventure sheet into 16px cells (pixel-art import settings) and returns them as [column, row from the top].
+        // ── Ninja Adventure bosses (Actor/Boss/<Name>/Idle.png, Walk/Jump.png, Attack.png…): one row of big frames each ──
+        // Frames are as wide as the strip divides into nearest the strip's height (GiantSlime 62×52, Tengu 82×82…). The same
+        // frames are used for all four facings. Each cell this many px tall draws at ×1 before the boss's own ×1.7.
+        const float BossTargetPx = 40f;
+        static readonly string[,] NinjaBossMap =
+        {
+            { "slime", "GiantSlime" },     // Moss Slime → Giant Slime
+            { "boar", "GiantRacoon" },     // Bramble Boar → Giant Raccoon
+            { "bat", "GiantFlam" },        // Lantern Bee → flame spirit
+            { "crab", "GiantFrog2" },      // Marsh Viper → Giant Frog
+            { "wolf", "GiantSpirit" },     // Fog Wolf → Giant Spirit
+            { "shaman", "TenguRed" },      // Bog Shaman → Tengu
+            { "dragon", "DemonCyclop2" },  // Ember Drake → Cyclops demon
+        };
+
+        static void FillNinjaBosses(List<ArtLibrary.Anim> list, string[,] map, List<string> missing)
+        {
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                string id = map[i, 0], folder = NINJA + "Boss/" + map[i, 1];
+                string idleP = BossSheet(folder, "Idle");
+                int cw = 0, ch = 0;
+                var idle = idleP != null ? NinjaStrip(idleP, 0, out cw, out ch) : null;
+                if (idle == null || idle.Count == 0) { missing.Add("boss " + id + " (Ninja " + map[i, 1] + ")"); continue; }
+                var used = new List<string> { idleP };
+                List<Sprite> walk = null, atk = null;
+                foreach (var pre in new[] { "Walk", "Jump" })
+                {
+                    string p = BossSheet(folder, pre); if (p == null) continue;
+                    int w2, h2; var s = NinjaStrip(p, cw, out w2, out h2);
+                    if (s != null && s.Count > 0 && w2 == cw && h2 == ch) { walk = s; used.Add(p); break; }
+                }
+                foreach (var pre in new[] { "Attack", "Shoot", "Charge" })
+                {
+                    string p = BossSheet(folder, pre); if (p == null) continue;
+                    int w2, h2; var s = NinjaStrip(p, cw, out w2, out h2);
+                    if (s != null && s.Count > 0 && w2 == cw && h2 == ch) { atk = s; used.Add(p); break; }
+                }
+                if (walk == null) walk = idle;
+                if (atk == null) atk = idle;
+                var a = list.Find(x => x.id == id);
+                if (a == null) { a = new ArtLibrary.Anim { id = id }; list.Add(a); }
+                a.idleSheet = Rows4(idle); a.moveSheet = Rows4(walk); a.attackSheet = Rows4(atk);
+                a.idleCols = idle.Count; a.moveCols = walk.Count; a.attackCols = atk.Count;
+                a.idle = new List<Sprite>(idle); a.attack = new List<Sprite>(atk);
+                a.fps = 8f; a.crop = new Rect(0, 0, cw, ch); a.scale = BossTargetPx / Mathf.Max(1f, ch);
+                foreach (var s in used) if (AssetImporter.GetAtPath(s) != null) NormalMapBuilder.Make(s);
+            }
+        }
+
+        static List<Sprite> Rows4(List<Sprite> frames) { var l = new List<Sprite>(); for (int r = 0; r < 4; r++) l.AddRange(frames); return l; }
+
+        /// The boss sheet whose name is `prefix` (or starts with it; never the right-facing attack copy).
+        static string BossSheet(string folder, string prefix)
+        {
+            if (!Directory.Exists(folder)) return null;
+            string loose = null;
+            foreach (var f in Directory.GetFiles(folder, "*.png"))
+            {
+                string n = Path.GetFileNameWithoutExtension(f);
+                if (n == prefix) return f.Replace('\\', '/');
+                if (loose == null && n.StartsWith(prefix) && !n.EndsWith("Right")) loose = f.Replace('\\', '/');
+            }
+            return loose;
+        }
+
+        /// Slices one row of big frames (pixel-art import, ppu 16, pivot bottom-centre). `wantW` > 0 forces that frame width.
+        static List<Sprite> NinjaStrip(string path, int wantW, out int cw, out int ch)
+        {
+            cw = 0; ch = 0;
+            var imp = AssetImporter.GetAtPath(path) as TextureImporter;
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            if (imp == null || tex == null) return null;
+            int w = tex.width, h = tex.height;
+            int best = w;
+            if (wantW > 0 && w % wantW == 0) best = wantW;
+            else { float bd = float.MaxValue; for (int n = 1; n <= 64; n++) if (w % n == 0) { int c = w / n; float d = Mathf.Abs(c - h); if (d < bd) { bd = d; best = c; } } }
+            cw = best; ch = h;
+            int frames = Mathf.Max(1, w / cw);
+            bool dirty = imp.textureType != TextureImporterType.Sprite || imp.spriteImportMode != SpriteImportMode.Multiple || imp.filterMode != FilterMode.Point
+                         || imp.textureCompression != TextureImporterCompression.Uncompressed || !Mathf.Approximately(imp.spritePixelsPerUnit, 16f) || imp.mipmapEnabled;
+#pragma warning disable 0618
+            if (imp.spritesheet == null || imp.spritesheet.Length != frames || (imp.spritesheet.Length > 0 && !Mathf.Approximately(imp.spritesheet[0].rect.width, cw))) dirty = true;
+            if (dirty)
+            {
+                imp.textureType = TextureImporterType.Sprite; imp.spriteImportMode = SpriteImportMode.Multiple;
+                imp.filterMode = FilterMode.Point; imp.textureCompression = TextureImporterCompression.Uncompressed;
+                imp.spritePixelsPerUnit = 16f; imp.mipmapEnabled = false;
+                var metas = new List<SpriteMetaData>();
+                for (int c = 0; c < frames; c++)
+                    metas.Add(new SpriteMetaData { name = Path.GetFileNameWithoutExtension(path) + "_f" + c, rect = new Rect(c * cw, 0, cw, h),
+                                                    alignment = (int)SpriteAlignment.BottomCenter, pivot = new Vector2(0.5f, 0f) });
+                imp.spritesheet = metas.ToArray();
+                imp.SaveAndReimport();
+            }
+#pragma warning restore 0618
+            var list = new List<Sprite>();
+            foreach (var o in AssetDatabase.LoadAllAssetRepresentationsAtPath(path)) { var s = o as Sprite; if (s != null) list.Add(s); }
+            list.Sort((x, y) => x.rect.x.CompareTo(y.rect.x));
+            return list;
+        }
+
         static Sprite[,] NinjaCells(string path)
         {
             var imp = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -231,7 +338,9 @@ namespace HearthHollow.EditorTools
             FillAnims(lib.monsters, MonsterMap, missing);
             FillAnims(lib.classes, ClassMap, missing);
             FillNinja(lib.classes, NinjaClassMap, missing);
-            FillNinja(lib.monsters, NinjaMonsterMap, missing);   // Ninja Adventure characters (16px, sliced and re-ordered here)
+            FillNinja(lib.monsters, NinjaMonsterMap, missing);
+            if (lib.bosses == null) lib.bosses = new List<ArtLibrary.Anim>();
+            FillNinjaBosses(lib.bosses, NinjaBossMap, missing);   // Ninja Adventure bosses: big side-view strips   // Ninja Adventure characters (16px, sliced and re-ordered here)
             // ingredients / recipes: the packs have no food art — slots are listed so you can drop sprites in.
             EnsureIds(lib.ingredients, "ingredients");
             EnsureIds(lib.recipes, "recipes");

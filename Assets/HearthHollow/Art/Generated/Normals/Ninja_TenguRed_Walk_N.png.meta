@@ -1,0 +1,392 @@
+fileFormatVersion: 2
+guid: 70db8c2e7981243019a6a6b0a509ecd9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5084318764176096711
+    second: Ninja_TenguRed_Walk_N_0
+  - first:
+      213: 509703440617784241
+    second: Ninja_TenguRed_Walk_N_1
+  - first:
+      213: 2611140650802941318
+    second: Ninja_TenguRed_Walk_N_2
+  - first:
+      213: -7026011801289283931
+    second: Ninja_TenguRed_Walk_N_3
+  - first:
+      213: -3077975567318189877
+    second: Ninja_TenguRed_Walk_N_4
+  - first:
+      213: -3820441552504083572
+    second: Ninja_TenguRed_Walk_N_5
+  - first:
+      213: 8920047403557464085
+    second: Ninja_TenguRed_Walk_N_6
+  - first:
+      213: 8391787836108370684
+    second: Ninja_TenguRed_Walk_N_7
+  - first:
+      213: -3920406085193240044
+    second: Ninja_TenguRed_Walk_N_8
+  - first:
+      213: -903051888366071537
+    second: Ninja_TenguRed_Walk_N_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_0
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 24
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cdb1976af02f8640800000000000000
+      internalID: 5084318764176096711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_1
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 24
+        width: 55
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b341d62494d21700800000000000000
+      internalID: 509703440617784241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_2
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 22
+        width: 55
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68d01b56692ac3420800000000000000
+      internalID: 2611140650802941318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_3
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 23
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a6237cfd779e7e90800000000000000
+      internalID: -7026011801289283931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_4
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 24
+        width: 55
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc8faa28785d845d0800000000000000
+      internalID: -3077975567318189877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_5
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 24
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8b2ad946a01bfac0800000000000000
+      internalID: -3820441552504083572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_6
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 24
+        width: 55
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51820b46adf5acb70800000000000000
+      internalID: 8920047403557464085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_7
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 22
+        width: 55
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf2fea9439e957470800000000000000
+      internalID: 8391787836108370684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_8
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 23
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 412f6cccf6be799c0800000000000000
+      internalID: -3920406085193240044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_TenguRed_Walk_N_9
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 24
+        width: 55
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f01d1349717b773f0800000000000000
+      internalID: -903051888366071537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ninja_TenguRed_Walk_N_0: 5084318764176096711
+      Ninja_TenguRed_Walk_N_1: 509703440617784241
+      Ninja_TenguRed_Walk_N_2: 2611140650802941318
+      Ninja_TenguRed_Walk_N_3: -7026011801289283931
+      Ninja_TenguRed_Walk_N_4: -3077975567318189877
+      Ninja_TenguRed_Walk_N_5: -3820441552504083572
+      Ninja_TenguRed_Walk_N_6: 8920047403557464085
+      Ninja_TenguRed_Walk_N_7: 8391787836108370684
+      Ninja_TenguRed_Walk_N_8: -3920406085193240044
+      Ninja_TenguRed_Walk_N_9: -903051888366071537
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

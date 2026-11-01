@@ -145,7 +145,7 @@ namespace HearthHollow.Dungeon
         // ───────────────────────── input & timers ─────────────────────────
         void Update()
         {
-            if (_dc == null || !_dc.GameplayActive) { _move = Vector2.zero; return; }
+            if (_dc == null || !_dc.GameplayActive) { _move = Vector2.zero; ShowReticle(false); return; }
             float dt = Time.deltaTime;
             _attackCd -= dt; _dashCd -= dt; _skill1Cd -= dt; _skill2Cd -= dt; _ultCd -= dt;
             if (_dashT > 0f) _dashT -= dt;
@@ -159,6 +159,7 @@ namespace HearthHollow.Dungeon
             }
 
             _move = DungeonInput.Move;
+            ReticleUpdate();
             bool attacking = _attackT >= 0f;
             if (!attacking) TurnToInput();
 
@@ -557,6 +558,51 @@ namespace HearthHollow.Dungeon
             if (_ult != null && _ultCd > 0f) _ultCd = Mathf.Max(0f, _ultCd - _dc.Settings.ultChargePerHit);
         }
 
+        // ── aiming reticle (mouse): a ring + dot in the class colour, with a little light; the OS cursor hides meanwhile ──
+        GameObject _reticle; SpriteRenderer _retRing, _retDot; float _retSpin;
+
+        void ReticleUpdate()
+        {
+            Vector2 c;
+            bool show = DungeonInput.MouseAim && DungeonInput.Cursor(out c) && !DungeonInput.PointerOverUI();
+            if (!show) { ShowReticle(false); return; }
+            DungeonInput.Cursor(out c);
+            if (_reticle == null)
+            {
+                _reticle = new GameObject("Aim Reticle");
+                Color col = ClassColour(_class);
+                _retRing = new GameObject("Ring").AddComponent<SpriteRenderer>();
+                _retRing.transform.SetParent(_reticle.transform, false);
+                _retRing.sprite = DungeonFx.Ring; _retRing.color = new Color(col.r, col.g, col.b, 0.9f); _retRing.sortingOrder = 32000;
+                _retRing.transform.localScale = Vector3.one * 0.55f;
+                _retDot = new GameObject("Dot").AddComponent<SpriteRenderer>();
+                _retDot.transform.SetParent(_reticle.transform, false);
+                _retDot.sprite = DungeonFx.Circle; _retDot.color = Color.Lerp(col, Color.white, 0.35f); _retDot.sortingOrder = 32001;
+                _retDot.transform.localScale = Vector3.one * 0.12f;
+                DungeonFx.Flash(_reticle.transform.position, col, 1.3f, 0.5f, 0f, _reticle.transform);   // it lights the floor a little
+            }
+            _reticle.SetActive(true);
+            _reticle.transform.position = new Vector3(c.x, c.y, 0f);
+            _retSpin += Time.deltaTime * 60f;
+            _retRing.transform.localRotation = Quaternion.Euler(0, 0, _retSpin);
+            bool ready = _attackCd <= 0f;
+            _retRing.transform.localScale = Vector3.one * (ready ? 0.55f : 0.45f);   // tightens while the attack recovers
+            UnityEngine.Cursor.visible = false;
+        }
+
+        void ShowReticle(bool on)
+        {
+            if (_reticle != null && _reticle.activeSelf != on) _reticle.SetActive(on);
+            if (!on && !UnityEngine.Cursor.visible) UnityEngine.Cursor.visible = true;
+        }
+
+        /// A projectile's lifetime so it stops at the mouse cursor (`maxLife` without the mouse, or when the cursor is further).
+        float AimLife(float speed, float maxLife)
+        {
+            if (!DungeonInput.MouseAim) return maxLife;
+            return Mathf.Clamp(AimDistance(speed * maxLife) / Mathf.Max(0.1f, speed), 0.06f, maxLife);
+        }
+
         /// How far away the mouse cursor is (clamped), or `max` when not aiming with the mouse.
         float AimDistance(float max)
         {
@@ -765,7 +811,7 @@ namespace HearthHollow.Dungeon
                 }
                 case MoveKind.LeapSlam:
                 {
-                    Vector2 to = LeapTarget(m, dir);
+                    Vector2 to = DungeonInput.MouseAim ? WalkTo(Feet, dir, AimDistance(m.range)) : LeapTarget(m, dir);   // mouse: land on the cursor
                     float dur = 0.36f;
                     _anim.PlayAttack(dur + 0.15f);
                     _stepVel = (to - Feet) / dur; _stepT = dur;
@@ -811,7 +857,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.ArrowRain:
                 {
                     _anim.PlayAttack(0.3f);
-                    Vector2 at = Feet + dir * m.range;
+                    Vector2 at = Feet + dir * AimDistance(m.range);   // mouse: on the cursor
                     float tickMult = mult; var rnT = _curType; int rnP = _curPips;
                     MoveLight(m, at, 1f, m.duration + 0.3f);   // the storm lights the whole area
                     Color rainCol = MoveColour(m);
@@ -841,7 +887,7 @@ namespace HearthHollow.Dungeon
                     {
                         var p = Arrow(mult, Quaternion.Euler(0, 0, (i - (n - 1) * 0.5f) * sp) * dir, m.range, false, 1.5f);
                         if (p == null) continue;
-                        p.SetLife(0.7f);
+                        p.SetLife(AimLife(m.range, 0.7f));   // mouse: lands where you clicked
                         p.OnStop = at => EmberLand(em, at, burn);
                     }
                     return true;
@@ -852,7 +898,7 @@ namespace HearthHollow.Dungeon
                     var p = Arrow(mult, dir, m.range, false, 1.5f);
                     if (p == null) return true;
                     var fm = m; float fmult = mult; int flvl = _skillBoost; int fpips = _curPips;
-                    p.Tint(new Color(1f, 0.97f, 0.8f)).SetLife(0.6f);
+                    p.Tint(Color.Lerp(Color.white, MoveColour(m), 0.9f)).SetLife(AimLife(m.range, 0.6f));   // mouse: bursts where you clicked
                     p.OnStop = at => FlareBurst(fm, at, fmult, flvl, fpips);
                     return true;
                 }
@@ -892,7 +938,7 @@ namespace HearthHollow.Dungeon
                     var p = Projectile.Spawn(_dc, true, Body + dir * 0.4f, dir, m.range, mult, 0f, DungeonFx.Orb, MoveColour(m), false, 1.3f);
                     if (p == null) return true;
                     var pm = m; float pmult = mult; int plvl = _skillBoost;
-                    p.SetHit(HitType.Light, _curPips); p.SetLife(1.1f);
+                    p.SetHit(HitType.Light, _curPips); p.SetLife(AimLife(m.range, 1.1f));
                     p.OnStop = at => PrismBurst(pm, at, pmult, plvl);
                     return true;
                 }
@@ -994,7 +1040,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.HotPot:
                 {
                     _anim.PlayAttack(0.3f);
-                    Vector2 at = Feet + dir * m.range;
+                    Vector2 at = Feet + dir * AimDistance(m.range);   // mouse: on the cursor
                     var pot = DungeonFx.Spawn(DungeonFx.Circle, Body, new Color(0.55f, 0.4f, 0.3f, 1f), 0.35f, 0.7f, 0.7f);
                     pot.velocity = (at - Body) * 6f;   // FxSprite damps velocity by ~6/s, so this lands near the target
                     var potMove = m; float potMult = mult; var ptT = _curType; int ptP = _curPips; float potK = Reach(m, _skillBoost);   // Boost: a bigger pool
@@ -1559,6 +1605,8 @@ namespace HearthHollow.Dungeon
 
         void OnDestroy()
         {
+            UnityEngine.Cursor.visible = true;
+            if (_reticle != null) Destroy(_reticle);
             if (_dc != null && _dc.Session != null) _dc.Session.DungeonGuardMult = 1f;
         }
     }

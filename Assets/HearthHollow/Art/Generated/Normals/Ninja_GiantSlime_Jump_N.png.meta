@@ -1,0 +1,470 @@
+fileFormatVersion: 2
+guid: 52140a31d74a349329148874034040d4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8254475712271156501
+    second: Ninja_GiantSlime_Jump_N_0
+  - first:
+      213: -3922605231455248511
+    second: Ninja_GiantSlime_Jump_N_1
+  - first:
+      213: 5547795036873482980
+    second: Ninja_GiantSlime_Jump_N_2
+  - first:
+      213: 8369599569532938105
+    second: Ninja_GiantSlime_Jump_N_3
+  - first:
+      213: -4076723640443987519
+    second: Ninja_GiantSlime_Jump_N_4
+  - first:
+      213: 5325441872948735591
+    second: Ninja_GiantSlime_Jump_N_5
+  - first:
+      213: -6402987607876417689
+    second: Ninja_GiantSlime_Jump_N_6
+  - first:
+      213: 2468579948833579448
+    second: Ninja_GiantSlime_Jump_N_7
+  - first:
+      213: 8006653756294839631
+    second: Ninja_GiantSlime_Jump_N_8
+  - first:
+      213: 4406511890027775141
+    second: Ninja_GiantSlime_Jump_N_9
+  - first:
+      213: -5738000845912758325
+    second: Ninja_GiantSlime_Jump_N_10
+  - first:
+      213: 8033962082244811603
+    second: Ninja_GiantSlime_Jump_N_11
+  - first:
+      213: 7500722592158306405
+    second: Ninja_GiantSlime_Jump_N_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 5
+        width: 42
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 515030d1de9cd8270800000000000000
+      internalID: 8254475712271156501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_1
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 11
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18f5509235b1099c0800000000000000
+      internalID: -3922605231455248511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_2
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 23
+        width: 42
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e2e48b413abdfc40800000000000000
+      internalID: 5547795036873482980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_3
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 27
+        width: 40
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 977e546e67ac62470800000000000000
+      internalID: 8369599569532938105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_4
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 27
+        width: 46
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c916ebc2719c67c0800000000000000
+      internalID: -4076723640443987519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_5
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 24
+        width: 48
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76ea9150b25c7e940800000000000000
+      internalID: 5325441872948735591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_6
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 5
+        width: 32
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7674c43f1b40427a0800000000000000
+      internalID: -6402987607876417689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_7
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 5
+        width: 40
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b1a0e56268224220800000000000000
+      internalID: 2468579948833579448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_8
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 5
+        width: 40
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4d30879b295d1f60800000000000000
+      internalID: 8006653756294839631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_9
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 5
+        width: 42
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a404af9733172d30800000000000000
+      internalID: 4406511890027775141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_10
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 5
+        width: 42
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc7aa72c1a68e50b0800000000000000
+      internalID: -5738000845912758325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_11
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 5
+        width: 48
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35bd823b2fd5e7f60800000000000000
+      internalID: 8033962082244811603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ninja_GiantSlime_Jump_N_12
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 5
+        width: 61
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 560d750057be71860800000000000000
+      internalID: 7500722592158306405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ninja_GiantSlime_Jump_N_0: 8254475712271156501
+      Ninja_GiantSlime_Jump_N_1: -3922605231455248511
+      Ninja_GiantSlime_Jump_N_10: -5738000845912758325
+      Ninja_GiantSlime_Jump_N_11: 8033962082244811603
+      Ninja_GiantSlime_Jump_N_12: 7500722592158306405
+      Ninja_GiantSlime_Jump_N_2: 5547795036873482980
+      Ninja_GiantSlime_Jump_N_3: 8369599569532938105
+      Ninja_GiantSlime_Jump_N_4: -4076723640443987519
+      Ninja_GiantSlime_Jump_N_5: 5325441872948735591
+      Ninja_GiantSlime_Jump_N_6: -6402987607876417689
+      Ninja_GiantSlime_Jump_N_7: 2468579948833579448
+      Ninja_GiantSlime_Jump_N_8: 8006653756294839631
+      Ninja_GiantSlime_Jump_N_9: 4406511890027775141
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

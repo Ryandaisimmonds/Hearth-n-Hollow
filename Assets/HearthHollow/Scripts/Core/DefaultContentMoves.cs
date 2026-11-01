@@ -45,6 +45,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 20) { Ultimates20(c); c.contentVersion = 20; }  // ultimates + faster skills (DefaultContentUltimates.cs)
             if (c.contentVersion < 21) { Colours21(c); c.contentVersion = 21; }  // class colour themes + bigger, brighter basic moves (DefaultContentColours.cs)
             if (c.contentVersion < 22) { Colours22(c); c.contentVersion = 22; }  // stronger, more saturated class colours (DefaultContentColours.cs)
+            if (c.contentVersion < 23) { UltCooldown23(c); c.contentVersion = 23; }  // ultimates recharge twice as fast (DefaultContentUltimates.cs)
             return true;
         }
 
@@ -78,6 +79,7 @@ namespace HearthHollow.Core
             Ultimates20(c);
             Colours21(c);
             Colours22(c);
+            UltCooldown23(c);
             c.contentVersion = LatestContentVersion;
         }
 

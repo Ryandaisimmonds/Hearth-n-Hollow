@@ -54,6 +54,13 @@ namespace HearthHollow.Core
                         m.cooldown = UnityEngineFree.Round05(m.cooldown * 0.7f);
         }
 
+        /// contentVersion 23: ultimates every room or two — cooldown 45 s → 22.5 s (hits still charge it).
+        static void UltCooldown23(GameContent c)
+        {
+            if (c.moves == null) return;
+            foreach (var m in c.moves) if (m.slot == MoveSlot.Ultimate && m.cooldown > 30f) m.cooldown = 22.5f;
+        }
+
         static class UnityEngineFree
         {
             public static float Round05(float v) { return (float)System.Math.Round(v * 2.0, System.MidpointRounding.AwayFromZero) / 2f; }
