@@ -94,9 +94,9 @@ namespace HearthHollow.Town
             Vector2 at = Body + dir * 0.85f;
             DungeonFx.SlashAt(Body + dir * 0.35f, dir, new Color(Colour.r, Colour.g, Colour.b, 0.95f), 1.3f);
             DungeonFx.Flash(at, Colour, 2.6f, 1.1f, 0.3f);
-            foreach (var d in Object.FindObjectsByType<TownDummy>(FindObjectsSortMode.None))   // training dummies rock on their posts
+            foreach (var d in Object.FindObjectsByType<TownDummy>())   // training dummies rock on their posts
                 if (Vector2.Distance((Vector2)d.transform.position + new Vector2(0, 0.8f), at) < 1.2f) d.Hit(dir, true);
-            foreach (var c in Object.FindObjectsByType<TownCritter>(FindObjectsSortMode.None))
+            foreach (var c in Object.FindObjectsByType<TownCritter>())
             {
                 if (c == null || c.Flying) continue;
                 Vector2 to = c.Centre - at;

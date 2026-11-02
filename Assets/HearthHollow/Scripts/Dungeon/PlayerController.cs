@@ -1293,7 +1293,7 @@ namespace HearthHollow.Dungeon
             if (_sunLight != null) _sunLight.transform.position = Body + Aim * 2f;
             foreach (var e in Combat2D.EnemiesInCone(Body, Aim, m.range * (1f + 0.2f * _sunLvl), m.radius))
                 if (e != null && !e.Dead && _sunHit.Add(e)) e.ShieldHit(HitType.Light, 1 + _sunLvl);
-            foreach (var p in UnityEngine.Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None))
+            foreach (var p in UnityEngine.Object.FindObjectsByType<Projectile>())
             {
                 if (p == null || p.FromPlayer) continue;
                 Vector2 to = (Vector2)p.transform.position - Body;

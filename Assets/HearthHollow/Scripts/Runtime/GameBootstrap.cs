@@ -70,6 +70,10 @@ namespace HearthHollow.Runtime
             SaveNow();
         }
 
+        // a force-quit or crash never reaches OnApplicationQuit, so also save whenever the game is put in the background
+        void OnApplicationFocus(bool focused) { if (!focused) SaveNow(); }
+        void OnApplicationPause(bool paused) { if (paused) SaveNow(); }
+
         void OnDestroy()
         {
             if (Session != null) Session.ProfileSaveRequested -= SaveNow;

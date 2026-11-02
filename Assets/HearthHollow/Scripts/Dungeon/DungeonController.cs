@@ -209,7 +209,7 @@ namespace HearthHollow.Dungeon
         {
             var lgo = new GameObject("Player Light");
             lgo.transform.SetParent(Player.transform, false);
-            lgo.transform.localPosition = new Vector3(0, 0.5f, 0);
+            lgo.transform.localPosition = new Vector3(0, 0.2f, 0);   // the centre of your collision circle: it can't be pushed inside a wall or rock
             _playerLight = lgo.AddComponent<Light2D>();
             _playerLight.lightType = Light2D.LightType.Point;
             _playerLight.color = Color.Lerp(new Color(1f, 0.76f, 0.48f), PlayerController.ClassColour(Player.ClassId), Settings.carriedLightClassTint);   // firelight, tinted by your class colour
@@ -238,6 +238,7 @@ namespace HearthHollow.Dungeon
             _playerLight.pointLightInnerRadius = 0.3f;
             _playerLight.falloffIntensity = Settings.carriedLightFalloff;   // reaches far, fades gradually
             CastShadows(_playerLight);   // pillars throw shadows away from you
+            lgo.AddComponent<ShadowSafeLight>();   // never goes dark if its centre ends up inside a wall
             // walls pick the light up from further away than the ground
             var wgo = new GameObject("Wall Glow");
             wgo.transform.SetParent(lgo.transform, false);
@@ -283,6 +284,7 @@ namespace HearthHollow.Dungeon
             light.shadowsEnabled = true;
             light.shadowIntensity = intensity;
             light.shadowSoftness = softness;
+            if (light.GetComponent<ShadowSafeLight>() == null) light.gameObject.AddComponent<ShadowSafeLight>();   // stays lit if its centre ends up inside a wall or rock
         }
 
         /// Walls and pillars block light: a shadow caster shaped by the walls tilemap's collider. Shadows fall on the

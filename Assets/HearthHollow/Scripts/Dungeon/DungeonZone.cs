@@ -63,11 +63,17 @@ namespace HearthHollow.Dungeon
     /// Shared hit-finding helpers for player moves.
     public static class Combat2D
     {
+        // one shared buffer for the physics query (homing arrows and zones call this every frame); the result list is new each
+        // call, so callers can loop over it while hitting things that call this again
+        static readonly List<Collider2D> _hitBuf = new List<Collider2D>(64);
+
         public static List<EnemyController> EnemiesIn(Vector2 centre, float radius)
         {
             var list = new List<EnemyController>();
-            var hits = Physics2D.OverlapCircleAll(centre, radius);
-            foreach (var h in hits)
+            var filter = new ContactFilter2D { useTriggers = Physics2D.queriesHitTriggers };   // same colliders as OverlapCircleAll
+            _hitBuf.Clear();
+            Physics2D.OverlapCircle(centre, radius, filter, _hitBuf);
+            foreach (var h in _hitBuf)
             {
                 var e = h.GetComponentInParent<EnemyController>();
                 if (e != null && !e.Dead && !e.Spawning && !list.Contains(e)) list.Add(e);

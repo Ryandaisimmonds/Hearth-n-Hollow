@@ -172,13 +172,13 @@ namespace HearthHollow.EditorTools
 
         static Type FindType(string fullName)
         {
-            Assembly[] asms = AppDomain.CurrentDomain.GetAssemblies();
-            for (int i = 0; i < asms.Length; i++)
+            // the project's own assemblies first, then any Unity object type Unity knows about (no AppDomain scan: it can see unloaded assemblies)
+            foreach (var asm in new[] { "Assembly-CSharp", "Assembly-CSharp-Editor" })
             {
-                Type t = null;
-                try { t = asms[i].GetType(fullName, false); } catch (Exception) { }
+                Type t = Type.GetType(fullName + ", " + asm, false);
                 if (t != null) return t;
             }
+            foreach (var t in TypeCache.GetTypesDerivedFrom<UnityEngine.Object>()) if (t.FullName == fullName) return t;
             return null;
         }
 

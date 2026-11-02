@@ -20,7 +20,7 @@ namespace HearthHollow.Dungeon
             if (_frame == Time.frameCount) return;
             _frame = Time.frameCount;
             _points.Clear(); _global = 0f;
-            foreach (var l in Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None))
+            foreach (var l in Object.FindObjectsByType<Light2D>())
             {
                 if (l == null || !l.isActiveAndEnabled || l.intensity <= 0.001f) continue;
                 if (l.name.IndexOf("wall", System.StringComparison.OrdinalIgnoreCase) >= 0) continue;   // wall-only glows

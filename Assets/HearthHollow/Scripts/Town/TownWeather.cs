@@ -11,6 +11,7 @@ namespace HearthHollow.Town
 
         Kind _kind;
         Transform[] _bits;
+        SpriteRenderer[] _srs;   // cached (fireflies blink every frame)
         Vector2[] _vel;
         float[] _phase;
         Camera _cam;
@@ -21,7 +22,7 @@ namespace HearthHollow.Town
             _kind = kind; _cam = cam;
             if (kind == Kind.Calm) return;
             int n = kind == Kind.Rain ? 160 : 26;
-            _bits = new Transform[n]; _vel = new Vector2[n]; _phase = new float[n];
+            _bits = new Transform[n]; _srs = new SpriteRenderer[n]; _vel = new Vector2[n]; _phase = new float[n];
             float px = DungeonFx.Pixel.bounds.size.x;
             for (int i = 0; i < n; i++)
             {
@@ -45,7 +46,7 @@ namespace HearthHollow.Town
                 }
                 sr.sortingOrder = 30000;
                 go.transform.position = RandomInView();
-                _bits[i] = go.transform;
+                _bits[i] = go.transform; _srs[i] = sr;
             }
         }
 
@@ -75,7 +76,7 @@ namespace HearthHollow.Town
                 {
                     // fireflies drift lazily and blink
                     p += new Vector3(Mathf.Sin(t * 0.7f + _phase[i]) * 0.4f, Mathf.Cos(t * 0.5f + _phase[i] * 1.3f) * 0.3f, 0) * dt;
-                    var sr = b.GetComponent<SpriteRenderer>();
+                    var sr = _srs[i];
                     float a = 0.35f + 0.65f * Mathf.Max(0f, Mathf.Sin(t * 2.2f + _phase[i]));
                     sr.color = new Color(1f, 0.95f, 0.5f, a);
                     if (Mathf.Abs(p.x - c.x) > w + 1f || Mathf.Abs(p.y - c.y) > h + 1f) p = RandomInView();

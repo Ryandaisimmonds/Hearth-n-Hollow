@@ -106,7 +106,7 @@ namespace HearthHollow.Dungeon
             if (_uiFrame == Time.frameCount) return _uiOver;
             _uiFrame = Time.frameCount; _uiOver = false;
             var m = Mouse.current; if (m == null) return false;
-            if (_docs == null || _docs.Length == 0 || _docs[0] == null) _docs = Object.FindObjectsByType<UnityEngine.UIElements.UIDocument>(FindObjectsSortMode.None);
+            if (_docs == null || _docs.Length == 0 || _docs[0] == null) _docs = Object.FindObjectsByType<UnityEngine.UIElements.UIDocument>();
             Vector2 sp = m.position.ReadValue();
             foreach (var d in _docs)
             {

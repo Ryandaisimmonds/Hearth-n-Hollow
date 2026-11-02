@@ -312,12 +312,13 @@ namespace HearthHollow.Dungeon
 
         void LateUpdate() { if (_anim != null && _anim.Renderer != null) _anim.Renderer.sortingOrder = DungeonController.SortOrder(transform.position.y); }
 
-        static readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
+        static readonly System.Collections.Generic.List<RaycastHit2D> _hits = new System.Collections.Generic.List<RaycastHit2D>(8);
 
         bool HitsWall(Vector2 dir, float dist)
         {
             if (dir.sqrMagnitude < 0.0001f) return false;
-            int n = Physics2D.CircleCastNonAlloc((Vector2)transform.position + new Vector2(0, 0.22f), 0.25f, dir, _hits, dist);
+            var filter = new ContactFilter2D { useTriggers = Physics2D.queriesHitTriggers };   // same hits as the old CircleCastNonAlloc
+            int n = Physics2D.CircleCast((Vector2)transform.position + new Vector2(0, 0.22f), 0.25f, dir, filter, _hits, dist);
             for (int i = 0; i < n; i++)
             {
                 var c = _hits[i].collider;

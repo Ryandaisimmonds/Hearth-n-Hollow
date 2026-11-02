@@ -56,7 +56,7 @@ namespace HearthHollow.Town
             if (Player == null || Settings == null) return;
             var lgo = new GameObject("Player Light");
             lgo.transform.SetParent(Player.transform, false);
-            lgo.transform.localPosition = new Vector3(0, 0.5f, 0);
+            lgo.transform.localPosition = new Vector3(0, 0.2f, 0);   // the centre of your collision circle (see the dungeon's player light)
             var l = lgo.AddComponent<Light2D>();
             l.lightType = Light2D.LightType.Point;
             l.color = new Color(1f, 0.76f, 0.48f);
@@ -66,6 +66,7 @@ namespace HearthHollow.Town
             l.falloffIntensity = Settings.carriedLightFalloff;
             DungeonController.ApplyToAllLayers(l);
             DungeonController.CastShadows(l);
+            lgo.AddComponent<ShadowSafeLight>();   // never goes dark if its centre ends up inside a wall
             var w = WallGlow(l, Settings.wallGlowReach, Settings.wallGlow / Mathf.Max(0.01f, l.intensity));
             if (w != null) w.falloffIntensity = Settings.wallGlowFalloff;
         }

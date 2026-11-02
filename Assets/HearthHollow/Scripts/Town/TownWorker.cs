@@ -68,7 +68,7 @@ namespace HearthHollow.Town
                     DungeonFx.Embers(_work + new Vector2(0, -0.35f), new Color(1f, 0.6f, 0.25f), 2, 0.2f);
                     break;
                 case WorkKind.Spar:     // whack the nearest training dummy
-                    foreach (var d in Object.FindObjectsByType<TownDummy>(FindObjectsSortMode.None))
+                    foreach (var d in Object.FindObjectsByType<TownDummy>())
                         if (Vector2.Distance(d.transform.position, _work) < 0.8f) d.Hit(((Vector2)d.transform.position - (Vector2)transform.position).normalized, false);
                     break;
             }
