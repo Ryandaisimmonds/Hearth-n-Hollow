@@ -243,6 +243,7 @@ namespace HearthHollow.Dungeon
             var wgo = new GameObject("Wall Glow");
             wgo.transform.SetParent(lgo.transform, false);
             var wl = wgo.AddComponent<Light2D>();
+            wl.shadowsEnabled = false;   // walls glow, they aren't shadowed
             wl.lightType = Light2D.LightType.Point;
             wl.color = _playerLight.color;
             wl.intensity = Settings.wallGlow;

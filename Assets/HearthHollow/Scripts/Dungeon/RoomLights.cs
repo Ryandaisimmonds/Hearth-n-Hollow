@@ -261,7 +261,7 @@ namespace HearthHollow.Dungeon
             int o = DungeonController.SortOrder(transform.position.y) + 2;
             _flame = Flame(new Vector2(0, 0.42f), Fire, o, 1f);
             _core = Flame(new Vector2(0, 0.42f), Color.Lerp(Fire, Color.white, 0.6f), o + 1, 0.55f);
-            _light = DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.7f), Fire, 4.8f, 1.35f, 0f, transform);
+            _light = DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.42f), Fire, 4.8f, 1.35f, 0f, transform);   // at the flame, inside its own cell (0.7 reached into the wall behind)
             DungeonController.CastShadows(_light, 0.75f, 0.45f);
             // whoomph
             DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.6f), Fire, 6f, 2f, 0.5f);

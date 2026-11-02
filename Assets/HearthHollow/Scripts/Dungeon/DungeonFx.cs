@@ -198,6 +198,7 @@ namespace HearthHollow.Dungeon
             go.transform.position = pos;
             if (follow != null) go.transform.SetParent(follow, true);
             var l = go.AddComponent<Light2D>();
+            l.shadowsEnabled = false;   // URP turns shadows on by default; only CastShadows turns them on (a few big lights)
             l.lightType = Light2D.LightType.Point;
             l.color = new Color(color.r, color.g, color.b, 1f);
             l.intensity = intensity;
@@ -212,6 +213,7 @@ namespace HearthHollow.Dungeon
                 var w = new GameObject("fx_wallglow");
                 w.transform.SetParent(go.transform, false);
                 var wl = w.AddComponent<Light2D>();
+                wl.shadowsEnabled = false;
                 wl.lightType = Light2D.LightType.Point;
                 wl.color = l.color;
                 wl.intensity = intensity * 0.6f;

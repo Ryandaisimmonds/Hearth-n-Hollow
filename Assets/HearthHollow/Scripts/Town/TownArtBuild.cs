@@ -28,6 +28,7 @@ namespace HearthHollow.Town
             var g = new GameObject("Wall Glow");
             g.transform.SetParent(src.transform, false);
             var l = g.AddComponent<Light2D>();
+            l.shadowsEnabled = false;   // walls glow, they aren't shadowed
             l.lightType = Light2D.LightType.Point;
             l.color = src.color; l.intensity = src.intensity * k;
             l.pointLightOuterRadius = src.pointLightOuterRadius * reach;
