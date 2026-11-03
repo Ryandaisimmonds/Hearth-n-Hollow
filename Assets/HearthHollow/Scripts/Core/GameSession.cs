@@ -35,7 +35,9 @@ namespace HearthHollow.Core
             Cooking.UpgradeSave(Profile);           // meal pantry + packed cooked meals (saveVersion 6)
             Cooking.DropUnknownMeals(Content, Profile);   // meals whose recipe is gone
             if (Profile.saveVersion < 7) { ClassRework7(); UpgradeProgression(); }   // class rework: a fresh start for every class (GameSessionClasses.cs)
-            if (Profile.saveVersion < 8) Profile.saveVersion = 8;   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
+            if (Profile.saveVersion < 8) Profile.saveVersion = 8;
+            if (Profile.knownElements == null) Profile.knownElements = new System.Collections.Generic.List<KnownElement>();
+            if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2 (ticket 07): element discovery starts empty   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
             _rng = new Rng(seed);

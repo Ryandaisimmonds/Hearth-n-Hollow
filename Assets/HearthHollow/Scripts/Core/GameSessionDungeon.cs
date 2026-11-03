@@ -39,6 +39,16 @@ namespace HearthHollow.Core
             return DungeonRules.PlayerHitDamage(T, Stats, mult, _rng, out crit);
         }
 
+        /// Element discovery: learn how <paramref name="e"/> works on this kind of monster (a hit, a touch, or a story beat).
+        /// True if it's new. Saved straight away so a quit mid-run keeps it.
+        public bool DiscoverElement(string monsterId, Element e)
+        {
+            if (!Discovery.Learn(Profile, monsterId, e)) return false;
+            if (ProfileSaveRequested != null) ProfileSaveRequested();
+            return true;
+        }
+        public bool KnowsElement(string monsterId, Element e) { return Discovery.Knows(Profile, monsterId, e); }
+
         /// The run's infused element (None outside a run).
         public Element RunElement { get { return Run != null ? Run.element : Element.None; } }
 

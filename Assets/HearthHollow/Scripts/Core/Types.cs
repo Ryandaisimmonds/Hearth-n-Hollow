@@ -440,6 +440,7 @@ namespace HearthHollow.Core
         public int campDay;        // day the saved camp belongs to
         public int saveVersion;    // 2 = tray meals only reserve ingredients; they're spent at set-out · 3 = skill trees + loadouts · 4 = bag tiers
         public List<string> keyItems = new List<string>();   // story key items found (kept forever)
+        public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
         public List<string> equippedTrinkets = new List<string>();  // worn, shared by every class (max = Gear.TrinketSlots)

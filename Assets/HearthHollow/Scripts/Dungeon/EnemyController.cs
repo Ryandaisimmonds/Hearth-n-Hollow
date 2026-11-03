@@ -376,6 +376,7 @@ namespace HearthHollow.Dungeon
             Shadow = true;
             DisplayName = "Shadow " + DisplayName;
             if (!_weak.Contains(Element.Light)) _weak.Add(Element.Light);   // shadows are always weak to Light
+            _elShown = -1;   // redraw the icons with the Light diamond
             name = "Shadow " + name;
         }
 
@@ -453,8 +454,77 @@ namespace HearthHollow.Dungeon
         }
 
         /// This monster was touched by an element (a hit, Flare's Light, a brazier's fire), damage or not.
-        /// Ticket 07 hangs discovery here: touching a weakness or resistance reveals it.
-        public void ElementContact(Element element) { }
+        /// Discovery (ticket 07): you now know how that element works on every monster of this kind.
+        public void ElementContact(Element element)
+        {
+            if (element == Element.None || Dead || _dc == null || Stats == null) return;
+            if (Shadow && element == Element.Light) return;   // shadows are always weak to Light: a rule, not a fact about this kind
+            if (!_dc.Session.DiscoverElement(Stats.monsterId, element)) return;
+            DiscoveryVersion++;   // every monster of this kind redraws its icons
+            bool weak = _weak.Contains(element), res = _resist.Contains(element);
+            if (weak || res)
+                DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f),
+                    Elements.Emoji(element) + (weak ? " Weakness found!" : " Resistance found"), "dnum--info");
+        }
+
+        // ───── element icons over the head: a diamond per known weakness, a faded square per known resistance ─────
+        public static int DiscoveryVersion;
+        readonly List<SpriteRenderer> _elIcons = new List<SpriteRenderer>();
+        int _elShown = -1;
+
+        public static Color ElementColour(Element e)
+        {
+            switch (e)
+            {
+                case Element.Fire: return new Color(1f, 0.45f, 0.12f);
+                case Element.Frost: return new Color(0.6f, 0.9f, 1f);
+                case Element.Nature: return new Color(0.35f, 0.9f, 0.3f);
+                case Element.Water: return new Color(0.25f, 0.5f, 1f);
+                case Element.Light: return new Color(1f, 0.95f, 0.55f);
+                default: return Color.white;
+            }
+        }
+
+        void BuildElementIcons()
+        {
+            foreach (var sr in _elIcons) if (sr != null) Destroy(sr.gameObject);
+            _elIcons.Clear();
+            _elShown = DiscoveryVersion;
+            if (_anim == null) return;
+            var p = _dc.Session.Profile;
+            var weak = Discovery.KnownOf(p, Stats.monsterId, _weak);
+            if (Shadow && !weak.Contains(Element.Light)) weak.Add(Element.Light);
+            var res = Discovery.KnownOf(p, Stats.monsterId, _resist);
+            int n = weak.Count + res.Count;
+            if (n == 0) return;
+            float y = _anim.FigureHeight + 0.34f, s = 0.11f, gap = 0.07f, w = n * s + (n - 1) * gap, x = -w * 0.5f + s * 0.5f;
+            foreach (var e in weak) { _elIcons.Add(ElementIcon(new Vector3(x, y, 0), s, 45f, ElementColour(e))); x += s + gap; }
+            foreach (var e in res) { var c = ElementColour(e); c.a = 0.45f; _elIcons.Add(ElementIcon(new Vector3(x, y, 0), s * 0.8f, 0f, c)); x += s + gap; }
+        }
+
+        SpriteRenderer ElementIcon(Vector3 local, float size, float rot, Color c)
+        {
+            var g = new GameObject("Element"); g.transform.SetParent(transform, false);
+            g.transform.localPosition = local; g.transform.localRotation = Quaternion.Euler(0, 0, rot);
+            var b = DungeonFx.Pixel.bounds.size;
+            g.transform.localScale = new Vector3(size / b.x, size / b.y, 1f);
+            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel; sr.color = c;
+            return sr;
+        }
+
+        void UpdateElementIcons()
+        {
+            if (_elShown != DiscoveryVersion) BuildElementIcons();
+            if (_elIcons.Count == 0) return;
+            float a = Shadow ? Mathf.Lerp(0.15f, 1f, Lit01) : 1f;
+            int order = DungeonController.SortOrder(transform.position.y) + 3;
+            foreach (var sr in _elIcons)
+            {
+                if (sr == null) continue;
+                var c = sr.color; c.a = (sr.transform.localRotation.eulerAngles.z > 1f ? 1f : 0.45f) * a;
+                sr.color = c; sr.sortingOrder = order;
+            }
+        }
 
         // ───────────────────────── statuses (player moves) ─────────────────────────
         public void Stun(float seconds)
@@ -528,6 +598,7 @@ namespace HearthHollow.Dungeon
 
         void UpdateHpBar()
         {
+            UpdateElementIcons();
             if (_hpFill == null) return;
             bool show = Hp < Stats.maxHp;
             _hpBg.enabled = _hpFill.enabled = show;
