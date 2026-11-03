@@ -63,7 +63,7 @@ namespace HearthHollow.UI
             _weather.text = ev == CampEvent.Storm ? "🌧️ Stormy" : ev == CampEvent.HarvestMoon ? "🌕 Harvest moon" : ev == CampEvent.Merchant ? "🛒 Market day" : ev == CampEvent.Armourer ? "🛡️ Armourer in town" : ev == CampEvent.Forager ? "🧺 Forager's basket" : "☀️ Calm";
             var cls = C.Class(p.selectedClass);
             var cp = p.Progress(p.selectedClass);
-            _class.text = (cls != null ? cls.emoji + " " + cls.name : p.selectedClass.ToString()) + "  ·  Lv " + cp.level;
+            _class.text = cls != null ? cls.emoji + " " + cls.name : p.selectedClass.ToString();
             var st = S.Stats;
             _stats.text = st == null ? "" : "❤️ " + st.maxHp + "   🗡️ " + UIKit.Num(st.damage) + "   🛡️ " + UIKit.Pct(st.armourPct) + "   💥 " + UIKit.Pct(st.critChance);
         }

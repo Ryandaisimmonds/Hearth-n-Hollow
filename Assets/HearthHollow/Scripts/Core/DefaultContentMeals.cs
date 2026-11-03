@@ -175,10 +175,6 @@ namespace HearthHollow.Core
             if (old.Contains(Sig("armour", c.armourTiers)) && c.armourTiers.Count == fresh.armourTiers.Count)
                 for (int i = 0; i < c.armourTiers.Count; i++) c.armourTiers[i].value = fresh.armourTiers[i].value;
 
-            var t = c.tuning; var ft = fresh.tuning;
-            if (t.hpPerLevelEarly == 2) t.hpPerLevelEarly = ft.hpPerLevelEarly;
-            if (t.hpPerLevel == 1f) t.hpPerLevel = ft.hpPerLevel;
-            if (System.Math.Abs(t.damagePerLevel - 0.01f) < 0.0001f) t.damagePerLevel = ft.damagePerLevel;
             c.contentVersion = 3;
         }
     }

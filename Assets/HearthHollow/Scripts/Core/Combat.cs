@@ -46,8 +46,6 @@ namespace HearthHollow.Core
         public static bool CanUseSkill(GameContent c, Profile p, RunState run)
         {
             if (run == null || p == null) return false;
-            ClassProgress cp = p.Progress(run.classId);
-            if (cp.level < c.tuning.skillUnlockLevel) return false;
             int cd = run.fight != null ? run.fight.skillCooldown : run.skillCooldown;
             return cd <= 0;
         }

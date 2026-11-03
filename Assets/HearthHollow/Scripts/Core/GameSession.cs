@@ -35,6 +35,7 @@ namespace HearthHollow.Core
             Cooking.UpgradeSave(Profile);           // meal pantry + packed cooked meals (saveVersion 6)
             Cooking.DropUnknownMeals(Content, Profile);   // meals whose recipe is gone
             if (Profile.saveVersion < 7) { ClassRework7(); UpgradeProgression(); }   // class rework: a fresh start for every class (GameSessionClasses.cs)
+            if (Profile.saveVersion < 8) Profile.saveVersion = 8;   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
             _rng = new Rng(seed);
@@ -494,13 +495,10 @@ namespace HearthHollow.Core
             Run.outcome = outcome;
             Recompute();  // stats including meals (xpMult) for settlement
             Profile.packed.Clear(); Profile.tray.Clear();   // the tray was eaten at set-out (kept until now so quitting mid-run keeps it)
-            int levelBefore = Profile.Progress(Run.classId).level;
             var joinedBefore = JoinedNow();
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
             if (outcome == RunOutcome.Died) ArcEvent(ArcTrigger.FirstDeath);   // opening arc: Wren feeds you, the kitchen opens
-            if (LastSummary != null && LastSummary.levelAfter > levelBefore)
-                Emit(new GameEvent(GameEventType.LevelUp, LastSummary.levelAfter, true, "Level " + LastSummary.levelAfter + "!"));
             Phase = Phase.RunEnd;
             Touch(true);
         }

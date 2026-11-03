@@ -63,7 +63,6 @@ namespace HearthHollow.UI
                 row.Add(Art.IconButton("pantry", "🥕", DevIngredientCount + " of every ingredient", () => S.DevFillPantry(DevIngredientCount), "btn--primary", "settings__btn"));
                 dev.Add(row);
                 var row2 = UIKit.E("settings__row");
-                row2.Add(Art.IconButton("xp", "⭐", "+10 levels (current class)", () => S.DevAddLevels(S.Run != null ? S.Run.classId : S.Profile.selectedClass, 10), "btn--primary", "settings__btn"));
                 row2.Add(Art.IconButton("trophy", "👑", "Max everything", () => S.DevMaxEverything(), "btn--primary", "settings__btn"));   // all classes, skills, gear, kitchen + a Prime tray
                 dev.Add(row2);
                 var row3 = UIKit.E("settings__row");

@@ -607,8 +607,7 @@ namespace HearthHollow.Dungeon
             if (m == null)
             {
                 if (key == "L")
-                    DungeonHud.Number(Body + Vector2.up * 0.8f, S.Profile.Progress(_class).level < T.secondSkillLevel
-                        ? "Skill 2 opens at Lv " + T.secondSkillLevel : "No second skill equipped", "dnum--info");
+                    DungeonHud.Number(Body + Vector2.up * 0.8f, "No second skill equipped", "dnum--info");
                 return;
             }
             if (cd > 0f) return;

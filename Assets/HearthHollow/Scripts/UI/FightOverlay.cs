@@ -179,9 +179,7 @@ namespace HearthHollow.UI
                 _skillIconKey = sKey;
                 Art.Set(_skillIconHolder, Art.Icon(Art.SkillIconId(skill), skill != null ? skill.emoji : "✨", "ico", "btn-big__icon"));
             }
-            bool unlocked = cp.level >= t.skillUnlockLevel;
-            if (!unlocked) _skillSub.text = "unlocks at level " + t.skillUnlockLevel;
-            else if (f.skillCooldown > 0) _skillSub.text = "⏳ ready in " + f.skillCooldown + " turn" + (f.skillCooldown == 1 ? "" : "s");
+            if (f.skillCooldown > 0) _skillSub.text = "⏳ ready in " + f.skillCooldown + " turn" + (f.skillCooldown == 1 ? "" : "s");
             else _skillSub.text = skill != null ? skill.description : "Ready!";
             bool skillReady = live && S.CanUseSkill();
             _skill.SetEnabled(skillReady);

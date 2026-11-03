@@ -83,19 +83,8 @@ namespace HearthHollow.UI
                 if (!string.IsNullOrEmpty(sdesc)) skillText.Add(UIKit.L(sdesc, "muted", "small"));
                 skillHead.Add(skillText);
                 skill.Add(skillHead);
-                bool skillOpen = cp.level >= t.skillUnlockLevel;
-                skill.Add(skillOpen ? (VisualElement)UIKit.L("Unlocked", "small", "class-card__unlocked")
-                                    : Art.IconText("lock", "🔒", "Unlocks at level " + t.skillUnlockLevel, "small", "class-card__locked"));
                 card.Add(skill);
 
-                int xpNext = Economy.XpToNext(t, cp.level);
-                var lvl = UIKit.E("class-card__level");
-                lvl.Add(UIKit.L("Level " + cp.level + (cp.level >= t.levelCap ? " (max)" : ""), "small"));
-                var bar = new Bar("bar--xp");
-                bar.Set(cp.level >= t.levelCap ? 1 : cp.xp, cp.level >= t.levelCap ? 1 : xpNext,
-                        cp.level >= t.levelCap ? "MAX" : cp.xp + " / " + xpNext + " XP");
-                lvl.Add(bar);
-                card.Add(lvl);
 
                 // The whole card is the select button (labels/bars ignore picking so clicks land on the card).
                 foreach (var child in card.Children()) SetIgnore(child);

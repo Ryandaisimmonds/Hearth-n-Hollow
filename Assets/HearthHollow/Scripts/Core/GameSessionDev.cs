@@ -21,17 +21,6 @@ namespace HearthHollow.Core
             Touch(true);
         }
 
-        /// Dev: give a class <paramref name="levels"/> levels (capped), so the skill tree can be tried out.
-        public void DevAddLevels(ClassId cls, int levels)
-        {
-            var cp = Profile.Progress(cls);
-            int before = cp.level;
-            cp.level = System.Math.Min(T.levelCap, cp.level + levels);
-            cp.xp = 0;
-            Info("Dev: " + cls + " level " + before + " → " + cp.level);
-            Touch(true);
-        }
-
         /// Dev: mark the current story chapter cleared (and hand over any key item it gives), to jump ahead in the story.
         public void DevClearChapter()
         {
@@ -149,15 +138,6 @@ namespace HearthHollow.Core
             foreach (var cd in Content.classes)
             {
                 var cp = Profile.Progress(cd.id);
-                cp.level = T.levelCap; cp.xp = 0;
-                // skill tree: buy every rank the points allow, top rows first so later nodes unlock
-                var nodes = Content.skillNodes.FindAll(n => n.classId == cd.id);
-                nodes.Sort((x, y) => x.row != y.row ? x.row.CompareTo(y.row) : x.branch.CompareTo(y.branch));
-                for (bool bought = true; bought;)
-                {
-                    bought = false;
-                    foreach (var n in nodes) if (Progression.Buy(Content, Profile, cd.id, n.id)) bought = true;
-                }
                 Progression.EnsureLoadout(Content, Profile, cd.id);
                 // gear: every track to its top tier
                 foreach (var slot in tracks) while (Gear.Grant(Content, Profile, slot, cd.id) != null) { }

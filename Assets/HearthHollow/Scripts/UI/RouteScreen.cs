@@ -374,7 +374,7 @@ namespace HearthHollow.UI
             var who = UIKit.E("expedition__who");
             who.Add(Art.Framed(Art.AnimFrame(Art.ClassAnim(p.selectedClass), cls != null ? cls.emoji : "🧑‍🍳", "expedition__who-pic"), "expedition__who-frame"));
             var whoText = UIKit.E("expedition__who-text");
-            whoText.Add(UIKit.L((cls != null ? cls.name : p.selectedClass.ToString()) + " · Lv " + cp.level, "expedition__who-name"));
+            whoText.Add(UIKit.L(cls != null ? cls.name : p.selectedClass.ToString(), "expedition__who-name"));
             var statRow = UIKit.E("expedition__stats");
             if (st != null)
             {

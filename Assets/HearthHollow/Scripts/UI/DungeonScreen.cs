@@ -181,7 +181,7 @@ namespace HearthHollow.UI
             var cp = S.Profile.Progress(run.classId);
             int max = S.Stats != null ? S.Stats.maxHp : run.hp;
             _portrait.SetAnim(Art.ClassAnim(run.classId), cls != null ? cls.emoji : "🧑‍🍳");
-            _name.text = (cls != null ? cls.name : run.classId.ToString()) + " · Lv " + cp.level;
+            _name.text = cls != null ? cls.name : run.classId.ToString();
             _hp.Set(run.hp, max, run.hp + " / " + max);
             _hp.SetLow(max > 0 && run.hp < max * 0.3f);
 
@@ -216,9 +216,8 @@ namespace HearthHollow.UI
                 _atkKey.text = DungeonInput.AttackKey;
                 UIKit.Show(_ult, mu != null);
                 _skillKey.text = DungeonInput.Skill1Key; _ultKey.text = DungeonInput.UltKey;
-                bool open2 = S.Run != null && S.Profile.Progress(S.Run.classId).level >= C.tuning.secondSkillLevel;
-                _skill2Key.text = m2 != null ? DungeonInput.Skill2Key : open2 ? DungeonInput.Skill2Key + " —" : "Lv " + C.tuning.secondSkillLevel;
-                if (m2 == null) _skill2.tooltip = open2 ? "Empty — pick a second skill in the Skills page at camp" : "Opens at level " + C.tuning.secondSkillLevel;
+                _skill2Key.text = m2 != null ? DungeonInput.Skill2Key : DungeonInput.Skill2Key + " —";
+                if (m2 == null) _skill2.tooltip = "Empty — pick a second skill in the Skills page at camp";
             }
             Cool(_skill, _skillFill, m1 != null, DungeonHud.Skill01);
             Cool(_skill2, _skill2Fill, m2 != null, DungeonHud.Skill2_01);

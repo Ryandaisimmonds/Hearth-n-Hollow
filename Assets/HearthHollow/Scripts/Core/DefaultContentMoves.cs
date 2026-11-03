@@ -56,13 +56,6 @@ namespace HearthHollow.Core
             if (c.moves == null) c.moves = new List<MoveData>();
             if (c.skillNodes == null) c.skillNodes = new List<SkillNodeData>();
             if (c.moves.Count == 0 && c.skillNodes.Count == 0) BuildMovesAndTrees(c);
-            // only replace numbers still at the old defaults — anything you customised in the asset is kept
-            var fresh = new TuningData(); var t = c.tuning;
-            if (t.levelCap == 10) t.levelCap = fresh.levelCap;
-            if (t.hpPerLevel == 2f) { t.hpPerLevelEarly = 2; t.hpPerLevel = 1f; }   // the v2 values; Upgrade3 then lowers them
-            else t.hpPerLevelEarly = (int)t.hpPerLevel;
-            if (t.skillUnlockLevel == 2) t.skillUnlockLevel = fresh.skillUnlockLevel;
-            if (t.xpPerLevel == 20) t.xpPerLevel = fresh.xpPerLevel;
             c.contentVersion = 2;
         }
 

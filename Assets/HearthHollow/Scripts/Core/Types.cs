@@ -278,15 +278,7 @@ namespace HearthHollow.Core
         public int monsterReqMin = 0, monsterReqMax = 3, eliteReqMin = 2, eliteReqMax = 6;
         public int roomCoinBonus = 5, roomXpBonus = 3;
 
-        // Levels are deliberately small: meals are the main source of power (Oct 2026).
-        public int levelCap = 50, skillUnlockLevel = 1;
-        public float hpPerLevel = 0.2f;                   // after earlyLevels: 0.2 = +1 max HP every 5 levels
-        public int hpPerLevelEarly = 1, earlyLevels = 10;   // levels 2..earlyLevels give hpPerLevelEarly, later ones hpPerLevel
-        public int xpBase = 30, xpPerLevel = 10;          // xp to next = xpBase + level*xpPerLevel
-        public float damagePerLevel = 0.005f;             // +0.5% damage per level above 1
-        public int secondSkillLevel = 5;                  // the U skill slot opens at this level
-        public int borrowLevel = 20;                      // a class this level lends its skills to the others (U slot)
-        public int skillPointsPerLevel = 1;
+        // (Levels, XP and skill points were cut in Design v2, ticket 04: meals are the power.)
 
         public float armourPerPoint = 0.05f, armourCap = 0.60f;
         public float baseCritChance = 0.10f, critMult = 2f;
@@ -417,10 +409,9 @@ namespace HearthHollow.Core
 
     [Serializable] public class ClassProgress
     {
-        public ClassId classId; public int level = 1; public int xp;
+        public ClassId classId;   // (level, xp and the skill tree were cut in Design v2, ticket 04)
         public int weaponTier; public int armourTier;   // indexes into content tiers (armour = Body)
         public int headTier, bootsTier;                 // Workshop head / boots tiers (saveVersion 5; 0 for old saves)
-        public List<NodeRank> tree = new List<NodeRank>();   // skill points spent (respec = clear)
         public string loadAttack, loadSkill1, loadSkill2, loadDash;   // equipped move ids (Skill2 may be borrowed)
     }
 
@@ -532,7 +523,6 @@ namespace HearthHollow.Core
         public RunOutcome outcome; public string routeId; public ClassId classId;
         public int roomsCleared, kills;
         public int coinsFromKills, clearCoins, totalCoins;
-        public int xpGained; public int levelBefore, levelAfter;
         public List<ItemStack> goods = new List<ItemStack>();
         public List<string> unlockedRouteIds = new List<string>();
         public int floorReached, floorsTotal;   // real-time dungeon (0 for old grid runs)

@@ -412,7 +412,7 @@ namespace HearthHollow.Town
             string name = cd != null ? cd.name : id.ToString();
             var pages = new List<string>
             {
-                (cd != null ? cd.description : "") + "\n\nLevel " + cp.level + ". Want me to take the next trip" + (cur != null ? " while the " + cur.name + " has a rest?" : "?")
+                (cd != null ? cd.description : "") + "\n\nWant me to take the next trip" + (cur != null ? " while the " + cur.name + " has a rest?" : "?")
             };
             _ui.OpenDialogue(name + (cd != null ? " · " + cd.role : ""), cd != null ? cd.emoji : "🧑", pages, "Swap to the " + name, () =>
             {

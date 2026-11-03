@@ -59,7 +59,6 @@ namespace HearthHollow.UI
             stats.Add(Big("trophy", "🚪", s.roomsCleared.ToString(), "rooms"));
             stats.Add(Big("skull", "💀", s.kills.ToString(), "kills"));
             stats.Add(Big("coin", "🪙", "+" + s.totalCoins, "coins"));
-            stats.Add(Big("xp", "✨", "+" + s.xpGained, "XP"));
             _body.Add(stats);
 
             // story: key item found + the chapter's closing text (first clear only), then what's next
@@ -99,24 +98,6 @@ namespace HearthHollow.UI
             coins.Add(Line("Total banked", "🪙 " + s.totalCoins, "summary__line--total"));
             _body.Add(coins);
 
-            var xp = UIKit.E("summary__section");
-            xp.Add(UIKit.L("Experience", "subhead"));
-            xp.Add(Line("XP gained", "✨ " + s.xpGained + (s.outcome == RunOutcome.Died ? " (halved — limped home)" : "")));
-            if (s.levelAfter > s.levelBefore)
-            {
-                Sprite lvl = ArtLibrary.GetIcon("text_levelup");
-                if (lvl != null) xp.Add(Art.Pic(lvl, "", "summary__levelup-image"));
-                xp.Add(Line("Level", "⭐ " + s.levelBefore + " → " + s.levelAfter + "  Level up!", "summary__line--levelup"));
-            }
-            else
-                xp.Add(Line("Level", s.levelAfter.ToString()));
-            var cp = S.Profile.Progress(s.classId);
-            int next = Economy.XpToNext(C.tuning, cp.level);
-            var bar = new Bar("bar--xp");
-            bool maxed = cp.level >= C.tuning.levelCap;
-            bar.Set(maxed ? 1 : cp.xp, maxed ? 1 : next, maxed ? "MAX LEVEL" : cp.xp + " / " + next + " XP");
-            xp.Add(bar);
-            _body.Add(xp);
 
             var goods = UIKit.E("summary__section");
             goods.Add(UIKit.L("Goods brought home", "subhead"));

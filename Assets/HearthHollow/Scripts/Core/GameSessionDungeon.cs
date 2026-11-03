@@ -41,7 +41,7 @@ namespace HearthHollow.Core
 
         public bool DungeonSkillUnlocked
         {
-            get { return Run != null && Profile.Progress(Run.classId).level >= T.skillUnlockLevel; }
+            get { return Run != null; }
         }
 
         // ───────────── player ─────────────

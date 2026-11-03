@@ -62,15 +62,17 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void XpToNext_GrowsWithLevel()
+        public void Loadout_NoLevels_EveryOwnSkillCanGoInEitherSkillSlot()
         {
-            int prev = 0;
-            for (int lv = 1; lv < _c.tuning.levelCap; lv++)
+            var s = new GameSession(_c, null, 1);
+            foreach (var cd in _c.classes)
             {
-                int need = Economy.XpToNext(_c.tuning, lv);
-                Assert.Greater(need, 0);
-                Assert.GreaterOrEqual(need, prev, "level " + lv + " needs less XP than the one before");
-                prev = need;
+                Assert.IsNotNull(s.Loadout(cd.id)[0], cd.id + " has no attack equipped");
+                foreach (var m in s.SlotChoices(cd.id, LoadSlot.Skill2))
+                {
+                    if (m.owner != cd.id || m.id == s.Profile.Progress(cd.id).loadSkill1) continue;
+                    Assert.IsNull(s.EquipBlock(cd.id, LoadSlot.Skill2, m.id), cd.id + " can't put " + m.id + " in the L slot");
+                }
             }
         }
 
@@ -142,9 +144,6 @@ namespace HearthHollow.Tests
             foreach (var cd in _c.classes)
             {
                 Assert.IsTrue(s.ClassJoined(cd.id), cd.id + " hasn't joined");
-                var cp = s.Profile.Progress(cd.id);
-                Assert.AreEqual(_c.tuning.levelCap, cp.level);
-                Assert.LessOrEqual(s.SkillPointsFree(cd.id), 1, cd.id + " still has points to spend");
                 foreach (var slot in new[] { GearSlot.Weapon, GearSlot.Body, GearSlot.Head, GearSlot.Boots })
                     Assert.IsNull(Gear.Next(_c, s.Profile, slot, cd.id), cd.id + " " + slot + " isn't maxed");
             }

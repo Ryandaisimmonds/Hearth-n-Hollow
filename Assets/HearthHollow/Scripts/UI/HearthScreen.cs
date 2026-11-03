@@ -280,9 +280,7 @@ namespace HearthHollow.UI
             _coins.text = p.coins + " coins";
             UIKit.Show(_backToTown, Ui.TownOpen);
             ApplyStationMode(Ui.TownOpen);
-            int free = S.SkillPointsFree(p.selectedClass);
-            _skillsBadge.text = free > 0 ? free.ToString() : "";
-            UIKit.Show(_skillsBadge, free > 0);
+            UIKit.Show(_skillsBadge, false);   // no skill points any more (Design v2)
 
             RefreshEventChip();
             RefreshWho();
@@ -881,14 +879,9 @@ namespace HearthHollow.UI
             var t = C.tuning;
             _portrait.SetAnim(Art.ClassAnim(p.selectedClass), cls != null ? cls.emoji : "🧑‍🍳");
             _className.text = cls != null ? cls.name : p.selectedClass.ToString();
-            _classSub.text = "Level " + cp.level + (cls != null && !string.IsNullOrEmpty(cls.role) ? " · " + cls.role : "")
+            _classSub.text = (cls != null && !string.IsNullOrEmpty(cls.role) ? cls.role : "")
                 + (cls != null && cls.favouriteBonus > 0f ? " · loves " + StationLabels[(int)cls.favouriteStation] : "");
             _xpHolder.Clear();
-            int xpNext = Economy.XpToNext(t, cp.level);
-            bool maxed = cp.level >= t.levelCap;
-            var bar = new Bar("bar--xp");
-            bar.Set(maxed ? 1 : cp.xp, maxed ? 1 : xpNext, maxed ? "MAX LEVEL" : cp.xp + " / " + xpNext + " XP");
-            _xpHolder.Add(bar);
             RefreshStats();
             RefreshLoadout();
             RefreshEquipment();
@@ -940,9 +933,9 @@ namespace HearthHollow.UI
                 var card = UIKit.E("who-move", "clickable");
                 card.EnableInClassList("who-move--empty", m == null);
                 card.Add(UIKit.L(keys[i], "who-move__key"));
-                card.Add(UIKit.L(m != null ? m.emoji : (i == 2 && p.Progress(p.selectedClass).level < C.tuning.secondSkillLevel ? "🔒" : "＋"), "who-move__emoji"));
+                card.Add(UIKit.L(m != null ? m.emoji : "＋", "who-move__emoji"));
                 var txt = UIKit.E("who-move__text");
-                txt.Add(UIKit.L(m != null ? m.name : i == 2 && p.Progress(p.selectedClass).level < C.tuning.secondSkillLevel ? "Opens at level " + C.tuning.secondSkillLevel : "Empty", "who-move__name"));
+                txt.Add(UIKit.L(m != null ? m.name : "Empty", "who-move__name"));
                 string sub = slots[i];
                 if (m != null && m.slot != MoveSlot.Attack)
                 {

@@ -27,15 +27,6 @@ namespace HearthHollow.Core
             return ComputeWith(c, p, classId, null);
         }
 
-        /// Max HP from levels: hpPerLevelEarly for levels 2..earlyLevels, then hpPerLevel.
-        /// hpPerLevel may be a fraction (0.2 = +1 HP every 5 levels).
-        public static int LevelHp(TuningData t, int level)
-        {
-            int early = Math.Max(0, Math.Min(level, t.earlyLevels) - 1);
-            int late = Math.Max(0, level - Math.Max(1, t.earlyLevels));
-            return early * t.hpPerLevelEarly + (int)Math.Floor(late * t.hpPerLevel + 0.0001f);
-        }
-
         public static PlayerStats ComputeWith(GameContent c, Profile p, ClassId classId, List<EatenMeal> meals)
         {
             var t = c.tuning;
@@ -43,19 +34,15 @@ namespace HearthHollow.Core
             ClassProgress prog = p != null ? p.Progress(classId) : new ClassProgress { classId = classId };
 
             float[] sum = Meals.TotalBonus(c, cls, meals);   // meals + combos (empty when no meals)
-            float[] tree = Progression.StatBonus(c, p, classId);   // permanent skill-tree bonuses
-            for (int i = 0; i < sum.Length && i < tree.Length; i++) sum[i] += tree[i];
             float[] trink = Gear.StatBonus(c, p);              // worn trinkets
             for (int i = 0; i < sum.Length && i < trink.Length; i++) sum[i] += trink[i];
 
             var st = new PlayerStats();
-            int level = Math.Max(1, prog.level);
-            st.maxHp = Math.Max(1, (int)Math.Round(cls.baseMaxHp + LevelHp(t, level) + Gear.HeadHp(c, p, classId) + sum[(int)BuffStat.MaxHp]));
+            st.maxHp = Math.Max(1, (int)Math.Round(cls.baseMaxHp + Gear.HeadHp(c, p, classId) + sum[(int)BuffStat.MaxHp]));
 
             GearTier w = Economy.CurrentWeapon(c, p, classId);
             float baseDmg = w != null ? w.value : DefaultBaseDamage;
-            float levelDmg = 1f + Math.Max(0, level - 1) * t.damagePerLevel;   // small bonus every level
-            st.damage = baseDmg * cls.damageMult * levelDmg * (1f + sum[(int)BuffStat.DamagePct]);
+            st.damage = baseDmg * cls.damageMult * (1f + sum[(int)BuffStat.DamagePct]);
 
             GearTier a = Economy.CurrentArmour(c, p, classId);
             float points = (a != null ? a.value : 0f) + sum[(int)BuffStat.Armour];

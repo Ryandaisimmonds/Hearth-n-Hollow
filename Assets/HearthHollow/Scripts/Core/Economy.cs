@@ -80,27 +80,6 @@ namespace HearthHollow.Core
             return true;
         }
 
-        // ───────── XP & levels ─────────
-        public static int XpToNext(TuningData t, int level) { return t.xpBase + level * t.xpPerLevel; }
-
-        public static List<GameEvent> AddXp(GameContent c, Profile p, ClassId id, int xp)
-        {
-            var ev = new List<GameEvent>();
-            ClassProgress cp = p.Progress(id);
-            TuningData t = c.tuning;
-            if (cp.level >= t.levelCap) { cp.level = t.levelCap; cp.xp = 0; return ev; }
-            if (xp <= 0) return ev;
-            cp.xp += xp;
-            while (cp.level < t.levelCap && cp.xp >= XpToNext(t, cp.level))
-            {
-                cp.xp -= XpToNext(t, cp.level);
-                cp.level++;
-                ev.Add(new GameEvent(GameEventType.LevelUp, cp.level, true, "Level " + cp.level + " · +" + t.skillPointsPerLevel + " skill point"
-                    + (cp.level == t.secondSkillLevel ? " · second skill slot open!" : cp.level == t.borrowLevel ? " · other classes can borrow its skills" : "")));
-            }
-            if (cp.level >= t.levelCap) cp.xp = 0;   // XP doesn't accumulate at cap
-            return ev;
-        }
 
         // ───────── Gear ─────────
         private static GearTier TierAt(List<GearTier> tiers, int index)
@@ -283,44 +262,29 @@ namespace HearthHollow.Core
         {
             TuningData t = c.tuning;
             RouteData route = c.Route(run.routeId);
-            float xpMult = stats != null ? stats.xpMult : 1f;
             var s = new RunSummary
             {
                 outcome = run.outcome, routeId = run.routeId, classId = run.classId,
                 roomsCleared = run.roomsCleared, kills = run.kills,
                 floorReached = run.dungeon ? run.floor : 0, floorsTotal = run.dungeon ? run.floorsTotal : 0
             };
-            ClassProgress cp = p.Progress(run.classId);
-            s.levelBefore = cp.level;
 
             s.coinsFromKills = run.coinsEarned;
-            float xp;
             if (run.outcome == RunOutcome.Cleared)
             {
                 int clearReward = route != null ? route.clearReward : 0;
-                int clearXp = route != null ? route.clearXp : 0;
                 s.clearCoins = clearReward + run.roomsCleared * t.roomCoinBonus;
-                xp = (run.killXp + clearXp + run.roomsCleared * t.roomXpBonus) * xpMult;
             }
             else if (run.outcome == RunOutcome.Returned)
             {
                 // took an exit before the last floor: a share of the clear bonus, no route unlock
                 float share = DungeonRules.ClearShare(run);
                 int clearReward = route != null ? route.clearReward : 0;
-                int clearXp = route != null ? route.clearXp : 0;
                 s.clearCoins = (int)Math.Round(clearReward * share) + run.roomsCleared * t.roomCoinBonus;
-                xp = (run.killXp + clearXp * share + run.roomsCleared * t.roomXpBonus) * xpMult;
             }
-            else if (run.outcome == RunOutcome.Died)
-                xp = run.killXp * t.deathXpMult * xpMult;
-            else
-                xp = run.killXp * xpMult;
 
             s.totalCoins = s.coinsFromKills + s.clearCoins;
             p.coins += s.totalCoins;
-            s.xpGained = (int)Math.Round(xp);
-            AddXp(c, p, run.classId, s.xpGained);
-            s.levelAfter = cp.level;
 
             if (run.trinketsDropped != null) s.trinketsFound.AddRange(run.trinketsDropped);   // dropped during the run (already kept)
 
