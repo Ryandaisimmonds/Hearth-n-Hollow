@@ -30,7 +30,6 @@ namespace HearthHollow.Dungeon
         public static float TorchCooldown;    // seconds until you can throw another torch (T / LB)
         public static float Torch01 = 1f;     // 1 = ready
         public static float FlareCooldown;
-        public static int BoostPoints, BoostMax = 5, BoostSel;   // Break & Boost (step 8)    // seconds until Flare is ready (F / LT)
         public static string Prompt;          // e.g. "E  Forage" (null = none)
         public static string Status;          // e.g. "Clear the room!"
         public static bool Locked;            // doors shut

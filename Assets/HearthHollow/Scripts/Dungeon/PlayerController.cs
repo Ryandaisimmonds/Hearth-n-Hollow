@@ -49,7 +49,7 @@ namespace HearthHollow.Dungeon
         // timed follow-ups (volley's second arrow, slam's travelling wave, the hot pot landing…)
         struct Timed { public float t; public Action act; }
         readonly List<Timed> _timed = new List<Timed>();
-        // Break & Boost (step 8)
+        // the kind of hit being dealt (Break & Boost removed in ticket 01; ticket 06 turns this into elements)
         HitType _curType = HitType.Slash; int _curPips = 1;   // the kind of hit being dealt right now
         MoveData _curMove;   // the move being used right now (its light, homing…)
         // class rework stage 2: combo chains, Sunshield, Dawnbreaker's leap
@@ -68,10 +68,6 @@ namespace HearthHollow.Dungeon
         public float Heat { get { return _heat; } }
         Vector2 _sweepFrom;   // where a fast move's body was last frame (so a low frame rate can't skip past enemies)
         bool _dashTail;       // one last sweep on the frame a dash ends (a short dash can finish between two frames)
-        int _bp, _boostSel, _atkBoost, _skillBoost; float _bpT, _boostHoldT, _boostEmberT; bool _boostLock, _wasFight;
-        UnityEngine.Rendering.Universal.Light2D _boostLight;
-        static readonly Color BoostCol = new Color(1f, 0.8f, 0.4f);
-        public int BoostPoints { get { return _bp; } }
 
         public Vector2 Feet { get { return transform.position; } }
         public Vector2 Body { get { return (Vector2)transform.position + new Vector2(0, _anim != null ? _anim.FigureHeight * 0.45f : 0.4f); } }
@@ -121,8 +117,6 @@ namespace HearthHollow.Dungeon
             hurt.radius = Mathf.Max(0.2f, _anim.FigureHeight * 0.35f) / Mathf.Max(0.01f, body.transform.lossyScale.x);
             hurt.offset = (Vector2)body.transform.InverseTransformPoint(Body);
 
-            _bp = dc.Settings.boostStart;
-            _boostLight = DungeonFx.Flash(Body, BoostCol, 3f, 0f, 0f, transform);
             PushHud();
         }
 
@@ -163,7 +157,6 @@ namespace HearthHollow.Dungeon
             bool attacking = _attackT >= 0f;
             if (!attacking) TurnToInput();
 
-            BoostUpdate(dt);
             if (DungeonInput.Dash && _dashCd <= 0f && _knockT <= 0f)
             {
                 if (_dc.Session.DashUnlocked) StartDash();
@@ -259,7 +252,6 @@ namespace HearthHollow.Dungeon
             DungeonHud.UltMove = _ult;
             DungeonHud.Ult01 = _ult != null ? Mathf.Clamp01(1f - _ultCd / Mathf.Max(0.1f, _ult.cooldown)) : 0f;
             DungeonHud.Guarding = _guardUntil > 0f;
-            DungeonHud.BoostPoints = _bp; DungeonHud.BoostSel = _boostSel; DungeonHud.BoostMax = _dc.Settings.boostMax;
             string buff = null;
             if (_guardUntil > 0f) buff = "🛡 Guard";
             if (_furyUntil > 0f) buff = (buff != null ? buff + "  " : "") + "📯 Fury";
@@ -328,7 +320,7 @@ namespace HearthHollow.Dungeon
             bool crit;
             float dmg = S.DungeonRollDamage(mult, out crit);
             e.TakeHit(dmg, crit, knockDir, knock);
-            if (e != null && !e.Dead) e.ShieldHit(type, pips);   // Break (step 8)
+            if (e != null && !e.Dead) e.TypedHit(type, pips);
             AddHeat(_dc.Settings.heatPerHit);   // Emberfist: every hit stokes her Heat
         }
 
@@ -376,7 +368,6 @@ namespace HearthHollow.Dungeon
                 default: _attackLen = 0.3f; _attackHitAt = 0.1f; break;
             }
             _attackLen = Mathf.Min(_attackLen, _attackCd);
-            _atkBoost = TakeBoost();
             _anim.Dir = _facing;
             _anim.PlayAttack(_attackLen);
         }
@@ -384,9 +375,9 @@ namespace HearthHollow.Dungeon
         void AttackHit()
         {
             var m = _atk; Vector2 dir = Aim;
-            float mult = AttackMult(m) * BoostMult(_atkBoost);
-            int blv = _atkBoost;
-            _curType = m.hitType; _curPips = 1 + _atkBoost; _atkBoost = 0; _curMove = m;
+            float mult = AttackMult(m);
+            int blv = 0;
+            _curType = m.hitType; _curPips = 1; _curMove = m;
             dir = Assist(m, dir); _aim = dir;
             if (IsRanged(m)) { MoveLight(m, Body + dir * 0.5f, 0.9f, 0.25f); DungeonFx.Embers(Body + dir * 0.5f, Accent, 4, 0.25f); }   // muzzle flash (the arrows carry their own light)
             else
@@ -551,7 +542,6 @@ namespace HearthHollow.Dungeon
         {
             if (_ult == null || _knockT > 0f) return;
             if (_ultCd > 0f) { DungeonHud.Number(Body + Vector2.up * 0.8f, _ult.emoji + " " + Mathf.CeilToInt(_ultCd) + "s", "dnum--info"); return; }
-            _skillBoost = 0;
             if (!UseSkill(_ult)) return;
             _ultCd = _ult.cooldown;
             DungeonHud.Number(Body + Vector2.up * 1.2f, _ult.emoji + " " + _ult.name + "!", "dnum--crit");
@@ -628,11 +618,8 @@ namespace HearthHollow.Dungeon
                 return;
             }
             if (cd > 0f) return;
-            _skillBoost = BoostableSkill(m) ? _boostSel : 0;   // buffs / heals don't use Boost
             bool used = UseSkill(m);
-            int lvl = _skillBoost; _skillBoost = 0;
             if (!used) return;     // e.g. Hunter's Mark with nobody to mark
-            if (lvl > 0) SpendBoost(lvl);
             cd = SkillCooldown(m);
         }
 
@@ -640,11 +627,11 @@ namespace HearthHollow.Dungeon
         {
             TurnToInput();
             Vector2 dir = Aim;
-            float mult = SkillMult(m) * BoostMult(_skillBoost);
-            _curType = m.hitType; _curPips = 1 + _skillBoost; _curMove = m;
+            float mult = SkillMult(m);
+            _curType = m.hitType; _curPips = 1; _curMove = m;
             if (IsRanged(m)) { dir = Assist(m, dir); _aim = dir; }
-            MoveLight(m, Body, 1.2f + 0.2f * _skillBoost, 0.6f);   // every skill lights the world…
-            if (m.cooldown >= 5.5f || _skillBoost > 0) _dc.FloodLight(0.25f + 0.1f * _skillBoost, 1.2f);   // …the big ones flood the room
+            MoveLight(m, Body, 1.2f, 0.6f);   // every skill lights the world…
+            if (m.cooldown >= 5.5f) _dc.FloodLight(0.25f, 1.2f);   // …the big ones flood the room
             _anim.Dir = _facing;
             switch (m.kind)
             {
@@ -761,7 +748,7 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.35f);
                     DungeonFx.RingAt(Body, A(MoveColour(m), 0.9f), m.radius); DungeonFx.RingAt(Body, A(Accent, 0.8f), m.radius * 0.6f, 0.3f);
                     _dc.Shake(0.15f, 0.12f);
-                    HitArea(Body, m.radius * Reach(m, _skillBoost), mult, Vector2.zero);
+                    HitArea(Body, m.radius * Reach(m, 0), mult, Vector2.zero);
                     return true;
                 case MoveKind.Shockwave:
                 {
@@ -806,11 +793,11 @@ namespace HearthHollow.Dungeon
                 case MoveKind.Sunshield:
                 {
                     _anim.PlayAttack(0.3f);
-                    float dur = m.duration * (1f + (m.boostShape == BoostShape.Duration ? m.boostStep * _skillBoost : 0f));
+                    float dur = m.duration * (1f + (m.boostShape == BoostShape.Duration ? m.boostStep * 0 : 0f));
                     Guard(m.value, dur);
-                    _sunMove = m; _sunUntil = Time.time + dur; _sunLvl = _skillBoost; _sunHit.Clear();
+                    _sunMove = m; _sunUntil = Time.time + dur; _sunLvl = 0; _sunHit.Clear();
                     if (_sunLight != null) Destroy(_sunLight.gameObject);
-                    _sunLight = DungeonFx.Flash(Body + Aim * 2f, MoveColour(m), LightRadius(m) * (1f + 0.2f * _skillBoost), 2.2f, 0f, transform);
+                    _sunLight = DungeonFx.Flash(Body + Aim * 2f, MoveColour(m), LightRadius(m) * (1f + 0.2f * 0), 2.2f, 0f, transform);
                     DungeonController.CastShadows(_sunLight, 0.7f, 0.4f);
                     DungeonFx.RingAt(Body, MoveColour(m), 1.4f, 0.4f);
                     return true;
@@ -823,7 +810,7 @@ namespace HearthHollow.Dungeon
                     _stepVel = (to - Feet) / dur; _stepT = dur;
                     _hopT = _hopDur = dur;
                     _invulnUntil = Mathf.Max(_invulnUntil, Time.time + dur + 0.1f);
-                    var slam = m; float slamMult = mult; int slamLvl = _skillBoost; var slamT = _curType; int slamP = _curPips;
+                    var slam = m; float slamMult = mult; int slamLvl = 0; var slamT = _curType; int slamP = _curPips;
                     DungeonFx.Puff(Feet, new Color(0.8f, 0.74f, 0.62f, 0.55f), 6, 0.5f);
                     Vector2 slamTo = to;
                     After(dur, () => { if (Vector2.Distance(Feet, slamTo) > 0.1f) Teleport(slamTo); Slam(slam, slamMult, slamLvl, slamT, slamP); });   // land exactly where it aimed
@@ -867,7 +854,7 @@ namespace HearthHollow.Dungeon
                     float tickMult = mult; var rnT = _curType; int rnP = _curPips;
                     MoveLight(m, at, 1f, m.duration + 0.3f);   // the storm lights the whole area
                     Color rainCol = MoveColour(m);
-                    DungeonZone.Spawn(_dc, at, m.radius * Reach(m, _skillBoost), m.duration, 0.25f, A(rainCol, 0.22f), z =>
+                    DungeonZone.Spawn(_dc, at, m.radius * Reach(m, 0), m.duration, 0.25f, A(rainCol, 0.22f), z =>
                     {
                         for (int i = 0; i < 3; i++)
                             DungeonFx.Spawn(DungeonFx.Arrow, z.Centre + UnityEngine.Random.insideUnitCircle * z.Radius + Vector2.up * 0.6f, Color.Lerp(Color.white, rainCol, 0.9f), 0.18f, 1.2f, 1.0f, -90f);
@@ -886,7 +873,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.EmberArrow:
                 {
                     _anim.PlayAttack(0.3f);
-                    int n = Mathf.Max(1, m.count) + (m.boostShape == BoostShape.Count ? Mathf.RoundToInt(m.boostStep * _skillBoost) : 0);
+                    int n = Mathf.Max(1, m.count) + (m.boostShape == BoostShape.Count ? Mathf.RoundToInt(m.boostStep * 0) : 0);
                     float sp = m.spread > 0f ? m.spread : 10f;
                     var em = m; float burn = SkillMult(m) * m.value;
                     for (int i = 0; i < n; i++)
@@ -903,7 +890,7 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.3f);
                     var p = Arrow(mult, dir, m.range, false, 1.5f);
                     if (p == null) return true;
-                    var fm = m; float fmult = mult; int flvl = _skillBoost; int fpips = _curPips;
+                    var fm = m; float fmult = mult; int flvl = 0; int fpips = _curPips;
                     p.Tint(Color.Lerp(Color.white, MoveColour(m), 0.9f)).SetLife(AimLife(m.range, 0.6f));   // mouse: bursts where you clicked
                     p.OnStop = at => FlareBurst(fm, at, fmult, flvl, fpips);
                     return true;
@@ -915,7 +902,6 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.25f);
                     DungeonFx.Flash(target.Body, MoveColour(m), 2.6f, 2.2f, m.duration, target.transform);   // it's lit: a weak spot
                     target.Mark(m.value * _mods.skillPower, m.duration);
-                    foreach (var w in target.Weaknesses) EnemyController.KnownWeak.Add(target.Stats.monsterId + ":" + w);
                     DungeonHud.Number(target.Body + Vector2.up * 0.9f, "Spotted!", "dnum--info");
                     return true;
                 }
@@ -924,7 +910,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.Lantern:
                 {
                     _anim.PlayAttack(0.3f);
-                    int n = Mathf.Max(1, m.count) + (m.boostShape == BoostShape.Count ? Mathf.RoundToInt(m.boostStep * _skillBoost) : 0);
+                    int n = Mathf.Max(1, m.count) + (m.boostShape == BoostShape.Count ? Mathf.RoundToInt(m.boostStep * 0) : 0);
                     for (int i = 0; i < n; i++)
                     {
                         float ang = n == 1 ? 0f : (i - (n - 1) * 0.5f) * 50f;
@@ -935,7 +921,7 @@ namespace HearthHollow.Dungeon
                 }
                 case MoveKind.Sunbeam:
                     _anim.PlayAttack(m.duration);
-                    StartBeam(m, mult, 1f + (m.boostShape == BoostShape.Radius ? m.boostStep * _skillBoost : 0f), m.duration);
+                    StartBeam(m, mult, 1f + (m.boostShape == BoostShape.Radius ? m.boostStep * 0 : 0f), m.duration);
                     return true;
                 case MoveKind.Prism:
                 {
@@ -943,7 +929,7 @@ namespace HearthHollow.Dungeon
                     dir = Assist(m, dir); _aim = dir;
                     var p = Projectile.Spawn(_dc, true, Body + dir * 0.4f, dir, m.range, mult, 0f, DungeonFx.Orb, MoveColour(m), false, 1.3f);
                     if (p == null) return true;
-                    var pm = m; float pmult = mult; int plvl = _skillBoost;
+                    var pm = m; float pmult = mult; int plvl = 0;
                     p.SetHit(HitType.Light, _curPips); p.SetLife(AimLife(m.range, 1.1f));
                     p.OnStop = at => PrismBurst(pm, at, pmult, plvl);
                     return true;
@@ -966,19 +952,19 @@ namespace HearthHollow.Dungeon
                 {
                     _anim.PlayAttack(0.4f);
                     dir = Assist(m, dir); _aim = dir;
-                    float dist = m.range * (1f + (m.boostShape == BoostShape.Radius ? m.boostStep * _skillBoost : 0f));
+                    float dist = m.range * (1f + (m.boostShape == BoostShape.Radius ? m.boostStep * 0 : 0f));
                     Vector2 to = WalkTo(Feet, dir, dist);
                     float dur = 0.28f;
                     _stepVel = (to - Feet) / dur; _stepT = dur;
                     _invulnUntil = Mathf.Max(_invulnUntil, Time.time + dur + 0.1f);
-                    _phoenixMove = m; _phoenixT = dur; _phoenixMult = mult; _phoenixLvl = _skillBoost; _phoenixHit.Clear();
+                    _phoenixMove = m; _phoenixT = dur; _phoenixMult = mult; _phoenixLvl = 0; _phoenixHit.Clear();
                     _phoenixType = _curType; _phoenixPips = _curPips; _sweepFrom = Body;
                     return true;
                 }
                 case MoveKind.FlameWheel:
                 {
                     _anim.PlayAttack(0.35f);
-                    float rad = m.radius * Reach(m, _skillBoost); var wm = m; float wmult = mult; var wt = _curType; int wp = _curPips; Color col = MoveColour(m);
+                    float rad = m.radius * Reach(m, 0); var wm = m; float wmult = mult; var wt = _curType; int wp = _curPips; Color col = MoveColour(m);
                     for (int i = 0; i < Mathf.Max(1, m.count); i++)
                         After(0.001f + i * 0.18f, () => { _curType = wt; _curPips = wp; _curMove = wm; DungeonFx.RingAt(Body, col, rad, 0.3f); DungeonFx.Throw(Body, Vector2.up, col, 8, 3f, 7f); MoveLight(wm, Body, 1.2f, 0.3f); HitArea(Body, rad, wmult, Vector2.zero, 7f); });
                     return true;
@@ -1002,7 +988,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.Counter:
                 {
                     _anim.PlayAttack(0.2f);
-                    float dur = m.duration * (1f + (m.boostShape == BoostShape.Duration ? m.boostStep * _skillBoost : 0f));
+                    float dur = m.duration * (1f + (m.boostShape == BoostShape.Duration ? m.boostStep * 0 : 0f));
                     _counterMove = m; _counterUntil = Time.time + dur; _counterMult = mult;
                     DungeonFx.RingAt(Body, MoveColour(m), 1f, dur);
                     DungeonFx.Flash(Body, MoveColour(m), 3f, 1.4f, dur, transform);
@@ -1023,13 +1009,6 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.3f);
                     MoveLight(m, Body + dir * m.range * 0.6f, 1.4f, 0.5f);   // Flambé: a huge burst of firelight
                     DungeonFx.Throw(Body + dir * 0.5f, dir, MoveColour(m), 10, 3f, 7f);
-                    if (_skillBoost > 0)   // Boost: the ground keeps burning
-                    {
-                        float burnP = SkillMult(m) * 0.3f; Vector2 bc = Body + dir * m.range * 0.6f;
-                        DungeonFx.Flash(bc, MoveColour(m), 4f, 1.2f, 3f);
-                        DungeonZone.Spawn(_dc, bc, 1f + 0.3f * _skillBoost, 3f, 0.5f, A(MoveColour(m), 0.3f), z =>
-                        { foreach (var e in z.Enemies()) { Hit(e, burnP, Vector2.zero, 0f, HitType.Fire, 1); if (!Alive) return; } });
-                    }
                     for (int i = 0; i < 8; i++)
                     {
                         Vector2 d = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-m.radius, m.radius)) * dir;
@@ -1049,7 +1028,7 @@ namespace HearthHollow.Dungeon
                     Vector2 at = Feet + dir * AimDistance(m.range);   // mouse: on the cursor
                     var pot = DungeonFx.Spawn(DungeonFx.Circle, Body, new Color(0.55f, 0.4f, 0.3f, 1f), 0.35f, 0.7f, 0.7f);
                     pot.velocity = (at - Body) * 6f;   // FxSprite damps velocity by ~6/s, so this lands near the target
-                    var potMove = m; float potMult = mult; var ptT = _curType; int ptP = _curPips; float potK = Reach(m, _skillBoost);   // Boost: a bigger pool
+                    var potMove = m; float potMult = mult; var ptT = _curType; int ptP = _curPips; float potK = Reach(m, 0);   // Boost: a bigger pool
                     After(0.35f, () =>
                     {
                         DungeonFx.Puff(at, A(MoveColour(potMove), 0.8f), 8, 1f);
@@ -1079,7 +1058,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.SkewerToss:
                     _anim.PlayAttack(0.3f);
                     dir = Assist(m, dir); _aim = dir;
-                    Fan(m, mult, dir, m.range, false, 1.3f, _skillBoost);
+                    Fan(m, mult, dir, m.range, false, 1.3f, 0);
                     return true;
                 case MoveKind.Cookfire:
                 {
@@ -1087,7 +1066,7 @@ namespace HearthHollow.Dungeon
                     var room = _dc.CurrentRoom;
                     Vector2 at = Feet + dir * 0.9f;
                     if (room != null) at = room.NearestWalkable(at);
-                    float k = 1f + (m.boostShape == BoostShape.Radius ? m.boostStep * _skillBoost : 0f);
+                    float k = 1f + (m.boostShape == BoostShape.Radius ? m.boostStep * 0 : 0f);
                     float rad = m.radius * k;
                     int perTick = Mathf.Max(1, Mathf.RoundToInt(m.value * _mods.skillPower * k));
                     Color fire = MoveColour(m);
@@ -1137,21 +1116,6 @@ namespace HearthHollow.Dungeon
             MoveLight(_whirlMove, Body, 0.8f, 0.25f);
             DungeonFx.RingAt(Body, A(MoveColour(_whirlMove), 0.75f), _whirlMove.radius, 0.2f); MoveLight(_whirlMove, Body, 1f, 0.25f);
             HitArea(Body, _whirlMove.radius, SkillMult(_whirlMove), Vector2.zero, 4f);
-        }
-
-        // ───────────────────────── Break & Boost (step 8) ─────────────────────────
-        /// What kind of hit a move deals (monsters are weak to one or two kinds).
-        public static HitType TypeOf(MoveData m, ClassId cls)
-        {
-            if (m == null) return HitType.Slash;
-            switch (m.kind)
-            {
-                case MoveKind.Swing: return cls == ClassId.Cook ? HitType.Blunt : HitType.Slash;   // the Cook's pan
-                case MoveKind.Heavy: case MoveKind.Shockwave: case MoveKind.RollingPin: case MoveKind.ChargeDash: case MoveKind.Trap: return HitType.Blunt;
-                case MoveKind.Lunge: case MoveKind.Arrow: case MoveKind.SpreadArrow: case MoveKind.PierceArrow: case MoveKind.Volley: case MoveKind.ArrowRain: case MoveKind.Vault: return HitType.Pierce;
-                case MoveKind.PepperToss: case MoveKind.HotPot: return HitType.Fire;
-                default: return HitType.Slash;   // Cleave, Whirlwind
-            }
         }
 
         // class colour themes (contentVersion 21), in ClassId order: Warden, Ranger, Cook, Lamplighter, Emberfist
@@ -1298,7 +1262,7 @@ namespace HearthHollow.Dungeon
             var m = _sunMove;
             if (_sunLight != null) _sunLight.transform.position = Body + Aim * 2f;
             foreach (var e in Combat2D.EnemiesInCone(Body, Aim, m.range * (1f + 0.2f * _sunLvl), m.radius))
-                if (e != null && !e.Dead && _sunHit.Add(e)) e.ShieldHit(HitType.Light, 1 + _sunLvl);
+                if (e != null && !e.Dead && _sunHit.Add(e)) e.TypedHit(HitType.Light, 1 + _sunLvl);
             foreach (var p in UnityEngine.Object.FindObjectsByType<Projectile>())
             {
                 if (p == null || p.FromPlayer) continue;
@@ -1333,7 +1297,6 @@ namespace HearthHollow.Dungeon
             foreach (var e in Combat2D.EnemiesIn(at, rad * 1.5f))
             {
                 if (e == null || e.Dead) continue;
-                foreach (var w in e.Weaknesses) EnemyController.KnownWeak.Add(e.Stats.monsterId + ":" + w);
                 if (e.Shadow) e.Stun(m.duration);
             }
             _curType = HitType.Light; _curPips = pips; _curMove = m;
@@ -1432,14 +1395,7 @@ namespace HearthHollow.Dungeon
             for (int i = 0; i < rainbow.Length; i++) DungeonFx.Throw(at, Quaternion.Euler(0, 0, i * 72f) * Vector2.up, rainbow[i], 3, 3f, 6f);
             DungeonFx.Flash(at, MoveColour(m), LightRadius(m), 2f, 0.5f);
             DungeonFx.RingAt(at, MoveColour(m), 1.2f, 0.35f);
-            if (target != null)
-                foreach (var w in target.Weaknesses)
-                {
-                    EnemyController.KnownWeak.Add(target.Stats.monsterId + ":" + w);
-                    DungeonFx.Sparks(target.Body, Vector2.up, EnemyController.TypeColor(w), 6);
-                    target.ShieldHit(w, 1 + lvl, true);
-                    if (target.Broken || target.Dead) break;
-                }
+            if (target != null) target.TypedHit(HitType.Light, 1, true);   // ticket 06: Prism strikes with the target's weakest element
             _curType = HitType.Light; _curPips = 1; _curMove = m;
             HitArea(at, m.radius * Reach(m, lvl), mult * 0.5f, Vector2.zero, 3f);
         }
@@ -1522,69 +1478,6 @@ namespace HearthHollow.Dungeon
             AddHeat(20f);
             HitArea(Body + toward * 0.6f, m.radius * _dc.Settings.playerReach, _counterMult, toward, 10f, 0.5f);
         }
-
-        static bool BoostableSkill(MoveData m)
-        {
-            switch (m.kind)
-            {
-                case MoveKind.WarCry: case MoveKind.ShieldWall: case MoveKind.Snack: case MoveKind.Picnic: case MoveKind.Smoke: case MoveKind.Mark: case MoveKind.Spotlight: case MoveKind.Kindle: return false;
-            }
-            return true;
-        }
-
-        float BoostMult(int lvl) { return 1f + _dc.Settings.boostDamagePerLevel * lvl; }
-
-        void BoostUpdate(float dt)
-        {
-            var set = _dc.Settings; var room = _dc.CurrentRoom;
-            bool fight = room != null && room.EventRunning && room.Enemies.Count > 0;
-            if (fight && !_wasFight && _bp < set.boostStart) _bp = set.boostStart;
-            _wasFight = fight;
-            if (fight && _bp < set.boostMax) { _bpT += dt; if (_bpT >= set.boostRegenSeconds) { _bpT = 0f; GainBoost(1, false); } }
-            else if (!fight) _bpT = 0f;
-            // hold Boost to charge: one level straight away, another every boostChargeSeconds (up to what you have, max 3)
-            if (DungeonInput.BoostHeld && !_boostLock)
-            {
-                _boostHoldT += dt;
-                int want = Mathf.Min(Mathf.Min(_bp, set.boostSpendMax), 1 + Mathf.FloorToInt(_boostHoldT / Mathf.Max(0.05f, set.boostChargeSeconds)));
-                if (want > _boostSel)
-                {
-                    _boostSel = want;
-                    DungeonFx.RingAt(Body, BoostCol, 0.6f + 0.35f * want, 0.3f);
-                    DungeonFx.Embers(Feet, BoostCol, 4 + 3 * want, 0.4f);
-                }
-            }
-            else if (!DungeonInput.BoostHeld) { _boostLock = false; _boostSel = 0; _boostHoldT = 0f; }
-            if (_boostLight != null) _boostLight.intensity = _boostSel > 0 ? (0.5f + 0.45f * _boostSel) * (1f + 0.15f * Mathf.Sin(Time.time * 14f)) : 0f;
-            if (_boostSel > 0)
-            {
-                _boostEmberT -= dt;
-                if (_boostEmberT <= 0f) { _boostEmberT = 0.08f; DungeonFx.Embers(Feet + UnityEngine.Random.insideUnitCircle * 0.3f, BoostCol, _boostSel, 0.2f); }
-            }
-        }
-
-        /// Spends the charged Boost on the attack happening now (0 = none).
-        int TakeBoost() { int l = _boostSel; if (l > 0) SpendBoost(l); return l; }
-
-        void SpendBoost(int lvl)
-        {
-            _bp = Mathf.Max(0, _bp - lvl); _boostSel = 0; _boostLock = true; _boostHoldT = 0f;   // let go of Boost to charge again
-            DungeonFx.Flash(Body, BoostCol, 4f + lvl * 1.5f, 1.6f + lvl * 0.4f, 0.4f);
-            DungeonFx.RingAt(Body, BoostCol, 1f + lvl * 0.6f, 0.35f);
-            for (int i = 0; i < 6 * lvl; i++) DungeonFx.Throw(Body, UnityEngine.Random.insideUnitCircle.normalized, BoostCol, 1, 3f, 6f + lvl);
-            GameLook.Punch(0.2f + 0.15f * lvl);
-            DungeonHud.Number(Body + Vector2.up * 0.9f, "Boost " + lvl + "!", "dnum--crit");
-        }
-
-        void GainBoost(int n, bool show)
-        {
-            int before = _bp;
-            _bp = Mathf.Min(_dc.Settings.boostMax, _bp + n);
-            if (show && _bp > before) DungeonHud.Number(Body + Vector2.up * 1.1f, "+" + (_bp - before) + " BP", "dnum--info");
-        }
-
-        /// A monster was Broken: +BP.
-        public void OnBreak(EnemyController e) { GainBoost(_dc.Settings.boostOnBreak, true); }
 
         // ───────────────────────── getting hit ─────────────────────────
         public bool CanBeHit { get { return !Dashing && Time.time >= _invulnUntil; } }

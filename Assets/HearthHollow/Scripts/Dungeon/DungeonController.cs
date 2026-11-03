@@ -409,7 +409,7 @@ namespace HearthHollow.Dungeon
             // a light hit for Break (no damage) on everything close by (step 8)
             if (_current != null)
                 foreach (var e in new List<EnemyController>(_current.Enemies))
-                    if (e != null && !e.Dead && Vector2.Distance(e.Body, Player.Body) <= Settings.flareRadius * Settings.flareStunReach) e.ShieldHit(HitType.Light, 1);
+                    if (e != null && !e.Dead && Vector2.Distance(e.Body, Player.Body) <= Settings.flareRadius * Settings.flareStunReach) e.TypedHit(HitType.Light, 1);
         }
 
         /// Ramps the room light towards its target; fires the light-up when the pause is over.

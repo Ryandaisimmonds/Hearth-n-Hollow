@@ -3,7 +3,7 @@
 //   Attack:   left click · J or Z · (A)               Skill 1:  right click · K or X · (X)
 //   Skill 2:  Q · L · (RB)                            Ultimate: C · I · (right-stick click)
 //   Dash: Space · (B)      Use: E or Enter · (Y)      Bag: Tab · (Select)
-//   Torch: R · (LB)        Flare: F · (LT)            Boost (hold): Shift · (RT)
+//   Torch: R · (LB)        Flare: F · (LT)
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -218,15 +218,6 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Boost (held): Shift / (RT). Hold to charge 1–3 Boost points onto your next attack or skill.
-        public static bool BoostHeld
-        {
-            get
-            {
-                var k = Keyboard.current; var g = Gamepad.current;
-                return (k != null && (k.leftShiftKey.isPressed || k.rightShiftKey.isPressed)) || (g != null && g.rightTrigger.isPressed);
-            }
-        }
 
         public static bool Bag
         {

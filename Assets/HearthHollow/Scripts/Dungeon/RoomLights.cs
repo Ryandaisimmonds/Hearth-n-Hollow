@@ -404,7 +404,7 @@ namespace HearthHollow.Dungeon
                     DungeonFx.Sparks(transform.position, Vector2.up, Fire, 8);
                     DungeonFx.Embers(transform.position, Fire, 10, 0.25f);
                     if (_room != null && _room.Lights != null) _room.Lights.IgniteNear(transform.position, 1.6f);
-                    foreach (var e in Combat2D.EnemiesIn(transform.position, 1.6f)) if (e != null) e.ShieldHit(HitType.Fire, 1);   // a fire hit for Break (no damage)
+                    foreach (var e in Combat2D.EnemiesIn(transform.position, 1.6f)) if (e != null) e.TypedHit(HitType.Fire, 1);   // a fire hit (no damage)
                 }
             }
             else

@@ -21,7 +21,6 @@ namespace HearthHollow.UI
         readonly Label _guard;
         Label _torch;   // torch cooldown (step 4)
         Label _flare;   // Flare cooldown (step 5)
-        Label _boost;   // Boost points (step 8)
         readonly Label _skillKey, _skill2Key, _ultKey;
         string _iconKey;
         // top-centre
@@ -91,9 +90,7 @@ namespace HearthHollow.UI
             _torch.tooltip = "Torch — R / (LB) throws one where you're aiming (unlimited, on a cooldown). It burns for a while and lights braziers.";
             _flare = UIKit.L("", "badge", "dhud__guard");
             _flare.tooltip = "Flare — F / (LT): a burst of light round you. Pot meals shorten its cooldown.";
-            _boost = UIKit.L("", "badge", "dhud__guard");
-            _boost.tooltip = "Boost — hold Shift / (RT) to charge 1–3 Boost points, then attack or use a skill: more damage, and it knocks off more shield pips. +1 every few seconds in a fight and +1 for every Break.";
-            abil.Add(_atk); abil.Add(_skill); abil.Add(_skill2); abil.Add(_ult); abil.Add(_dash); abil.Add(_torch); abil.Add(_flare); abil.Add(_boost); abil.Add(_guard);
+            abil.Add(_atk); abil.Add(_skill); abil.Add(_skill2); abil.Add(_ult); abil.Add(_dash); abil.Add(_torch); abil.Add(_flare); abil.Add(_guard);
             info.Add(abil);
             row.Add(info);
             card.Add(row);
@@ -135,7 +132,7 @@ namespace HearthHollow.UI
             _prompt = UIKit.L("", "dhud__prompt");
             _prompt.pickingMode = PickingMode.Ignore;
             Root.Add(_prompt);
-            var help = UIKit.L("WASD move · mouse aim · Click / J attack · Right-click / K skill · Q / L skill · C / I ultimate · Space dash · E use · F flare · R torch · Shift boost · Tab bag", "dhud__help");
+            var help = UIKit.L("WASD move · mouse aim · Click / J attack · Right-click / K skill · Q / L skill · C / I ultimate · Space dash · E use · F flare · R torch · Tab bag", "dhud__help");
             help.pickingMode = PickingMode.Ignore;
             Root.Add(help);
             var mapBox = UIKit.E("panel", "dhud__mapbox");
@@ -235,7 +232,6 @@ namespace HearthHollow.UI
             _torch.style.opacity = DungeonHud.TorchCooldown > 0.05f ? 0.55f : 1f;
             _flare.text = DungeonHud.FlareCooldown > 0.05f ? "✨ " + Mathf.CeilToInt(DungeonHud.FlareCooldown) + "s" : "✨ F";
             _flare.style.opacity = DungeonHud.FlareCooldown > 0.05f ? 0.55f : 1f;
-            { var bp = new System.Text.StringBuilder("⚡ "); for (int i = 0; i < DungeonHud.BoostMax; i++) bp.Append(i < DungeonHud.BoostSel ? "◆" : i < DungeonHud.BoostPoints ? "●" : "○"); _boost.text = bp.ToString(); _boost.style.opacity = DungeonHud.BoostPoints > 0 ? 1f : 0.55f; }
             _guard.text = DungeonHud.BuffText ?? "";
             UIKit.Show(_guard, !string.IsNullOrEmpty(DungeonHud.BuffText));
 

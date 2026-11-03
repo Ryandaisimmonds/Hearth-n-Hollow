@@ -42,8 +42,6 @@ namespace HearthHollow.Dungeon
         [Tooltip("Shy: keeps out of torch / brazier / Flare light and is bolder in the dark. Drawn: goes to the nearest bright light (a lure).")]
         public LightReaction lightReaction = LightReaction.None;
         public float carryLightRadius = 3f;
-        [Tooltip("Break: shield pips (elites +2, bosses ×2 +2). 0 = 2.")] public int shields = 2;
-        [Tooltip("Break: hit types that knock shield pips off.")] public List<HitType> weak = new List<HitType>();
     }
 
     [CreateAssetMenu(menuName = "Hearth & Hollow/Dungeon Settings", fileName = "DungeonSettings")]
@@ -119,16 +117,6 @@ namespace HearthHollow.Dungeon
         [Tooltip("Flare stuns shadow creatures within this share of its radius, for this long.")] public float flareStunReach = 0.6f, flareStunSeconds = 2.5f;
         [Tooltip("Out of a fight (calm or cleared room), Flare's cooldown is only this long, so you can sweep for secrets.")] public float flareCalmCooldown = 2f;
 
-        [Header("Break & Boost (step 8)")]
-        [Tooltip("Seconds a Broken monster stays stunned (and takes extra damage).")] public float breakSeconds = 3f;
-        public float bossBreakSeconds = 4f;
-        [Tooltip("Damage × this on a Broken monster.")] public float breakDamage = 1.5f;
-        [Tooltip("A monster loses shield pips at most this often (stops rapid ticks shredding shields).")] public float shieldPipCooldown = 0.3f;
-        [Tooltip("Most Boost points you can hold / spend on one move.")] public int boostMax = 5, boostSpendMax = 3;
-        [Tooltip("BP you have when a fight starts (at least), +1 every boostRegenSeconds in a fight, + boostOnBreak per Break.")] public int boostStart = 1, boostOnBreak = 1;
-        public float boostRegenSeconds = 6f;
-        [Tooltip("Each Boost level: damage + this share; also knocks off one more shield pip.")] public float boostDamagePerLevel = 0.5f;
-        [Tooltip("Hold Boost this long per extra level.")] public float boostChargeSeconds = 0.3f;
 
         [Header("Class rework (31 Oct)")]
         [Tooltip("Every player hit area is this much bigger.")] public float playerReach = 1.3f;

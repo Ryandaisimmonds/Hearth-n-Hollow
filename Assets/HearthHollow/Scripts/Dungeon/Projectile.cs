@@ -138,7 +138,7 @@ namespace HearthHollow.Dungeon
                     bool crit;
                     float dmg = _dc.Session.DungeonRollDamage(_mult, out crit);
                     e.TakeHit(dmg, crit, _vel.normalized);
-                    if (!e.Dead) e.ShieldHit(_type, _pips);
+                    if (!e.Dead) e.TypedHit(_type, _pips);
                     if (!_pierce) Die();
                     return;
                 }

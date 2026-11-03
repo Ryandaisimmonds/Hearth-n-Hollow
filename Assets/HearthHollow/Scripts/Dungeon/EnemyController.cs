@@ -45,14 +45,6 @@ namespace HearthHollow.Dungeon
         bool _wasLit; float _wispT;
         float _nerveT, _nerveNeed = -1f, _orbit = 1f; bool _inSrc;   // light-shy: circle round a light, then push through
         bool Brave { get { return _nerveNeed > 0f && _nerveT >= _nerveNeed; } }
-        // Break (step 8): shield pips only weak-type hits knock off; at 0 the monster is Broken (stunned, takes extra damage)
-        public static readonly HashSet<string> KnownWeak = new HashSet<string>();   // "monsterId:Type" found this session
-        int _shieldMax, _shield; float _brokenT, _pipCdUntil;
-        readonly List<HitType> _weak = new List<HitType>();
-        SpriteRenderer[] _pips, _weakIcons;
-        public bool Broken { get { return _brokenT > 0f; } }
-        public int Shield { get { return _shield; } }
-        public IList<HitType> Weaknesses { get { return _weak; } }
         /// Bosses shrug off most of a stun, elites some of it.
         float StatusResist { get { return Stats.boss ? 0.3f : Stats.elite ? 0.6f : 1f; } }
 
@@ -91,7 +83,6 @@ namespace HearthHollow.Dungeon
             if (stats.elite && !stats.boss) _anim.Renderer.color = new Color(1f, 0.88f, 0.6f);
             gameObject.AddComponent<EnemyGlow>().Setup(this, _anim, profile, stats, size, dc.Settings);   // silhouette, rim, eyes, carried lights
             MakeHpBar();
-            SetupShield(profile, stats);
             _stT = 0.7f;                 // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
@@ -134,7 +125,6 @@ namespace HearthHollow.Dungeon
             }
             if (Player == null) return;
             UpdateLight(dt);
-            if (_brokenT > 0f) { _brokenT -= dt; if (_brokenT <= 0f) { _shield = _shieldMax; DungeonFx.RingAt(Body, new Color(0.55f, 0.82f, 1f, 0.9f), 1f, 0.35f); } }   // guard back up
             if (_slowT > 0f) { _slowT -= dt; if (_slowT <= 0f) _slowMult = 1f; }
             if (_rootT > 0f) _rootT -= dt;
             if (_markT > 0f) _markT -= dt;
@@ -352,7 +342,6 @@ namespace HearthHollow.Dungeon
             var set = _dc.Settings;
             dmg *= 1f + set.litDamageBonus * Lit01;
             if (Shadow) dmg *= Mathf.Lerp(set.shadowDarkDamage, 1f + set.shadowLitBonus, Lit01);
-            if (Broken) dmg *= set.breakDamage;
             int d = Mathf.Max(1, Mathf.RoundToInt(dmg));
             Hp -= d;
             _flashT = 0.12f;
@@ -381,7 +370,6 @@ namespace HearthHollow.Dungeon
         {
             Shadow = true;
             DisplayName = "Shadow " + DisplayName;
-            if (!_weak.Contains(HitType.Light)) { _weak.Add(HitType.Light); _pips = null; }   // shadows always fear the light
             name = "Shadow " + name;
         }
 
@@ -444,108 +432,10 @@ namespace HearthHollow.Dungeon
             return null;
         }
 
-        // ───────────────────────── Break (step 8) ─────────────────────────
-        void SetupShield(EnemyProfile p, EnemyStats st)
-        {
-            int b = p != null && p.shields > 0 ? p.shields : 2;
-            _shieldMax = st.boss ? b * 2 + 2 : st.elite ? b + 2 : b;
-            _shield = _shieldMax;
-            if (p != null && p.weak != null) foreach (var w in p.weak) if (!_weak.Contains(w)) _weak.Add(w);
-            if (_weak.Count == 0) _weak.Add(HitType.Fire);
-        }
-
-        float BreakSeconds { get { return Stats.boss ? _dc.Settings.bossBreakSeconds : _dc.Settings.breakSeconds; } }
-
-        public static Color TypeColor(HitType t)
-        {
-            switch (t)
-            {
-                case HitType.Slash: return new Color(0.92f, 0.92f, 1f);
-                case HitType.Pierce: return new Color(0.5f, 1f, 0.55f);
-                case HitType.Blunt: return new Color(0.85f, 0.6f, 0.35f);
-                case HitType.Fire: return new Color(1f, 0.5f, 0.15f);
-                default: return new Color(1f, 0.95f, 0.5f);
-            }
-        }
-
-        /// A player hit of <paramref name="type"/> landed: if this monster is weak to it, knock off <paramref name="pips"/> shield pips.
-        public void ShieldHit(HitType type, int pips, bool force = false)
-        {
-            if (Dead || _st == St.Spawning || Broken || pips <= 0 || !_weak.Contains(type)) return;
-            KnownWeak.Add(Stats.monsterId + ":" + type);   // found a weakness: its icon lights up for every monster of this kind
-            if (!force && Time.time < _pipCdUntil) return;
-            _pipCdUntil = Time.time + _dc.Settings.shieldPipCooldown;
-            _shield = Mathf.Max(0, _shield - pips);
-            DungeonFx.Sparks(Body + Vector2.up * (_anim.FigureHeight * 0.5f), Vector2.up, TypeColor(type), 4 + pips * 2);
-            if (_shield <= 0) Break();
-            else DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.85f), "Weak!", "dnum--info");
-        }
-
-        void Break()
-        {
-            float secs = BreakSeconds;
-            _brokenT = secs;
-            _stunT = Mathf.Max(_stunT, secs);   // ignores stun resistance: bosses break properly
-            CancelInvoke("Bite");
-            if (_st == St.Windup || _st == St.Charging || _st == St.Striking) { _st = St.Recover; _stT = 0.1f; }
-            Color c = new Color(1f, 0.85f, 0.4f);
-            DungeonFx.Flash(Body, c, 5f, 2.4f, 0.5f);
-            DungeonFx.RingAt(Body, c, 2f, 0.45f);
-            DungeonFx.Sparks(Body, Vector2.up, c, 18);
-            for (int i = 0; i < 12; i++) DungeonFx.Throw(Body, Random.insideUnitCircle.normalized, new Color(0.6f, 0.85f, 1f), 1, 3f, 7f);   // shield shards
-            DungeonFx.Ghost(_anim.Renderer, new Color(1f, 0.9f, 0.5f, 0.9f), 0.2f, true, true);
-            GameFeel.HitStop(0.1f); GameLook.Punch(0.6f); _dc.Shake(0.15f, 0.12f);
-            DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), "BREAK!", "dnum--crit");
-            if (_dc.Player != null) _dc.Player.OnBreak(this);
-        }
-
-        void MakePips()
-        {
-            if (_pips != null) foreach (var p in _pips) if (p != null) Destroy(p.gameObject);
-            if (_weakIcons != null) foreach (var p in _weakIcons) if (p != null) Destroy(p.gameObject);
-            _pips = new SpriteRenderer[_shieldMax];
-            _weakIcons = new SpriteRenderer[_weak.Count];
-            float y = _anim.FigureHeight + 0.34f, s = 0.09f, gap = 0.035f;
-            float w = _shieldMax * s + (_shieldMax - 1) * gap;
-            for (int i = 0; i < _shieldMax; i++) _pips[i] = Pip("Shield", new Vector3(-w * 0.5f + s * 0.5f + i * (s + gap), y, 0), s, 0f);
-            float ws = 0.1f, wg = 0.09f, ww = _weak.Count * ws + (_weak.Count - 1) * wg;
-            for (int i = 0; i < _weak.Count; i++) _weakIcons[i] = Pip("Weak", new Vector3(-ww * 0.5f + ws * 0.5f + i * (ws + wg), y + 0.17f, 0), ws, 45f);
-        }
-
-        SpriteRenderer Pip(string n, Vector3 local, float size, float rot)
-        {
-            var g = new GameObject(n); g.transform.SetParent(transform, false);
-            g.transform.localPosition = local; g.transform.localRotation = Quaternion.Euler(0, 0, rot);
-            var b = DungeonFx.Pixel.bounds.size;
-            g.transform.localScale = new Vector3(size / b.x, size / b.y, 1f);
-            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel;
-            return sr;
-        }
-
-        void UpdatePips()
-        {
-            if (_anim == null || _shieldMax <= 0) return;
-            if (_pips == null) MakePips();
-            float a = Shadow ? Mathf.Lerp(0.15f, 1f, Lit01) : 1f;
-            int order = DungeonController.SortOrder(transform.position.y) + 3;
-            bool blink = Mathf.FloorToInt(Time.time * 8f) % 2 == 0;
-            int brokenShown = Broken ? Mathf.CeilToInt(_brokenT / Mathf.Max(0.01f, BreakSeconds) * _pips.Length) : 0;
-            for (int i = 0; i < _pips.Length; i++)
-            {
-                var p = _pips[i]; if (p == null) continue;
-                Color c;
-                if (Broken) c = i < brokenShown ? (blink ? new Color(1f, 0.85f, 0.3f) : new Color(1f, 0.6f, 0.2f)) : new Color(0.25f, 0.2f, 0.15f, 0.6f);
-                else c = i < _shield ? new Color(0.55f, 0.82f, 1f) : new Color(0.2f, 0.24f, 0.32f, 0.6f);
-                c.a *= a; p.color = c; p.sortingOrder = order;
-            }
-            for (int i = 0; i < _weakIcons.Length; i++)
-            {
-                var w = _weakIcons[i]; if (w == null) continue;
-                bool known = KnownWeak.Contains(Stats.monsterId + ":" + _weak[i]);
-                Color c = known ? TypeColor(_weak[i]) : new Color(0.32f, 0.32f, 0.38f);   // grey until you find it
-                c.a *= a * (Broken ? 0.4f : 1f); w.color = c; w.sortingOrder = order;
-            }
-        }
+        // ───────────────────────── typed hits ─────────────────────────
+        /// A player hit of <paramref name="type"/> landed. Break & Boost were removed in Design v2 (ticket 01);
+        /// ticket 06 swaps HitType for Element and hangs weaknesses and resistances here.
+        public void TypedHit(HitType type, int strength = 1, bool force = false) { }
 
         // ───────────────────────── statuses (player moves) ─────────────────────────
         public void Stun(float seconds)
@@ -609,7 +499,6 @@ namespace HearthHollow.Dungeon
             if (sr == null) return;
             Color c = Stats.elite && !Stats.boss ? new Color(1f, 0.88f, 0.6f) : Color.white;
             if (_flashT > 0f) c = new Color(1f, 0.45f, 0.45f);
-            else if (_brokenT > 0f) c = Mathf.FloorToInt(Time.time * 10f) % 2 == 0 ? new Color(1f, 0.9f, 0.55f) : Color.white;
             else if (_stunT > 0f) c = new Color(0.75f, 0.8f, 1f);
             else if (_rootT > 0f) c = new Color(0.7f, 1f, 0.7f);
             else if (_markT > 0f && Mathf.FloorToInt(Time.time * 6f) % 2 == 0) c = new Color(1f, 0.6f, 0.55f);
@@ -620,7 +509,6 @@ namespace HearthHollow.Dungeon
 
         void UpdateHpBar()
         {
-            UpdatePips();
             if (_hpFill == null) return;
             bool show = Hp < Stats.maxHp;
             _hpBg.enabled = _hpFill.enabled = show;
