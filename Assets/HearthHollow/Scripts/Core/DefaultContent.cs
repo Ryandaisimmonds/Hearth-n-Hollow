@@ -48,6 +48,7 @@ namespace HearthHollow.Core
             UtilityGear33(c);        // DefaultContentDesignV2.cs: lantern track, slice trinkets
             LampMaker34(c);          // DefaultContentDesignV2.cs: the Lamp-maker's three stages
             NormalSpeed35(c);        // DefaultContentDesignV2.cs: boot speeds back to normal
+            BbqEarlier36(c);         // DefaultContentDesignV2.cs: slice BBQ dishes at level 1
             return c;
         }
 

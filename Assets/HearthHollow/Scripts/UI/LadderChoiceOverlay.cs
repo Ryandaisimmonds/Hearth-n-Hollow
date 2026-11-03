@@ -53,10 +53,10 @@ namespace HearthHollow.UI
             int next = run.floor + 1;
             bool last = DungeonRules.IsBossFloor(C, run.routeId, next);   // a boss floor (every 5th in a deep dungeon)
             bool bottom = next >= run.floorsTotal;
-            bool choiceBelow = DungeonRules.HomeChoiceOn(C, run.routeId, next);
+            bool choiceBelow = DungeonRules.HomeChoiceOn(C, run.routeId, next, run.dungeonSeed);
             _title.text = "🪜 Floor " + next + " of " + run.floorsTotal + " lies below";
             _below.text = last ? (bottom ? "👑 The boss waits at the bottom — beat it to clear the dungeon (and its big loot)." : "👑 A boss guards floor " + next + " — beat it for big loot and a shortcut to start below it next time.")
-                        : "Tougher monsters, richer pickings." + (choiceBelow ? "" : " No way home on floor " + next + " — the next chance is floor " + (next + 1) + ".");
+                        : "Tougher monsters, richer pickings. Below here the only ways home are rare portals and the boss's exit.";
             _odds.text = "Deeper floors hold rarer ingredients: the ones tier-2 dishes need.";
             // what's in the bag
             int ings = 0, deep = 0, mats = 0;

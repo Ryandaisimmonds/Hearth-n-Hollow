@@ -33,7 +33,11 @@ namespace HearthHollow.Core
         /// A boss guards this floor (every 5th floor in a deep dungeon, and always the last).
         public bool DungeonBossFloor { get { return Run != null && DungeonRules.IsBossFloor(Content, Run.routeId, Run.floor); } }
         /// This floor offers the way home (an exit, and the ladder asks deeper-or-home); between those floors the ladder just goes down.
-        public bool DungeonHomeChoice { get { return Run != null && DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor); } }
+        public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
+        /// A way-home portal is on this floor (not a boss's exit). Ticket 26.
+        public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
+        /// The first dive has no ladder: its far room is the way home (ticket 25).
+        public bool DungeonNoLadder { get { return Run != null && Run.firstDive; } }
         public List<int> StartFloors(string routeId) { return DungeonRules.StartFloors(Content, Profile, routeId); }
 
         public EnemyStats DungeonEnemy(string monsterId, bool elite, bool boss) { return DungeonRules.Enemy(Content, Run, monsterId, elite, boss); }
@@ -273,10 +277,10 @@ namespace HearthHollow.Core
         /// Ladder: down to the next floor (harder, richer). The Unity side builds the new floor on Changed.
         public bool DungeonDescend()
         {
-            if (!InDungeon || Run.floor >= Run.floorsTotal) return false;
+            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive) return false;
             Run.floor++;
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
-            Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : !DungeonHomeChoice ? " — no way home on this floor; find the ladder" : ""));
+            Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : DungeonPortalFloor ? " — ✨ a way-home portal shimmers somewhere on this floor" : " — no way home here"));
             Touch(false);
             return true;
         }

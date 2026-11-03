@@ -41,6 +41,8 @@ namespace HearthHollow.Core
             if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2 (ticket 07): element discovery starts empty   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
             UpgradeArcProgress();                     // deepest floors / bosses / learned moves (saveVersion 11, ticket 10)
             GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12, ticket 16)
+            if (Profile.seenIngredients == null) Profile.seenIngredients = new System.Collections.Generic.List<string>();
+            Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13, ticket 24)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
@@ -311,6 +313,7 @@ namespace HearthHollow.Core
 
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
             ClearRunLog();   // a fresh log each run (ticket 20)
+            Run.firstDive = UseDungeon && !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.element = Cooking.Infusion(Content, Run.eaten);   // a meal's infusion: attacks without their own element take it
             Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
@@ -329,6 +332,7 @@ namespace HearthHollow.Core
             LastSummary = null;
             var r = Content.Route(routeId);
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
+            if (Run.firstDive) Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
             Touch(true);
             return true;
         }
@@ -452,6 +456,8 @@ namespace HearthHollow.Core
             var rt = Content.Route(Run.routeId);
             int left = Bag.Add(Run, id, count, T.stackSize);
             int got = count - left;
+            if (got > 0 && Routes.See(Profile, id) && Content.Ingredient(id) != null && !Kitchen.IsMaterial(Content, id))
+                Info("📖 New ingredient: " + Content.Ingredient(id).emoji + " " + Content.Ingredient(id).name + " — new recipes to try at the cooking area");   // ticket 24
             var ing = Content.Ingredient(id);
             string name = ing != null ? ing.emoji + " " + ing.name : id;
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));

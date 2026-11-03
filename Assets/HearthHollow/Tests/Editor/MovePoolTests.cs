@@ -82,6 +82,7 @@ namespace HearthHollow.Tests
         public void SessionDescend_RecordsTheFloorAndAnnouncesUnlocks()
         {
             var s = new GameSession(_c, null, 3);
+            s.Profile.arcStage = 1;   // past the first dive (no ladder there)
             s.Profile.selectedClass = ClassId.Cook;
             Assert.IsTrue(s.StartRun("meadow"));
             Assert.AreEqual(1, Progression.DeepestFloor(s.Profile, "meadow"));

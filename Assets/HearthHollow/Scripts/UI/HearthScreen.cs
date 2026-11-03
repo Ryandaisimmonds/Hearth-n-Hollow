@@ -633,7 +633,7 @@ namespace HearthHollow.UI
                 _recipeGrid.Clear();
                 _recipeGrid.Add(UIKit.L(total == 0 ? "No meals known yet." : "No meals match these filters.", "muted", "recipe-grid__empty"));
             }
-            _filterCount.text = "Showing " + shown.Count + " of " + total + " meals" + (locked > 0 ? "  ·  🔨 " + locked + " need a station upgrade" : "") + (hidden > 0 ? "  ·  🔒 " + hidden + " more to discover (find their ingredients on new routes)" : "");
+            _filterCount.text = "Showing " + shown.Count + " of " + total + " meals" + (locked > 0 ? "  ·  🔨 " + locked + " need a station upgrade" : "") + (hidden > 0 ? "  ·  🔒 " + hidden + " more to discover: find new ingredients in the dungeons" : "");
         }
 
         /// One list row: picture · name and bonus · ingredient counts stacked on the right.
@@ -662,7 +662,8 @@ namespace HearthHollow.UI
             {
                 IngredientCost ic = r.ingredients[k];
                 int have = Mathf.Max(0, Meals.Available(C, p, ic.ingredientId));
-                var cost = UIKit.L(UIKit.IngEmoji(C, ic.ingredientId) + " " + have + "/" + ic.count, "cost", "recipe-row__cost");
+                bool known = Routes.IngredientKnown(C, p, ic.ingredientId);   // ticket 24: not found yet = ❓
+                var cost = UIKit.L((known ? UIKit.IngEmoji(C, ic.ingredientId) : "❓") + " " + have + "/" + ic.count, "cost", "recipe-row__cost");
                 cost.EnableInClassList("cost--short", have < ic.count);
                 costs.Add(cost);
             }
@@ -672,7 +673,7 @@ namespace HearthHollow.UI
             string id = r.id;
             row.RegisterCallback<ClickEvent>(e => Ui.OpenCook(id));   // open the stove: pick grades + accelerator, see the odds
             var ings = new List<string>();
-            foreach (var ic in r.ingredients) ings.Add(ic.count + "× " + UIKit.IngName(C, ic.ingredientId));
+            foreach (var ic in r.ingredients) ings.Add(ic.count + "× " + (Routes.IngredientKnown(C, p, ic.ingredientId) ? UIKit.IngName(C, ic.ingredientId) : "? (not found yet)"));
             string tip = (r.description ?? "") + (ings.Count > 0 ? "\nNeeds " + string.Join(", ", ings.ToArray()) : "");
             if (r.counters != Hazard.None) tip += "\n" + Routes.HazardEmoji(r.counters) + " guards against " + Routes.HazardName(r.counters).ToLower();
             if (!can && !string.IsNullOrEmpty(reason)) tip += "\n" + reason;

@@ -183,8 +183,9 @@ namespace HearthHollow.UI
                 var ing = C.Ingredient(ic.ingredientId);
                 int have = Economy.PantryCount(p, ic.ingredientId);
                 var row = UIKit.E("cook-line");
-                row.Add(UIKit.L(UIKit.IngEmoji(C, ic.ingredientId) + " " + ic.count + "× " + UIKit.IngName(C, ic.ingredientId)
-                    + (ing != null && ing.deep ? "  ✨ found deep" : ""), "cook-line__name"));
+                bool known = Routes.IngredientKnown(C, p, ic.ingredientId);   // ticket 24
+                row.Add(UIKit.L(known ? UIKit.IngEmoji(C, ic.ingredientId) + " " + ic.count + "× " + UIKit.IngName(C, ic.ingredientId) + (ing != null && ing.deep ? "  ✨ found deep" : "")
+                                      : "❓ " + ic.count + "× ? — not found yet" + (ing != null && ing.deep ? " (somewhere deep)" : ""), "cook-line__name"));
                 var haveL = UIKit.L("have " + have, "small", have >= ic.count ? "muted" : "cook-line__short");
                 row.Add(haveL);
                 _lines.Add(row);

@@ -12,7 +12,7 @@ namespace HearthHollow.Core
 {
     public static partial class DefaultContent
     {
-        public const int LatestContentVersion = 35;
+        public const int LatestContentVersion = 36;
 
         static string F(float v) { return v.ToString("R", CultureInfo.InvariantCulture); }
 

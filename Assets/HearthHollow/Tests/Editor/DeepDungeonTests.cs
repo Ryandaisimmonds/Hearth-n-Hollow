@@ -9,7 +9,7 @@ namespace HearthHollow.Tests
         GameContent _c;
         [SetUp] public void SetUp() { _c = DefaultContent.Create(); }
 
-        GameSession Cook() { var s = new GameSession(_c, null, 7); s.Profile.selectedClass = ClassId.Cook; return s; }
+        GameSession Cook() { var s = new GameSession(_c, null, 7); s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1; return s; }   // past the first dive
 
         [Test]
         public void Meadow_Is10Floors_BossesOn5And10_Chili5()
@@ -23,11 +23,19 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void HomeChoice_EveryOtherFloor_AndAfterEveryBoss()
+        public void WayHome_OnlyAfterBosses_AndOnRarePortals()
         {
-            int[] yes = { 1, 3, 5, 7, 9, 10 }, no = { 2, 4, 6, 8 };
-            foreach (int f in yes) Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, "meadow", f), "floor " + f);
-            foreach (int f in no) Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, "meadow", f), "floor " + f);
+            int portals = 0, floors = 0;
+            for (int seed = 1; seed <= 400; seed++)
+            {
+                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, "meadow", 1, seed), "never on floor 1");
+                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, "meadow", 5, seed), "the floor-5 boss opens a way home");
+                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, "meadow", 10, seed));
+                foreach (int f in new[] { 2, 3, 4, 6, 7, 8, 9 }) { floors++; if (DungeonRules.HomeChoiceOn(_c, "meadow", f, seed)) portals++; }
+            }
+            float share = portals / (float)floors;
+            Assert.That(share, Is.InRange(0.14f, 0.26f), "about 1 floor in 5 has a portal");
+            Assert.AreEqual(DungeonRules.PortalFloor(_c, 4, 77), DungeonRules.PortalFloor(_c, 4, 77), "the same run and floor always agree");
         }
 
         [Test]

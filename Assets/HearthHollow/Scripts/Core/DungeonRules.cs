@@ -13,6 +13,7 @@ namespace HearthHollow.Core
         public int floorsTotal = 3;
         public int dungeonSeed;           // the Unity generator seeds each floor from this + floor
         public bool secondWindUsed;       // ticket 16: the Pocket Hearth has saved you this run
+        public bool firstDive;            // ticket 25: the opening's first dive (no ladder, tougher monsters)
     }
 
     /// Stats for one spawned enemy (difficulty-scaled, same formulas as the old turn-based fights).
@@ -43,6 +44,7 @@ namespace HearthHollow.Core
             float hp = (t.monsterHpBase + diff * t.monsterHpPerDiff) * (m != null ? m.hpMult : 1f);
             float atk = t.monsterAtkBase + diff * t.monsterAtkPerDiff;
             if (elite || boss) { hp *= EliteHpMult; atk *= EliteAtkMult; }
+            if (run.firstDive) { hp *= t.firstDiveHpMult; atk *= t.firstDiveAtkMult; }   // ticket 25: the first dive is meant to end in a fall
             if (boss) { hp *= t.bossHpMult; atk *= t.bossAtkMult; }
             if (Routes.Has(c.Route(run.routeId), Mutator.Giants)) hp *= t.giantHp;
             if (Routes.Has(c.Route(run.routeId), Mutator.Swarm) && !boss) hp *= t.swarmHp;
@@ -121,11 +123,18 @@ namespace HearthHollow.Core
             return every > 0 && floor > 0 && floor % every == 0;
         }
 
-        /// The go-deeper-or-home choice (and an exit) comes every other floor — odd floors — and after every boss.
-        /// On the floors between, the ladder just goes down.
-        public static bool HomeChoiceOn(GameContent c, string routeId, int floor)
+        /// Ticket 26: a way home is rare: every boss room has one, and a portal turns up on about 1 floor in 5
+        /// (never floor 1; seeded by the run and floor, so it doesn't change on reload). Elsewhere the ladder just goes down.
+        public static bool HomeChoiceOn(GameContent c, string routeId, int floor, int seed)
         {
-            return floor % 2 == 1 || IsBossFloor(c, routeId, floor);
+            return IsBossFloor(c, routeId, floor) || PortalFloor(c, floor, seed);
+        }
+
+        public static bool PortalFloor(GameContent c, int floor, int seed)
+        {
+            if (floor <= 1) return false;
+            var r = new Random(unchecked(seed * 486187739 + floor * 7919 + 12345));
+            return r.NextDouble() < c.tuning.portalChance;
         }
 
         /// Floors a run can start from: 1, plus the floor after each boss you've beaten (the shortcuts).

@@ -95,7 +95,7 @@ namespace HearthHollow.Dungeon
             int seed = unchecked(run.dungeonSeed * 31 + run.floor * 7919);
             var rng = new System.Random(seed);
             int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
-            _plan = DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor, Session.DungeonHomeChoice, run.floor, route != null ? route.gatherChance : 0.2f);
+            _plan = DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice, Session.DungeonNoLadder, run.floor, route != null ? route.gatherChance : 0.2f);
             _theme = Settings.ThemeFor(run.routeId);
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);

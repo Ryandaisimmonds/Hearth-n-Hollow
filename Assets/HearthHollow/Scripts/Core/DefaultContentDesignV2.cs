@@ -19,6 +19,7 @@
 // v33 (ticket 16): utility gear. A lantern track (light reach) joins boots and bag; four slice trinkets that bend rules.
 // v34 (ticket 17): the Lamp-maker, three stages built with Meadow timber and Ridge ember coal (light reach + Flare).
 // v35 (ticket 18): the 75% start speed is gone, so boot speeds go back to what they were before v24 doubled them.
+// v36 (ticket 23): BBQ dishes made from slice ingredients need only BBQ level 1 (Firecracker Skewer was level 3).
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -237,6 +238,17 @@ namespace HearthHollow.Core
             float[] doubled = { 0f, 0.08f, 0.14f, 0.2f, 0.28f };
             for (int i = 0; i < c.bootsTiers.Count && i < doubled.Length; i++)
                 if (Near(c.bootsTiers[i].value, doubled[i])) c.bootsTiers[i].value = doubled[i] * 0.5f;
+        }
+
+        static void BbqEarlier36(GameContent c)
+        {
+            foreach (var r in c.recipes)
+            {
+                if (r == null || r.station != Station.BBQ || r.stationLevel <= 1 || r.always) continue;
+                bool slice = r.ingredients.TrueForAll(ic => ic.ingredientId == "chili" || ic.ingredientId == "mushroom" || ic.ingredientId == "herbs"
+                    || ic.ingredientId == "garlic" || ic.ingredientId == "wheat" || ic.ingredientId == "berries" || ic.ingredientId == "fish");
+                if (slice) r.stationLevel = 1;
+            }
         }
 
         static void Elements26(GameContent c)

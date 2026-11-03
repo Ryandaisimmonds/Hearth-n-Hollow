@@ -140,6 +140,9 @@ MonoBehaviour:
       eliteMaterials: 1
       bossMaterials: 3
       fishIngredient: fish
+      portalChance: 0.2
+      firstDiveHpMult: 1.6
+      firstDiveAtkMult: 2.2
       fishCatchCount: 2
       fishGoodWidth: 0.34
       fishPerfectWidth: 0.12
@@ -893,7 +896,7 @@ MonoBehaviour:
       description: "Pops and crackles on the grill \u2014 and in your mouth."
       counters: 0
       rarity: 0
-      stationLevel: 3
+      stationLevel: 1
       always: 0
       tier: 1
       upgradeOf: 
@@ -5059,7 +5062,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 35
+    contentVersion: 36
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

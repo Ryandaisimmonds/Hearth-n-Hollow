@@ -44,6 +44,12 @@ namespace HearthHollow.Dungeon
 
         public static FloorPlan Generate(int seed, int roomCount, bool lastFloor, bool homeChoice, int floor, float gatherShare)
         {
+            return Generate(seed, roomCount, lastFloor, homeChoice, false, floor, gatherShare);
+        }
+
+        /// <param name="noLadder">The opening's first dive (ticket 25): the far room is the way home, not a ladder.</param>
+        public static FloorPlan Generate(int seed, int roomCount, bool lastFloor, bool homeChoice, bool noLadder, int floor, float gatherShare)
+        {
             var rng = new System.Random(seed);
             var plan = new FloorPlan();
             roomCount = Math.Max(lastFloor ? 5 : 6, roomCount);
@@ -87,6 +93,7 @@ namespace HearthHollow.Dungeon
             byDepth.Sort((a, b) => b.depth != a.depth ? b.depth.CompareTo(a.depth) : DoorCount(a).CompareTo(DoorCount(b)));
             var far = byDepth[0];
             if (lastFloor) far.kind = RoomKind.Boss;
+            else if (noLadder) far.kind = RoomKind.Exit;
             else
             {
                 far.kind = RoomKind.Ladder;

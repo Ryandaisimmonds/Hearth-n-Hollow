@@ -407,6 +407,10 @@ namespace HearthHollow.Core
         public int eliteMaterials = 1, bossMaterials = 3;      // elites always drop this many, bosses this many
         // ── town fishing pond: one quick catch a day ──
         public string fishIngredient = "fish";
+        // ticket 26: going home is rare: a way-home portal on this share of floors (never floor 1), plus every boss room
+        public float portalChance = 0.2f;
+        // ticket 25: the opening's first dive is short and brutal (no ladder; monsters much tougher) so it ends in a fall
+        public float firstDiveHpMult = 1.6f, firstDiveAtkMult = 2.2f;
         public int fishCatchCount = 2;
         public float fishGoodWidth = 0.34f, fishPerfectWidth = 0.12f;   // timing bar: good zone → Fine, perfect (centre) → Prime, else Plain
         public float fishBarSpeed = 1.1f;
@@ -489,7 +493,8 @@ namespace HearthHollow.Core
         public List<RouteFloor> deepestFloors = new List<RouteFloor>();   // deepest floor reached per route (ticket 10, saveVersion 11)
         public List<string> bossesBeaten = new List<string>();            // "routeId:floor" for every boss beaten
         public List<string> learnedMoves = new List<string>();            // moves learned in town (Start moves are known without learning)
-        public List<string> storyFlags = new List<string>();              // story beats that have happened (ticket 14: "wren_fire_hint" reveals Chili Ridge)
+        public List<string> storyFlags = new List<string>();
+        public List<string> seenIngredients = new List<string>();         // ticket 24: every ingredient you've ever had (reveals its recipes)              // story beats that have happened (ticket 14: "wren_fire_hint" reveals Chili Ridge)
         public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public int bootsTier, lanternTier;   // Design v2 (ticket 16, saveVersion 12): shared by every class

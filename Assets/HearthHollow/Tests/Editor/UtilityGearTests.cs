@@ -77,6 +77,7 @@ namespace HearthHollow.Tests
         public void PocketHearth_SavesYouOnceARun()
         {
             var s = new GameSession(_c, null, 21);
+            s.Profile.arcStage = 1;   // past the first dive
             s.Profile.selectedClass = ClassId.Cook;
             Gear.Give(_c, s.Profile, "pocket_hearth");
             string why; Assert.IsTrue(Gear.Equip(_c, s.Profile, "pocket_hearth", out why), why);

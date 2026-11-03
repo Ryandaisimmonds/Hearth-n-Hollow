@@ -89,9 +89,27 @@ namespace HearthHollow.Tests
         }
 
         [Test]
+        public void FirstDive_HasNoLadder_AndToughMonsters()
+        {
+            var s = NewSession();
+            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.Run.firstDive);
+            Assert.IsTrue(s.DungeonNoLadder);
+            Assert.IsFalse(s.DungeonDescend(), "no way down on the first dive");
+            var tough = s.DungeonEnemy("slime", false, false);
+            s.DungeonExit(); s.ReturnToHearth();
+            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsFalse(s.Run.firstDive);
+            var normal = s.DungeonEnemy("slime", false, false);
+            Assert.Greater(tough.maxHp, normal.maxHp);
+            Assert.Greater(tough.damage, normal.damage * 1.5f);
+        }
+
+        [Test]
         public void Ladders_NoLongerGiveBoots()
         {
             var s = NewSession();
+            s.StartRun("meadow"); s.DungeonExit(); s.ReturnToHearth();   // the first dive
             s.StartRun("meadow");
             Assert.IsTrue(s.DungeonDescend());
             Assert.IsFalse(s.DashUnlocked);

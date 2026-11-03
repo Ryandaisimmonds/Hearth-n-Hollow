@@ -127,22 +127,63 @@ namespace HearthHollow.Core
         }
 
         // ───────────── recipe discovery ─────────────
-        /// An ingredient is known once it's in the pantry or grows on a route the player has found.
+        /// Ticket 24: remember an ingredient the player has had (pantry, bag or a gift). True the first time.
+        public static bool See(Profile p, string ingId)
+        {
+            if (p == null || string.IsNullOrEmpty(ingId)) return false;
+            if (p.seenIngredients == null) p.seenIngredients = new List<string>();
+            if (p.seenIngredients.Contains(ingId)) return false;
+            p.seenIngredients.Add(ingId); return true;
+        }
+
+        /// An ingredient is known once you've had it (ticket 24); unknown ones show as ❓.
         public static bool IngredientKnown(GameContent c, Profile p, string ingId)
         {
-            if (Economy.PantryCount(p, ingId) > 0) return true;
-            foreach (var r in c.routes)
-                if (r.gatherIngredientIds != null && r.gatherIngredientIds.Contains(ingId) && Discovered(c, p, r)) return true;
+            if (p == null) return false;
+            if (p.seenIngredients != null && p.seenIngredients.Contains(ingId)) return true;
+            return Economy.PantryCount(p, ingId) > 0;
+        }
+
+        /// Can this ingredient be found at all right now? (In the slice: only from its routes, the starter food and the pond.)
+        public static bool Obtainable(GameContent c, string ingId)
+        {
+            if (!Slice.On) return true;
+            if (c.starterPantry != null && c.starterPantry.Exists(x => x.ingredientId == ingId)) return true;
+            if (ingId == c.tuning.fishIngredient) return true;
+            foreach (var id in Slice.RouteIds)
+            {
+                var r = c.Route(id);
+                if (r == null) continue;
+                if (r.gatherIngredientIds != null && r.gatherIngredientIds.Contains(ingId)) return true;
+                if (r.floorDrops != null && r.floorDrops.Exists(d => d != null && d.ingredientId == ingId)) return true;
+            }
             return false;
         }
 
-        /// Camp shows a recipe once all its ingredients are known (keeps the cook page tidy early on).
+        /// Ticket 24: a recipe shows once you've found any one of its ingredients (and all of them can be found);
+        /// the ones you haven't found yet show as ❓.
         public static bool RecipeKnown(GameContent c, Profile p, RecipeData rec)
         {
             if (rec == null) return false;
             if (p.tray != null && p.tray.Contains(rec.id)) return true;
-            foreach (var ic in rec.ingredients) if (!IngredientKnown(c, p, ic.ingredientId)) return false;
-            return true;
+            if (rec.ingredients == null || rec.ingredients.Count == 0) return true;
+            bool any = false;
+            foreach (var ic in rec.ingredients)
+            {
+                if (!Obtainable(c, ic.ingredientId)) return false;
+                if (IngredientKnown(c, p, ic.ingredientId)) any = true;
+            }
+            return any;
+        }
+
+        /// saveVersion 13: older saves remember what's in the pantry, the bag-free meals they've cooked and their tray.
+        public static void SeedSeen(GameContent c, Profile p)
+        {
+            if (p == null || p.saveVersion >= 13) return;
+            foreach (var s in p.pantry) if (s != null && s.count > 0) See(p, s.ingredientId);
+            if (p.mealPantry != null)
+                foreach (var m in p.mealPantry) { var r = c.Recipe(m.recipeId); if (r != null) foreach (var ic in r.ingredients) See(p, ic.ingredientId); }
+            p.saveVersion = 13;
         }
 
         // ───────────── hazards ─────────────

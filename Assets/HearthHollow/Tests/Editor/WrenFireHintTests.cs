@@ -9,7 +9,7 @@ namespace HearthHollow.Tests
         GameContent _c;
         [SetUp] public void SetUp() { _c = DefaultContent.Create(); }
 
-        GameSession Fresh() { var s = new GameSession(_c, null, 11); s.Profile.selectedClass = ClassId.Cook; return s; }
+        GameSession Fresh() { var s = new GameSession(_c, null, 11); s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1; return s; }   // past the first dive
 
         [Test]
         public void NotDue_UntilTheFloor5BossIsBeaten()
