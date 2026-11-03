@@ -138,9 +138,7 @@ namespace HearthHollow.Dungeon
         [Tooltip("Flare shows every secret in its reach for this long.")] public float secretRevealSeconds = 8f;
         [Tooltip("Your own light gives a faint glint of a secret within this many tiles.")] public float secretGlintReach = 2.5f;
 
-        [Header("Torches (light plan step 4)")]
-        [Tooltip("Throwing a torch is unlimited, on a cooldown (s).")] public float torchCooldown = 10f;
-        [Tooltip("How long a thrown torch burns (s) and how far you throw it (tiles).")] public float torchSeconds = 12f, torchRange = 4.5f;
+        [Header("Monster lights")]
         public Color eliteLantern = new Color(1f, 0.78f, 0.35f);
         public Color bossLight = new Color(1f, 0.38f, 0.18f);
         [Range(0f, 1f)] public float wallGlowFalloff = 0.3f;

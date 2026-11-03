@@ -1,8 +1,8 @@
 // Hearth & Hollow — light sources in a dungeon room (light plan step 4).
-//   • Braziers by the walls: cold in a fight, lit by your fire hits (swings, skills, arrows passing through) or a torch;
+//   • Braziers by the walls: cold in a fight, lit by your hits (swings, skills, arrows passing through) or Flare;
 //     every brazier flares on in a wave from the last kill when the room is cleared, and in calm rooms when the room lights up.
 //   • The route's own glow: fireflies (meadows, glades), glowing mushrooms (caves), ice crystals (frost), lava cracks (ember, chili).
-//   • Thrown torches (T / LB, unlimited on a cooldown) — see ThrownTorch.
+//   • ThrownTorch: a burning light on the floor. The player's torch throw was removed (Design v2); the Ranger's Ember Arrow still uses it.
 using System.Collections.Generic;
 using HearthHollow.Core;
 using UnityEngine;

@@ -37,7 +37,6 @@ namespace HearthHollow.Dungeon
         Vector3 _camTarget;
         float _shakeT, _shakeAmp;
         float _ambT;   // ambient embers
-        float _torchCd;   // torch throw cooldown
         // room light: dark while there's something to fight, lights up (after a pause) in calm / cleared rooms
         Light2D _global; float _darkI, _litI, _lightLevel, _lightTarget, _lightUpAt = -1f;
         float _roomMult = 1f, _roomMultTarget = 1f;   // boss rooms are darker until the boss is down
@@ -574,18 +573,6 @@ namespace HearthHollow.Dungeon
 
             if (GameplayActive) UpdateRoomLight();
 
-            // torches: T / (LB) throws one where you're aiming — unlimited, on a cooldown; each burns out after a while
-            if (GameplayActive)
-            {
-                if (_torchCd > 0f) _torchCd -= Time.deltaTime;
-                if (DungeonInput.Torch && Player != null && _torchCd <= 0f)
-                {
-                    _torchCd = Settings.torchCooldown;
-                    ThrownTorch.Throw(this, Player.Body, Player.Aim, Settings.torchRange, Settings.torchSeconds);
-                }
-            }
-            DungeonHud.TorchCooldown = Mathf.Max(0f, _torchCd);
-
             // your light flickers like a flame (Pot meals steady it); Flare (F / LT): a burst of light round you
             if (_playerLight != null && _lightBaseI > 0f)
             {
@@ -601,7 +588,6 @@ namespace HearthHollow.Dungeon
                 if (DungeonInput.Flare && Player != null && _flareCd <= 0f) Flare();
             }
             DungeonHud.FlareCooldown = Mathf.Max(0f, _flareCd);
-            DungeonHud.Torch01 = Settings.torchCooldown > 0f ? 1f - Mathf.Clamp01(_torchCd / Settings.torchCooldown) : 1f;
 
             // embers drifting through the dark room (atmosphere)
             if (GameplayActive && _current != null)

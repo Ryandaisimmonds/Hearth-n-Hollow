@@ -27,8 +27,6 @@ namespace HearthHollow.Dungeon
         public static float Attack01 = 1f;
         public static HearthHollow.Core.MoveData UltMove;   // the class's ultimate (C / I)
         public static float Ult01;
-        public static float TorchCooldown;    // seconds until you can throw another torch (T / LB)
-        public static float Torch01 = 1f;     // 1 = ready
         public static float FlareCooldown;
         public static string Prompt;          // e.g. "E  Forage" (null = none)
         public static string Status;          // e.g. "Clear the room!"

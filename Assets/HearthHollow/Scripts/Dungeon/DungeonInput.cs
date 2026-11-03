@@ -3,7 +3,7 @@
 //   Attack:   left click · J or Z · (A)               Skill 1:  right click · K or X · (X)
 //   Skill 2:  Q · L · (RB)                            Ultimate: C · I · (right-stick click)
 //   Dash: Space · (B)      Use: E or Enter · (Y)      Bag: Tab · (Select)
-//   Torch: R · (LB)        Flare: F · (LT)
+//   Flare: F · (LT)   (the one light button; the thrown torch was removed in Design v2)
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -205,16 +205,6 @@ namespace HearthHollow.Dungeon
             {
                 var k = Keyboard.current; var g = Gamepad.current;
                 return (k != null && k.fKey.wasPressedThisFrame) || (g != null && g.leftTrigger.wasPressedThisFrame);
-            }
-        }
-
-        /// Throw a torch: R / (LB).
-        public static bool Torch
-        {
-            get
-            {
-                var k = Keyboard.current; var g = Gamepad.current;
-                return (k != null && k.rKey.wasPressedThisFrame) || (g != null && g.leftShoulder.wasPressedThisFrame);
             }
         }
 
