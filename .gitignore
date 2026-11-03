@@ -43,3 +43,6 @@ Thumbs.db
 # --- Crash reports ---
 sysinfo.txt
 crashlytics-build.properties
+
+# Local safety copy of the repo from before the 3 Nov history cleanup
+/.git-backup-before-cleanup/
