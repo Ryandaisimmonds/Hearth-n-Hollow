@@ -1,5 +1,6 @@
 // Hearth & Hollow — HUD over the real-time dungeon: HP, special + dash, floor, status, boss bar, loot chips,
 // minimap, the "E" prompt, floating damage numbers and a Tab bag panel (pauses the dungeon).
+using System.Collections.Generic;
 using HearthHollow.Core;
 using HearthHollow.Data;
 using HearthHollow.Dungeon;
@@ -18,6 +19,8 @@ namespace HearthHollow.UI
         readonly Label _atkKey;
         readonly VisualElement _skill, _skillFill, _skill2, _skill2Fill, _dash, _dashFill, _ult, _ultFill;
         readonly VisualElement _skillIcon, _skill2Icon, _dashIcon, _ultIcon;
+        readonly Label _dashLock, _ultLock, _skill2Lock, _lockHint;   // ticket 31: what's still locked, and how to unlock it
+        string _lockKey;
         readonly Label _guard;
         Label _flare;   // Flare cooldown (step 5)
         readonly Label _skillKey, _skill2Key, _ultKey;
@@ -84,11 +87,17 @@ namespace HearthHollow.UI
             _dashIcon = UIKit.E("dhud__icon-slot"); _dash.Add(_dashIcon);
             _dashFill = UIKit.E("dhud__cool"); _dash.Add(_dashFill);
             _dash.Add(UIKit.L("Space", "dhud__key"));
+            _dashLock = UIKit.L("🔒", "dhud__lock"); _dash.Add(_dashLock);
+            _ultLock = UIKit.L("🔒", "dhud__lock"); _ult.Add(_ultLock);
+            _skill2Lock = UIKit.L("🔒", "dhud__lock"); _skill2.Add(_skill2Lock);
+            foreach (var l in new[] { _dashLock, _ultLock, _skill2Lock }) { l.pickingMode = PickingMode.Ignore; UIKit.Show(l, false); }
             _guard = UIKit.L("", "badge", "dhud__guard");
             _flare = UIKit.L("", "badge", "dhud__guard");
             _flare.tooltip = "Flare — F / (LT): a burst of light round you. Pot meals shorten its cooldown.";
             abil.Add(_atk); abil.Add(_skill); abil.Add(_skill2); abil.Add(_ult); abil.Add(_dash); abil.Add(_flare); abil.Add(_guard);
             info.Add(abil);
+            _lockHint = UIKit.L("", "small", "dhud__lock-hint");
+            info.Add(_lockHint);
             row.Add(info);
             card.Add(row);
             top.Add(card);
@@ -215,11 +224,11 @@ namespace HearthHollow.UI
                 SetMoveIcon(_ult, _ultIcon, mu);
                 SetMoveIcon(_atk, _atkIcon, ma);
                 _atkKey.text = DungeonInput.AttackKey;
-                UIKit.Show(_ult, mu != null);
                 _skillKey.text = DungeonInput.Skill1Key; _ultKey.text = DungeonInput.UltKey;
                 _skill2Key.text = m2 != null ? DungeonInput.Skill2Key : DungeonInput.Skill2Key + " —";
                 if (m2 == null) _skill2.tooltip = "Empty — pick a second skill in the Skills page at camp";
             }
+            RefreshLocks(m2, mu);
             Cool(_skill, _skillFill, m1 != null, DungeonHud.Skill01);
             Cool(_skill2, _skill2Fill, m2 != null, DungeonHud.Skill2_01);
             Cool(_atk, _atkFill, ma != null, DungeonHud.Attack01);
@@ -249,6 +258,34 @@ namespace HearthHollow.UI
                 _bagPanel.pickingMode = _bagShown ? PickingMode.Position : PickingMode.Ignore;
                 if (_bagShown) RefreshBag();
             }
+        }
+
+        /// Ticket 31: a padlock on slots you haven't unlocked yet, and a line saying how to get them.
+        void RefreshLocks(MoveData m2, MoveData mu)
+        {
+            if (S.Run == null) return;
+            bool dashLocked = !S.DashUnlocked;
+            var cls = S.Run.classId;
+            string ultHint = mu == null ? Progression.NextUnlockHint(C, S.Profile, cls, MoveSlot.Ultimate) : null;
+            string skillHint = m2 == null ? Progression.NextUnlockHint(C, S.Profile, cls, MoveSlot.Skill) : null;
+            string key = dashLocked + "|" + ultHint + "|" + skillHint;
+            if (key == _lockKey) return;
+            _lockKey = key;
+            UIKit.Show(_dashLock, dashLocked);
+            _dash.EnableInClassList("dhud__ability--padlocked", dashLocked);
+            if (dashLocked) _dash.tooltip = "🔒 Dash — buy your first boots at the smithy (it opens after your first boss)";
+            UIKit.Show(_ult, mu != null || ultHint != null);
+            UIKit.Show(_ultLock, mu == null && ultHint != null);
+            _ult.EnableInClassList("dhud__ability--padlocked", mu == null);
+            if (mu == null && ultHint != null) _ult.tooltip = "🔒 Ultimate — " + ultHint;
+            UIKit.Show(_skill2Lock, m2 == null && skillHint != null);
+            if (m2 == null && skillHint != null) _skill2.tooltip = "🔒 Second skill — " + skillHint;
+            var parts = new List<string>();
+            if (dashLocked) parts.Add("🔒 Dash: boots from the smithy");
+            if (mu == null && ultHint != null) parts.Add("🔒 Ultimate: " + ultHint);
+            if (m2 == null && skillHint != null) parts.Add("🔒 L skill: " + skillHint);
+            _lockHint.text = string.Join("   ", parts.ToArray());
+            UIKit.Show(_lockHint, parts.Count > 0);
         }
 
         static void Cool(VisualElement box, VisualElement fill, bool has, float ready01)

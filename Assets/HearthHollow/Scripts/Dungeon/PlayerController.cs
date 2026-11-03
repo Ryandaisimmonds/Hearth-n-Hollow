@@ -136,6 +136,7 @@ namespace HearthHollow.Dungeon
         void Update()
         {
             if (_dc == null || !_dc.GameplayActive) { _move = Vector2.zero; ShowReticle(false); return; }
+            if (S.Run != null) InfusedAura();   // ticket 34: your meal's element drifts off you
             float dt = Time.deltaTime;
             _attackCd -= dt; _dashCd -= dt; _skill1Cd -= dt; _skill2Cd -= dt; _ultCd -= dt;
             if (_dashT > 0f) _dashT -= dt;
@@ -315,6 +316,7 @@ namespace HearthHollow.Dungeon
         {
             bool crit;
             float dmg = S.DungeonRollDamage(mult, out crit);
+            if (type != Element.None && type == S.RunElement && e != null) InfusedFlair(e.Body);   // ticket 34: meals add their element to your hits
             e.TakeHit(dmg, crit, knockDir, knock, type);
         }
 
@@ -1376,6 +1378,26 @@ namespace HearthHollow.Dungeon
         }
 
         /// A move's element: its own, or (for moves without one) the run's infused element from meals.
+        // ── ticket 34: an infused meal shows on you and on every hit ──
+        float _flairAt;
+        void InfusedFlair(Vector3 at)
+        {
+            var el = S.RunElement;
+            if (el == Element.None) return;
+            Color c = EnemyController.ElementColour(el);
+            DungeonFx.Embers(at, c, el == Element.Fire ? 10 : 7, 0.4f);
+            DungeonFx.RingAt(at, new Color(c.r, c.g, c.b, 0.7f), 0.6f, 0.25f);
+        }
+
+        /// A few element motes drift off you while an infused meal is working (called from Update).
+        void InfusedAura()
+        {
+            var el = S.RunElement;
+            if (el == Element.None || Time.time < _flairAt) return;
+            _flairAt = Time.time + (el == Element.Fire ? 0.12f : 0.18f);
+            DungeonFx.Embers(Hip, EnemyController.ElementColour(el), 1, 0.35f);
+        }
+
         Element ElementOf(MoveData m) { return m != null && m.element != Element.None ? m.element : S.RunElement; }
         /// A combo finisher's element (falls back to the move's).
         Element ElementOf2(MoveData m) { return m != null && m.element2 != Element.None ? m.element2 : ElementOf(m); }

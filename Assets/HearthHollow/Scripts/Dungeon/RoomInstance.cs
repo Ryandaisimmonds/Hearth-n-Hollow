@@ -182,7 +182,7 @@ namespace HearthHollow.Dungeon
                         // after the boss: the way home, and (unless this is the bottom) a ladder on down
                         var ex = FirstPoint(SpawnKind.Exit);
                         AddProp(InteractKind.Exit, ex, false);
-                        if (!Controller.Session.DungeonOnLastFloor)
+                        if (!Controller.Session.DungeonOnLastFloor && !Controller.Session.DungeonFirstBossFloor)   // your first boss ever: home you go (ticket 32)
                         {
                             var lp = Points(SpawnKind.Ladder);
                             Vector2 la = lp.Count > 0 ? lp[0] : NearestWalkable(Origin + RoomTemplate.Centre);

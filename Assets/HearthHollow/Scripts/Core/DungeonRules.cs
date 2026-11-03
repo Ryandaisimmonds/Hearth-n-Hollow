@@ -14,6 +14,7 @@ namespace HearthHollow.Core
         public int dungeonSeed;           // the Unity generator seeds each floor from this + floor
         public bool secondWindUsed;       // ticket 16: the Pocket Hearth has saved you this run
         public bool firstDive;            // ticket 25: the opening's first dive (no ladder, tougher monsters)
+        public bool mustGoHome;           // ticket 32: you've just beaten your first boss ever: no going deeper this run
     }
 
     /// Stats for one spawned enemy (difficulty-scaled, same formulas as the old turn-based fights).

@@ -149,9 +149,25 @@ namespace HearthHollow.Core
             return "Known from the start";
         }
 
+        /// Ticket 31: a short hint for an empty loadout slot ("Boots at the smithy", "Reach Meadow Hollow floor 4"…). Null = nothing to unlock.
+        public static string NextUnlockHint(GameContent c, Profile p, ClassId cls, MoveSlot slot)
+        {
+            if (c.moves == null) return null;
+            MoveData best = null; MoveUnlock bu = null;
+            foreach (var m in c.moves)
+            {
+                if (m == null || m.slot != slot || !InPool(c, cls, m) || Owns(c, p, cls, m)) continue;
+                var u = Unlock(c, m.id);
+                if (u == null) continue;
+                if (RequirementMet(p, u)) return "Learn " + m.name + " at " + LearnAtText(u);
+                if (best == null || (u.kind == UnlockKind.ReachFloor && bu.kind != UnlockKind.ReachFloor) || (u.kind == bu.kind && u.floor < bu.floor)) { best = m; bu = u; }
+            }
+            return best != null ? best.name + ": " + RequirementText(c, bu) : null;
+        }
+
         public static string LearnAtText(MoveUnlock u)
         {
-            return u != null && u.learnAt == "yard" ? "the training yard" : "the kitchen";
+            return "the training yard";   // every move is learned in the training yard's Skills page (the kitchen has no Learn button)
         }
 
         static MoveSlot KindOf(LoadSlot s)

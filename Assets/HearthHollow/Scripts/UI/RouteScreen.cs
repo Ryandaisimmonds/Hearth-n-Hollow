@@ -410,34 +410,61 @@ namespace HearthHollow.UI
             cookBox.Add(who);
             _expedition.Add(cookBox);
 
-            // meals
+            // meals: ticket 29: you pack the tray here, as you set out
             var mealBox = UIKit.E("expedition__section");
-            mealBox.Add(UIKit.L("Meals packed  " + p.tray.Count + "/" + C.tuning.traySize, "subhead"));
-            if (p.tray.Count == 0)
+            mealBox.Add(UIKit.L("🧺 Tray  " + p.tray.Count + "/" + C.tuning.traySize + " — eaten as you set out", "subhead"));
+            var packed = Cooking.Packed(C, p);
+            for (int i = 0; i < C.tuning.traySize; i++)
             {
-                mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
-            }
-            else
-            {
-                var packed = Cooking.Packed(C, p);
-                for (int i = 0; i < p.tray.Count; i++)
+                var row = UIKit.E("expedition__meal", "expedition__tray-slot");
+                if (i < p.tray.Count)
                 {
                     var rec = C.Recipe(p.tray[i]);
                     var pm = i < packed.Count ? packed[i] : null;
-                    var row = UIKit.E("expedition__meal");
                     if (pm != null) UIKit.ElementTint(row, Cooking.SlotElement(C, pm.accelId));
                     row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(p.tray[i]), rec != null ? rec.emoji : "🍽️", "expedition__meal-pic"), "item-frame--sm"));
-                    var acc = pm != null && !string.IsNullOrEmpty(pm.accelId) ? C.Ingredient(pm.accelId) : null;
-                    string tag = acc != null && UIKit.SlotLine(C, pm.accelId).Length > 0 ? "  " + UIKit.SlotLine(C, pm.accelId) : "";
-                    row.Add(UIKit.L((pm != null ? Cooking.GradeGem(pm.grade) + " " : "") + (rec != null ? rec.name : p.tray[i]) + (acc != null ? " + " + acc.emoji : "") + tag, "expedition__meal-name"));
+                    string tag = pm != null && UIKit.SlotLine(C, pm.accelId).Length > 0 ? "  " + UIKit.SlotLine(C, pm.accelId) : "";
+                    row.Add(UIKit.L((pm != null ? Cooking.GradeGem(pm.grade) + " " : "") + (rec != null ? rec.name : p.tray[i]) + tag, "expedition__meal-name"));
                     if (rec != null && pm != null) row.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, pm)), "expedition__meal-buffs"));
-                    mealBox.Add(row);
+                    int slot = i;
+                    var x = UIKit.B("×", () => S.DiscardTrayMeal(slot), "slot__x", "expedition__unpack");
+                    x.tooltip = "Take it off the tray";
+                    row.Add(x);
                 }
-                var syns = Meals.ActiveSynergies(C, packed);
-                for (int i = 0; i < syns.Count; i++)
-                    mealBox.Add(UIKit.L(syns[i].emoji + " " + syns[i].name + " — " + syns[i].description, "badge", "badge--synergy", "combo-badge"));
-                mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
+                else row.Add(UIKit.L((i + 1) + " · empty — pick a meal below", "muted", "small", "expedition__meal-name"));
+                mealBox.Add(row);
             }
+            var syns = Meals.ActiveSynergies(C, packed);
+            for (int i = 0; i < syns.Count; i++)
+                mealBox.Add(UIKit.L(syns[i].emoji + " " + syns[i].name + " — " + syns[i].description, "badge", "badge--synergy", "combo-badge"));
+
+            // the meal pantry: click to pack
+            if (p.tray.Count < C.tuning.traySize)
+            {
+                mealBox.Add(UIKit.L("Meal pantry — click to pack", "small", "expedition__pick-title"));
+                var pick = UIKit.E("expedition__pick");
+                foreach (var ar in Cooking.AlwaysMeals(C))
+                {
+                    var arr = ar;
+                    var chip = UIKit.B(ar.emoji + " " + ar.name + " ∞", () => S.PackAlwaysMeal(arr.id), "filter-chip", "expedition__pick-chip");
+                    chip.tooltip = UIKit.BuffSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f }));
+                    pick.Add(chip);
+                }
+                for (int i = 0; i < p.mealPantry.Count; i++)
+                {
+                    var m = p.mealPantry[i]; var rec = C.Recipe(m.recipeId);
+                    int idx = i;
+                    string tag = UIKit.SlotLine(C, m.accelId);
+                    var chip = UIKit.B(Cooking.GradeGem(m.grade) + " " + (rec != null ? rec.emoji + " " + rec.name : m.recipeId) + (tag.Length > 0 ? "  " + tag : ""), () => S.PackMeal(idx), "filter-chip", "expedition__pick-chip");
+                    UIKit.ElementTint(chip, Cooking.SlotElement(C, m.accelId));
+                    chip.tooltip = UIKit.BuffSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m)));
+                    pick.Add(chip);
+                }
+                if (p.mealPantry.Count == 0) pick.Add(UIKit.L("No cooked meals. Cook at the kitchen first (Camp Bread is always free).", "muted", "small"));
+                mealBox.Add(pick);
+            }
+            if (p.tray.Count == 0) mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
+            mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
             _expedition.Add(mealBox);
 
             bool can = r != null && lockWhy == null && classWhy == null;

@@ -38,6 +38,8 @@ namespace HearthHollow.Core
         public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
         /// The first dive has no ladder: its far room is the way home (ticket 25).
         public bool DungeonNoLadder { get { return Run != null && Run.firstDive; } }
+        /// This floor's boss would be your first ever: its room has only the way home (ticket 32).
+        public bool DungeonFirstBossFloor { get { return Run != null && DungeonBossFloor && (Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0 || Run.mustGoHome); } }
         public List<int> StartFloors(string routeId) { return DungeonRules.StartFloors(Content, Profile, routeId); }
 
         public EnemyStats DungeonEnemy(string monsterId, bool elite, bool boss) { return DungeonRules.Enemy(Content, Run, monsterId, elite, boss); }
@@ -189,7 +191,12 @@ namespace HearthHollow.Core
             Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
             Emit(new GameEvent(GameEventType.Xp, xp, false, "+" + xp + " XP"));
             DropLoot(f);
-            if (e.boss) BeatBoss();   // arc step (ticket 10)
+            if (e.boss)
+            {
+                bool first = Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0;
+                BeatBoss();   // arc step (ticket 10)
+                if (first) { Run.mustGoHome = true; Info("🏠 Your first boss is down! Head home and tell Old Wren."); }   // ticket 32
+            }
             if (e.boss) { string ing = PickRouteIngredient(); if (ing != null) AddLoot(ing, 2, false, true); DropMaterial(false, true); }
             string trinket = Gear.RollDrop(Content, Profile, e.boss, e.elite, _rng);   // rare: kept straight away, even if you fall
             if (trinket != null && Gear.Give(Content, Profile, trinket))
@@ -277,7 +284,7 @@ namespace HearthHollow.Core
         /// Ladder: down to the next floor (harder, richer). The Unity side builds the new floor on Changed.
         public bool DungeonDescend()
         {
-            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive) return false;
+            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.mustGoHome) return false;
             Run.floor++;
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : DungeonPortalFloor ? " — ✨ a way-home portal shimmers somewhere on this floor" : " — no way home here"));

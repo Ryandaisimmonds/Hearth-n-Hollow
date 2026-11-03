@@ -1718,3 +1718,21 @@ Label { white-space: normal; color: var(--hh-text); }
 .season-pop__effect.el-tint--light { background-color: rgba(255, 240, 140, 0.2); border-color: rgba(255, 240, 140, 0.85); }
 .season-pop__effect-head { font-size: 22px; -unity-font-style: bold; color: var(--hh-cream); }
 .season-pop__effect-line { font-size: 15px; color: var(--hh-cream); white-space: normal; margin-top: 3px; }
+
+/* ticket 31: locked HUD slots get a padlock and a hint line */
+.dhud__lock { position: absolute; left: 0; right: 0; top: 0; bottom: 0; font-size: 22px; -unity-text-align: middle-center; color: #ffe7a8; background-color: rgba(0, 0, 0, 0.45); border-radius: 8px; }
+.dhud__ability--padlocked { border-color: rgba(255, 210, 120, 0.35); }
+.dhud__lock-hint { color: var(--hh-gold-soft); margin-top: 4px; white-space: normal; max-width: 520px; }
+
+/* tickets 28–30: kitchen hint, spice rack seasoned meals, packing on the Route board */
+.tray-bar__hint { flex-grow: 1; flex-shrink: 1; margin: 0 8px; white-space: normal; }
+.season-pop__meal--done { opacity: 0.5; }
+.expedition__tray-slot { border-radius: 8px; padding: 2px 6px 2px 2px; border-width: 1px; border-color: rgba(255, 210, 120, 0.2); min-height: 40px; }
+.expedition__unpack { position: relative; margin-left: auto; }
+.expedition__pick-title { margin-top: 6px; color: var(--hh-gold-soft); }
+.expedition__pick { flex-direction: row; flex-wrap: wrap; }
+.expedition__pick-chip { margin: 2px 6px 2px 0; }
+.expedition__pick-chip.el-tint--fire { border-color: rgba(255, 115, 30, 0.9); background-color: rgba(255, 115, 30, 0.25); }
+.expedition__pick-chip.el-tint--frost { border-color: rgba(150, 225, 255, 0.9); background-color: rgba(150, 225, 255, 0.2); }
+.expedition__pick-chip.el-tint--nature { border-color: rgba(90, 230, 75, 0.9); background-color: rgba(90, 230, 75, 0.2); }
+.expedition__pick-chip.el-tint--water { border-color: rgba(65, 130, 255, 0.9); background-color: rgba(65, 130, 255, 0.22); }

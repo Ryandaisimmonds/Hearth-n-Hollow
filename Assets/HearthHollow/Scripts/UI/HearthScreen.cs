@@ -126,14 +126,20 @@ namespace HearthHollow.UI
 
             // ── Cooking: tray across the top (pantry on the right), filters, then one grid of every meal ──
             var trayBox = UIKit.E("tray-bar");
-            var trayTitle = UIKit.L("🧺 Tray", "cook-col__title", "cook-col__title--tray", "tray-bar__title");
-            trayTitle.tooltip = "Eaten as you set out. Click or drag cooked meals in from the meal pantry · drag to reorder · × or right-click to take one off.";
+            var trayTitle = UIKit.L("🍳 Kitchen", "cook-col__title", "cook-col__title--tray", "tray-bar__title");
+            trayTitle.tooltip = "Cook below. Season meals at the spice rack; pack them at the Route board as you set out.";
             trayBox.Add(trayTitle);
             var trayRow = UIKit.E("tray-bar__row");
             _tray = UIKit.E("tray-bar__slots");
             trayRow.Add(_tray);
             _trayBuffs = UIKit.E("tray-sum", "tray-bar__sum");
             trayRow.Add(_trayBuffs);
+            UIKit.Show(_tray, false); UIKit.Show(_trayBuffs, false);   // ticket 29: the tray lives on the Route board now
+            var spiceBtn = Art.IconButton("spice_rack", "🧂", "Spice rack", () => Ui.OpenSeason(), "btn--secondary", "tray-pantry-btn");   // ticket 30
+            spiceBtn.tooltip = "Season a cooked meal with an element ingredient (Fire, Frost…)";
+            trayRow.Add(spiceBtn);
+            var hint = UIKit.L("Cook meals here · season them at the 🧂 spice rack · pack them on the 🗺️ Route board as you set out", "small", "muted", "tray-bar__hint");
+            trayRow.Insert(0, hint);
             _pantryBtn = Art.IconButton("pantry", "🥕", "Larder", () => Ui.OpenPantry(), "btn--secondary", "tray-pantry-btn");
             _pantryBtn.tooltip = "Every ingredient you've gathered or bought, by grade";
             trayRow.Add(_pantryBtn);
@@ -143,7 +149,7 @@ namespace HearthHollow.UI
             // meal pantry: cooked meals (with their rolled grade) waiting to be packed
             var shelfBox = UIKit.E("meal-shelf");
             _mealShelfTitle = UIKit.L("", "cook-col__title", "meal-shelf__title");
-            _mealShelfTitle.tooltip = "Meals you've cooked. Click or drag one onto the tray to pack it · × throws it out.";
+            _mealShelfTitle.tooltip = "Meals you've cooked. Click one to season it at the spice rack · × throws it out · pack them at the Route board.";
             shelfBox.Add(_mealShelfTitle);
             _mealShelf = UIKit.E("meal-shelf__row");
             shelfBox.Add(_mealShelf);
@@ -175,9 +181,9 @@ namespace HearthHollow.UI
             {
                 if (key.StartsWith("always:")) S.PackAlwaysMealInto(key.Substring(7), slot); else S.PackMealInto(int.Parse(key), slot);
             });
-            _recipeDrag.onClick = key =>   // click a meal to pack it
+            _recipeDrag.onClick = key =>   // ticket 29: click a cooked meal to season it (packing happens at the Route board)
             {
-                if (key.StartsWith("always:")) S.PackAlwaysMeal(key.Substring(7)); else S.PackMeal(int.Parse(key));
+                if (!key.StartsWith("always:")) Ui.OpenSeason();
             };
 
             // ── Upgrades: gear + key items | trinkets ──

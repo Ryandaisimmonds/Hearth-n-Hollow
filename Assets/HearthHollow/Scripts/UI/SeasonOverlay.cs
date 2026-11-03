@@ -59,21 +59,30 @@ namespace HearthHollow.UI
             var p = S.Profile;
             _meals.Clear(); _spices.Clear(); _effect.Clear();
 
-            var meals = S.SeasonableMeals();
-            if (_meal != null && !meals.Contains(_meal)) _meal = null;
-            if (meals.Count == 0) _meals.Add(UIKit.L("No unseasoned meals. Cook something at the stove first.", "muted"));
+            var open = S.SeasonableMeals();
+            if (_meal != null && !open.Contains(_meal)) _meal = null;
+            // ticket 28: every cooked meal shows; seasoned ones are faded with their element
+            var meals = new List<CookedMeal>();
+            foreach (var m in p.mealPantry) if (m != null) meals.Add(m);
+            foreach (var m in p.packed) if (m != null) meals.Add(m);
+            if (meals.Count == 0) _meals.Add(UIKit.L("No cooked meals yet. Cook something at the stove first.", "muted"));
             foreach (var m in meals)
             {
                 var r = C.Recipe(m.recipeId);
-                var card = UIKit.E("meal-card", "clickable", "season-pop__meal");
+                bool done = !string.IsNullOrEmpty(m.accelId);
+                var card = UIKit.E("meal-card", "season-pop__meal");
+                card.EnableInClassList("clickable", !done);
+                card.EnableInClassList("season-pop__meal--done", done);
+                if (done) { UIKit.ElementTint(card, Cooking.SlotElement(C, m.accelId)); card.style.opacity = 0.45f; }
                 card.EnableInClassList("season-pop__meal--on", m == _meal);
                 card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(m.recipeId), r != null ? r.emoji : "🍽️", "meal-card__emoji"), "meal-card__well"));
                 var txt = UIKit.E("meal-card__text");
                 txt.Add(UIKit.L(Cooking.GradeGem(m.grade) + " " + (r != null ? r.name : m.recipeId), "meal-card__name"));
-                txt.Add(UIKit.L(p.packed.Contains(m) ? "on the tray" : "in the meal pantry", "meal-card__accel"));
+                txt.Add(UIKit.L(done ? "✔ " + UIKit.SlotLine(C, m.accelId) : p.packed.Contains(m) ? "on the tray" : "in the meal pantry", "meal-card__accel"));
                 card.Add(txt);
                 var mm = m;
-                card.RegisterCallback<ClickEvent>(e => { _meal = mm; _why.text = ""; Refresh(); });
+                if (!done) card.RegisterCallback<ClickEvent>(e => { _meal = mm; _why.text = ""; Refresh(); });
+                else card.tooltip = "Already seasoned: " + UIKit.SlotLine(C, m.accelId);
                 foreach (var ch in card.Children()) ch.pickingMode = PickingMode.Ignore;
                 _meals.Add(card);
             }
