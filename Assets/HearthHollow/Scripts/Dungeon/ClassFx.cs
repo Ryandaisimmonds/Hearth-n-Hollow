@@ -9,17 +9,17 @@ namespace HearthHollow.Dungeon
 {
     public class HoverLantern : MonoBehaviour
     {
-        DungeonController _dc; float _mult, _interval, _seek, _left, _life, _fireT, _seed; int _pips; Color _col;
+        DungeonController _dc; float _mult, _interval, _seek, _left, _life, _fireT, _seed; Color _col;
         SpriteRenderer _glow, _core; Light2D _light; float _lightI; Vector3 _base;
 
-        public static HoverLantern Place(DungeonController dc, Vector2 at, MoveData m, float mult, int pips, Color col, float lightRadius)
+        public static HoverLantern Place(DungeonController dc, Vector2 at, MoveData m, float mult, Color col, float lightRadius)
         {
             if (dc == null || dc.FloorRoot == null) return null;
             var go = new GameObject("Lantern");
             go.transform.SetParent(dc.FloorRoot.transform, true);
             go.transform.position = at;
             var h = go.AddComponent<HoverLantern>();
-            h._dc = dc; h._mult = mult; h._pips = pips; h._col = col;
+            h._dc = dc; h._mult = mult; h._col = col;
             h._interval = Mathf.Max(0.25f, m.value); h._seek = m.range; h._left = h._life = m.duration; h._fireT = 0.4f;
             h._seed = Random.value * 6f; h._base = at;
             h.Build(lightRadius, m.lightIntensity > 0f ? m.lightIntensity : 1.6f);
@@ -69,7 +69,7 @@ namespace HearthHollow.Dungeon
             _fireT = _interval;
             Vector2 dir = (target.Body - (Vector2)transform.position).normalized;
             var p = Projectile.Spawn(_dc, true, (Vector2)transform.position + dir * 0.2f, dir, 9f, _mult, 0f, DungeonFx.Orb, _col, false, 0.8f);
-            if (p != null) { p.SetHit(HitType.Light, _pips); p.Homing(320f, _seek); }
+            if (p != null) { p.SetHit(Element.Light); p.Homing(320f, _seek); }
             DungeonFx.Flash(transform.position, _col, 2.5f, 1.4f, 0.15f);
         }
     }

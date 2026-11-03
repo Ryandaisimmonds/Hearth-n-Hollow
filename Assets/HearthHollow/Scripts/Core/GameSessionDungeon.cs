@@ -39,6 +39,9 @@ namespace HearthHollow.Core
             return DungeonRules.PlayerHitDamage(T, Stats, mult, _rng, out crit);
         }
 
+        /// The run's infused element (None outside a run).
+        public Element RunElement { get { return Run != null ? Run.element : Element.None; } }
+
         public bool DungeonSkillUnlocked
         {
             get { return Run != null; }

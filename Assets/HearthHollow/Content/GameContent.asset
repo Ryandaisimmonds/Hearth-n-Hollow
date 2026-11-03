@@ -24,17 +24,6 @@ MonoBehaviour:
       eliteReqMax: 6
       roomCoinBonus: 5
       roomXpBonus: 3
-      levelCap: 50
-      skillUnlockLevel: 1
-      hpPerLevel: 0.2
-      hpPerLevelEarly: 1
-      earlyLevels: 10
-      xpBase: 30
-      xpPerLevel: 10
-      damagePerLevel: 0.005
-      secondSkillLevel: 5
-      borrowLevel: 20
-      skillPointsPerLevel: 1
       armourPerPoint: 0.05
       armourCap: 0.6
       baseCritChance: 0.1
@@ -1723,6 +1712,8 @@ MonoBehaviour:
       value: 0
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: 
@@ -1748,6 +1739,8 @@ MonoBehaviour:
       value: 1.8
       hitType: 0
       hitType2: 2
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FFB000
@@ -1773,6 +1766,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FFC21A
@@ -1798,6 +1793,8 @@ MonoBehaviour:
       value: 0
       hitType: 2
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FFD000
@@ -1823,6 +1820,8 @@ MonoBehaviour:
       value: 0
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF8C00
@@ -1848,6 +1847,8 @@ MonoBehaviour:
       value: 0
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 7
       lightIntensity: 2
       lightColour: FFC800
@@ -1873,6 +1874,8 @@ MonoBehaviour:
       value: 0.4
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 6
       lightIntensity: 1.9
       lightColour: FFA000
@@ -1898,6 +1901,8 @@ MonoBehaviour:
       value: 0.3
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 6
       lightIntensity: 1.9
       lightColour: FFD54A
@@ -1923,6 +1928,8 @@ MonoBehaviour:
       value: 0.25
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FFB300
@@ -1948,6 +1955,8 @@ MonoBehaviour:
       value: 0
       hitType: 2
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: FFC21A
@@ -1973,6 +1982,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: 00E676
@@ -1998,6 +2009,8 @@ MonoBehaviour:
       value: 12
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: 2BFF88
@@ -2023,6 +2036,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: 00E5C0
@@ -2048,6 +2063,8 @@ MonoBehaviour:
       value: 0.25
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: 7CFF00
@@ -2073,6 +2090,8 @@ MonoBehaviour:
       value: 0
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 6
       lightIntensity: 2.2
       lightColour: 00FFC8
@@ -2098,6 +2117,8 @@ MonoBehaviour:
       value: 0.3
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: 00FFA0
@@ -2123,6 +2144,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 7
       lightIntensity: 1.9
       lightColour: 1DE9B6
@@ -2148,6 +2171,8 @@ MonoBehaviour:
       value: 0.5
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: 00C896
@@ -2173,6 +2198,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: 00E676
@@ -2198,6 +2225,8 @@ MonoBehaviour:
       value: 1.6
       hitType: 2
       hitType2: 3
+      element: 0
+      element2: 1
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FF7A00
@@ -2223,6 +2252,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FF9500
@@ -2248,6 +2279,8 @@ MonoBehaviour:
       value: 0
       hitType: 2
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FFC400
@@ -2273,6 +2306,8 @@ MonoBehaviour:
       value: 0
       hitType: 1
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF8C00
@@ -2298,6 +2333,8 @@ MonoBehaviour:
       value: 0.5
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 7
       lightIntensity: 1.9
       lightColour: FF3D00
@@ -2323,6 +2360,8 @@ MonoBehaviour:
       value: 0.5
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF6A00
@@ -2348,6 +2387,8 @@ MonoBehaviour:
       value: 2
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FFAB00
@@ -2373,6 +2414,8 @@ MonoBehaviour:
       value: 10
       hitType: 2
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FFC400
@@ -2398,6 +2441,8 @@ MonoBehaviour:
       value: 0.6
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: FFD600
@@ -2423,6 +2468,8 @@ MonoBehaviour:
       value: 0
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: 2EA8FF
@@ -2448,6 +2495,8 @@ MonoBehaviour:
       value: 1
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 6
       lightIntensity: 1.9
       lightColour: 3D8BFF
@@ -2473,6 +2522,8 @@ MonoBehaviour:
       value: 0.15
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: 40C4FF
@@ -2498,6 +2549,8 @@ MonoBehaviour:
       value: 0
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: B04DFF
@@ -2523,6 +2576,8 @@ MonoBehaviour:
       value: 3
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 8
       lightIntensity: 1.9
       lightColour: 5C6CFF
@@ -2548,6 +2603,8 @@ MonoBehaviour:
       value: 0
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: 9B5CFF
@@ -2573,6 +2630,8 @@ MonoBehaviour:
       value: 1.6
       hitType: 2
       hitType2: 3
+      element: 0
+      element2: 1
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FF3B3B
@@ -2598,6 +2657,8 @@ MonoBehaviour:
       value: 0
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF4A2A
@@ -2623,6 +2684,8 @@ MonoBehaviour:
       value: 0
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF5FA8
@@ -2648,6 +2711,8 @@ MonoBehaviour:
       value: 2.5
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF2E2E
@@ -2673,6 +2738,8 @@ MonoBehaviour:
       value: 0
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 5.5
       lightIntensity: 1.9
       lightColour: FF7A9E
@@ -2698,6 +2765,8 @@ MonoBehaviour:
       value: 0
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 3.5
       lightIntensity: 1.9
       lightColour: FF3B6A
@@ -2723,6 +2792,8 @@ MonoBehaviour:
       value: 1
       hitType: 4
       hitType2: 0
+      element: 5
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: 4FC3FF
@@ -2748,6 +2819,8 @@ MonoBehaviour:
       value: 0
       hitType: 3
       hitType2: 0
+      element: 1
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: A040FF
@@ -2773,6 +2846,8 @@ MonoBehaviour:
       value: 0
       hitType: 0
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FF5FA8
@@ -2798,6 +2873,8 @@ MonoBehaviour:
       value: 0
       hitType: 2
       hitType2: 0
+      element: 0
+      element2: 0
       lightRadius: 4
       lightIntensity: 1.9
       lightColour: FF2E4E
@@ -2823,6 +2900,8 @@ MonoBehaviour:
       value: 0.5
       hitType: 4
       hitType2: 4
+      element: 5
+      element2: 0
       lightRadius: 11
       lightIntensity: 2.6
       lightColour: FFC000
@@ -2848,6 +2927,8 @@ MonoBehaviour:
       value: 0.3
       hitType: 4
       hitType2: 4
+      element: 5
+      element2: 0
       lightRadius: 10
       lightIntensity: 2.6
       lightColour: 00FFB0
@@ -2873,6 +2954,8 @@ MonoBehaviour:
       value: 30
       hitType: 3
       hitType2: 3
+      element: 1
+      element2: 0
       lightRadius: 9
       lightIntensity: 2.6
       lightColour: FF8F00
@@ -2898,6 +2981,8 @@ MonoBehaviour:
       value: 3
       hitType: 4
       hitType2: 4
+      element: 5
+      element2: 0
       lightRadius: 14
       lightIntensity: 2.6
       lightColour: 8A4DFF
@@ -2923,6 +3008,8 @@ MonoBehaviour:
       value: 6
       hitType: 3
       hitType2: 3
+      element: 1
+      element2: 0
       lightRadius: 12
       lightIntensity: 2.6
       lightColour: FF2E6A
@@ -4508,7 +4595,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 25
+    contentVersion: 26
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

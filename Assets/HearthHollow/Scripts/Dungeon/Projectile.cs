@@ -20,9 +20,9 @@ namespace HearthHollow.Dungeon
         float _outRange, _travelled; bool _boomerang, _returning; float _speed;
         float _spin;
         Color? _trail; float _trailT;   // glowing projectiles leave embers
-        HitType _type = HitType.Pierce; int _pips = 1;   // Break (step 8)
+        Element _type = Element.None;   // the hit's element (Design v2)
 
-        public Projectile SetHit(HitType type, int pips) { _type = type; _pips = pips; return this; }
+        public Projectile SetHit(Element type) { _type = type; return this; }
 
         float _homing, _seekRange;
         public System.Action<Vector2> OnStop;   // called once where it stops (an enemy, a wall or the end of its flight)
@@ -33,7 +33,7 @@ namespace HearthHollow.Dungeon
         /// Sunshield: a monster's shot bounces back as the player's (a Light hit).
         public void Reflect(float mult)
         {
-            _fromPlayer = true; _mult = Mathf.Max(0.5f, mult); _vel = -_vel; _hit.Clear(); _type = HitType.Light; _pips = 1; _life = 2f;
+            _fromPlayer = true; _mult = Mathf.Max(0.5f, mult); _vel = -_vel; _hit.Clear(); _type = Element.Light; _life = 2f;
             transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(_vel.y, _vel.x) * Mathf.Rad2Deg);
         }
 
@@ -137,8 +137,7 @@ namespace HearthHollow.Dungeon
                     if (e.Dead || !_hit.Add(e)) return;
                     bool crit;
                     float dmg = _dc.Session.DungeonRollDamage(_mult, out crit);
-                    e.TakeHit(dmg, crit, _vel.normalized);
-                    if (!e.Dead) e.TypedHit(_type, _pips);
+                    e.TakeHit(dmg, crit, _vel.normalized, 6f, _type);
                     if (!_pierce) Die();
                     return;
                 }

@@ -49,7 +49,7 @@ namespace HearthHollow.Dungeon
         struct Timed { public float t; public Action act; }
         readonly List<Timed> _timed = new List<Timed>();
         // the kind of hit being dealt (Break & Boost removed in ticket 01; ticket 06 turns this into elements)
-        HitType _curType = HitType.Slash; int _curPips = 1;   // the kind of hit being dealt right now
+        Element _curType = Element.None;   // the kind of hit being dealt right now
         MoveData _curMove;   // the move being used right now (its light, homing…)
         // class rework stage 2: combo chains, Sunshield, Dawnbreaker's leap
         int _comboStep; float _comboUntil;
@@ -57,10 +57,10 @@ namespace HearthHollow.Dungeon
         readonly HashSet<EnemyController> _sunHit = new HashSet<EnemyController>();
         float _hopT, _hopDur;
         // Lamplighter: Sunbeam
-        MoveData _beamMove; float _beamUntil, _beamTick, _beamMult, _beamK; HitType _beamType; int _beamPips;
+        MoveData _beamMove; float _beamUntil, _beamTick, _beamMult, _beamK; Element _beamType;
         SpriteRenderer _beamSr; UnityEngine.Rendering.Universal.Light2D[] _beamLights;
         // Emberfist: Rising Phoenix, Cinder Step
-        MoveData _phoenixMove; float _phoenixT, _phoenixMult; int _phoenixLvl, _phoenixPips; HitType _phoenixType;
+        MoveData _phoenixMove; float _phoenixT, _phoenixMult; int _phoenixLvl; Element _phoenixType;
         readonly HashSet<EnemyController> _phoenixHit = new HashSet<EnemyController>();
         MoveData _counterMove; float _counterUntil, _counterMult;
         Vector2 _sweepFrom;   // where a fast move's body was last frame (so a low frame rate can't skip past enemies)
@@ -308,14 +308,13 @@ namespace HearthHollow.Dungeon
             if (room != null && room.Secrets != null) room.Secrets.Hit(p, r);   // knock on cracked walls
         }
 
-        void Hit(EnemyController e, float mult, Vector2 knockDir, float knock = 6f) { Hit(e, mult, knockDir, knock, _curType, _curPips); }
+        void Hit(EnemyController e, float mult, Vector2 knockDir, float knock = 6f) { Hit(e, mult, knockDir, knock, _curType); }
 
-        void Hit(EnemyController e, float mult, Vector2 knockDir, float knock, HitType type, int pips)
+        void Hit(EnemyController e, float mult, Vector2 knockDir, float knock, Element type)
         {
             bool crit;
             float dmg = S.DungeonRollDamage(mult, out crit);
-            e.TakeHit(dmg, crit, knockDir, knock);
-            if (e != null && !e.Dead) e.TypedHit(type, pips);
+            e.TakeHit(dmg, crit, knockDir, knock, type);
         }
 
         Projectile Arrow(float mult, Vector2 dir, float speed, bool pierce, float scale = 1.4f)
@@ -323,7 +322,7 @@ namespace HearthHollow.Dungeon
             var p = Projectile.Spawn(_dc, true, Hip + dir * 0.4f, dir, speed, mult, 0f, DungeonFx.Arrow, Color.white, pierce, scale);
             if (p != null)
             {
-                p.SetHit(_curType, _curPips);
+                p.SetHit(_curType);
                 if (_curMove != null)
                 {
                     DungeonFx.Flash(p.transform.position, MoveColour(_curMove), LightRadius(_curMove) * 0.7f, (_curMove.lightIntensity > 0f ? _curMove.lightIntensity : 1.4f) * ColourLightK, 0f, p.transform);   // every arrow carries its own light
@@ -371,7 +370,7 @@ namespace HearthHollow.Dungeon
             var m = _atk; Vector2 dir = Aim;
             float mult = AttackMult(m);
             int blv = 0;
-            _curType = m.hitType; _curPips = 1; _curMove = m;
+            _curType = ElementOf(m); _curMove = m;
             dir = Assist(m, dir); _aim = dir;
             if (IsRanged(m)) { MoveLight(m, Body + dir * 0.5f, 0.9f, 0.25f); DungeonFx.Embers(Body + dir * 0.5f, Accent, 4, 0.25f); }   // muzzle flash (the arrows carry their own light)
             else
@@ -389,8 +388,8 @@ namespace HearthHollow.Dungeon
                 {
                     bool fin = _comboStep >= Mathf.Max(1, m.count) - 1;
                     int extra = m.boostShape == BoostShape.Hits ? Mathf.RoundToInt(m.boostStep * blv) : 0;
-                    ComboHit(m, fin, dir, mult, blv, _curPips);
-                    for (int h = 1; h <= extra; h++) { Vector2 d2 = dir; float mm = mult; int lv = blv, pp = _curPips; After(0.12f * h, () => ComboHit(m, true, d2, mm, lv, pp)); }   // Boost: extra finishers
+                    ComboHit(m, fin, dir, mult, blv);
+                    for (int h = 1; h <= extra; h++) { Vector2 d2 = dir; float mm = mult; int lv = blv; After(0.12f * h, () => ComboHit(m, true, d2, mm, lv)); }   // Boost: extra finishers
                     break;
                 }
                 case MoveKind.Arrow:
@@ -465,7 +464,7 @@ namespace HearthHollow.Dungeon
                     break;
                 case MoveKind.Vault:
                     _dashDir = -Aim;   // flip backwards, keep facing forward
-                    _curType = m.hitType; _curPips = 1; _curMove = m;
+                    _curType = ElementOf(m); _curMove = m;
                     Fan(m, m.power * _mods.attackPower * DamageBuff, Assist(m, Aim), 14f, false, 1.4f, 0);
                     break;
                 case MoveKind.Flicker:
@@ -501,7 +500,7 @@ namespace HearthHollow.Dungeon
                     foreach (var e in Swept(0.75f))
                     {
                         if (!_dashHit.Add(e)) continue;
-                        _curType = _dash.hitType; _curPips = 1; _curMove = _dash;
+                        _curType = ElementOf(_dash); _curMove = _dash;
                         Hit(e, _dash.power * _mods.attackPower * DamageBuff, _dashDir, 11f);
                         if (!Alive) return;
                         _dc.Shake(0.06f, 0.06f);
@@ -511,7 +510,7 @@ namespace HearthHollow.Dungeon
                     foreach (var e in Swept(0.7f))
                     {
                         if (!_dashHit.Add(e)) continue;
-                        _curType = _dash.hitType; _curPips = 1; _curMove = _dash;
+                        _curType = ElementOf(_dash); _curMove = _dash;
                         Hit(e, Mathf.Max(0.2f, _dash.power) * _mods.attackPower * DamageBuff, _dashDir, 2f);
                         if (!Alive) return;
                     }
@@ -621,7 +620,7 @@ namespace HearthHollow.Dungeon
             TurnToInput();
             Vector2 dir = Aim;
             float mult = SkillMult(m);
-            _curType = m.hitType; _curPips = 1; _curMove = m;
+            _curType = ElementOf(m); _curMove = m;
             if (IsRanged(m)) { dir = Assist(m, dir); _aim = dir; }
             MoveLight(m, Body, 1.2f, 0.6f);   // every skill lights the world…
             if (m.cooldown >= 5.5f) _dc.FloodLight(0.25f, 1.2f);   // …the big ones flood the room
@@ -642,7 +641,7 @@ namespace HearthHollow.Dungeon
                     After(dur, () =>
                     {
                         if (Vector2.Distance(Feet, sfTo) > 0.1f) Teleport(sfTo);
-                        Slam(sfm, sfMult, 1, sfT, 3);
+                        Slam(sfm, sfMult, 1, sfT);
                         _furyUntil = Time.time + 6f; _furyBonus = sfm.value;
                         _dc.FloodLight(0.8f, 2.5f); GameLook.Punch(0.8f);
                     });
@@ -663,7 +662,7 @@ namespace HearthHollow.Dungeon
                         {
                             if (e == null || e.Dead) continue;
                             e.Mark(stm.value * _mods.skillPower, 1.5f);
-                            Hit(e, tickMult, Vector2.zero, 0f, stT, 2);
+                            Hit(e, tickMult, Vector2.zero, 0f, stT);
                             if (!Alive) return;
                         }
                     });
@@ -710,7 +709,7 @@ namespace HearthHollow.Dungeon
                     DungeonFx.RingAt(Body, col, 4f, 0.6f); DungeonFx.RingAt(Body, Accent, 7f, 0.8f);
                     DungeonFx.Embers(Body, col, 40, 2f);
                     _dc.Shake(0.2f, 0.15f); GameLook.Punch(0.6f);
-                    _curType = HitType.Light; _curPips = Mathf.Max(1, Mathf.RoundToInt(m.value));
+                    _curType = Element.Light;
                     HitArea(Body, m.radius, mult, Vector2.zero, 4f, m.duration);
                     return true;
                 }
@@ -723,7 +722,7 @@ namespace HearthHollow.Dungeon
                     _invulnUntil = Mathf.Max(_invulnUntil, Time.time + 0.45f);
                     After(0.35f, () =>
                     {
-                        _curType = snT; _curPips = 3; _curMove = snm;
+                        _curType = snT; _curMove = snm;
                         float rad = snm.radius * _dc.Settings.playerReach;
                         DungeonFx.Flash(Body, col, rad * 3f, 3f, 0.9f); DungeonFx.RingAt(Body, col, rad, 0.6f); DungeonFx.RingAt(Body, Accent, rad * 0.6f, 0.4f);
                         DungeonFx.Embers(Body, col, 50, rad * 0.5f);
@@ -745,7 +744,7 @@ namespace HearthHollow.Dungeon
                 {
                     _anim.PlayAttack(0.4f);
                     _dc.Shake(0.2f, 0.15f);
-                    var origin = Body; var hitOnce = new HashSet<EnemyController>(); var swT = _curType; int swP = _curPips;
+                    var origin = Body; var hitOnce = new HashSet<EnemyController>(); var swT = _curType;
                     int steps = Mathf.Max(1, Mathf.RoundToInt(m.range));
                     for (int i = 1; i <= steps; i++)
                     {
@@ -757,7 +756,7 @@ namespace HearthHollow.Dungeon
                             foreach (var e in Combat2D.EnemiesIn(at, m.radius * S.MutatorAreaRadius))
                             {
                                 if (!hitOnce.Add(e)) continue;
-                                Hit(e, mult * S.MutatorAreaDamage, dir, 7f, swT, swP);
+                                Hit(e, mult * S.MutatorAreaDamage, dir, 7f, swT);
                                 if (!Alive) return;
                                 if (e != null && !e.Dead) e.Stun(m.duration);
                             }
@@ -801,10 +800,10 @@ namespace HearthHollow.Dungeon
                     _stepVel = (to - Feet) / dur; _stepT = dur;
                     _hopT = _hopDur = dur;
                     _invulnUntil = Mathf.Max(_invulnUntil, Time.time + dur + 0.1f);
-                    var slam = m; float slamMult = mult; int slamLvl = 0; var slamT = _curType; int slamP = _curPips;
+                    var slam = m; float slamMult = mult; int slamLvl = 0; var slamT = _curType;
                     DungeonFx.Puff(Feet, new Color(0.8f, 0.74f, 0.62f, 0.55f), 6, 0.5f);
                     Vector2 slamTo = to;
-                    After(dur, () => { if (Vector2.Distance(Feet, slamTo) > 0.1f) Teleport(slamTo); Slam(slam, slamMult, slamLvl, slamT, slamP); });   // land exactly where it aimed
+                    After(dur, () => { if (Vector2.Distance(Feet, slamTo) > 0.1f) Teleport(slamTo); Slam(slam, slamMult, slamLvl, slamT); });   // land exactly where it aimed
                     return true;
                 }
 
@@ -817,7 +816,7 @@ namespace HearthHollow.Dungeon
                 case MoveKind.Trap:
                 {
                     _anim.PlayAttack(0.25f);
-                    var trapMove = m; float trapMult = mult; var trT = _curType; int trP = _curPips;
+                    var trapMove = m; float trapMult = mult; var trT = _curType;
                     DungeonZone.Spawn(_dc, Feet, m.radius, m.value, 0f, A(MoveColour(m), 0.45f), z =>
                     {
                         var hit = z.Enemies();
@@ -825,7 +824,7 @@ namespace HearthHollow.Dungeon
                         var e = hit[0];
                         z.End();
                         DungeonFx.RingAt(z.Centre, A(MoveColour(trapMove), 0.9f), trapMove.radius * 1.3f, 0.35f);
-                        Hit(e, trapMult, Vector2.zero, 0f, trT, trP);
+                        Hit(e, trapMult, Vector2.zero, 0f, trT);
                         if (e != null && !e.Dead) e.Root(trapMove.duration);
                     });
                     return true;
@@ -842,14 +841,14 @@ namespace HearthHollow.Dungeon
                 {
                     _anim.PlayAttack(0.3f);
                     Vector2 at = Feet + dir * AimDistance(m.range);   // mouse: on the cursor
-                    float tickMult = mult; var rnT = _curType; int rnP = _curPips;
+                    float tickMult = mult; var rnT = _curType;
                     MoveLight(m, at, 1f, m.duration + 0.3f);   // the storm lights the whole area
                     Color rainCol = MoveColour(m);
                     DungeonZone.Spawn(_dc, at, m.radius * Reach(m, 0), m.duration, 0.25f, A(rainCol, 0.22f), z =>
                     {
                         for (int i = 0; i < 3; i++)
                             DungeonFx.Spawn(DungeonFx.Arrow, z.Centre + UnityEngine.Random.insideUnitCircle * z.Radius + Vector2.up * 0.6f, Color.Lerp(Color.white, rainCol, 0.9f), 0.18f, 1.2f, 1.0f, -90f);
-                        foreach (var e in z.Enemies()) { Hit(e, tickMult, Vector2.zero, 0f, rnT, rnP); if (!Alive) return; }
+                        foreach (var e in z.Enemies()) { Hit(e, tickMult, Vector2.zero, 0f, rnT); if (!Alive) return; }
                     });
                     return true;
                 }
@@ -881,9 +880,9 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.3f);
                     var p = Arrow(mult, dir, m.range, false, 1.5f);
                     if (p == null) return true;
-                    var fm = m; float fmult = mult; int flvl = 0; int fpips = _curPips;
+                    var fm = m; float fmult = mult; int flvl = 0;
                     p.Tint(Color.Lerp(Color.white, MoveColour(m), 0.9f)).SetLife(AimLife(m.range, 0.6f));   // mouse: bursts where you clicked
-                    p.OnStop = at => FlareBurst(fm, at, fmult, flvl, fpips);
+                    p.OnStop = at => FlareBurst(fm, at, fmult, flvl);
                     return true;
                 }
                 case MoveKind.Spotlight:
@@ -906,7 +905,7 @@ namespace HearthHollow.Dungeon
                     {
                         float ang = n == 1 ? 0f : (i - (n - 1) * 0.5f) * 50f;
                         Vector2 at = Feet + (Vector2)(Quaternion.Euler(0, 0, ang) * dir) * 1.2f + new Vector2(0, 0.9f);
-                        HoverLantern.Place(_dc, at, m, mult, _curPips, MoveColour(m), LightRadius(m));
+                        HoverLantern.Place(_dc, at, m, mult, MoveColour(m), LightRadius(m));
                     }
                     return true;
                 }
@@ -921,7 +920,7 @@ namespace HearthHollow.Dungeon
                     var p = Projectile.Spawn(_dc, true, Body + dir * 0.4f, dir, m.range, mult, 0f, DungeonFx.Orb, MoveColour(m), false, 1.3f);
                     if (p == null) return true;
                     var pm = m; float pmult = mult; int plvl = 0;
-                    p.SetHit(HitType.Light, _curPips); p.SetLife(AimLife(m.range, 1.1f));
+                    p.SetHit(Element.Light); p.SetLife(AimLife(m.range, 1.1f));
                     p.OnStop = at => PrismBurst(pm, at, pmult, plvl);
                     return true;
                 }
@@ -949,15 +948,15 @@ namespace HearthHollow.Dungeon
                     _stepVel = (to - Feet) / dur; _stepT = dur;
                     _invulnUntil = Mathf.Max(_invulnUntil, Time.time + dur + 0.1f);
                     _phoenixMove = m; _phoenixT = dur; _phoenixMult = mult; _phoenixLvl = 0; _phoenixHit.Clear();
-                    _phoenixType = _curType; _phoenixPips = _curPips; _sweepFrom = Body;
+                    _phoenixType = _curType; _sweepFrom = Body;
                     return true;
                 }
                 case MoveKind.FlameWheel:
                 {
                     _anim.PlayAttack(0.35f);
-                    float rad = m.radius * Reach(m, 0); var wm = m; float wmult = mult; var wt = _curType; int wp = _curPips; Color col = MoveColour(m);
+                    float rad = m.radius * Reach(m, 0); var wm = m; float wmult = mult; var wt = _curType; Color col = MoveColour(m);
                     for (int i = 0; i < Mathf.Max(1, m.count); i++)
-                        After(0.001f + i * 0.18f, () => { _curType = wt; _curPips = wp; _curMove = wm; DungeonFx.RingAt(Body, col, rad, 0.3f); DungeonFx.Throw(Body, Vector2.up, col, 8, 3f, 7f); MoveLight(wm, Body, 1.2f, 0.3f); HitArea(Body, rad, wmult, Vector2.zero, 7f); });
+                        After(0.001f + i * 0.18f, () => { _curType = wt; _curMove = wm; DungeonFx.RingAt(Body, col, rad, 0.3f); DungeonFx.Throw(Body, Vector2.up, col, 8, 3f, 7f); MoveLight(wm, Body, 1.2f, 0.3f); HitArea(Body, rad, wmult, Vector2.zero, 7f); });
                     return true;
                 }
                 case MoveKind.Detonate:
@@ -1018,7 +1017,7 @@ namespace HearthHollow.Dungeon
                     Vector2 at = Feet + dir * AimDistance(m.range);   // mouse: on the cursor
                     var pot = DungeonFx.Spawn(DungeonFx.Circle, Body, new Color(0.55f, 0.4f, 0.3f, 1f), 0.35f, 0.7f, 0.7f);
                     pot.velocity = (at - Body) * 6f;   // FxSprite damps velocity by ~6/s, so this lands near the target
-                    var potMove = m; float potMult = mult; var ptT = _curType; int ptP = _curPips; float potK = Reach(m, 0);   // Boost: a bigger pool
+                    var potMove = m; float potMult = mult; var ptT = _curType; float potK = Reach(m, 0);   // Boost: a bigger pool
                     After(0.35f, () =>
                     {
                         DungeonFx.Puff(at, A(MoveColour(potMove), 0.8f), 8, 1f);
@@ -1027,7 +1026,7 @@ namespace HearthHollow.Dungeon
                         DungeonZone.Spawn(_dc, at, potMove.radius * potK, potMove.duration, potMove.value, A(potCol, 0.35f), z =>
                         {
                             DungeonFx.Spawn(DungeonFx.Circle, z.Centre + UnityEngine.Random.insideUnitCircle * z.Radius, A(potAcc, 0.7f), 0.3f, 0.3f, 0.05f);
-                            foreach (var e in z.Enemies()) { Hit(e, potMult, Vector2.zero, 0f, ptT, ptP); if (!Alive) return; }
+                            foreach (var e in z.Enemies()) { Hit(e, potMult, Vector2.zero, 0f, ptT); if (!Alive) return; }
                         });
                     });
                     return true;
@@ -1080,7 +1079,7 @@ namespace HearthHollow.Dungeon
                     _anim.PlayAttack(0.3f);
                     var p = Projectile.Spawn(_dc, true, Hip + dir * 0.4f, dir, m.value, mult, 0f, DungeonFx.Arrow, Color.Lerp(new Color(0.85f, 0.65f, 0.45f), MoveColour(m), 0.5f), true, 2.2f);
                     if (p != null) DungeonFx.Flash(p.transform.position, MoveColour(m), LightRadius(m) * 0.6f, 1.0f, 0f, p.transform);   // the pin glows as it flies
-                    if (p != null) { p.Boomerang(m.range, 900f); p.SetHit(_curType, _curPips); }
+                    if (p != null) { p.Boomerang(m.range, 900f); p.SetHit(_curType); }
                     return true;
                 }
             }
@@ -1102,7 +1101,7 @@ namespace HearthHollow.Dungeon
             if (_whirlTick > 0f) return;
             _whirlTick = Mathf.Max(0.1f, _whirlMove.value);
             _anim.PlayAttack(0.2f);
-            _curType = _whirlMove.hitType; _curPips = 1; _curMove = _whirlMove;
+            _curType = ElementOf(_whirlMove); _curMove = _whirlMove;
             MoveLight(_whirlMove, Body, 0.8f, 0.25f);
             DungeonFx.RingAt(Body, A(MoveColour(_whirlMove), 0.75f), _whirlMove.radius, 0.2f); MoveLight(_whirlMove, Body, 1f, 0.25f);
             HitArea(Body, _whirlMove.radius, SkillMult(_whirlMove), Vector2.zero, 4f);
@@ -1175,9 +1174,9 @@ namespace HearthHollow.Dungeon
         }
 
         /// One hit of a combo chain: quick flaming arcs, then a bigger finisher (its second hit type) that stuns.
-        void ComboHit(MoveData m, bool finisher, Vector2 dir, float mult, int lvl, int pips)
+        void ComboHit(MoveData m, bool finisher, Vector2 dir, float mult, int lvl)
         {
-            _curType = finisher ? m.hitType2 : m.hitType; _curPips = pips; _curMove = m;
+            _curType = finisher ? ElementOf2(m) : ElementOf(m); _curMove = m;
             float rad = m.radius * Reach(m, lvl) * (finisher ? 1.25f : 1f);
             Vector2 at = Body + dir * m.range;
             Color col = MoveColour(m);
@@ -1201,10 +1200,10 @@ namespace HearthHollow.Dungeon
         }
 
         /// Dawnbreaker lands: a ring of Light round you (Boost: a second, wider shockwave).
-        void Slam(MoveData m, float mult, int lvl, HitType type, int pips)
+        void Slam(MoveData m, float mult, int lvl, Element type)
         {
             if (!Alive) return;
-            _curType = type; _curPips = pips; _curMove = m;
+            _curType = type; _curMove = m;
             float rad = m.radius * Reach(m, lvl);
             Color col = MoveColour(m);
             DungeonFx.RingAt(Body, col, rad, 0.45f);
@@ -1215,7 +1214,7 @@ namespace HearthHollow.Dungeon
             HitArea(Body, rad, mult, Vector2.zero, 9f, m.duration);
             if (!Alive || lvl <= 0) return;
             Vector2 c = Body;
-            After(0.25f, () => { _curType = type; _curPips = 1; DungeonFx.RingAt(c, col, rad * 1.6f, 0.4f); DungeonFx.Flash(c, col, LightRadius(m) * 1.3f, 1.4f, 0.4f); HitArea(c, rad * 1.6f, mult * 0.6f, Vector2.zero, 6f); });
+            After(0.25f, () => { _curType = type; DungeonFx.RingAt(c, col, rad * 1.6f, 0.4f); DungeonFx.Flash(c, col, LightRadius(m) * 1.3f, 1.4f, 0.4f); HitArea(c, rad * 1.6f, mult * 0.6f, Vector2.zero, 6f); });
         }
 
         /// Where Dawnbreaker lands: on the nearest enemy ahead if there is one, otherwise full distance; never through a wall.
@@ -1252,7 +1251,7 @@ namespace HearthHollow.Dungeon
             var m = _sunMove;
             if (_sunLight != null) _sunLight.transform.position = Body + Aim * 2f;
             foreach (var e in Combat2D.EnemiesInCone(Body, Aim, m.range * (1f + 0.2f * _sunLvl), m.radius))
-                if (e != null && !e.Dead && _sunHit.Add(e)) e.TypedHit(HitType.Light, 1 + _sunLvl);
+                if (e != null && !e.Dead && _sunHit.Add(e)) e.ElementContact(Element.Light);
             foreach (var p in UnityEngine.Object.FindObjectsByType<Projectile>())
             {
                 if (p == null || p.FromPlayer) continue;
@@ -1269,12 +1268,12 @@ namespace HearthHollow.Dungeon
             DungeonFx.Sparks(at, Vector2.up, MoveColour(m), 8);
             DungeonZone.Spawn(_dc, at, m.radius, m.duration, 0.5f, A(MoveColour(m), 0.22f), z =>
             {
-                foreach (var e in z.Enemies()) { Hit(e, burnMult, Vector2.zero, 0f, HitType.Fire, 1); if (!Alive) return; }
+                foreach (var e in z.Enemies()) { Hit(e, burnMult, Vector2.zero, 0f, Element.Fire); if (!Alive) return; }
             });
         }
 
         /// Flare Arrow bursts: a ball of light that hits (Light), stuns shadow creatures, shows weaknesses and secrets.
-        void FlareBurst(MoveData m, Vector2 at, float mult, int lvl, int pips)
+        void FlareBurst(MoveData m, Vector2 at, float mult, int lvl)
         {
             if (!Alive) return;
             float rad = m.radius * Reach(m, lvl);
@@ -1289,7 +1288,7 @@ namespace HearthHollow.Dungeon
                 if (e == null || e.Dead) continue;
                 if (e.Shadow) e.Stun(m.duration);
             }
-            _curType = HitType.Light; _curPips = pips; _curMove = m;
+            _curType = Element.Light; _curMove = m;
             HitArea(at, rad, mult, Vector2.zero, 5f);
         }
 
@@ -1303,7 +1302,7 @@ namespace HearthHollow.Dungeon
                 Vector2 d = Quaternion.Euler(0, 0, (i - (n - 1) * 0.5f) * sp) * dir;
                 var p = Projectile.Spawn(_dc, true, Body + d * 0.4f, d, m.range, mult, 0f, DungeonFx.Orb, col, m.value > 0f, 0.9f);   // value > 0: pierces (Light Lance)
                 if (p == null) continue;
-                p.SetHit(_curType, _curPips);
+                p.SetHit(_curType);
                 if (m.homing > 0f) p.Homing(m.homing, 10f);
             }
         }
@@ -1327,7 +1326,7 @@ namespace HearthHollow.Dungeon
         void StartBeam(MoveData m, float mult, float k, float seconds)
         {
             _beamMove = m; _beamMult = mult; _beamK = k; _beamUntil = Time.time + seconds; _beamTick = 0f;
-            _beamType = _curType; _beamPips = _curPips;
+            _beamType = _curType;
             if (_beamSr == null)
             {
                 var g = new GameObject("Sunbeam"); g.transform.SetParent(transform, false);
@@ -1370,12 +1369,19 @@ namespace HearthHollow.Dungeon
             var hitNow = new HashSet<EnemyController>();
             for (float s = 0.3f; s <= len; s += half)
                 foreach (var e in Combat2D.EnemiesIn(a + Aim * s, half))
-                    if (e != null && !e.Dead && hitNow.Add(e)) { Hit(e, _beamMult, Aim, 1.5f, _beamType, _beamPips); if (!Alive) return; }
+                    if (e != null && !e.Dead && hitNow.Add(e)) { Hit(e, _beamMult, Aim, 1.5f, _beamType); if (!Alive) return; }
             IgniteNear(a + Aim * len, half + 0.3f);
             DungeonFx.Embers(a + Aim * len, col, 2, 0.2f);
         }
 
-        /// Prism lands: it strikes its target with every one of its weaknesses at once, and splashes Light round about.
+        /// A move's element: its own, or (for moves without one) the run's infused element from meals.
+        Element ElementOf(MoveData m) { return m != null && m.element != Element.None ? m.element : S.RunElement; }
+        /// A combo finisher's element (falls back to the move's).
+        Element ElementOf2(MoveData m) { return m != null && m.element2 != Element.None ? m.element2 : ElementOf(m); }
+        /// Prism finds a weakness: the target's first known weak element (Light if it has none).
+        static Element PrismElement(EnemyController e) { return e != null && e.WeakTo.Count > 0 ? e.WeakTo[0] : Element.Light; }
+
+        /// Prism lands: it strikes with the target's weakness, splashing round about.
         void PrismBurst(MoveData m, Vector2 at, float mult, int lvl)
         {
             if (!Alive) return;
@@ -1385,8 +1391,8 @@ namespace HearthHollow.Dungeon
             for (int i = 0; i < rainbow.Length; i++) DungeonFx.Throw(at, Quaternion.Euler(0, 0, i * 72f) * Vector2.up, rainbow[i], 3, 3f, 6f);
             DungeonFx.Flash(at, MoveColour(m), LightRadius(m), 2f, 0.5f);
             DungeonFx.RingAt(at, MoveColour(m), 1.2f, 0.35f);
-            if (target != null) target.TypedHit(HitType.Light, 1, true);   // ticket 06: Prism strikes with the target's weakest element
-            _curType = HitType.Light; _curPips = 1; _curMove = m;
+            Element prismEl = target != null ? PrismElement(target) : Element.Light;   // Prism strikes with the target's weakness
+            _curType = prismEl; _curMove = m;
             HitArea(at, m.radius * Reach(m, lvl), mult * 0.5f, Vector2.zero, 3f);
         }
 
@@ -1413,7 +1419,7 @@ namespace HearthHollow.Dungeon
             Color col = MoveColour(m);
             DungeonFx.Ghost(_anim.Renderer, A(col, 0.5f), 0.25f, true, false);
             DungeonFx.Embers(Feet, Accent, 3, 0.25f);
-            _curType = _phoenixType; _curPips = _phoenixPips; _curMove = m;
+            _curType = _phoenixType; _curMove = m;
             foreach (var e in Swept(0.9f * _dc.Settings.playerReach))
                 if (e != null && !e.Dead && _phoenixHit.Add(e)) { Hit(e, _phoenixMult, _stepVel.sqrMagnitude > 0.01f ? _stepVel.normalized : Aim, 4f); if (!Alive) return; }
             if (_phoenixT > 0f) return;
@@ -1425,7 +1431,7 @@ namespace HearthHollow.Dungeon
             HitArea(Body, rad, _phoenixMult * 1.4f, Vector2.up, 8f, m.duration);
             if (!Alive) return;
             float burn = _phoenixMult * 0.2f;
-            DungeonZone.Spawn(_dc, Feet, 0.9f, 2f, 0.5f, A(col, 0.25f), z => { foreach (var e in z.Enemies()) { Hit(e, burn, Vector2.zero, 0f, HitType.Fire, 1); if (!Alive) return; } });
+            DungeonZone.Spawn(_dc, Feet, 0.9f, 2f, 0.5f, A(col, 0.25f), z => { foreach (var e in z.Enemies()) { Hit(e, burn, Vector2.zero, 0f, Element.Fire); if (!Alive) return; } });
         }
 
         /// Cinder Step: an attack lands during the stance. No damage; you strike back in a burst of fire (+20 Heat).
@@ -1435,7 +1441,7 @@ namespace HearthHollow.Dungeon
             _invulnUntil = Time.time + 0.4f;
             Vector2 away = (Vector2)transform.position - from;
             Vector2 toward = away.sqrMagnitude > 0.001f ? -away.normalized : Aim;
-            _curType = m.hitType; _curPips = 2; _curMove = m;
+            _curType = ElementOf(m); _curMove = m;
             Color col = MoveColour(m);
             DungeonFx.Ghost(_anim.Renderer, A(Accent, 0.8f), 0.3f, true, false);
             DungeonFx.Flash(Body, col, 5f, 2.2f, 0.4f); DungeonFx.RingAt(Body, col, 1.6f, 0.35f); DungeonFx.Sparks(Body, toward, col, 14);

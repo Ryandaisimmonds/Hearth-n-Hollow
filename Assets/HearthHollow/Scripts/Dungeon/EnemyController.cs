@@ -83,6 +83,7 @@ namespace HearthHollow.Dungeon
             if (stats.elite && !stats.boss) _anim.Renderer.color = new Color(1f, 0.88f, 0.6f);
             gameObject.AddComponent<EnemyGlow>().Setup(this, _anim, profile, stats, size, dc.Settings);   // silhouette, rim, eyes, carried lights
             MakeHpBar();
+            SetupElements(profile);
             _stT = 0.7f;                 // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
@@ -333,9 +334,11 @@ namespace HearthHollow.Dungeon
         }
 
         // ───────────────────────── damage ─────────────────────────
-        public void TakeHit(float dmg, bool crit, Vector2 knockDir, float knock = 6f)
+        public void TakeHit(float dmg, bool crit, Vector2 knockDir, float knock = 6f, Element element = Element.None)
         {
             if (Dead || _st == St.Spawning) return;
+            float em = Elements.Multiplier(element, _weak, _resist);   // elements: weakness ×1.5, resistance ×0.5
+            dmg *= em;
             if (_dc != null && _dc.Player != null && Time.time >= _ultChargeAt) { _ultChargeAt = Time.time + 0.15f; _dc.Player.ChargeUltimate(); }   // hits charge the ultimate
             if (_markT > 0f) dmg *= 1f + _markBonus;   // Hunter's Mark
             // light: shadow creatures shrug off hits in the dark (the old "lit = weak spot" bonus was cut in Design v2)
@@ -346,6 +349,9 @@ namespace HearthHollow.Dungeon
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
+            if (em > 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Weak!", "dnum--crit");
+            else if (em < 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Resists", "dnum--info");
+            ElementContact(element);
             // impact: sparks + a flash of light, a white flash on the body, a few frames' freeze (more for crits)
             Color hitCol = crit ? new Color(1f, 0.9f, 0.45f) : new Color(1f, 0.62f, 0.25f);
             DungeonFx.Sparks(Body, knockDir, hitCol, crit ? 18 : 10);
@@ -369,6 +375,7 @@ namespace HearthHollow.Dungeon
         {
             Shadow = true;
             DisplayName = "Shadow " + DisplayName;
+            if (!_weak.Contains(Element.Light)) _weak.Add(Element.Light);   // shadows are always weak to Light
             name = "Shadow " + name;
         }
 
@@ -431,10 +438,23 @@ namespace HearthHollow.Dungeon
             return null;
         }
 
-        // ───────────────────────── typed hits ─────────────────────────
-        /// A player hit of <paramref name="type"/> landed. Break & Boost were removed in Design v2 (ticket 01);
-        /// ticket 06 swaps HitType for Element and hangs weaknesses and resistances here.
-        public void TypedHit(HitType type, int strength = 1, bool force = false) { }
+        // ───────────────────────── elements (Design v2, ticket 06) ─────────────────────────
+        readonly List<Element> _weak = new List<Element>(), _resist = new List<Element>();
+        public IList<Element> WeakTo { get { return _weak; } }
+        public IList<Element> Resists { get { return _resist; } }
+
+        void SetupElements(EnemyProfile p)
+        {
+            _weak.Clear(); _resist.Clear();
+            if (p == null) return;
+            if (p.weakTo != null) foreach (var e in p.weakTo) if (e != Element.None && !_weak.Contains(e)) _weak.Add(e);
+            if (p.resists != null) foreach (var e in p.resists) if (e != Element.None && !_resist.Contains(e)) _resist.Add(e);
+            if (_weak.Count == 0 && _resist.Count == 0) Elements.Defaults(p.element, _weak, _resist);
+        }
+
+        /// This monster was touched by an element (a hit, Flare's Light, a brazier's fire), damage or not.
+        /// Ticket 07 hangs discovery here: touching a weakness or resistance reveals it.
+        public void ElementContact(Element element) { }
 
         // ───────────────────────── statuses (player moves) ─────────────────────────
         public void Stun(float seconds)

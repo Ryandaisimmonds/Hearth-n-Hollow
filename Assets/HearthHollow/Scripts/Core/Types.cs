@@ -178,6 +178,8 @@ namespace HearthHollow.Core
         // class rework (31 Oct): every move lights the world, reaches further and Boosts into a bigger shape
         public HitType hitType;                 // Break: the kind of hit it deals
         public HitType hitType2;                // a combo's finisher / a move's second kind of hit
+        public Element element;                 // Design v2: the move's element (None = takes the run's infused element)
+        public Element element2;                // a combo finisher's element (None = same as element)
         public float lightRadius;               // how far its light reaches (0 = from the move's size)
         public float lightIntensity = 1.4f;
         public string lightColour = "";        // hex, e.g. "FFB060" (empty = the class's colour)
@@ -500,6 +502,7 @@ namespace HearthHollow.Core
     [Serializable] public partial class RunState
     {
         public string routeId; public RouteMod mod; public ClassId classId; public bool storm; public bool harvestMoon;
+        public Element element;   // the run's infused element (from a meal, ticket 08); attacks without their own element use it
         public int width, height;
         public List<Tile> tiles = new List<Tile>();   // index = y*width + x
         public int px, py;                              // player position

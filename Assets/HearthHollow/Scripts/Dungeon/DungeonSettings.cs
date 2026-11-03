@@ -33,6 +33,11 @@ namespace HearthHollow.Dungeon
         [Tooltip("Heals the weakest ally now and then (Bog Shaman).")] public bool healsAllies;
         [Tooltip("Visual size multiplier.")] public float scale = 1f;
 
+        [Header("Elements (Design v2)")]
+        [Tooltip("The monster's own element. With no lists below, it's weak to what beats it in the loop (Fire > Frost > Nature > Water > Fire) and resists itself.")] public Element element;
+        [Tooltip("Weak to these (×1.5 damage). Leave empty to use the element's default.")] public List<Element> weakTo = new List<Element>();
+        [Tooltip("Resists these (×0.5 damage). Leave empty to use the element's default.")] public List<Element> resists = new List<Element>();
+
         [Header("In the dark (light plan step 2)")]
         [Tooltip("Where the glowing eyes sit, as a fraction of the figure's height.")] [Range(0f, 1f)] public float eyeHeight = 0.62f;
         [Tooltip("Gap between the eyes (world units, before size).")] public float eyeSpread = 0.11f;

@@ -1,6 +1,7 @@
 // Hearth & Hollow — Design v2 content changes (contentVersion 25+). Pure C#.
 // v25 (tickets 01–03): Darkness is no longer a route hazard (deeper floors are simply darker), and move
 // descriptions lose the Boost, shield-pip and Heat text for systems that were cut.
+// v26 (ticket 06): every move gets an element from its old hit type (Fire and Light keep theirs; the rest have none).
 using System.Text.RegularExpressions;
 
 namespace HearthHollow.Core
@@ -29,6 +30,17 @@ namespace HearthHollow.Core
             if (det != null) det.description = "One big explosion of fire around you (Fire).";
             var sn = c.Move("e_ult");
             if (sn != null) sn.description = "Pull in every ember, then a huge explosion of fire around you (Fire) that stuns.";
+        }
+
+        static void Elements26(GameContent c)
+        {
+            foreach (var m in c.moves)
+            {
+                if (m == null) continue;
+                m.element = Elements.FromHitType(m.hitType);
+                var e2 = Elements.FromHitType(m.hitType2);
+                m.element2 = e2 != m.element ? e2 : Element.None;
+            }
         }
     }
 }
