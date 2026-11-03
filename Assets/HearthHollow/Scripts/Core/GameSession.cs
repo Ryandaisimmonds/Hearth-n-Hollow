@@ -43,6 +43,7 @@ namespace HearthHollow.Core
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
+            if (Profile.storyFlags == null) Profile.storyFlags = new System.Collections.Generic.List<string>();   // story beats (ticket 14)
             _rng = new Rng(seed);
             // Reuse today's saved camp so relaunching doesn't reroll the merchant / events.
             if (Profile.camp != null && Profile.campDay == Profile.day && Profile.camp.routeOffers != null && Profile.camp.routeOffers.Count > 0)

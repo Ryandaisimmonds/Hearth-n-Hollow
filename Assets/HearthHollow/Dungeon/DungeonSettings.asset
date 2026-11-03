@@ -233,6 +233,26 @@ MonoBehaviour:
     carryLight: {r: 0, g: 0, b: 0, a: 0}
     lightReaction: 1
     carryLightRadius: 3
+  - monsterId: ridge_drake
+    archetype: 4
+    moveSpeed: 1.7
+    attackRange: 1.4
+    windup: 0.7
+    cooldownMult: 1.2
+    projectileSpeed: 7
+    hits: 1
+    healsAllies: 0
+    scale: 1.5600001
+    element: 1
+    weakTo: 
+    resists: 
+    eyeHeight: 0.74
+    eyeSpread: 0.14
+    eyeColor: {r: 1, g: 0.75, b: 0.2, a: 1}
+    rimColor: {r: 0.55, g: 0.72, b: 1, a: 1}
+    carryLight: {r: 1, g: 0.5, b: 0.18, a: 1}
+    lightReaction: 0
+    carryLightRadius: 4.5
   playerSpeed: 5.2
   townSpeedMult: 1.5
   dashSpeed: 15

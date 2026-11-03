@@ -165,7 +165,9 @@ namespace HearthHollow.UI
             top.Add(Art.Framed(Art.Icon("lock", "🔒", "route-big__emoji"), "route-big__well"));
             var names = UIKit.E("route-big__names");
             names.Add(UIKit.L(r.chapter > 0 ? "Chapter " + r.chapter + " · ???" : "??? · side path", "route-big__name"));
-            names.Add(UIKit.L("Clear " + UIKit.RouteName(C, r.unlockedByRouteId) + " to find it", "route-big__kind"));
+            string how = !Routes.HasFlag(S.Profile, r.requiredFlag) ? (!string.IsNullOrEmpty(r.lockHint) ? r.lockHint : "Not found yet")
+                       : "Clear " + UIKit.RouteName(C, r.unlockedByRouteId) + " to find it";
+            names.Add(UIKit.L(how, "route-big__kind"));
             top.Add(names);
             card.Add(top);
             return card;

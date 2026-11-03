@@ -32,11 +32,24 @@ namespace HearthHollow.Core
 
         public static bool Cleared(Profile p, string routeId) { return p.clearedRouteIds.Contains(routeId); }
 
+        public static bool HasFlag(Profile p, string flag) { return string.IsNullOrEmpty(flag) || (p != null && p.storyFlags != null && p.storyFlags.Contains(flag)); }
+
+        /// Set a story flag (true the first time).
+        public static bool SetFlag(Profile p, string flag)
+        {
+            if (p == null || string.IsNullOrEmpty(flag)) return false;
+            if (p.storyFlags == null) p.storyFlags = new List<string>();
+            if (p.storyFlags.Contains(flag)) return false;
+            p.storyFlags.Add(flag); return true;
+        }
+
         /// The previous route is cleared (so the route shows on the board, even if a key item still blocks it).
         public static bool Discovered(GameContent c, Profile p, RouteData r)
         {
             if (r == null) return false;
-            return string.IsNullOrEmpty(r.unlockedByRouteId) || Cleared(p, r.unlockedByRouteId) || Cleared(p, r.id);
+            if (Cleared(p, r.id)) return true;
+            if (!HasFlag(p, r.requiredFlag)) return false;   // e.g. Chili Ridge: Old Wren's directions first (ticket 14)
+            return string.IsNullOrEmpty(r.unlockedByRouteId) || Cleared(p, r.unlockedByRouteId);
         }
 
         /// Open for any class: discovered and its key item owned (or already cleared once).
@@ -53,6 +66,7 @@ namespace HearthHollow.Core
         {
             if (r == null) return "Unknown route";
             if (IsUnlocked(c, p, r.id)) return null;
+            if (!HasFlag(p, r.requiredFlag)) return !string.IsNullOrEmpty(r.lockHint) ? r.lockHint : "Not found yet";
             if (!Discovered(c, p, r)) return "Clear " + RouteName(c, r.unlockedByRouteId) + " first";
             var src = KeySource(c, r.requiredKeyItem);
             return "Needs the " + KeyItemLabel(c, r.requiredKeyItem) + (src != null ? " — found in " + src.emoji + " " + src.name : "");

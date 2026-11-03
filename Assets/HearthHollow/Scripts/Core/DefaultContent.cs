@@ -44,6 +44,7 @@ namespace HearthHollow.Core
             CookPool29(c);           // DefaultContentDesignV2.cs: the Cook's move pool + Five-Alarm Chili
             DeepDungeons30(c);       // DefaultContentDesignV2.cs: Meadow 10 floors, Chili Ridge 5, boss every 5
             MeadowHollow31(c);       // DefaultContentDesignV2.cs: Meadow Hollow's bosses, deeper monsters and drops
+            ChiliRidge32(c);         // DefaultContentDesignV2.cs: Chili Ridge, revealed by Old Wren
             return c;
         }
 

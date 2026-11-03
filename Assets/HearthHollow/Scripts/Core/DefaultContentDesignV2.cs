@@ -14,6 +14,8 @@
 // v31 (ticket 13): Meadow Hollow. Nature monsters up top, Lantern Bees from floor 3 and Fog Wolves from floor 6;
 // the Bramble Sow (Nature) guards floor 5 and the Hoarfrost Alpha (Frost: weak to Fire, resists Frost) floor 10.
 // Ginger (Frost guard) drops from floor 4; the three tier-2 ingredients from floor 6; timber is its material.
+// v32 (ticket 14): Chili Ridge. A 5-floor side dungeon, hidden until Old Wren's directions (flag "wren_fire_hint",
+// ticket 15). Fire-leaning monsters, the Ridge Drake on floor 5, chilies (Fire infusion) and mint (Fire guard), ember coal.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -157,6 +159,31 @@ namespace HearthHollow.Core
             var m = c.monsters.Find(x => x.id == id);
             if (m == null) { m = new MonsterData { id = id }; c.monsters.Add(m); }
             m.name = name; m.emoji = emoji; m.artId = artId; m.behaviour = b; m.hpMult = hp; m.eliteOnly = true;   // bosses only, never in normal pools
+        }
+
+        public const string WrenFireHint = "wren_fire_hint";
+
+        static void ChiliRidge32(GameContent c)
+        {
+            AddMonster(c, "ridge_drake", "Ridge Drake", "🐉", "dragon", MonsterBehaviour.WindUp, 1.3f);
+            var r = c.Route("chili");
+            if (r == null) return;
+            r.name = "Chili Ridge";
+            r.description = "Red hills where chilies grow wild. Hot-tempered things nest up here.";
+            r.storyIntro = "Old Wren's directions bring you up into the red hills. Chilies grow wild here, and so do tempers. Something hot-blooded nests at the top.";
+            r.chapter = 0;                       // a side dungeon you trek to, not a story chapter
+            r.unlockedByRouteId = ""; r.requiredKeyItem = "";
+            r.requiredFlag = WrenFireHint;
+            r.lockHint = "Old Wren might know the way";
+            r.classLocked = false; r.hazard = Hazard.None; r.hazardPct = 0f; r.mutators.Clear();
+            r.floors = 5; r.bossEvery = 5; r.baseDifficulty = 3; r.clearReward = 40;
+            r.monsterIds = new List<string> { "bat", "boar" };
+            r.floorMonsters = new List<FloorMonster> { new FloorMonster { monsterId = "shaman", minFloor = 3 } };
+            r.bossIds = new List<string> { "ridge_drake" };
+            r.gatherIngredientIds = new List<string> { "chili", "garlic", "wheat" };
+            r.floorDrops = new List<FloorDrop> { new FloorDrop { ingredientId = "mint", minFloor = 2, weight = 0.5f } };
+            r.floorDrops.RemoveAll(d => c.Ingredient(d.ingredientId) == null);
+            r.materialIds = new List<string> { "ember_coal" };
         }
 
         static void Elements26(GameContent c)

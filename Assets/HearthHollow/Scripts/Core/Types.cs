@@ -250,6 +250,8 @@ namespace HearthHollow.Core
         // ticket 13: deeper floors add monsters and drops (each from its minFloor down)
         public List<FloorMonster> floorMonsters = new List<FloorMonster>();
         public List<FloorDrop> floorDrops = new List<FloorDrop>();
+        // ticket 14: a story flag that reveals the route (e.g. Old Wren's directions), and the hint shown until then
+        public string requiredFlag; public string lockHint;
         public List<string> gatherIngredientIds = new List<string>();
         public List<string> materialIds = new List<string>();   // building materials monsters here drop (contentVersion 13)
         // ── story & gates (contentVersion 4) ──
@@ -476,6 +478,7 @@ namespace HearthHollow.Core
         public List<RouteFloor> deepestFloors = new List<RouteFloor>();   // deepest floor reached per route (ticket 10, saveVersion 11)
         public List<string> bossesBeaten = new List<string>();            // "routeId:floor" for every boss beaten
         public List<string> learnedMoves = new List<string>();            // moves learned in town (Start moves are known without learning)
+        public List<string> storyFlags = new List<string>();              // story beats that have happened (ticket 14: "wren_fire_hint" reveals Chili Ridge)
         public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
