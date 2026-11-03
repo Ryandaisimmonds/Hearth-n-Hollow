@@ -3,6 +3,10 @@
 Unity 6, URP 2D. A cosy roguelite: cook meals at camp, then run real-time dungeon floors.
 Full history of past sessions is on the Notion handover page `409b771b02298134b81afa22b57325a0` (if Notion is connected).
 
+## Design v2 is the source of truth (3 Nov 2026)
+The game was redesigned from the ground up on 3 Nov. Build to **Hearth & Hollow — Design v2** (Claude Doc: https://claude.ai/artifact/M2gLZFSAhMSaxzD6jh8mTJ). The decision log is `.scratch/design-reset/decisions.md`.
+Much of the "Game design" section below describes the build as it stands, which predates Design v2 (e.g. Break & Boost, levels and skill trees, the thrown torch and ingredient grades are being cut). Where they disagree, Design v2 wins.
+
 ## Working rules (Ryan's)
 - Ryan is often playing in the editor. Ask before stopping play mode, and always stop it before script changes.
 - Back up the save (`Application.persistentDataPath/hearth_hollow_save.json` and its `.bak`) before any play-test that touches it, and restore both afterwards.
