@@ -385,6 +385,14 @@ namespace HearthHollow.UI
                 else if (g.buttonEast.wasPressedThisFrame) RouteKey(KeyCode.Escape);
                 return;
             }
+            // the stove (ticket 11): A = cook / tap, X = quick cook, B = close
+            if (_cook.Visible && !_settings.Visible)
+            {
+                if (g.buttonSouth.wasPressedThisFrame) RouteKey(KeyCode.Return);
+                else if (g.buttonWest.wasPressedThisFrame) RouteKey(KeyCode.Q);
+                else if (g.buttonEast.wasPressedThisFrame) RouteKey(KeyCode.Escape);
+                return;
+            }
             // A = confirm, only on the overlays a gamepad player can reach from the dungeon (camp screens stay mouse/keyboard)
             if (g.buttonEast.wasPressedThisFrame && _campEvent.Visible && !_settings.Visible) { CloseCampEvent(); return; }
             if (g.buttonSouth.wasPressedThisFrame && (_gather.Visible || _rest.Visible || _summary.Visible || (_campEvent.Visible && !_settings.Visible)))

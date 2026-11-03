@@ -1680,3 +1680,10 @@ Label { white-space: normal; color: var(--hh-text); }
 .move-row--ready { border-color: rgba(255, 210, 90, 0.85); background-color: rgba(120, 90, 20, 0.35); }
 .move-row__learn { margin-left: auto; flex-shrink: 0; }
 .skill-detail__unlock { margin-top: 6px; color: var(--hh-gold-soft); white-space: normal; }
+
+/* ticket 11: the stove's timing tap */
+.cook-game { align-items: center; margin: 6px 0 2px 0; }
+.cook-game__bar { width: 100%; max-width: 560px; height: 34px; margin: 4px 0 2px 0; }
+.cook-game__fill { -unity-background-image-tint-color: rgb(120, 60, 30); }
+.cook-game__hint { color: var(--hh-gold-soft); -unity-font-style: bold; }
+.cook-pop__quick { margin-right: 6px; }

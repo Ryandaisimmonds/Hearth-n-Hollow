@@ -162,6 +162,35 @@ namespace HearthHollow.Core
             return new[] { 1f - fine - prime, fine, prime };
         }
 
+        // ───────── the cooking minigame (ticket 11) ─────────
+        public enum Timing { Missed, Good, Perfect }
+
+        /// Where the heat marker is (0..1) after this many seconds: one sweep across the bar, then it stops at the end.
+        public static float CookMarkerAt(TuningData t, float seconds)
+        {
+            float dur = t.cookGameSeconds > 0.05f ? t.cookGameSeconds : 1.6f;
+            return Math.Max(0f, Math.Min(1f, seconds / dur));
+        }
+
+        public static Timing CookTiming(TuningData t, float marker)
+        {
+            float d = Math.Abs(marker - t.cookGameTarget);
+            if (d <= t.cookGamePerfect * 0.5f) return Timing.Perfect;
+            if (d <= t.cookGameGood * 0.5f) return Timing.Good;
+            return Timing.Missed;
+        }
+
+        /// The quality nudge (0..1) for stopping the marker here. Missing — or skipping with Quick cook — is just 0: never a penalty.
+        public static float CookNudge(TuningData t, float marker)
+        {
+            switch (CookTiming(t, marker))
+            {
+                case Timing.Perfect: return 1f;
+                case Timing.Good: return Math.Max(0f, Math.Min(1f, t.cookGameGoodNudge));
+            }
+            return 0f;
+        }
+
         public static int Roll(float[] odds, float v)
         {
             float acc = 0f;

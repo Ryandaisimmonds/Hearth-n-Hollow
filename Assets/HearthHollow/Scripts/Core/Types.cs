@@ -365,6 +365,9 @@ namespace HearthHollow.Core
         public float gradeMultUncommon = 1.1f, gradeMultRare = 1.2f;   // a meal's stats × its quality (Fine / Prime): small on purpose, tiers are the big jump
         public float qualityFineChance = 0.2f, qualityPrimeChance = 0.05f;   // Design v2: a cook's chance of a Fine / Prime meal (plus the station level's bonus)
         public float qualityNudgeFine = 0.15f, qualityNudgePrime = 0.1f;   // the cooking minigame's best result adds these (ticket 11)
+        // Cooking minigame (ticket 11): the heat marker sweeps once across the bar in cookGameSeconds; stop it in the
+        // golden zone (width cookGamePerfect around cookGameTarget) for the full nudge, in the warm zone (cookGameGood) for cookGameGoodNudge.
+        public float cookGameSeconds = 1.6f, cookGameTarget = 0.72f, cookGamePerfect = 0.1f, cookGameGood = 0.3f, cookGameGoodNudge = 0.5f;
         public float guardMult = 0.5f;   // damage taken from a guarded element
         public float jackpotChance = 0.05f;                    // chance a cooked meal lands one grade higher than rolled
         public int mealPantrySlots = 6;                        // cooked meals kept at camp

@@ -1,6 +1,8 @@
 // Hearth & Hollow — the stove (cooking v10, Design v2). Opened by clicking a recipe on the Cooking tab.
 // Shows what the dish needs, lets you put one ingredient in the element slot (infuse or guard), shows the odds of
 // each quality, then cooks: the ingredients are spent, the quality is rolled and the meal goes into the meal pantry.
+// Ticket 11: "Cook" plays a short timing tap first (a heat marker sweeps once; stop it in the gold for a better
+// chance of Fine / Prime); "Quick cook" skips it at no cost. The tap never changes the dish or its tier.
 using System.Collections.Generic;
 using HearthHollow.Core;
 using HearthHollow.Data;
@@ -13,7 +15,12 @@ namespace HearthHollow.UI
     {
         readonly VisualElement _head, _lines, _accel, _odds, _preview;
         readonly Label _result, _why;
-        readonly Button _cookBtn;
+        readonly Button _cookBtn, _quickBtn;
+        readonly VisualElement _game, _gameTrack, _gameGood, _gamePerfect, _gameMarker;
+        readonly Label _gameHint;
+        bool _gameOn;
+        float _gameStart, _gameMarker01;
+        IVisualElementScheduledItem _tick;
         string _recipeId;
         CookChoice _choice;
         string _lastResult;
@@ -41,10 +48,30 @@ namespace HearthHollow.UI
             _preview = UIKit.E("cook-pop__preview");
             box.Add(_preview);
 
+            // the timing tap: hidden until you press Cook
+            _game = UIKit.E("cook-game");
+            _gameHint = UIKit.L("", "small", "cook-game__hint");
+            _game.Add(_gameHint);
+            _gameTrack = UIKit.E("gather-bar", "cook-game__bar");
+            _gameTrack.Add(UIKit.E("gather-bar__fill", "cook-game__fill"));
+            _gameGood = UIKit.E("gather-bar__safe");
+            _gamePerfect = UIKit.E("gather-bar__perfect");
+            _gameMarker = UIKit.E("gather-bar__marker");
+            _gameTrack.Add(_gameGood); _gameTrack.Add(_gamePerfect); _gameTrack.Add(_gameMarker);
+            foreach (var ch in _gameTrack.Children()) ch.pickingMode = PickingMode.Ignore;
+            _gameTrack.RegisterCallback<PointerDownEvent>(e => { if (e.button == 0 && _gameOn) StopGame(); });
+            _game.Add(_gameTrack);
+            box.Add(_game);
+            UIKit.Show(_game, false);
+
             var foot = UIKit.E("cook-pop__foot");
             _why = UIKit.L("", "small", "cook-pop__why");
             foot.Add(_why);
-            _cookBtn = UIKit.B("🔥 Cook", DoCook, "btn--primary", "cook-pop__cook");
+            _quickBtn = UIKit.B("Quick cook", () => DoCook(0f, null), "btn--secondary", "cook-pop__quick");
+            _quickBtn.tooltip = "Skip the timing tap: cook straight away at the normal odds (Q / gamepad X)";
+            foot.Add(_quickBtn);
+            _cookBtn = UIKit.B("🔥 Cook", CookPressed, "btn--primary", "cook-pop__cook");
+            _cookBtn.tooltip = "Tap again when the heat hits the gold for a better chance of Fine or Prime (Enter / Space / gamepad A)";
             foot.Add(_cookBtn);
             box.Add(foot);
             _result = UIKit.L("", "cook-pop__result");
@@ -57,19 +84,81 @@ namespace HearthHollow.UI
             _recipeId = recipeId;
             _lastResult = null;
             _choice = new CookChoice();
+            EndGame();
         }
 
-        void DoCook()
+        protected override void OnHide() { EndGame(); }
+
+        // ───── the timing tap ─────
+        void CookPressed()
+        {
+            if (_gameOn) { StopGame(); return; }
+            string why;
+            if (!S.CanCook(_recipeId, _choice, out why)) return;
+            var t = C.tuning;
+            _gameOn = true;
+            _gameStart = UIKit.Now;
+            _gameMarker01 = 0f;
+            _gamePerfect.style.left = Length.Percent((t.cookGameTarget - t.cookGamePerfect / 2f) * 100f);
+            _gamePerfect.style.width = Length.Percent(t.cookGamePerfect * 100f);
+            _gameGood.style.left = Length.Percent((t.cookGameTarget - t.cookGameGood / 2f) * 100f);
+            _gameGood.style.width = Length.Percent(t.cookGameGood * 100f);
+            _gameMarker.style.left = Length.Percent(0f);
+            _gameHint.text = "Tap when the heat hits the gold!";
+            UIKit.Show(_game, true);
+            _cookBtn.text = "✋ Now!";
+            _quickBtn.SetEnabled(false);
+            if (_tick == null) _tick = Root.schedule.Execute(Tick).Every(16); else _tick.Resume();
+        }
+
+        void Tick()
+        {
+            if (!_gameOn) return;
+            _gameMarker01 = Cooking.CookMarkerAt(C.tuning, UIKit.Now - _gameStart);
+            _gameMarker.style.left = Length.Percent(_gameMarker01 * 100f);
+            if (_gameMarker01 >= 1f) StopGame();   // ran off the end: cooks at the normal odds
+        }
+
+        void StopGame()
+        {
+            if (!_gameOn) return;
+            if (_gameMarker01 < 1f && UIKit.Now - _gameStart < 0.12f) return;   // the same press that started it (focused button + key)
+            float m = _gameMarker01;
+            var timing = Cooking.CookTiming(C.tuning, m);
+            float nudge = Cooking.CookNudge(C.tuning, m);
+            EndGame();
+            UIKit.Show(_game, true);   // keep the bar up to show where it stopped
+            _gameMarker.style.left = Length.Percent(m * 100f);
+            Juice.Pop(_gameMarker, 1.6f, 0.05f, 0.2f);
+            _gameHint.text = timing == Cooking.Timing.Perfect ? "✨ Perfect timing! Best chance of a better meal"
+                           : timing == Cooking.Timing.Good ? "👍 Nicely done — a better chance of Fine / Prime"
+                           : "Cooked at the normal odds";
+            DoCook(nudge, timing == Cooking.Timing.Perfect ? "Perfect timing! " : null);
+        }
+
+        void EndGame()
+        {
+            _gameOn = false;
+            if (_tick != null) _tick.Pause();
+            _cookBtn.text = "🔥 Cook";
+            if (_quickBtn != null) _quickBtn.SetEnabled(true);
+            UIKit.Show(_game, false);
+        }
+
+        void DoCook(float nudge, string prefix)
         {
             var r = C.Recipe(_recipeId);
+            _choice.qualityNudge = nudge;   // ticket 11: only the quality roll; never the dish or its tier
             var meal = S.Cook(_recipeId, _choice);
             if (meal == null) return;
-            _lastResult = "Cooked: " + Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + (r != null ? r.name : "") + "!";
+            _lastResult = (prefix ?? "") + "Cooked: " + Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + (r != null ? r.name : "") + "!";
             // keep the element ingredient if there's another one
             string acc = _choice.accelId;
             _choice = new CookChoice();
             if (!string.IsNullOrEmpty(acc) && Economy.PantryCount(S.Profile, acc) > 0) _choice.accelId = acc;
+            bool keepBar = _game.style.display != DisplayStyle.None;
             Refresh();
+            UIKit.Show(_game, keepBar);
         }
 
         public override void Refresh()
@@ -147,10 +236,13 @@ namespace HearthHollow.UI
             var t2 = C.recipes.Find(x => x.upgradeOf == r.id);
             if (t2 != null) _preview.Add(UIKit.L("★ Tier 2: " + t2.name + " needs " + DeepNames(t2) + " from deep in the dungeons — much stronger.", "small", "muted"));
             _preview.Add(UIKit.L("🔨 " + r.station + " level " + Kitchen.Level(C, p, r.station) + " raises the chance of a better meal", "small", "muted"));
+            var perfect = Cooking.Odds(C.tuning, Mathf.Max(0f, Kitchen.Jackpot(C, p, r.station) - C.tuning.jackpotChance), 1f);
+            _preview.Add(UIKit.L("🔥 Perfect timing on the tap: Fine " + Mathf.RoundToInt(perfect[1] * 100f) + "% · Prime " + Mathf.RoundToInt(perfect[2] * 100f) + "%  (Quick cook skips it)", "small", "muted"));
 
             string why;
             bool can = S.CanCook(_recipeId, _choice, out why);
-            _cookBtn.SetEnabled(can);
+            _cookBtn.SetEnabled(can || _gameOn);
+            _quickBtn.SetEnabled(can && !_gameOn);
             _why.text = can ? "Uses the ingredients now · meal pantry " + p.mealPantry.Count + "/" + Kitchen.PantrySlots(C, p) : why;
             _result.text = _lastResult ?? "";
             UIKit.Show(_result, !string.IsNullOrEmpty(_lastResult));
@@ -165,8 +257,9 @@ namespace HearthHollow.UI
 
         public override bool HandleKey(KeyCode key)
         {
-            if (key == KeyCode.Escape) Ui.CloseCook();
-            else if ((key == KeyCode.Return || key == KeyCode.KeypadEnter) && _cookBtn.enabledSelf) DoCook();
+            if (key == KeyCode.Escape) { if (_gameOn) EndGame(); else Ui.CloseCook(); }
+            else if ((key == KeyCode.Return || key == KeyCode.KeypadEnter || key == KeyCode.Space) && _cookBtn.enabledSelf) CookPressed();
+            else if (key == KeyCode.Q && !_gameOn && _quickBtn.enabledSelf) DoCook(0f, null);
             return true;   // modal
         }
     }
