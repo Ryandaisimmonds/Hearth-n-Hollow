@@ -131,3 +131,6 @@ and what I can upgrade to make the next run better, deeper, and get better loot.
   "trek elsewhere to prepare for a boss" loop. The details will change as the slice is built.
 - The hint comes from Old Wren once you've defeated the floor-5 boss: she tells you the floor-10 boss
   is weak to Fire, which points you to the second dungeon for the Fire ingredient.
+- Slice: the Cook's kit is confirmed as proposed (Pan & Ladle; Skewer Toss, Flambé, Hot Pot, Cookfire;
+  Butter Slide; Grand Feast + one new Ultimate).
+- Slice: the player-chosen upgrade area is the Lamp-maker (upgrades lantern reach and Flare).
