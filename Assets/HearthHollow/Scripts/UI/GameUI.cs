@@ -249,6 +249,7 @@ namespace HearthHollow.UI
                 RunOutcome ended = (p == Phase.RunEnd && Session.LastSummary != null) ? Session.LastSummary.outcome : RunOutcome.None;
                 _fight.PlayOutro(ended, ApplyLayout);
             }
+            if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Slice.On) { _townOpen = true; _townMenuOpen = false; }   // ticket 17: home is the town
             if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
             // (In the town, events are visitors and weather you walk into instead — no pop-up.)

@@ -19,7 +19,7 @@ namespace HearthHollow.Town
         {
             var p = Session.Profile;
             return Kitchen.Level(Session.Content, p, Station.Pot) + "/" + Kitchen.Level(Session.Content, p, Station.BBQ) + "/" +
-                   Kitchen.Level(Session.Content, p, Station.Sandwich) + "/" + p.pantryTier + "/" + ChaptersCleared;
+                   Kitchen.Level(Session.Content, p, Station.Sandwich) + "/" + p.pantryTier + "/" + ChaptersCleared + "/" + p.lampMakerStage;
         }
 
         int ChaptersCleared

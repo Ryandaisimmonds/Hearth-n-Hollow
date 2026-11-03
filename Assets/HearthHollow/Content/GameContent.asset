@@ -5059,7 +5059,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 33
+    contentVersion: 34
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -5131,6 +5131,44 @@ MonoBehaviour:
       name: Hearthglow Lantern
       price: 260
       value: 0.6
+    lampMaker:
+    - level: 1
+      name: Lamp-maker's stall
+      price: 30
+      materials:
+      - ingredientId: timber
+        count: 6
+      value: 0
+      description: A stall and a lamp-maker who trims your wick properly. Your light reaches a little further, and Flare a little wider.
+      lightReach: 0.1
+      flareRadius: 0.1
+      flareCooldownCut: 0
+    - level: 2
+      name: Lamp-maker's workshop
+      price: 80
+      materials:
+      - ingredientId: timber
+        count: 10
+      - ingredientId: ember_coal
+        count: 4
+      value: 0
+      description: A proper workshop with a coal kiln for glass. Brighter carried light, and Flare comes back quicker.
+      lightReach: 0.2
+      flareRadius: 0.2
+      flareCooldownCut: 3
+    - level: 3
+      name: Lighthouse workshop
+      price: 160
+      materials:
+      - ingredientId: timber
+        count: 12
+      - ingredientId: ember_coal
+        count: 8
+      value: 0
+      description: A tall workshop with a lamp on top you can see from the gate. The best light in the valley.
+      lightReach: 0.35
+      flareRadius: 0.35
+      flareCooldownCut: 6
     storyTitle: The Everflame
     storyPrologue: 'Every hearth in the valley was lit from the Everflame, a fire that has burned in the Hollow Heart for a thousand winters. This autumn it guttered. The fog crept in, the hearths went cold, and the old roads closed. Old Wren, keeper of the camp, has one map left: the Ember Path. Cook well, travel light, and bring the flame home.'
     headTiers:

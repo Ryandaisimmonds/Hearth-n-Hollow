@@ -17,6 +17,7 @@
 // v32 (ticket 14): Chili Ridge. A 5-floor side dungeon, hidden until Old Wren's directions (flag "wren_fire_hint",
 // ticket 15). Fire-leaning monsters, the Ridge Drake on floor 5, chilies (Fire infusion) and mint (Fire guard), ember coal.
 // v33 (ticket 16): utility gear. A lantern track (light reach) joins boots and bag; four slice trinkets that bend rules.
+// v34 (ticket 17): the Lamp-maker, three stages built with Meadow timber and Ridge ember coal (light reach + Flare).
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -213,6 +214,21 @@ namespace HearthHollow.Core
             t.name = name; t.emoji = emoji; t.description = desc; t.perk = perk; t.perkValue = value;
             t.price = price; t.inWorkshop = true; t.shopChapter = 1; t.slice = true;
             if (t.buffs == null) t.buffs = new List<StatMod>();
+        }
+
+        static void LampMaker34(GameContent c)
+        {
+            if (c.lampMaker == null) c.lampMaker = new List<LampStage>();
+            if (c.lampMaker.Count > 0) return;
+            c.lampMaker.Add(new LampStage { level = 1, name = "Lamp-maker's stall", price = 30, materials = new List<IngredientCost> { Cost("timber", 6) },
+                lightReach = 0.1f, flareRadius = 0.1f, flareCooldownCut = 0f,
+                description = "A stall and a lamp-maker who trims your wick properly. Your light reaches a little further, and Flare a little wider." });
+            c.lampMaker.Add(new LampStage { level = 2, name = "Lamp-maker's workshop", price = 80, materials = new List<IngredientCost> { Cost("timber", 10), Cost("ember_coal", 4) },
+                lightReach = 0.2f, flareRadius = 0.2f, flareCooldownCut = 3f,
+                description = "A proper workshop with a coal kiln for glass. Brighter carried light, and Flare comes back quicker." });
+            c.lampMaker.Add(new LampStage { level = 3, name = "Lighthouse workshop", price = 160, materials = new List<IngredientCost> { Cost("timber", 12), Cost("ember_coal", 8) },
+                lightReach = 0.35f, flareRadius = 0.35f, flareCooldownCut = 6f,
+                description = "A tall workshop with a lamp on top you can see from the gate. The best light in the valley." });
         }
 
         static void Elements26(GameContent c)

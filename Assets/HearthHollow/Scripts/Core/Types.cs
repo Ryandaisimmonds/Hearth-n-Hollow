@@ -279,6 +279,14 @@ namespace HearthHollow.Core
         public List<IngredientCost> materials = new List<IngredientCost>();
         public float value;   // pantry: shelf count · station: unused (better-meal chance comes from tuning.stationJackpotPerLevel)
     }
+    /// Ticket 17: one stage of the Lamp-maker (the slice's town building you choose to build on a fenced plot).
+    [Serializable] public class LampStage : KitchenTier
+    {
+        public string description;
+        public float lightReach;         // + carried-light reach (0.1 = +10%), on top of the lantern
+        public float flareRadius;        // + Flare radius (0.1 = +10%)
+        public float flareCooldownCut;   // seconds off Flare's cooldown
+    }
     // weapon value = base damage · armour value = armour points
 
     /// A trinket: worn in a trinket slot (2, a 3rd after a story chapter). Found on first clears, rare boss/elite drops,
@@ -424,6 +432,7 @@ namespace HearthHollow.Core
         public List<KeyItemData> keyItems = new List<KeyItemData>();
         public List<GearTier> bagTiers = new List<GearTier>();   // bag upgrades: value = slots (contentVersion 6)
         public List<GearTier> lanternTiers = new List<GearTier>();   // ticket 16: value = extra light reach (0.15 = +15%)
+        public List<LampStage> lampMaker = new List<LampStage>();     // ticket 17: the Lamp-maker's stages (built in town with biome materials)
         public string storyTitle;
         public string storyPrologue;
         public List<GearTier> headTiers = new List<GearTier>();    // Workshop: value = max HP (contentVersion 7)
@@ -484,6 +493,7 @@ namespace HearthHollow.Core
         public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public int bootsTier, lanternTier;   // Design v2 (ticket 16, saveVersion 12): shared by every class
+        public int lampMakerStage;           // ticket 17: 0 = the plot is empty; 1+ = stages of the Lamp-maker built
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
         public List<string> equippedTrinkets = new List<string>();  // worn, shared by every class (max = Gear.TrinketSlots)
         public List<CookedMeal> mealPantry = new List<CookedMeal>();  // cooked meals kept at camp (saveVersion 6)

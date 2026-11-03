@@ -13,7 +13,7 @@ using UnityEngine;
 namespace HearthHollow.Town
 {
     public enum TownAction { Hearth, Cooking, Larder, Upgrades, Workshop, Training, Gate, Bed, Wren, BackToCamp, Plot,
-                             Notice, Merchant, Armourer, Baker, Florist, Fishing, ClassNpc, Forager }
+                             Notice, Merchant, Armourer, Baker, Florist, Fishing, ClassNpc, Forager, LampMaker }
 
     public class TownSpot
     {

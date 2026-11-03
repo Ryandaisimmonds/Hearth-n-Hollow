@@ -45,6 +45,17 @@ namespace HearthHollow.Core
             };
         }
 
+        /// Build the next stage of the Lamp-maker (in town, with coins and biome materials). Ticket 17.
+        public bool BuildLampMaker(out string reason)
+        {
+            if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }
+            if (!LampMaker.Build(Content, Profile, out reason)) return false;
+            var s = LampMaker.Current(Content, Profile);
+            Info("🏮 " + (s != null ? s.name : "The Lamp-maker") + " is built! " + LampMaker.EffectText(s));
+            Touch(true);
+            return true;
+        }
+
         /// Wren gives the hint: the boss's Fire weakness is known and Chili Ridge opens. True the first time.
         public bool GiveWrenFireHint()
         {

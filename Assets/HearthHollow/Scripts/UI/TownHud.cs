@@ -82,6 +82,8 @@ namespace HearthHollow.UI
                     _labels.Add(l);
                     _spotLabels[s.id] = l;
                 }
+                string want = s.emoji + " " + s.name;
+                if (l.text != want) l.text = want;   // a spot can be renamed (e.g. the Lamp-maker once built)
                 float top = s.action == TownAction.Wren ? 1.6f : Mathf.Max(0.8f, s.size.y) + (s.action == TownAction.Hearth ? 3.2f : 0.4f);   // above the tallest (end-of-story) fire
                 Vector2 pp = RuntimePanelUtils.CameraTransformWorldToPanel(Root.panel, (Vector3)s.pos + new Vector3(0, top, 0), cam);
                 l.style.left = pp.x; l.style.top = pp.y;

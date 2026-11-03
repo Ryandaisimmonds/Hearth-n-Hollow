@@ -124,6 +124,8 @@ namespace HearthHollow.Core
         public static float BootsSpeed(GameContent c, Profile p, ClassId cls) { var t = Current(c, p, GearSlot.Boots, cls); return t != null ? t.value : 0f; }
         /// Extra carried-light reach from the lantern (0.15 = +15%).
         public static float LanternReach(GameContent c, Profile p) { var t = Current(c, p, GearSlot.Lantern, ClassId.Cook); return t != null ? Math.Max(0f, t.value) : 0f; }
+        /// All extra carried-light reach: the lantern plus the Lamp-maker (ticket 17).
+        public static float LightReach(GameContent c, Profile p) { return LanternReach(c, p) + LampMaker.LightReach(c, p); }
 
         /// saveVersion 12 (ticket 16): one shared set. Weapon / body / head purchases are refunded; boots become
         /// shared at the best pair any class had (the rest refunded). Returns the coins refunded.

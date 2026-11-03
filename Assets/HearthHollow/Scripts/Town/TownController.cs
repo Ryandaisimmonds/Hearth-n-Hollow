@@ -145,6 +145,7 @@ namespace HearthHollow.Town
                     break;
                 }
                 case TownAction.Plot: _ui.Toast("🚧 Fenced off. Something new will be built here one day."); break;
+                case TownAction.LampMaker: TalkToLampMaker(); break;
                 case TownAction.Notice: _ui.OpenCampEvent(); break;
                 case TownAction.Merchant:
                     if (Session.Hearth != null && Session.Hearth.campEvent == CampEvent.Merchant) _ui.OpenCampEvent();
@@ -188,6 +189,7 @@ namespace HearthHollow.Town
             BuildTiles(theme);
             Spots = TownLayout.Spots();
             if (Slice.On) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);   // the slice has no old camp screen
+            SetupLampMakerSpot();   // the NE plot: build the Lamp-maker (ticket 17)
             // your other two classes hang around the training yard; talk to one to swap
             int k = 0;
             foreach (var cd in Session.Content.classes)
@@ -206,6 +208,7 @@ namespace HearthHollow.Town
             BuildDecor();   // lanterns, flowers and bunting by chapters cleared
             if (Art != null) BuildScenery();   // trees round the edge, the well, benches, stones by the pond
             BuildWorkAreas();   // the smithy, workshop, cooking area and training yard come to life (TownWorkAreas.cs)
+            BuildLampMakerArt();   // the Lamp-maker, if you've built it (TownLampMaker.cs)
             if (ev == CampEvent.Merchant) Visitor("Merchant", "Ranger", new Color(0.8f, 0.6f, 1f), TownLayout.MerchantStand);
             if (ev == CampEvent.Armourer) Visitor("Armourer", "Warden", new Color(0.75f, 0.75f, 0.8f), TownLayout.ArmourerStand);
             ApplyWeather(light, theme, ev);

@@ -210,7 +210,7 @@ namespace HearthHollow.Dungeon
             _playerLight.lightType = Light2D.LightType.Point;
             _playerLight.color = Color.Lerp(new Color(1f, 0.76f, 0.48f), PlayerController.ClassColour(Player.ClassId), Settings.carriedLightClassTint);   // firelight, tinted by your class colour
             _playerLight.intensity = Mathf.Max(_theme.playerLight, Settings.carriedLight);
-            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LanternReach(Session.Content, Session.Profile));   // the lantern (ticket 16)
+            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LightReach(Session.Content, Session.Profile));   // the lantern (ticket 16) + the Lamp-maker (ticket 17)
             // packed meals feed your light (step 5): Sandwich = wider, BBQ = hotter + redder, Pot = steadier; finer meals count more
             float reach = 0f, heat = 0f, steady = 0f;
             if (Session.Run != null)
@@ -382,27 +382,32 @@ namespace HearthHollow.Dungeon
             if (cut > 0f && _flareCd > 0f) _flareCd = Mathf.Max(0f, _flareCd - cut);
         }
 
+        /// Flare's reach, widened by the Lamp-maker (ticket 17).
+        public float FlareRadius { get { return Settings.flareRadius * (1f + LampMaker.FlareRadius(Session.Content, Session.Profile)); } }
+
         void Flare()
         {
-            _flareCd = OutOfFight ? Settings.flareCalmCooldown : Mathf.Max(Settings.flareMinCooldown, Settings.flareCooldown - Settings.mealSteady * _mealSteady);
+            float lampCut = LampMaker.FlareCooldownCut(Session.Content, Session.Profile);   // the Lamp-maker (ticket 17)
+            _flareCd = OutOfFight ? Settings.flareCalmCooldown : Mathf.Max(Settings.flareMinCooldown - lampCut * 0.5f, Settings.flareCooldown - Settings.mealSteady * _mealSteady - lampCut);
+            float flareR = FlareRadius;
             var col = new Color(1f, 0.92f, 0.75f);
-            var l = DungeonFx.Flash(Player.Body, col, Settings.flareRadius, Settings.flareIntensity, Settings.flareSeconds, Player.transform);
+            var l = DungeonFx.Flash(Player.Body, col, flareR, Settings.flareIntensity, Settings.flareSeconds, Player.transform);
             CastShadows(l, 0.85f, 0.3f);
             DungeonFx.RingAt(Player.Body, col, 3.5f, 0.5f);
             DungeonFx.Embers(Player.Body, new Color(1f, 0.75f, 0.4f), 30, 0.8f);
             for (int i = 0; i < 24; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Player.Body, o, col, 1, 4f, 9f); }
             GameLook.Punch(0.5f);
-            if (_current != null && _current.Lights != null) _current.Lights.IgniteNear(Player.Feet, Settings.flareRadius * 0.5f, !OutOfFight);   // a cheap out-of-fight Flare doesn't solve brazier puzzles
-            if (_current != null && _current.Secrets != null) _current.Secrets.Reveal(Player.Body, Settings.flareRadius, Settings.secretRevealSeconds);   // shows secrets (step 7)
+            if (_current != null && _current.Lights != null) _current.Lights.IgniteNear(Player.Feet, flareR * 0.5f, !OutOfFight);   // a cheap out-of-fight Flare doesn't solve brazier puzzles
+            if (_current != null && _current.Secrets != null) _current.Secrets.Reveal(Player.Body, flareR, Settings.secretRevealSeconds);   // shows secrets (step 7)
             // shadow creatures caught in it are stunned (step 6)
             if (_current != null)
                 foreach (var e in _current.Enemies)
-                    if (e != null && !e.Dead && e.Shadow && Vector2.Distance(e.Body, Player.Body) <= Settings.flareRadius * Settings.flareStunReach)
+                    if (e != null && !e.Dead && e.Shadow && Vector2.Distance(e.Body, Player.Body) <= flareR * Settings.flareStunReach)
                         e.Stun(Settings.flareStunSeconds);
             // a light hit for Break (no damage) on everything close by (step 8)
             if (_current != null)
                 foreach (var e in new List<EnemyController>(_current.Enemies))
-                    if (e != null && !e.Dead && Vector2.Distance(e.Body, Player.Body) <= Settings.flareRadius * Settings.flareStunReach) e.ElementContact(Element.Light);
+                    if (e != null && !e.Dead && Vector2.Distance(e.Body, Player.Body) <= flareR * Settings.flareStunReach) e.ElementContact(Element.Light);
         }
 
         /// Ramps the room light towards its target; fires the light-up when the pause is over.
