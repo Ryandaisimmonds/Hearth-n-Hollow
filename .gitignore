@@ -1,0 +1,45 @@
+# --- Unity generated (rebuilt automatically, never commit) ---
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# --- Builds ---
+/[Bb]uild/
+/[Bb]uilds/
+/HnH Mac/
+/V1/
+/V2/
+/V3/
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*.apk
+*.aab
+*.unitypackage
+
+# --- IDE / solution files (Unity regenerates these) ---
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.vs/
+.idea/
+.consulo/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+
+# --- Crash reports ---
+sysinfo.txt
+crashlytics-build.properties
