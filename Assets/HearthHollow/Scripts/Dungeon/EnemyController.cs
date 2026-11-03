@@ -468,6 +468,8 @@ namespace HearthHollow.Dungeon
             bool weak = _weak.Contains(element), res = _resist.Contains(element);
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f),
                 Elements.Emoji(element) + (weak ? " Weakness found!" : res ? " Resistance found" : " No effect"), weak ? "dnum--crit" : "dnum--info");
+            var md = _dc.Session.Content.Monster(Stats.monsterId);
+            _dc.Session.Log(Elements.Emoji(element) + " " + (md != null ? md.name : Stats.monsterId) + (weak ? " is weak to " : res ? " resists " : " shrugs off ") + Elements.Name(element));   // run log (ticket 20)
             return true;
         }
 

@@ -14,7 +14,9 @@ namespace HearthHollow.UI
         public const int DevCoins = 9999;
         public const int DevIngredientCount = 99;
 
-        readonly ConfirmButton _reset, _flee;
+        readonly ConfirmButton _reset;
+        readonly ScrollView _log;   // ticket 20: this run's log, newest first
+        readonly Button[] _textSize;
         readonly VisualElement _runSection, _townSection;
         readonly Button _townBtn;
         readonly Label _townHint;
@@ -28,14 +30,22 @@ namespace HearthHollow.UI
             close.tooltip = "Close (Esc)";
             box.Add(close);
             box.Add(UIKit.L("Settings", "overlay__title"));
+            // everything below the title scrolls, so big text sizes never push it off screen (ticket 22)
+            var body = new ScrollView(ScrollViewMode.Vertical);
+            body.AddToClassList("settings__body");
+            body.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            box.Add(body);
 
             // ── Run (only while you're out) ──
             _runSection = UIKit.E("settings__section");
-            _runSection.Add(UIKit.L("This run", "subhead"));
-            _flee = new ConfirmButton("Flee home", "Click again — keep your bag, no clear bonus", () => { Ui.CloseSettings(); S.FleeHome(); }, "btn--secondary", "settings__btn");
-            _runSection.Add(_flee.Button);
-            _runSection.Add(UIKit.L("The dungeon is paused while this menu is open.", "muted", "small", "settings__hint"));
-            box.Add(_runSection);
+            _runSection.Add(UIKit.L("📜 This run so far", "subhead"));
+            // (ticket 21: no "Flee home" here: the way home is an exit, or falling)
+            _log = new ScrollView(ScrollViewMode.Vertical);
+            _log.AddToClassList("run-log");
+            _log.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            _runSection.Add(_log);
+            _runSection.Add(UIKit.L("The dungeon is paused while this menu is open. The way home is an exit (odd floors and after a boss).", "muted", "small", "settings__hint"));
+            body.Add(_runSection);
 
             // ── Hearth's Hollow: the walkable town, in preview until it does everything the camp does ──
             _townSection = UIKit.E("settings__section");
@@ -44,15 +54,30 @@ namespace HearthHollow.UI
             _townSection.Add(_townBtn);
             _townHint = UIKit.L("", "muted", "small", "settings__hint");
             _townSection.Add(_townHint);
-            box.Add(_townSection);
+            body.Add(_townSection);
 
+            // ── Display ──
+            var display = UIKit.E("settings__section");
+            display.Add(UIKit.L("Display", "subhead"));
+            // ticket 22: text size (scales the whole UI)
+            var ts = UIKit.E("settings__row");
+            ts.Add(UIKit.L("Text size", "small", "settings__label"));
+            _textSize = new Button[HearthHollow.Runtime.GameBootstrap.TextSizeNames.Length];
+            for (int i = 0; i < _textSize.Length; i++)
+            {
+                int lvl = i;
+                _textSize[i] = UIKit.B(HearthHollow.Runtime.GameBootstrap.TextSizeNames[i], () => { HearthHollow.Runtime.GameBootstrap.SetTextSize(lvl); Refresh(); }, "filter-chip");
+                ts.Add(_textSize[i]);
+            }
+            display.Add(ts);
+            body.Add(display);
             // ── Game ──
             var game = UIKit.E("settings__section");
             game.Add(UIKit.L("Game", "subhead"));
             _reset = new ConfirmButton("Reset game", "Click again to wipe everything", () => Ui.ResetGame(), "btn--danger", "settings__btn");
             game.Add(_reset.Button);
             game.Add(UIKit.L("Deletes all progress — coins, gear, pantry and routes — and you start again.", "muted", "small", "settings__hint"));
-            box.Add(game);
+            body.Add(game);
 
             // ── Dev mode ──
             if (DevModeEnabled)
@@ -115,11 +140,7 @@ namespace HearthHollow.UI
                 dev.Add(kt);
 
                 dev.Add(UIKit.L("Only shown in the Unity editor and development builds.", "muted", "small", "settings__hint"));
-                var devScroll = new ScrollView(ScrollViewMode.Vertical);
-                devScroll.AddToClassList("settings__devscroll");
-                devScroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-                devScroll.Add(dev);
-                box.Add(devScroll);
+                body.Add(dev);
             }
         }
 
@@ -133,13 +154,29 @@ namespace HearthHollow.UI
             Refresh();
         }
 
-        protected override void OnShow() { _reset.Reset(); _flee.Reset(); }
+        protected override void OnShow() { _reset.Reset(); BuildLog(); }
+
+        /// The run log, newest first, grouped by floor.
+        void BuildLog()
+        {
+            _log.Clear();
+            var lines = S.RunLog;
+            if (lines == null || lines.Count == 0) { _log.Add(UIKit.L("Nothing yet.", "muted", "small")); return; }
+            int lastFloor = -1;
+            for (int i = lines.Count - 1; i >= 0; i--)
+            {
+                var l = lines[i];
+                if (l.floor != lastFloor) { _log.Add(UIKit.L(l.floor > 0 ? "Floor " + l.floor : "Setting out", "run-log__floor")); lastFloor = l.floor; }
+                _log.Add(UIKit.L(l.text, "run-log__line"));
+            }
+        }
 
         public override void Refresh()
         {
             var p = S.Phase;
             UIKit.Show(_runSection, S.Run != null && p != HearthHollow.Core.Phase.Hearth && p != HearthHollow.Core.Phase.RunEnd);
             UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null && !HearthHollow.Core.Slice.On);   // the slice has no camp screen to go back to
+            for (int i = 0; _textSize != null && i < _textSize.Length; i++) _textSize[i].EnableInClassList("filter-chip--on", i == HearthHollow.Runtime.GameBootstrap.TextSize);
             if (_sliceBtn != null) _sliceBtn.text = HearthHollow.Core.Slice.On ? "🧪 Vertical slice: ON (Cook, Meadow, Chili Ridge)" : "🧪 Vertical slice: OFF (everything visible)";
             _townBtn.text = Ui.TownOpen ? "🏕️ Back to the camp screen" : "🏘️ Visit Hearth's Hollow";
             _townHint.text = Ui.TownOpen ? "Leave the town preview and go back to the usual camp screen." : "A walkable town that will replace the camp screen once it's finished. Uses your real save.";

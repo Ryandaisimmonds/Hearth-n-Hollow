@@ -1474,7 +1474,7 @@ namespace HearthHollow.Dungeon
             Vector3 numAt = Body + Vector2.up * 0.6f;
             int dmg = S.DungeonDamagePlayer(raw);   // may end the run (the floor is torn down)
             DungeonHud.Number(numAt, "-" + dmg, "dnum--hurt");
-            if (guarded) DungeonHud.Number(numAt + Vector3.up * 0.35f, Elements.Emoji(element) + " Guarded", "dnum--info");
+            if (guarded) { DungeonHud.Number(numAt + Vector3.up * 0.35f, Elements.Emoji(element) + " Guarded", "dnum--info"); S.Log(Elements.Emoji(element) + " Your meal guarded a " + Elements.Name(element) + " hit"); }
         }
 
         void OnDestroy()

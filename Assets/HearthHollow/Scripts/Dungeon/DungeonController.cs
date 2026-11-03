@@ -228,6 +228,7 @@ namespace HearthHollow.Dungeon
                 var parts = new List<string>();
                 if (reach > 0.01f) parts.Add("wider"); if (heat > 0.01f) parts.Add("hotter"); if (steady > 0.01f) parts.Add("steadier");
                 DungeonHud.Number(Player.Body + Vector2.up * 1f, "🔥 Your meals: light " + string.Join(" · ", parts.ToArray()), "dnum--info");
+                Session.Log("🔥 Your meals make your light " + string.Join(", ", parts.ToArray()));
             }
             _playerLight.pointLightInnerRadius = 0.3f;
             _playerLight.falloffIntensity = Settings.carriedLightFalloff;   // reaches far, fades gradually

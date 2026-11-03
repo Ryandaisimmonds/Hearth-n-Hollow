@@ -71,7 +71,11 @@ namespace HearthHollow.Core
         // ───────────────────────── helpers ─────────────────────────
         private void Recompute() { Stats = StatCalc.Compute(Content, Profile, Run); }
 
-        private void Emit(GameEvent e) { if (e != null && EventRaised != null) EventRaised(e); }
+        private void Emit(GameEvent e)
+        {
+            if (e != null && Run != null && Loggable(e.type) && !string.IsNullOrEmpty(e.text)) Log(e.text);   // the run log (ticket 20)
+            if (e != null && EventRaised != null) EventRaised(e);
+        }
         private void Emit(List<GameEvent> list) { if (list == null) return; foreach (var e in list) Emit(e); }
         private void Info(string text) { Emit(new GameEvent(GameEventType.Info, 0, false, text)); }
 
@@ -306,9 +310,12 @@ namespace HearthHollow.Core
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
+            ClearRunLog();   // a fresh log each run (ticket 20)
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.element = Cooking.Infusion(Content, Run.eaten);   // a meal's infusion: attacks without their own element take it
             Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
+            if (Run.element != Element.None) Log(Elements.Emoji(Run.element) + " Your attacks are infused with " + Elements.Name(Run.element));
+            foreach (var g in Run.guards) Log(Elements.Emoji(g) + " Your meals guard you against " + Elements.Name(g));
             Run.storm = storm;
             Run.harvestMoon = Hearth.campEvent == CampEvent.HarvestMoon;
             Emit(Meals.PackForRun(Content, Run));   // the tray is eaten at camp: buffs last the whole run

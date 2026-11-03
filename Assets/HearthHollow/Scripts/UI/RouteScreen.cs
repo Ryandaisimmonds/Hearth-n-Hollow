@@ -62,7 +62,7 @@ namespace HearthHollow.UI
             var footer = UIKit.E("expedition__footer");
             _go = UIKit.B("Enter ➜", Go, "btn--primary", "btn--setout", "expedition__go");
             footer.Add(_go);
-            footer.Add(UIKit.B("← Back to camp  (Esc)", () => Ui.CloseRoutes(), "btn--small", "btn--ghost"));
+            footer.Add(UIKit.B(Slice.On ? "← Back to town  (Esc)" : "← Back to camp  (Esc)", () => Ui.CloseRoutes(), "btn--small", "btn--ghost"));
             side.Add(footer);
             body.Add(side);
             Root.Add(body);

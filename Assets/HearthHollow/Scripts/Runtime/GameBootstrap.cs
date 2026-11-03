@@ -27,11 +27,36 @@ namespace HearthHollow.Runtime
         public GameSession Session { get; private set; }
         GameUI _ui;
         public const string SlicePref = "hh_slice";
+
+        // ── text size (ticket 22): one knob that scales the whole UI, text and boxes together ──
+        public const string TextSizePref = "hh_text_size";
+        public static readonly string[] TextSizeNames = { "Normal", "Large", "Extra large" };
+        public static readonly float[] TextSizeScales = { 1f, 1.15f, 1.3f };
+        public static int TextSize { get; private set; }
+        static PanelSettings _panel;
+        static Vector2Int _panelBaseRes;
+
+        /// Apply a text size (0 Normal, 1 Large, 2 Extra large) and remember it. Default: Large.
+        public static void SetTextSize(int level)
+        {
+            TextSize = Mathf.Clamp(level, 0, TextSizeScales.Length - 1);
+            PlayerPrefs.SetInt(TextSizePref, TextSize); PlayerPrefs.Save();
+            if (_panel == null) return;
+            float k = TextSizeScales[TextSize];   // a smaller reference resolution draws everything bigger
+            _panel.referenceResolution = new Vector2Int(Mathf.RoundToInt(_panelBaseRes.x / k), Mathf.RoundToInt(_panelBaseRes.y / k));
+        }
         UIDocument _doc;
 
         void Start()
         {
             _doc = GetComponent<UIDocument>();
+            if (_doc.panelSettings != null)   // a runtime copy, so the text-size setting never edits the asset
+            {
+                _panelBaseRes = _doc.panelSettings.referenceResolution;
+                _panel = Instantiate(_doc.panelSettings);
+                _doc.panelSettings = _panel;
+                SetTextSize(PlayerPrefs.GetInt(TextSizePref, 1));
+            }
             ArtLibrary.Active = art;   // the UI reads art through ArtLibrary.Active (emoji fallback when null)
 
             GameContent gc = content != null ? content.GetContentOrDefault() : DefaultContent.Create();
