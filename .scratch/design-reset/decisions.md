@@ -129,5 +129,5 @@ and what I can upgrade to make the next run better, deeper, and get better loot.
 - The slice gets a second, smaller dungeon. The main dungeon's boss is much easier with Fire food,
   and the Fire accelerator ingredient only drops in that second dungeon. This tests the
   "trek elsewhere to prepare for a boss" loop. The details will change as the slice is built.
-- The hint comes from fighting the floor-5 boss: that fight is how you learn the floor-10 boss is weak
-  to Fire, which points you to the second dungeon for the Fire ingredient.
+- The hint comes from Old Wren once you've defeated the floor-5 boss: she tells you the floor-10 boss
+  is weak to Fire, which points you to the second dungeon for the Fire ingredient.
