@@ -26,13 +26,13 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void Bag_KeepsGradesApart()
+        public void Bag_IngredientsHaveNoGrades_TheSameOneStacks()
         {
             var run = new RunState();
             Bag.Init(run, 2);
             Bag.Add(run, "herb", 1, 5, 0);
-            Bag.Add(run, "herb", 1, 5, 2);
-            Assert.AreEqual(0, Bag.FreeSlots(run), "a Prime herb shouldn't stack onto a Plain one");
+            Bag.Add(run, "herb", 1, 5, 2);   // an old caller passing a grade: ignored (Design v2)
+            Assert.AreEqual(1, Bag.FreeSlots(run), "herbs are herbs: they stack");
         }
 
         [Test]

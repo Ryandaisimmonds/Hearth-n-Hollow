@@ -153,7 +153,7 @@ namespace HearthHollow.Dungeon
                     break;
                 case St.Charging:
                     if (!_chargeHit && Player.CanBeHit && Vector2.Distance(Player.Body, Body) < 0.75f * Mathf.Max(1f, Profile.scale))
-                    { _chargeHit = true; Player.TakeHit(Stats.damage, transform.position); }
+                    { _chargeHit = true; Player.TakeHit(Stats.damage, transform.position, OwnElement); }
                     if (_stT <= 0f) { _st = St.Recover; _stT = 0.5f; }
                     break;
                 case St.Recover:
@@ -242,7 +242,7 @@ namespace HearthHollow.Dungeon
         {
             if (Dead || Player == null || _dc == null || !_dc.GameplayActive || _stunT > 0f) return;
             float reach = Profile.attackRange + 0.35f;
-            if (Vector2.Distance(Player.Body, Body + _lockDir * 0.3f) <= reach) Player.TakeHit(Stats.damage, transform.position);
+            if (Vector2.Distance(Player.Body, Body + _lockDir * 0.3f) <= reach) Player.TakeHit(Stats.damage, transform.position, OwnElement);
             DungeonFx.SlashAt(Body + _lockDir * 0.3f, _lockDir, new Color(1f, 0.5f, 0.45f, 0.75f), 0.8f);
         }
 
@@ -251,7 +251,8 @@ namespace HearthHollow.Dungeon
             Vector2 d = Quaternion.Euler(0, 0, angle) * dir;
             Color c = Profile.archetype == EnemyArchetype.Brute ? new Color(1f, 0.55f, 0.2f) : new Color(0.75f, 0.45f, 1f);
             // hip height (same plane as player arrows), so a tall monster's level shots don't sail over the player
-            Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Profile.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
+            var shot = Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Profile.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
+            if (shot != null) shot.SetHit(OwnElement);   // the monster's element: a guard meal halves it
         }
 
         void FixedUpdate()
@@ -442,6 +443,8 @@ namespace HearthHollow.Dungeon
         // ───────────────────────── elements (Design v2, ticket 06) ─────────────────────────
         readonly List<Element> _weak = new List<Element>(), _resist = new List<Element>();
         public IList<Element> WeakTo { get { return _weak; } }
+        /// The monster's own element (its attacks carry it).
+        public Element OwnElement { get { return Profile != null ? Profile.element : Element.None; } }
         public IList<Element> Resists { get { return _resist; } }
 
         void SetupElements(EnemyProfile p)

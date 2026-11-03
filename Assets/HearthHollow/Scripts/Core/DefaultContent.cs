@@ -39,6 +39,7 @@ namespace HearthHollow.Core
             Speed24(c);              // DefaultContentArc.cs: speed gear doubled for the slower start
             DesignV2Cuts25(c);       // DefaultContentDesignV2.cs: no Darkness hazard, no cut-system text
             Elements26(c);           // DefaultContentDesignV2.cs: moves carry an element
+            Cooking27(c);            // DefaultContentDesignV2.cs: cooking v10 (element slot, quality, tiers, light combos)
             return c;
         }
 

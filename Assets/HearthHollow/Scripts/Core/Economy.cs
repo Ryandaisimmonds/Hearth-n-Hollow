@@ -40,6 +40,7 @@ namespace HearthHollow.Core
         public static void AddToPantry(Profile p, string ingredientId, int count, int grade = 0)
         {
             if (string.IsNullOrEmpty(ingredientId) || count <= 0) return;
+            grade = 0;   // ingredients have no grades any more (Design v2, ticket 08)
             ItemStack s = p.pantry.Find(x => x.ingredientId == ingredientId && x.grade == grade);
             if (s != null) { s.count += count; return; }
             // keep each ingredient's grades together, Plain first

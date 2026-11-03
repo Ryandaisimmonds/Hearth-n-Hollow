@@ -252,6 +252,8 @@ namespace HearthHollow.Dungeon
             if (_guardUntil > 0f) buff = "🛡 Guard";
             if (_furyUntil > 0f) buff = (buff != null ? buff + "  " : "") + "📯 Fury";
             if (Time.time < _hasteUntil) buff = (buff != null ? buff + "  " : "") + "💨 Haste";
+            if (S.RunElement != Element.None) buff = (buff != null ? buff + "  " : "") + Elements.Emoji(S.RunElement) + " Infused";
+            foreach (var g in S.RunGuards) buff = (buff != null ? buff + "  " : "") + Elements.Emoji(g) + " Guard";
             string hazard = _dc != null ? _dc.Session.DungeonHazardText : null;   // ☠️ Poison · 50% less
             if (hazard != null) buff = (buff != null ? buff + "  " : "") + hazard;
             string muts = _dc != null ? _dc.Session.DungeonMutatorText : null;   // 💨 Swift  💥 Big Bangs
@@ -1453,9 +1455,11 @@ namespace HearthHollow.Dungeon
         // ───────────────────────── getting hit ─────────────────────────
         public bool CanBeHit { get { return !Dashing && Time.time >= _invulnUntil; } }
 
-        public void TakeHit(float raw, Vector2 from)
+        public void TakeHit(float raw, Vector2 from, Element element = Element.None)
         {
             if (!CanBeHit || _dc == null || !_dc.GameplayActive) return;
+            bool guarded = element != Element.None && S.RunGuards.Contains(element);
+            if (guarded) raw *= S.Content.tuning.guardMult;   // a guard meal: this element hits for half
             if (_counterUntil > Time.time && _counterMove != null) { Counter(from); return; }   // Cinder Step
             _invulnUntil = Time.time + T.hurtInvulnSeconds;
             Vector2 away = ((Vector2)transform.position - from);
@@ -1471,6 +1475,7 @@ namespace HearthHollow.Dungeon
             Vector3 numAt = Body + Vector2.up * 0.6f;
             int dmg = S.DungeonDamagePlayer(raw);   // may end the run (the floor is torn down)
             DungeonHud.Number(numAt, "-" + dmg, "dnum--hurt");
+            if (guarded) DungeonHud.Number(numAt + Vector3.up * 0.35f, Elements.Emoji(element) + " Guarded", "dnum--info");
         }
 
         void OnDestroy()

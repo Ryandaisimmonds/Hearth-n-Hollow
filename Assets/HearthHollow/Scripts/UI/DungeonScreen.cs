@@ -327,8 +327,7 @@ namespace HearthHollow.UI
                     slot.Add(Art.Pic(ArtLibrary.GetIngredient(b.ingredientId), UIKit.IngEmoji(C, b.ingredientId), "slot__emoji"));
                     slot.Add(UIKit.L(b.count.ToString(), "slot__count"));
                     bool mat = Kitchen.IsMaterial(C, b.ingredientId);
-                    if (!mat) { slot.AddToClassList("bag-slot--grade-" + b.grade); slot.Add(UIKit.L(Cooking.GradeGem(b.grade), "bag-slot__grade")); }
-                    slot.tooltip = (mat ? "" : Cooking.IngGradeName(b.grade) + " ") + UIKit.IngName(C, b.ingredientId) + " ×" + b.count + (mat ? " (building material)" : "");
+                    slot.tooltip = UIKit.IngName(C, b.ingredientId) + " ×" + b.count + (mat ? " (building material)" : "");
                     int idx = i;
                     slot.RegisterCallback<PointerDownEvent>(e => { if (e.button == 1) S.BagDiscard(idx); });
                 }

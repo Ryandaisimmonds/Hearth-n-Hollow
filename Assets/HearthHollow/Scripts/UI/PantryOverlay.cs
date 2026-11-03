@@ -67,12 +67,14 @@ namespace HearthHollow.UI
                 if (Kitchen.IsMaterial(C, st.ingredientId)) continue;   // shown under Building materials
                 var item = UIKit.E("pantry-item", "pantry-item--big");
                 item.Add(Art.Framed(Art.Pic(ArtLibrary.GetIngredient(st.ingredientId), UIKit.IngEmoji(C, st.ingredientId), "pantry-item__emoji"), "item-frame--sm"));
-                item.AddToClassList("pantry-item--grade-" + st.grade);
-                item.Add(UIKit.L(Cooking.GradeGem(st.grade) + " " + UIKit.IngName(C, st.ingredientId), "pantry-item__name"));
-                item.Add(UIKit.L("×" + st.count, "pantry-item__count"));
                 var ing = C.Ingredient(st.ingredientId);
-                if (Cooking.IsAccelerator(ing)) item.Add(UIKit.L("⚡", "pantry-item__reserved"));
-                item.tooltip = Cooking.IngGradeName(st.grade) + " " + UIKit.IngName(C, st.ingredientId) + (Cooking.IsAccelerator(ing) ? " — can go in a meal's accelerator slot" : "");
+                item.Add(UIKit.L(UIKit.IngName(C, st.ingredientId), "pantry-item__name"));
+                item.Add(UIKit.L("×" + st.count, "pantry-item__count"));
+                string slot = Cooking.SlotText(ing);   // "🔥 Infuses Fire" / "❄️ Guards against Frost"
+                if (!string.IsNullOrEmpty(slot)) item.Add(UIKit.L(slot.Substring(0, slot.IndexOf(' ')), "pantry-item__reserved"));
+                if (ing != null && ing.deep) item.AddToClassList("pantry-item--deep");
+                item.tooltip = UIKit.IngName(C, st.ingredientId) + (ing != null && ing.deep ? " — rare, found deep in the dungeons" : "")
+                             + (!string.IsNullOrEmpty(slot) ? "\nElement slot: " + slot : "");
                 _grid.Add(item);
                 kinds++; total += st.count;
             }

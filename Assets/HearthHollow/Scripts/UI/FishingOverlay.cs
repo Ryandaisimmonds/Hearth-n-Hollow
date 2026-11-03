@@ -132,8 +132,8 @@ namespace HearthHollow.UI
                     S.LandCatch(grade);
                     var ing = C.Ingredient(C.tuning.fishIngredient);
                     SetState(State.Done);
-                    _result.text = (grade == 2 ? "Perfect! " : grade == 1 ? "Nice! " : "Got one! ") + C.tuning.fishCatchCount + " " + Cooking.GradeGem(grade) + " " +
-                                   Cooking.IngGradeName(grade) + " " + (ing != null ? ing.name : "fish") + " — into the larder. Come back tomorrow.";
+                    _result.text = (grade == 2 ? "Perfect! " : grade == 1 ? "Nice! " : "Got one! ") + (C.tuning.fishCatchCount + grade) + " " +
+                                   (ing != null ? ing.name : "fish") + " — into the larder. Come back tomorrow.";
                     break;
                 }
                 case State.Done: Ui.CloseFishing(); break;

@@ -48,7 +48,8 @@ namespace HearthHollow.Core
             if (c.contentVersion < 23) { UltCooldown23(c); c.contentVersion = 23; }  // ultimates recharge twice as fast (DefaultContentUltimates.cs)
             if (c.contentVersion < 24) { Speed24(c); c.contentVersion = 24; }  // opening arc: slower start, speed gear doubled (DefaultContentArc.cs)
             if (c.contentVersion < 25) { DesignV2Cuts25(c); c.contentVersion = 25; }
-            if (c.contentVersion < 26) { Elements26(c); c.contentVersion = 26; }  // moves carry an element (DefaultContentDesignV2.cs)  // Design v2 cuts: no Darkness hazard, no Heat/Boost/pips in move text (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 26) { Elements26(c); c.contentVersion = 26; }  // moves carry an element (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 27) { Cooking27(c); c.contentVersion = 27; }  // cooking v10: element slot, quality, tiers, light combos (DefaultContentDesignV2.cs)  // Design v2 cuts: no Darkness hazard, no Heat/Boost/pips in move text (DefaultContentDesignV2.cs)
             return true;
         }
 

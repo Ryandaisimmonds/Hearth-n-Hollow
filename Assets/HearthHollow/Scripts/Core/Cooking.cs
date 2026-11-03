@@ -1,51 +1,64 @@
-// Hearth & Hollow — cooking v9: ingredient grades, the rarity roll, accelerators and the meal pantry. Pure C#, no UnityEngine.
+// Hearth & Hollow — cooking v10 (Design v2, ticket 08). Pure C#, no UnityEngine.
 //
-// Ingredients and meals both come in three grades: 0 Plain · 1 Fine · 2 Prime.
-// Cooking spends the ingredients straight away and rolls the meal's grade:
-//   • each ingredient unit counts towards its grade (2 Plain + 1 Prime = 67% Plain, 33% Prime; all Prime = a Prime meal for certain);
-//   • then a small chance of one grade higher: the jackpot (capped at Rare).
-// A meal's grade multiplies its stats (tuning.gradeMult*). The optional accelerator adds its base boost (or a hazard guard);
-// accelerators have no grade of their own (it uses up your lowest-grade one). Cooked meals wait in the meal pantry (tuning.mealPantrySlots); you pack up to
-// traySize of them on the tray, and they're eaten as you set out. Favourite station and combos are worked out then, at
-// packing time, never at the stove.
+// A meal is a recipe, a quality and an optional element ingredient.
+//   • Ingredients have no grades any more: a recipe just needs so many of each. Better ingredients come from going
+//     deeper (new, rarer ones), not from rolling a grade.
+//   • Quality (small): each cook rolls Plain / Fine / Prime (tuning.qualityFineChance / qualityPrimeChance, plus the
+//     station level's bonus and the minigame's nudge, ticket 11). Quality multiplies the meal's stats a little
+//     (tuning.gradeMultUncommon / gradeMultRare, ×1.1 / ×1.2).
+//   • Tier (big): a recipe can have a stronger version (RecipeData.tier 2, upgradeOf) that needs an ingredient
+//     only found deep in a dungeon.
+//   • The element slot (the old accelerator slot): one ingredient that either infuses (the run's attacks without
+//     their own element take it) or guards (attacks of that element hit you for half). One infusion per tray.
+// Cooked meals wait in the meal pantry; you pack up to traySize on the tray and they're eaten as you set out.
+// Class multipliers and combos are worked out then, at packing time, never at the stove.
 using System;
 using System.Collections.Generic;
 
 namespace HearthHollow.Core
 {
-    /// What the player picked at the stove: one grade per ingredient line of the recipe, and an optional accelerator.
+    /// What the player picked at the stove: an optional element ingredient (and, later, the minigame's nudge).
     [Serializable] public class CookChoice
     {
-        public List<int> lineGrades = new List<int>();
-        public string accelId;
-        public int accelGrade;   // unused since accelerators lost their grade (kept so old data loads)
+        public List<int> lineGrades = new List<int>();   // unused since ingredients lost their grades (kept so old data loads)
+        public string accelId;                            // the element ingredient (empty = none)
+        public int accelGrade;                            // unused (kept so old data loads)
+        public float qualityNudge;                        // 0..1 from the cooking minigame (ticket 11): a small push towards better quality
     }
 
     public static class Cooking
     {
         public const int Grades = 3;
-        public static readonly string[] GradeNames = { "Plain", "Fine", "Prime" };   // meals use the same names as ingredients (Ryan, 30 Oct)
+        public static readonly string[] GradeNames = { "Plain", "Fine", "Prime" };   // meal quality (Ryan's names)
         public static readonly string[] GradeGems = { "⚪", "🟢", "🔵" };
 
         public static int ClampGrade(int g) { return g < 0 ? 0 : g >= Grades ? Grades - 1 : g; }
-        /// Meal grade name: Plain / Fine / Prime (same as ingredients).
+        /// Meal quality name: Plain / Fine / Prime.
         public static string GradeName(int g) { return GradeNames[ClampGrade(g)]; }
-
-        /// Ingredient grade names: Plain / Fine / Prime.
-        public static readonly string[] IngredientGradeNames = { "Plain", "Fine", "Prime" };
-        public static string IngGradeName(int g) { return IngredientGradeNames[ClampGrade(g)]; }
         public static string GradeGem(int g) { return GradeGems[ClampGrade(g)]; }
 
+        /// Stats multiplier for a meal's quality (small on purpose: tiers are the big jump).
         public static float GradeMult(TuningData t, int g)
         {
             g = ClampGrade(g);
             return g == 2 ? t.gradeMultRare : g == 1 ? t.gradeMultUncommon : 1f;
         }
 
-        // ───────── accelerators ─────────
+        // ───────── the element slot ─────────
+        /// Can go in a meal's element slot: it infuses or guards (or, on old hazard routes, guards a hazard).
         public static bool IsAccelerator(IngredientData i)
         {
-            return i != null && ((i.accelBuffs != null && i.accelBuffs.Count > 0) || i.accelGuard != Hazard.None);
+            return i != null && (i.infuse != Element.None || i.guard != Element.None || i.accelGuard != Hazard.None);
+        }
+
+        /// "🔥 Infuses Fire" / "❄️ Guards against Frost" for an element ingredient.
+        public static string SlotText(IngredientData i)
+        {
+            if (i == null) return "";
+            if (i.infuse != Element.None) return Elements.Emoji(i.infuse) + " Infuses " + Elements.Name(i.infuse);
+            if (i.guard != Element.None) return Elements.Emoji(i.guard) + " Guards against " + Elements.Name(i.guard);
+            if (i.accelGuard != Hazard.None) return Routes.HazardEmoji(i.accelGuard) + " Guards against " + Routes.HazardName(i.accelGuard).ToLower();
+            return "";
         }
 
         /// Always-available meals (Camp Bread): shown as a permanent card by the meal pantry, packed without cooking.
@@ -53,46 +66,45 @@ namespace HearthHollow.Core
 
         public static List<IngredientData> Accelerators(GameContent c) { return c.ingredients.FindAll(IsAccelerator); }
 
-        // ───────── what you need / what you have ─────────
-        static string Key(string id, int g) { return id + "#" + g; }
+        static IngredientData SlotIngredient(GameContent c, string accelId) { return string.IsNullOrEmpty(accelId) ? null : c.Ingredient(accelId); }
 
-        /// Units needed per (ingredient, grade) for a choice — ingredient lines plus the accelerator (which takes your
-        /// lowest-grade one left over after the lines).
+        /// The element a meal infuses (None if its slot is empty or guards).
+        public static Element InfusionOf(GameContent c, string accelId) { var i = SlotIngredient(c, accelId); return i != null ? i.infuse : Element.None; }
+        public static Element GuardOf(GameContent c, string accelId) { var i = SlotIngredient(c, accelId); return i != null ? i.guard : Element.None; }
+
+        /// The run's infused element from a set of meals: the first infusing meal (a tray only ever holds one).
+        public static Element Infusion(GameContent c, List<EatenMeal> meals)
+        {
+            if (meals != null) foreach (var m in meals) { var e = InfusionOf(c, m.accelId); if (e != Element.None) return e; }
+            return Element.None;
+        }
+
+        /// Every element the meals guard against.
+        public static List<Element> Guards(GameContent c, List<EatenMeal> meals)
+        {
+            var list = new List<Element>();
+            if (meals != null) foreach (var m in meals) { var e = GuardOf(c, m.accelId); if (e != Element.None && !list.Contains(e)) list.Add(e); }
+            return list;
+        }
+
+        // ───────── what you need / what you have ─────────
+        /// Units needed per ingredient for a choice: the recipe's ingredients plus one for the element slot.
         public static Dictionary<string, int> Needs(GameContent c, Profile p, RecipeData r, CookChoice ch)
         {
             var need = new Dictionary<string, int>();
             if (r != null && r.ingredients != null)
-                for (int i = 0; i < r.ingredients.Count; i++)
+                foreach (var ic in r.ingredients)
                 {
-                    var ic = r.ingredients[i];
                     if (string.IsNullOrEmpty(ic.ingredientId) || ic.count <= 0) continue;
-                    int g = LineGrade(ch, i);
-                    int n; need.TryGetValue(Key(ic.ingredientId, g), out n);
-                    need[Key(ic.ingredientId, g)] = n + ic.count;
+                    int n; need.TryGetValue(ic.ingredientId, out n);
+                    need[ic.ingredientId] = n + ic.count;
                 }
             if (ch != null && !string.IsNullOrEmpty(ch.accelId))
             {
-                int pick = 0;
-                for (int g = 0; g < Grades; g++)
-                {
-                    int u; need.TryGetValue(Key(ch.accelId, g), out u);
-                    if (p != null && Economy.PantryCount(p, ch.accelId, g) - u >= 1) { pick = g; break; }
-                }
-                int n; need.TryGetValue(Key(ch.accelId, pick), out n);
-                need[Key(ch.accelId, pick)] = n + 1;
+                int n; need.TryGetValue(ch.accelId, out n);
+                need[ch.accelId] = n + 1;
             }
             return need;
-        }
-
-        public static int LineGrade(CookChoice ch, int line)
-        {
-            return ch != null && ch.lineGrades != null && line < ch.lineGrades.Count ? ClampGrade(ch.lineGrades[line]) : 0;
-        }
-
-        static void Split(string key, out string id, out int g)
-        {
-            int k = key.LastIndexOf('#');
-            id = key.Substring(0, k); g = int.Parse(key.Substring(k + 1));
         }
 
         public static bool MealPantryFull(GameContent c, Profile p)
@@ -107,82 +119,45 @@ namespace HearthHollow.Core
             if (!Kitchen.Unlocked(c, p, r)) { reason = "Needs the " + r.station + " at level " + r.stationLevel + " (upgrade it in the Kitchen)"; return false; }
             if (MealPantryFull(c, p)) { reason = "The meal pantry is full — pack or throw out a meal first"; return false; }
             if (ch != null && !string.IsNullOrEmpty(ch.accelId) && !IsAccelerator(c.Ingredient(ch.accelId)))
-            { reason = "That can't go in the accelerator slot"; return false; }
+            { reason = "That can't go in the element slot"; return false; }
             foreach (var kv in Needs(c, p, r, ch))
-            {
-                string id; int g; Split(kv.Key, out id, out g);
-                if (Economy.PantryCount(p, id, g) < kv.Value)
+                if (Economy.PantryCount(p, kv.Key) < kv.Value)
                 {
-                    var ing = c.Ingredient(id);
-                    reason = "Not enough " + IngGradeName(g) + " " + (ing != null ? ing.name : id);
+                    var ing = c.Ingredient(kv.Key);
+                    reason = "Not enough " + (ing != null ? ing.name : kv.Key) + (ing != null && ing.deep ? " (found deep in the dungeons)" : "");
                     return false;
                 }
-            }
             reason = null;
             return true;
         }
 
-        /// The cheapest choice that works: each line uses the lowest grade you have enough of (no accelerator).
-        /// Null if the recipe can't be made at all.
+        /// A plain choice (no element ingredient), or null if the recipe can't be made from the pantry.
         public static CookChoice DefaultChoice(GameContent c, Profile p, RecipeData r)
         {
-            var ch = new CookChoice();
             if (r == null) return null;
-            var used = new Dictionary<string, int>();
-            for (int i = 0; i < r.ingredients.Count; i++)
-            {
-                var ic = r.ingredients[i];
-                int pick = -1;
-                for (int g = 0; g < Grades && pick < 0; g++)
-                {
-                    int u; used.TryGetValue(Key(ic.ingredientId, g), out u);
-                    if (Economy.PantryCount(p, ic.ingredientId, g) - u >= ic.count) pick = g;
-                }
-                if (pick < 0) return null;
-                int n; used.TryGetValue(Key(ic.ingredientId, pick), out n);
-                used[Key(ic.ingredientId, pick)] = n + ic.count;
-                ch.lineGrades.Add(pick);
-            }
-            return ch;
+            foreach (var kv in Needs(c, p, r, null)) if (Economy.PantryCount(p, kv.Key) < kv.Value) return null;
+            return new CookChoice();
         }
 
         /// The recipe can be made from what's in the pantry (ignoring whether the meal pantry has room).
         public static bool HaveIngredients(GameContent c, Profile p, RecipeData r) { return DefaultChoice(c, p, r) != null; }
 
-        // ───────── the rarity roll ─────────
-        /// Chance of each meal grade (Plain, Fine, Prime) for a choice.
-        /// Odds with the station's level bonus (the better-meal chance grows with each level).
+        // ───────── the quality roll ─────────
+        /// Chance of each quality (Plain, Fine, Prime), with the station level's bonus and the minigame's nudge.
         public static float[] Odds(GameContent c, Profile p, RecipeData r, CookChoice ch)
         {
-            return Odds(c, r, ch, r != null && p != null ? Kitchen.Jackpot(c, p, r.station) : c.tuning.jackpotChance);
+            float stationBonus = r != null && p != null ? Math.Max(0f, Kitchen.Jackpot(c, p, r.station) - c.tuning.jackpotChance) : 0f;
+            return Odds(c.tuning, stationBonus, ch != null ? ch.qualityNudge : 0f);
         }
 
-        public static float[] Odds(GameContent c, RecipeData r, CookChoice ch) { return Odds(c, r, ch, c.tuning.jackpotChance); }
-
-        public static float[] Odds(GameContent c, RecipeData r, CookChoice ch, float jackpot)
+        public static float[] Odds(TuningData t, float stationBonus, float nudge)
         {
-            var t = c.tuning;
-            var share = new float[Grades];
-            int units = 0;
-            var per = new int[Grades];
-            if (r != null && r.ingredients != null)
-                for (int i = 0; i < r.ingredients.Count; i++)
-                {
-                    var ic = r.ingredients[i];
-                    if (ic.count <= 0) continue;
-                    per[LineGrade(ch, i)] += ic.count; units += ic.count;
-                }
-            if (units == 0) { share[0] = 1f; return share; }   // no ingredients: always Plain
-            for (int g = 0; g < Grades; g++) share[g] = per[g] / (float)units;
-            float up = Math.Max(0f, Math.Min(1f, jackpot));
-            var odds = new float[Grades];
-            for (int g = 0; g < Grades; g++)
-            {
-                if (g == Grades - 1) { odds[g] += share[g]; continue; }
-                odds[g] += share[g] * (1f - up);
-                odds[g + 1] += share[g] * up;
-            }
-            return odds;
+            nudge = Math.Max(0f, Math.Min(1f, nudge));
+            float prime = Math.Max(0f, t.qualityPrimeChance + stationBonus * 0.5f + nudge * t.qualityNudgePrime);
+            float fine = Math.Max(0f, t.qualityFineChance + stationBonus + nudge * t.qualityNudgeFine);
+            if (prime > 1f) prime = 1f;
+            if (fine > 1f - prime) fine = 1f - prime;
+            return new[] { 1f - fine - prime, fine, prime };
         }
 
         public static int Roll(float[] odds, float v)
@@ -193,15 +168,11 @@ namespace HearthHollow.Core
             return 0;
         }
 
-        /// Cook: spend the ingredients, roll the grade and put the meal in the meal pantry.
+        /// Cook: spend the ingredients, roll the quality and put the meal in the meal pantry.
         public static CookedMeal Cook(GameContent c, Profile p, RecipeData r, CookChoice ch, Rng rng, out string reason)
         {
             if (!CanCook(c, p, r, ch, out reason)) return null;
-            foreach (var kv in Needs(c, p, r, ch))
-            {
-                string id; int g; Split(kv.Key, out id, out g);
-                Economy.RemoveFromPantry(p, id, kv.Value, g);
-            }
+            foreach (var kv in Needs(c, p, r, ch)) Economy.RemoveFromPantry(p, kv.Key, kv.Value);
             int grade = Roll(Odds(c, p, r, ch), rng.Value());
             var meal = new CookedMeal { recipeId = r.id, grade = grade };
             if (ch != null && !string.IsNullOrEmpty(ch.accelId)) meal.accelId = ch.accelId;
@@ -222,7 +193,11 @@ namespace HearthHollow.Core
         {
             if (pantryIndex < 0 || pantryIndex >= p.mealPantry.Count) { reason = "No such meal"; return false; }
             if (p.packed.Count >= c.tuning.traySize) { reason = "The tray is full"; return false; }
-            p.packed.Add(p.mealPantry[pantryIndex]);
+            var m = p.mealPantry[pantryIndex];
+            if (InfusionOf(c, m.accelId) != Element.None)
+                foreach (var q in p.packed)
+                    if (InfusionOf(c, q.accelId) != Element.None) { reason = "Only one infused meal per tray"; return false; }
+            p.packed.Add(m);
             p.mealPantry.RemoveAt(pantryIndex);
             SyncTray(p);
             reason = null; return true;
@@ -292,7 +267,7 @@ namespace HearthHollow.Core
             return new EatenMeal { recipeId = m.recipeId, potency = 1f, grade = m.grade, accelId = m.accelId, accelGrade = m.accelGrade };
         }
 
-        /// One meal's buffs for a class: its stats × grade × class bonus (favourite station etc.) × potency, plus the accelerator.
+        /// One meal's buffs for a class: its stats × quality × class bonus × potency. (The element slot adds no stats.)
         public static List<StatMod> MealBuffs(GameContent c, ClassData cls, EatenMeal m)
         {
             var list = new List<StatMod>();
@@ -300,9 +275,6 @@ namespace HearthHollow.Core
             if (r == null) return list;
             float mult = GradeMult(c.tuning, m.grade) * Meals.ClassMult(cls, r) * m.potency;
             if (r.buffs != null) foreach (var b in r.buffs) Add(list, b.stat, b.value * mult);
-            var a = string.IsNullOrEmpty(m.accelId) ? null : c.Ingredient(m.accelId);
-            if (a != null && a.accelBuffs != null)
-                foreach (var b in a.accelBuffs) Add(list, b.stat, b.value * m.potency);   // accelerators have no grade: always the base boost
             return list;
         }
 
@@ -321,29 +293,6 @@ namespace HearthHollow.Core
             m.healOnKill += (int)Math.Round(sum[(int)BuffStat.HealOnKill]);
         }
 
-        // ───────── ingredient grades from the Hollow (contentVersion 14) ─────────
-        /// Chance an ingredient pickup is Fine / Prime: deeper floors and harder routes drop better; elites, bosses,
-        /// a perfect gather and a Lucky route add to the Prime chance.
-        public static void DropOdds(TuningData t, int floor, int difficulty, bool elite, bool boss, bool perfect, bool lucky, out float fine, out float prime)
-        {
-            int deeper = Math.Max(0, floor - 1), diff = Math.Max(0, difficulty);
-            prime = t.dropRare + t.dropRarePerFloor * deeper + t.dropRarePerDifficulty * diff
-                  + (elite ? t.dropEliteRareBonus : 0f) + (boss ? t.dropBossRareBonus : 0f) + (perfect ? t.dropPerfectGatherRare : 0f) + (lucky ? t.dropLuckyRare : 0f);
-            prime = Math.Max(0f, Math.Min(0.9f, prime));
-            fine = Math.Max(0f, Math.Min(1f - prime, t.dropUncommon + t.dropUncommonPerFloor * deeper + t.dropUncommonPerDifficulty * diff));
-        }
-
-        /// Grade of an ingredient picked up on <paramref name="floor"/> (1-based) of a route of <paramref name="difficulty"/>.
-        public static int RollDropGrade(TuningData t, int floor, int difficulty, bool elite, bool boss, bool perfect, bool lucky, Rng rng)
-        {
-            float unc, rare;
-            DropOdds(t, floor, difficulty, elite, boss, perfect, lucky, out unc, out rare);
-            float v = rng.Value();
-            if (v < rare) return 2;
-            if (v < rare + unc) return 1;
-            return 0;
-        }
-
         /// Cooked meals whose recipe no longer exists are dropped.
         public static void DropUnknownMeals(GameContent c, Profile p)
         {
@@ -358,10 +307,24 @@ namespace HearthHollow.Core
         {
             if (p.mealPantry == null) p.mealPantry = new List<CookedMeal>();
             if (p.packed == null) p.packed = new List<CookedMeal>();
-            if (p.saveVersion >= 6) { SyncTray(p); return; }
-            p.packed.Clear();
-            p.tray.Clear();
-            p.saveVersion = 6;
+            if (p.saveVersion < 6) { p.packed.Clear(); p.tray.Clear(); p.saveVersion = 6; }
+            SyncTray(p);
+        }
+
+        /// saveVersion 10 (ticket 08): ingredients lost their grades — merge each ingredient's stacks into one.
+        public static void MergeIngredientGrades(Profile p)
+        {
+            if (p.saveVersion >= 10 || p.pantry == null) return;
+            var merged = new List<ItemStack>();
+            foreach (var st in p.pantry)
+            {
+                if (st == null || string.IsNullOrEmpty(st.ingredientId) || st.count <= 0) continue;
+                var into = merged.Find(x => x.ingredientId == st.ingredientId);
+                if (into != null) into.count += st.count;
+                else merged.Add(new ItemStack { ingredientId = st.ingredientId, count = st.count, grade = 0 });
+            }
+            p.pantry = merged;
+            p.saveVersion = 10;
         }
     }
 }

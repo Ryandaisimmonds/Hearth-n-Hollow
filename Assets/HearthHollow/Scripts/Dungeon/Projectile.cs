@@ -149,7 +149,7 @@ namespace HearthHollow.Dungeon
                 if (pl != null)
                 {
                     if (!pl.CanBeHit) return;   // dashing through it
-                    pl.TakeHit(_raw, transform.position);
+                    pl.TakeHit(_raw, transform.position, _type);
                     Die();
                     return;
                 }

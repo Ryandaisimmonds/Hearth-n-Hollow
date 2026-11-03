@@ -24,6 +24,7 @@ namespace HearthHollow.Core
 
         public static int Add(RunState run, string ingredientId, int count, int stackSize, int grade = 0)
         {
+            grade = 0;   // ingredients have no grades any more (Design v2, ticket 08)
             if (string.IsNullOrEmpty(ingredientId) || count <= 0) return 0;
             if (stackSize < 1) stackSize = 1;
             int left = count;

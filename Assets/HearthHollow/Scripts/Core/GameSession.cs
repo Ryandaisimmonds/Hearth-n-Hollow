@@ -33,6 +33,7 @@ namespace HearthHollow.Core
             UpgradeProgression();   // skill trees + loadouts (saveVersion 3), kept valid every load
             Economy.UpgradeBag(Content, Profile);   // bag tiers (saveVersion 4)
             Cooking.UpgradeSave(Profile);           // meal pantry + packed cooked meals (saveVersion 6)
+            Cooking.MergeIngredientGrades(Profile);   // ingredients lost their grades (saveVersion 10, ticket 08)
             Cooking.DropUnknownMeals(Content, Profile);   // meals whose recipe is gone
             if (Profile.saveVersion < 7) { ClassRework7(); UpgradeProgression(); }   // class rework: a fresh start for every class (GameSessionClasses.cs)
             if (Profile.saveVersion < 8) Profile.saveVersion = 8;
@@ -140,7 +141,8 @@ namespace HearthHollow.Core
             if (!CanFish) { Info("You've had today's catch — come back after your next expedition"); return false; }
             Fishing.Catch(Content, Profile, grade);
             var ing = Content.Ingredient(T.fishIngredient);
-            Emit(new GameEvent(GameEventType.Loot, T.fishCatchCount, false, "+" + T.fishCatchCount + " " + Cooking.GradeGem(grade) + " " + Cooking.IngGradeName(grade) + " " + (ing != null ? ing.emoji + " " + ing.name : "fish")));
+            int caught = T.fishCatchCount + Cooking.ClampGrade(grade);
+            Emit(new GameEvent(GameEventType.Loot, caught, false, "+" + caught + " " + (ing != null ? ing.emoji + " " + ing.name : "fish")));
             Touch(true);
             return true;
         }
@@ -173,14 +175,7 @@ namespace HearthHollow.Core
             return ok;
         }
 
-        // ───── ladder choice (contentVersion 14): what's below, and what you'd risk ─────
-        /// Fine / Prime chance for a normal pickup on <paramref name="floor"/> of the current route.
-        public void DropOddsOnFloor(int floor, out float fine, out float prime)
-        {
-            var rt = Run != null ? Content.Route(Run.routeId) : null;
-            Cooking.DropOdds(T, floor, rt != null ? rt.baseDifficulty : 0, false, false, false, Run != null && Run.mod == RouteMod.Lucky, out fine, out prime);
-        }
-
+        // ───── ladder choice: what you'd risk ─────
         /// Pack an always-available meal (Camp Bread) onto the tray.
         public bool PackAlwaysMeal(string recipeId)
         {
@@ -301,7 +296,9 @@ namespace HearthHollow.Core
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
-            Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (grades + accelerators)
+            Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
+            Run.element = Cooking.Infusion(Content, Run.eaten);   // a meal's infusion: attacks without their own element take it
+            Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
             Run.storm = storm;
             Run.harvestMoon = Hearth.campEvent == CampEvent.HarvestMoon;
             Emit(Meals.PackForRun(Content, Run));   // the tray is eaten at camp: buffs last the whole run
@@ -434,12 +431,10 @@ namespace HearthHollow.Core
         {
             if (count <= 0) return;
             var rt = Content.Route(Run.routeId);
-            int grade = Kitchen.IsMaterial(Content, id) ? 0   // materials have no grade
-                : Cooking.RollDropGrade(T, Run.dungeon ? Run.floor : 1, rt != null ? rt.baseDifficulty : 0, elite, boss, perfect, Run.mod == RouteMod.Lucky, _rng);
-            int left = Bag.Add(Run, id, count, T.stackSize, grade);
+            int left = Bag.Add(Run, id, count, T.stackSize);
             int got = count - left;
             var ing = Content.Ingredient(id);
-            string name = (grade > 0 ? Cooking.GradeGem(grade) + " " + Cooking.IngGradeName(grade) + " " : "") + (ing != null ? ing.emoji + " " + ing.name : id);
+            string name = ing != null ? ing.emoji + " " + ing.name : id;
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));
             if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
         }

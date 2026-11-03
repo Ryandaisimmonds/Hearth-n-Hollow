@@ -99,7 +99,10 @@ namespace HearthHollow.Core
         // Accelerator (cooking v9): an ingredient with a boost can go in a meal's optional accelerator slot.
         public List<StatMod> accelBuffs = new List<StatMod>();   // the boost (accelerators have no grade)
         public bool material;   // a building material (contentVersion 13): found in dungeons, spent on kitchen upgrades, never cooked or sold
-        public Hazard accelGuard;                                // the meal also guards against this hazard
+        public Hazard accelGuard;                                // the meal also guards against this hazard (old hazard routes)
+        public Element infuse;   // Design v2 element slot: in a meal, the run's attacks take this element
+        public Element guard;    // …or the meal guards you: attacks of this element hit you for half
+        public bool deep;        // only found deep in a dungeon (tier-2 dishes need these)
     }
 
     [Serializable] public class IngredientCost { public string ingredientId; public int count = 1; }
@@ -115,6 +118,8 @@ namespace HearthHollow.Core
         public Rarity rarity;     // contentVersion 8
         public int stationLevel = 1;   // the station level that unlocks this dish (contentVersion 13; 1 = from the start)
         public bool always;       // always available (Camp Bread, contentVersion 11): never cooked, never runs out, packed straight onto the tray as a Common meal
+        public int tier = 1;      // Design v2: 2 = the stronger version of upgradeOf, needing an ingredient found deep
+        public string upgradeOf;  // the base recipe's id (tier 2 only)
     }
 
     /// A tray synergy. Condition evaluated over meals EATEN this run.
@@ -349,7 +354,10 @@ namespace HearthHollow.Core
         public float trinketBossDrop = 0.15f, trinketEliteDrop = 0.03f;   // chance a boss / elite drops a trinket you don't own
         public float merchantTrinketChance = 0.4f;            // chance the travelling merchant has a trinket for sale
         // ── cooking v9: grades (ingredients Plain / Fine / Prime, meals Common / Uncommon / Rare), the rarity roll, accelerators, the meal pantry ──
-        public float gradeMultUncommon = 1.25f, gradeMultRare = 1.5f;   // a meal's stats × this
+        public float gradeMultUncommon = 1.1f, gradeMultRare = 1.2f;   // a meal's stats × its quality (Fine / Prime): small on purpose, tiers are the big jump
+        public float qualityFineChance = 0.2f, qualityPrimeChance = 0.05f;   // Design v2: a cook's chance of a Fine / Prime meal (plus the station level's bonus)
+        public float qualityNudgeFine = 0.15f, qualityNudgePrime = 0.1f;   // the cooking minigame's best result adds these (ticket 11)
+        public float guardMult = 0.5f;   // damage taken from a guarded element
         public float jackpotChance = 0.05f;                    // chance a cooked meal lands one grade higher than rolled
         public int mealPantrySlots = 6;                        // cooked meals kept at camp
         // ingredient grade drops (contentVersion 14): chance per pickup that it's Fine ("Uncommon") / Prime ("Rare").
@@ -504,6 +512,7 @@ namespace HearthHollow.Core
     {
         public string routeId; public RouteMod mod; public ClassId classId; public bool storm; public bool harvestMoon;
         public Element element;   // the run's infused element (from a meal, ticket 08); attacks without their own element use it
+        public List<Element> guards = new List<Element>();   // elements the run's meals guard against: those attacks hit you for half
         public int width, height;
         public List<Tile> tiles = new List<Tile>();   // index = y*width + x
         public int px, py;                              // player position

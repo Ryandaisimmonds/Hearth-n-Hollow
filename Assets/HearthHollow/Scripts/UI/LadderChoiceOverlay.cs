@@ -54,19 +54,18 @@ namespace HearthHollow.UI
             bool last = next >= run.floorsTotal;
             _title.text = "🪜 Floor " + next + " of " + run.floorsTotal + " lies below";
             _below.text = last ? "👑 The boss waits at the bottom — beat it to clear the route (and its big loot)." : "Tougher monsters, richer pickings.";
-            float f0, p0, f1, p1;
-            S.DropOddsOnFloor(run.floor, out f0, out p0);
-            S.DropOddsOnFloor(next, out f1, out p1);
-            _odds.text = "Ingredients here: 🟢 Fine " + UIKit.Pct(f0) + " · 🔵 Prime " + UIKit.Pct(p0) + "   →   below: 🟢 " + UIKit.Pct(f1) + " · 🔵 " + UIKit.Pct(p1);
+            _odds.text = "Deeper floors hold rarer ingredients: the ones tier-2 dishes need.";
             // what's in the bag
-            int plain = 0, fine = 0, prime = 0, mats = 0;
+            int ings = 0, deep = 0, mats = 0;
             foreach (var b in run.bag)
             {
                 if (b == null || string.IsNullOrEmpty(b.ingredientId) || b.count <= 0) continue;
+                var ing = C.Ingredient(b.ingredientId);
                 if (Kitchen.IsMaterial(C, b.ingredientId)) mats += b.count;
-                else if (b.grade >= 2) prime += b.count; else if (b.grade == 1) fine += b.count; else plain += b.count;
+                else if (ing != null && ing.deep) deep += b.count;
+                else ings += b.count;
             }
-            _bag.text = "🎒 Your haul: ⚪ " + plain + " Plain · 🟢 " + fine + " Fine · 🔵 " + prime + " Prime · 🪵 " + mats + " materials";
+            _bag.text = "🎒 Your haul: " + ings + " ingredients" + (deep > 0 ? " · ✨ " + deep + " rare" : "") + " · 🪵 " + mats + " materials";
             _risk.text = "💀 If you fall, you keep only " + UIKit.Pct(C.tuning.deathKeepFraction) + " of it. ❤️ " + run.hp + " / " + (S.Stats != null ? S.Stats.maxHp : run.hp) + " HP left.";
             _home.text = "Heading home now keeps everything, plus part of the clear bonus.";
             _deeper.text = last ? "👑 Go down to the boss" : "⬇️ Go deeper";

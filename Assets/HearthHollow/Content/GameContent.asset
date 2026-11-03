@@ -108,8 +108,13 @@ MonoBehaviour:
       trinketBossDrop: 0.15
       trinketEliteDrop: 0.03
       merchantTrinketChance: 0.4
-      gradeMultUncommon: 1.25
-      gradeMultRare: 1.5
+      gradeMultUncommon: 1.1
+      gradeMultRare: 1.2
+      qualityFineChance: 0.2
+      qualityPrimeChance: 0.05
+      qualityNudgeFine: 0.15
+      qualityNudgePrime: 0.1
+      guardMult: 0.5
       jackpotChance: 0.05
       mealPantrySlots: 6
       dropUncommon: 0.1
@@ -280,11 +285,12 @@ MonoBehaviour:
       name: Wild Herbs
       emoji: "\U0001F33F"
       tier: 0
-      accelBuffs:
-      - stat: 1
-        value: 6
+      accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 3
+      deep: 0
     - id: wheat
       name: Meadow Wheat
       emoji: "\U0001F33E"
@@ -292,6 +298,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 4
+      deep: 0
     - id: berries
       name: Bramble Berries
       emoji: "\U0001FAD0"
@@ -299,6 +308,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: mushroom
       name: Forest Mushroom
       emoji: "\U0001F344"
@@ -306,15 +318,19 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: salt
       name: Marsh Salt
       emoji: "\U0001F9C2"
       tier: 1
-      accelBuffs:
-      - stat: 3
-        value: 1
+      accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 4
+      guard: 0
+      deep: 0
     - id: fish
       name: Reed Fish
       emoji: "\U0001F41F"
@@ -322,6 +338,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 4
+      guard: 0
+      deep: 0
     - id: cave_egg
       name: Glow Egg
       emoji: "\U0001F95A"
@@ -329,6 +348,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: truffle
       name: Cave Truffle
       emoji: "\U0001F330"
@@ -336,6 +358,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: chili
       name: Ridge Chili
       emoji: "\U0001F336\uFE0F"
@@ -343,15 +368,19 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 1
+      guard: 0
+      deep: 0
     - id: garlic
       name: Smoky Garlic
       emoji: "\U0001F9C4"
       tier: 2
-      accelBuffs:
-      - stat: 0
-        value: 0.1
+      accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 3
+      deep: 0
     - id: ember_meat
       name: Ember Haunch
       emoji: "\U0001F356"
@@ -359,15 +388,19 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: fire_honey
       name: Fire Honey
       emoji: "\U0001F36F"
       tier: 3
-      accelBuffs:
-      - stat: 4
-        value: 0.04
+      accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 1
+      guard: 0
+      deep: 0
     - id: nettle
       name: Stinging Nettle
       emoji: "\U0001F331"
@@ -375,6 +408,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 1
+      infuse: 3
+      guard: 0
+      deep: 0
     - id: mint
       name: Glade Mint
       emoji: "\U0001F343"
@@ -382,6 +418,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 3
+      infuse: 0
+      guard: 1
+      deep: 0
     - id: ginger
       name: Snow Ginger
       emoji: "\U0001FADA"
@@ -389,15 +428,19 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 2
+      infuse: 0
+      guard: 2
+      deep: 0
     - id: frost_berry
       name: Frostberry
       emoji: "\U0001F347"
       tier: 3
-      accelBuffs:
-      - stat: 8
-        value: 0.04
+      accelBuffs: []
       material: 0
       accelGuard: 0
+      infuse: 2
+      guard: 0
+      deep: 0
     - id: glowcap
       name: Glowcap
       emoji: "\U0001F344"
@@ -405,6 +448,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 0
       accelGuard: 4
+      infuse: 5
+      guard: 0
+      deep: 0
     - id: timber
       name: Timber
       emoji: "\U0001FAB5"
@@ -412,6 +458,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 1
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: fieldstone
       name: Fieldstone
       emoji: "\U0001FAA8"
@@ -419,6 +468,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 1
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: clay
       name: River Clay
       emoji: "\U0001F3FA"
@@ -426,6 +478,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 1
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: iron_scrap
       name: Iron Scrap
       emoji: "\U0001F529"
@@ -433,6 +488,9 @@ MonoBehaviour:
       accelBuffs: []
       material: 1
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
     - id: ember_coal
       name: Ember Coal
       emoji: "\u26AB"
@@ -440,6 +498,39 @@ MonoBehaviour:
       accelBuffs: []
       material: 1
       accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 0
+    - id: starmoss
+      name: Starmoss
+      emoji: "\U0001FAB4"
+      tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 1
+    - id: wild_honeycomb
+      name: Wild Honeycomb
+      emoji: "\U0001F36F"
+      tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 1
+    - id: golden_wheat
+      name: Golden Wheat
+      emoji: "\U0001F33E"
+      tier: 2
+      accelBuffs: []
+      material: 0
+      accelGuard: 0
+      infuse: 0
+      guard: 0
+      deep: 1
     recipes:
     - id: herb_stew
       name: Herb Stew
@@ -461,6 +552,32 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
+    - id: herb_stew_2
+      name: Hearty Herb Stew
+      emoji: "\U0001F372"
+      station: 0
+      ingredients:
+      - ingredientId: herbs
+        count: 2
+      - ingredientId: mushroom
+        count: 1
+      - ingredientId: starmoss
+        count: 1
+      buffs:
+      - stat: 1
+        value: 31.5
+      tags:
+      - stone
+      - veg
+      description: A thick stew with Starmoss from deep in the Meadow.
+      counters: 0
+      rarity: 0
+      stationLevel: 1
+      always: 0
+      tier: 2
+      upgradeOf: herb_stew
     - id: berry_porridge
       name: Berry Porridge
       emoji: "\U0001F963"
@@ -482,6 +599,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: marsh_chowder
       name: Marsh Chowder
       emoji: "\U0001F35C"
@@ -504,6 +623,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 2
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: nettle_soup
       name: Nettle Soup
       emoji: "\U0001F96C"
@@ -525,6 +646,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 3
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: truffle_risotto
       name: Truffle Risotto
       emoji: "\U0001F35A"
@@ -549,6 +672,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 3
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: lantern_soup
       name: Lantern Egg Soup
       emoji: "\U0001F375"
@@ -572,6 +697,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 4
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: drake_hotpot
       name: Drake Hotpot
       emoji: "\U0001F35B"
@@ -598,6 +725,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 5
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: grilled_fish
       name: Salt-Crust Fish
       emoji: "\U0001F41F"
@@ -620,6 +749,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: mushroom_skewer
       name: Mushroom Skewer
       emoji: "\U0001F362"
@@ -642,6 +773,34 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
+    - id: mushroom_skewer_2
+      name: Honey-Glazed Skewer
+      emoji: "\U0001F362"
+      station: 1
+      ingredients:
+      - ingredientId: mushroom
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      - ingredientId: wild_honeycomb
+        count: 1
+      buffs:
+      - stat: 0
+        value: 0.52500004
+      - stat: 4
+        value: 0.07
+      tags:
+      - smoky
+      - veg
+      description: Mushroom skewers glazed with wild honeycomb.
+      counters: 0
+      rarity: 0
+      stationLevel: 1
+      always: 0
+      tier: 2
+      upgradeOf: mushroom_skewer
     - id: truffle_caps
       name: Charred Truffle Caps
       emoji: "\U0001F344"
@@ -664,6 +823,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 2
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: glowcap_kebab
       name: Glowcap Kebab
       emoji: "\U0001F361"
@@ -688,6 +849,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 3
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: firecracker_skewer
       name: Firecracker Skewer
       emoji: "\U0001F336\uFE0F"
@@ -708,6 +871,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 3
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: honey_ribs
       name: Fire-Honey Ribs
       emoji: "\U0001F356"
@@ -730,6 +895,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 4
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: ember_steak
       name: Ember Steak
       emoji: "\U0001F969"
@@ -753,6 +920,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 5
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: bread
       name: Camp Bread
       emoji: "\U0001F35E"
@@ -770,6 +939,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 1
+      tier: 1
+      upgradeOf: 
     - id: herb_butty
       name: Herb Butty
       emoji: "\U0001F96A"
@@ -791,6 +962,33 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
+    - id: herb_butty_2
+      name: Golden Herb Butty
+      emoji: "\U0001F96A"
+      station: 2
+      ingredients:
+      - ingredientId: wheat
+        count: 2
+      - ingredientId: herbs
+        count: 1
+      - ingredientId: golden_wheat
+        count: 1
+      buffs:
+      - stat: 5
+        value: 0.52500004
+      - stat: 8
+        value: 0.0875
+      tags:
+      - veg
+      description: A herb butty on golden-wheat bread.
+      counters: 0
+      rarity: 0
+      stationLevel: 1
+      always: 0
+      tier: 2
+      upgradeOf: herb_butty
     - id: bramble_jam
       name: Bramble Jam Sandwich
       emoji: "\U0001F353"
@@ -802,9 +1000,7 @@ MonoBehaviour:
         count: 2
       buffs:
       - stat: 6
-        value: 0.2
-      - stat: 7
-        value: 0.1
+        value: 0.3
       tags:
       - sweet
       description: Sticky fingers, sunny mood. Coins seem to find you.
@@ -812,6 +1008,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 1
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: marsh_butty
       name: Marsh Fish Butty
       emoji: "\U0001F956"
@@ -835,6 +1033,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 2
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: trail_wrap
       name: Minty Trail Wrap
       emoji: "\U0001F32F"
@@ -858,6 +1058,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 3
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: glow_egg_sandwich
       name: Glow-Egg Sandwich
       emoji: "\U0001F95A"
@@ -870,10 +1072,10 @@ MonoBehaviour:
       - ingredientId: wheat
         count: 1
       buffs:
-      - stat: 7
-        value: 0.3
       - stat: 5
         value: 0.2
+      - stat: 6
+        value: 0.3
       tags:
       - stone
       description: Shimmering egg and truffle shavings. Oddly enlightening.
@@ -881,6 +1083,8 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 4
       always: 0
+      tier: 1
+      upgradeOf: 
     - id: frostberry_toast
       name: Frostberry Toast
       emoji: "\U0001F95E"
@@ -896,9 +1100,7 @@ MonoBehaviour:
       - stat: 8
         value: 0.12
       - stat: 6
-        value: 0.15
-      - stat: 7
-        value: 0.15
+        value: 0.3
       tags:
       - sweet
       description: Frostberries and fire honey on hot toast. You'll be halfway down the trail before it's cold.
@@ -906,11 +1108,13 @@ MonoBehaviour:
       rarity: 0
       stationLevel: 5
       always: 0
+      tier: 1
+      upgradeOf: 
     synergies:
     - id: balanced_feast
       name: Balanced Feast
       emoji: "\U0001F37D\uFE0F"
-      description: "One meal from each station: all meal bonuses \xD71.5."
+      description: 'One meal from each station: +10% coins.'
       requireAllStations: 1
       requiredTag: 
       requiredCount: 0
@@ -918,12 +1122,14 @@ MonoBehaviour:
       useStation: 0
       requiredStation: 0
       sameRecipeBonus: 0
-      allBuffMultiplier: 1.5
-      bonus: []
+      allBuffMultiplier: 1
+      bonus:
+      - stat: 6
+        value: 0.1
     - id: twin_flame
       name: Twin Flame
       emoji: "\U0001F525"
-      description: 'Eat 2 fiery meals: +10% crit chance, +25% damage.'
+      description: 'Eat 2 fiery meals: +15% gather zone.'
       requireAllStations: 0
       requiredTag: fire
       requiredCount: 2
@@ -933,14 +1139,12 @@ MonoBehaviour:
       sameRecipeBonus: 0
       allBuffMultiplier: 1
       bonus:
-      - stat: 4
-        value: 0.1
-      - stat: 0
-        value: 0.25
+      - stat: 5
+        value: 0.15
     - id: stone_stomach
       name: Stone Stomach
       emoji: "\U0001FAA8"
-      description: 'Eat 2 hearty meals: +2 armour, +14 max HP.'
+      description: 'Eat 2 hearty meals: +1 HP per kill.'
       requireAllStations: 0
       requiredTag: stone
       requiredCount: 2
@@ -950,27 +1154,27 @@ MonoBehaviour:
       sameRecipeBonus: 0
       allBuffMultiplier: 1
       bonus:
-      - stat: 3
-        value: 2
-      - stat: 1
-        value: 14
+      - stat: 9
+        value: 1
     - id: comfort_food
       name: Comfort Food
       emoji: "\U0001F958"
-      description: '3 of the same meal: that meal''s bonus counts an extra half again.'
+      description: '3 of the same meal: +5% speed.'
       requireAllStations: 0
       requiredTag: 
       requiredCount: 3
       requireSameRecipe: 1
       useStation: 0
       requiredStation: 0
-      sameRecipeBonus: 0.5
+      sameRecipeBonus: 0
       allBuffMultiplier: 1
-      bonus: []
+      bonus:
+      - stat: 8
+        value: 0.05
     - id: slow_simmer
       name: Slow Simmer
       emoji: "\U0001F372"
-      description: 'All Pot meals: +18 max HP, +2 armour.'
+      description: 'All Pot meals: +1 HP per kill.'
       requireAllStations: 0
       requiredTag: 
       requiredCount: 3
@@ -980,14 +1184,12 @@ MonoBehaviour:
       sameRecipeBonus: 0
       allBuffMultiplier: 1
       bonus:
-      - stat: 1
-        value: 18
-      - stat: 3
-        value: 2
+      - stat: 9
+        value: 1
     - id: grill_master
       name: Grill Master
       emoji: "\U0001F356"
-      description: 'All BBQ meals: +40% damage, +8% crit.'
+      description: 'All BBQ meals: +15% coins.'
       requireAllStations: 0
       requiredTag: 
       requiredCount: 3
@@ -997,14 +1199,12 @@ MonoBehaviour:
       sameRecipeBonus: 0
       allBuffMultiplier: 1
       bonus:
-      - stat: 0
-        value: 0.4
-      - stat: 4
-        value: 0.08
+      - stat: 6
+        value: 0.15
     - id: packed_lunch
       name: Packed Lunch
       emoji: "\U0001F96A"
-      description: 'All Sandwich meals: +25% damage, +10 max HP, +25% gather zone, +15% coins.'
+      description: 'All Sandwich meals: +20% gather zone.'
       requireAllStations: 0
       requiredTag: 
       requiredCount: 3
@@ -1014,14 +1214,8 @@ MonoBehaviour:
       sameRecipeBonus: 0
       allBuffMultiplier: 1
       bonus:
-      - stat: 0
-        value: 0.25
-      - stat: 1
-        value: 10
       - stat: 5
-        value: 0.25
-      - stat: 6
-        value: 0.15
+        value: 0.2
     monsters:
     - id: slime
       name: Moss Slime
@@ -4595,7 +4789,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 26
+    contentVersion: 27
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -4788,7 +4982,7 @@ MonoBehaviour:
       emoji: "\U0001F516"
       description: Every fight is a lesson.
       buffs:
-      - stat: 7
+      - stat: 6
         value: 0.15
       perk: 0
       perkValue: 0
@@ -4941,9 +5135,7 @@ MonoBehaviour:
       description: Found in the Forgotten Larder.
       buffs:
       - stat: 6
-        value: 0.2
-      - stat: 7
-        value: 0.1
+        value: 0.3
       perk: 0
       perkValue: 0
       wardHazard: 0
@@ -5036,7 +5228,7 @@ MonoBehaviour:
       emoji: "\U0001FAAC"
       description: Mutters charms on its own.
       buffs:
-      - stat: 7
+      - stat: 6
         value: 0.05
       perk: 3
       perkValue: 0.1

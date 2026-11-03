@@ -152,11 +152,6 @@ namespace HearthHollow.Core
                 float own = ClassMult(cls, r) * Cooking.GradeMult(c.tuning, meals[i].grade);   // a better-graded meal: bigger numbers
                 for (int b = 0; b < r.buffs.Count; b++)
                     sum[(int)r.buffs[b].stat] += r.buffs[b].value * meals[i].potency * own * synMult;
-                // the accelerator's boost: always its base value, no grade, class or combo bonus
-                IngredientData acc = string.IsNullOrEmpty(meals[i].accelId) ? null : c.Ingredient(meals[i].accelId);
-                if (acc != null && acc.accelBuffs != null)
-                    for (int b = 0; b < acc.accelBuffs.Count; b++)
-                        sum[(int)acc.accelBuffs[b].stat] += acc.accelBuffs[b].value * meals[i].potency;
             }
             for (int i = 0; i < active.Count; i++)
             {

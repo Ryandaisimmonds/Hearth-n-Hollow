@@ -29,7 +29,7 @@ namespace HearthHollow.Core
         public static bool Catch(GameContent c, Profile p, int grade)
         {
             if (!CanFish(p)) return false;
-            Economy.AddToPantry(p, c.tuning.fishIngredient, Math.Max(1, c.tuning.fishCatchCount), Cooking.ClampGrade(grade));
+            Economy.AddToPantry(p, c.tuning.fishIngredient, Math.Max(1, c.tuning.fishCatchCount) + Cooking.ClampGrade(grade));   // a better catch = more fish (ingredients have no grades)
             p.lastFishDay = p.day;
             return true;
         }

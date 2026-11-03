@@ -49,6 +49,9 @@ namespace HearthHollow.Core
         }
         public bool KnowsElement(string monsterId, Element e) { return Discovery.Knows(Profile, monsterId, e); }
 
+        /// Elements the run's meals guard against (empty outside a run).
+        public IList<Element> RunGuards { get { return Run != null && Run.guards != null ? (IList<Element>)Run.guards : new Element[0]; } }
+
         /// The run's infused element (None outside a run).
         public Element RunElement { get { return Run != null ? Run.element : Element.None; } }
 

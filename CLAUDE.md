@@ -16,7 +16,7 @@ Much of the "Game design" section below describes the build as it stands, which 
 
 ## Code map (`Assets/HearthHollow/Scripts`)
 - `Core/`: pure C# game rules, no UnityEngine. `GameSession` (partial: `GameSession*.cs`) is the one facade the UI talks to.
-  Content lives in `DefaultContent*.cs`, upgraded through `DefaultContent.Upgrade`. Bump `LatestContentVersion` (now 26) for any content change, then upgrade `Content/GameContent.asset`.
+  Content lives in `DefaultContent*.cs`, upgraded through `DefaultContent.Upgrade`. Bump `LatestContentVersion` (now 27) for any content change, then upgrade `Content/GameContent.asset`.
 - `Runtime/`: `GameBootstrap` (entry point) and `SaveService` (atomic save with `.bak` fallback; `DirectoryOverride` is for tests).
 - `Dungeon/`: real-time rooms. `DungeonController`, `PlayerController`, `RoomInstance`, `RoomLights`, `Interactable` (incl. the Pit), `PitCache`, `ShadowSafeLight`, `DungeonSettings` (one settings asset: feel, lights, and `arc`).
 - `Town/`: the walkable town (`TownController`, `TownPlayer`, `TownVisuals`, `TownWorkAreas`). It's opened from Settings → Visit Hearth's Hollow.
