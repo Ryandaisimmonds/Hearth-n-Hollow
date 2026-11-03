@@ -110,14 +110,14 @@ namespace HearthHollow.Tests
             if (s.Run.floorsTotal < 2) Assert.Ignore(route.id + " has only one floor");
             Assert.IsTrue(s.DungeonPitWanted);
             int floor = s.Run.floor;
-            int weapon = Gear.TierIndex(s.Profile, GearSlot.Weapon, s.Run.classId);
+            int lantern = Gear.TierIndex(s.Profile, GearSlot.Lantern, s.Run.classId);
             Assert.IsTrue(s.DungeonFallIntoPit());
             Assert.AreEqual(floor + 1, s.Run.floor);
             Assert.AreEqual(3, s.ArcStage);
             Assert.IsTrue(s.Run.pitRoom);
             Assert.IsFalse(s.DungeonPitWanted, "only one pit per arc");
             s.DungeonPitCache();
-            Assert.AreEqual(weapon + 1, Gear.TierIndex(s.Profile, GearSlot.Weapon, s.Run.classId));
+            Assert.AreEqual(lantern + 1, Gear.TierIndex(s.Profile, GearSlot.Lantern, s.Run.classId));
         }
 
         [Test]

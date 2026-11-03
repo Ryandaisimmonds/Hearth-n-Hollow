@@ -45,6 +45,7 @@ namespace HearthHollow.Core
             DeepDungeons30(c);       // DefaultContentDesignV2.cs: Meadow 10 floors, Chili Ridge 5, boss every 5
             MeadowHollow31(c);       // DefaultContentDesignV2.cs: Meadow Hollow's bosses, deeper monsters and drops
             ChiliRidge32(c);         // DefaultContentDesignV2.cs: Chili Ridge, revealed by Old Wren
+            UtilityGear33(c);        // DefaultContentDesignV2.cs: lantern track, slice trinkets
             return c;
         }
 

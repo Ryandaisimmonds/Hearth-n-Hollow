@@ -40,6 +40,7 @@ namespace HearthHollow.Core
             if (Profile.knownElements == null) Profile.knownElements = new System.Collections.Generic.List<KnownElement>();
             if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2 (ticket 07): element discovery starts empty   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
             UpgradeArcProgress();                     // deepest floors / bosses / learned moves (saveVersion 11, ticket 10)
+            GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12, ticket 16)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
@@ -114,6 +115,9 @@ namespace HearthHollow.Core
         }
 
         /// Cook a meal with the chosen ingredient grades and accelerator. Returns the cooked meal (null if it couldn't).
+        /// Coins refunded when gear became one shared utility set (ticket 16); 0 once it's been shown.
+        public int GearRefund { get; set; }
+
         public CookedMeal Cook(string recipeId, CookChoice choice)
         {
             if (Phase != Phase.Hearth) { Info("Cook at the hearth"); return null; }
@@ -409,7 +413,7 @@ namespace HearthHollow.Core
             DropMaterial(f.elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
             if (route == null) return;
-            if (!f.elite && !_rng.Chance(T.monsterDropChance)) return;
+            if (!f.elite && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16)
             string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops (ticket 13)
             if (id == null) return;
             // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)

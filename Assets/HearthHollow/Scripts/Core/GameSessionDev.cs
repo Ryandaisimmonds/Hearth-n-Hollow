@@ -134,7 +134,7 @@ namespace HearthHollow.Core
             foreach (var cd in Content.classes)
                 if (!string.IsNullOrEmpty(cd.joinRoute) && !Profile.clearedRouteIds.Contains(cd.joinRoute)) Profile.clearedRouteIds.Add(cd.joinRoute);
 
-            GearSlot[] tracks = { GearSlot.Weapon, GearSlot.Body, GearSlot.Head, GearSlot.Boots };
+            GearSlot[] tracks = Gear.Shop;   // Design v2: the shared utility tracks
             foreach (var cd in Content.classes)
             {
                 var cp = Profile.Progress(cd.id);

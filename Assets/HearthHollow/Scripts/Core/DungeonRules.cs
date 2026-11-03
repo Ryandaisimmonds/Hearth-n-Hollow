@@ -12,6 +12,7 @@ namespace HearthHollow.Core
         public int floor = 1;             // 1-based
         public int floorsTotal = 3;
         public int dungeonSeed;           // the Unity generator seeds each floor from this + floor
+        public bool secondWindUsed;       // ticket 16: the Pocket Hearth has saved you this run
     }
 
     /// Stats for one spawned enemy (difficulty-scaled, same formulas as the old turn-based fights).

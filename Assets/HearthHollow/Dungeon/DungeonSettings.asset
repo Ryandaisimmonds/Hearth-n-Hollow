@@ -262,7 +262,7 @@ MonoBehaviour:
     baseSpeed: 0.75
     dashNeedsBoots: 1
     pitRadius: 0.55
-    pitCache: 000000000100000002000000i
+    pitCache: 05000000i
     stages:
     - name: Arrival
       reachedBy: 0

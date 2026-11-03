@@ -607,7 +607,7 @@ namespace HearthHollow.Dungeon
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
             var room = _room; var dc = _dc; var stats = Stats;
             Destroy(gameObject);
-            if (dc != null) dc.Session.DungeonEnemyKilled(stats);   // rewards, loot (refreshes the HUD)
+            if (dc != null) { dc.Session.DungeonEnemyKilled(stats); dc.OnEnemyKilled(); }   // rewards, loot (refreshes the HUD); trinkets (ticket 16)
             if (room != null) room.OnEnemyDied(this);
         }
 

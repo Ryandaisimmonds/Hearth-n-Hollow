@@ -686,14 +686,12 @@ namespace HearthHollow.UI
         {
             var p = S.Profile;
             var cls = C.Class(p.selectedClass);
-            _gearTitle.text = "⚒️ Gear — " + (cls != null ? cls.name : p.selectedClass.ToString());
+            _gearTitle.text = "⚒️ Gear — shared by everyone";
             _gear.Clear();
-            _gear.Add(GearRow(GearSlot.Weapon, "weapon_", "🗡️"));
-            _gear.Add(GearRow(GearSlot.Body, "armour_", "🛡️"));
-            _gear.Add(GearRow(GearSlot.Head, "head_", "🪖"));
-            _gear.Add(GearRow(GearSlot.Boots, "boots_", "👢"));
-            _gear.Add(GearRow(GearSlot.Bag, "bag_", "🎒"));
-            var note = UIKit.L("Weapon, body, head and boots belong to each class. The bag is shared." +
+            foreach (var gs in Gear.Shop) _gear.Add(GearRow(gs, GearPrefix(gs), GearEmoji(gs)));
+            if (S.GearRefund > 0)
+                _gear.Add(UIKit.L("🪙 Weapons, armour and helmets are gone: power comes from food now. You were refunded " + S.GearRefund + " coins for them.", "small", "workshop__note", "workshop__refund"));
+            var note = UIKit.L("Gear is utility, shared by every class: boots for speed (the first pair lets you dash), a lantern to see further, a bag to carry more home." +
                 (S.Hearth != null && S.Hearth.campEvent == CampEvent.Armourer ? "  ⚒️ The armourer's in camp: everything is " + UIKit.Pct(C.tuning.armourerDiscount) + " off today." : ""),
                 "small", "muted", "workshop__note");
             _gear.Add(note);
@@ -701,6 +699,9 @@ namespace HearthHollow.UI
             RefreshKeyItems();
             RefreshTrinkets();
         }
+
+        static string GearPrefix(GearSlot s) { return s == GearSlot.Boots ? "boots_" : s == GearSlot.Bag ? "bag_" : s == GearSlot.Lantern ? "lantern_" : s == GearSlot.Weapon ? "weapon_" : s == GearSlot.Body ? "armour_" : "head_"; }
+        static string GearEmoji(GearSlot s) { return s == GearSlot.Boots ? "👢" : s == GearSlot.Bag ? "🎒" : s == GearSlot.Lantern ? "🏮" : s == GearSlot.Weapon ? "🗡️" : s == GearSlot.Body ? "🛡️" : "🪖"; }
 
         static VisualElement GearPic(string prefix, GearTier tier, string emoji)
         {
@@ -770,7 +771,7 @@ namespace HearthHollow.UI
 
             _trinkets.Add(UIKit.L("💍 Trinkets — " + worn.Count + "/" + slots + " worn", "subhead", "workshop__title"));
             var wornRow = UIKit.E("trinket-slots");
-            int maxSlots = Mathf.Max(slots, C.tuning.trinketSlots + 1);
+            int maxSlots = Slice.On ? slots : Mathf.Max(slots, C.tuning.trinketSlots + 1);   // the slice has no Cavern Hunt to open a third slot
             for (int i = 0; i < maxSlots; i++)
             {
                 if (i < worn.Count)
@@ -804,7 +805,7 @@ namespace HearthHollow.UI
             // owned, not worn
             var bag = new List<string>();
             foreach (var id in owned) if (!worn.Contains(id)) bag.Add(id);
-            _trinkets.Add(UIKit.L("Your collection (" + owned.Count + "/" + C.trinkets.Count + ")", "small", "workshop__sub"));
+            _trinkets.Add(UIKit.L("Your collection (" + owned.Count + "/" + C.trinkets.FindAll(x => Gear.InSlice(x)).Count + ")", "small", "workshop__sub"));
             var grid = UIKit.E("trinket-grid");
             if (bag.Count == 0) grid.Add(UIKit.L(owned.Count == 0 ? "None yet — buy one below or find them in the dungeons." : "Everything you own is being worn.", "small", "muted"));
             foreach (var id in bag)
@@ -851,7 +852,7 @@ namespace HearthHollow.UI
             int hiddenClear = 0, hiddenDrop = 0, hiddenMerchant = 0;
             foreach (var t in C.trinkets)
             {
-                if (Gear.Owns(p, t.id) || t.inWorkshop) continue;
+                if (Gear.Owns(p, t.id) || t.inWorkshop || !Gear.InSlice(t)) continue;   // the slice only counts its own trinkets (ticket 16)
                 if (!string.IsNullOrEmpty(t.fromRouteId)) hiddenClear++;
                 else if (t.drop) hiddenDrop++;
                 else if (t.merchant) hiddenMerchant++;
@@ -991,11 +992,7 @@ namespace HearthHollow.UI
             _equip.Clear();
             var p = S.Profile;
             var grid = UIKit.E("who-gear-grid");
-            grid.Add(GearChip(GearSlot.Weapon, "weapon_", "🗡️"));
-            grid.Add(GearChip(GearSlot.Body, "armour_", "🛡️"));
-            grid.Add(GearChip(GearSlot.Head, "head_", "🪖"));
-            grid.Add(GearChip(GearSlot.Boots, "boots_", "👢"));
-            grid.Add(GearChip(GearSlot.Bag, "bag_", "🎒"));
+            foreach (var gs in Gear.Shop) grid.Add(GearChip(gs, GearPrefix(gs), GearEmoji(gs)));
             _equip.Add(grid);
 
             var tr = UIKit.E("who-trinkets");

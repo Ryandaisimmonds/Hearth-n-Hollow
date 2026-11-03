@@ -55,6 +55,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 30) { DeepDungeons30(c); c.contentVersion = 30; }  // deep dungeons: Meadow 10 floors, Chili Ridge 5, a boss every 5 (DefaultContentDesignV2.cs)
             if (c.contentVersion < 31) { MeadowHollow31(c); c.contentVersion = 31; }  // Meadow Hollow: named bosses, deeper monsters and drops (DefaultContentDesignV2.cs)
             if (c.contentVersion < 32) { ChiliRidge32(c); c.contentVersion = 32; }  // Chili Ridge: 5 floors, Ridge Drake, the chili source, revealed by Wren (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 33) { UtilityGear33(c); c.contentVersion = 33; }  // utility gear: lantern track + four slice trinkets (DefaultContentDesignV2.cs)
             return true;
         }
 

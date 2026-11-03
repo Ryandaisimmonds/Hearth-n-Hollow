@@ -145,7 +145,7 @@ namespace HearthHollow.Tests
             foreach (var cd in _c.classes)
             {
                 Assert.IsTrue(s.ClassJoined(cd.id), cd.id + " hasn't joined");
-                foreach (var slot in new[] { GearSlot.Weapon, GearSlot.Body, GearSlot.Head, GearSlot.Boots })
+                foreach (var slot in Gear.Shop)
                     Assert.IsNull(Gear.Next(_c, s.Profile, slot, cd.id), cd.id + " " + slot + " isn't maxed");
             }
             Assert.AreEqual(_c.tuning.traySize, s.Profile.packed.Count);

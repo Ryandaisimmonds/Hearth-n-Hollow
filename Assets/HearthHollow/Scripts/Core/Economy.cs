@@ -119,6 +119,8 @@ namespace HearthHollow.Core
         public static bool BuyWeapon(GameContent c, Profile p, out string reason) { return BuyWeapon(c, p, null, out reason); }
         public static bool BuyWeapon(GameContent c, Profile p, HearthState h, out string reason)
         {
+            reason = "Power comes from food now: the smithy sells boots, lanterns and bags"; return false;   // Design v2 (ticket 16)
+#pragma warning disable 0162
             GearTier next = NextWeapon(c, p, p.selectedClass);
             if (next == null) { reason = "Weapon is maxed"; return false; }
             int price = GearPrice(c, h, next);
@@ -126,11 +128,14 @@ namespace HearthHollow.Core
             p.coins -= price;
             p.Progress(p.selectedClass).weaponTier++;
             reason = null; return true;
+#pragma warning restore 0162
         }
 
         public static bool BuyArmour(GameContent c, Profile p, out string reason) { return BuyArmour(c, p, null, out reason); }
         public static bool BuyArmour(GameContent c, Profile p, HearthState h, out string reason)
         {
+            reason = "Power comes from food now: the smithy sells boots, lanterns and bags"; return false;   // Design v2 (ticket 16)
+#pragma warning disable 0162
             GearTier next = NextArmour(c, p, p.selectedClass);
             if (next == null) { reason = "Armour is maxed"; return false; }
             int price = GearPrice(c, h, next);
@@ -138,6 +143,7 @@ namespace HearthHollow.Core
             p.coins -= price;
             p.Progress(p.selectedClass).armourTier++;
             reason = null; return true;
+#pragma warning restore 0162
         }
 
         // ───────── Bag (shared by every class; bigger bags = more slots) ─────────

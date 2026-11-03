@@ -210,7 +210,7 @@ namespace HearthHollow.Dungeon
             _playerLight.lightType = Light2D.LightType.Point;
             _playerLight.color = Color.Lerp(new Color(1f, 0.76f, 0.48f), PlayerController.ClassColour(Player.ClassId), Settings.carriedLightClassTint);   // firelight, tinted by your class colour
             _playerLight.intensity = Mathf.Max(_theme.playerLight, Settings.carriedLight);
-            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius;
+            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LanternReach(Session.Content, Session.Profile));   // the lantern (ticket 16)
             // packed meals feed your light (step 5): Sandwich = wider, BBQ = hotter + redder, Pot = steadier; finer meals count more
             float reach = 0f, heat = 0f, steady = 0f;
             if (Session.Run != null)
@@ -374,6 +374,13 @@ namespace HearthHollow.Dungeon
 
         /// A big move floods the room with light for a moment (class rework).
         public void FloodLight(float add, float seconds) { if (add > _glowAdd) { _glowAdd = add; _glowDecay = add / Mathf.Max(0.1f, seconds); } }
+
+        /// A monster went down: the Ember Locket takes time off Flare's cooldown (ticket 16).
+        public void OnEnemyKilled()
+        {
+            float cut = Gear.Perk(Session.Content, Session.Profile, TrinketPerk.FlareOnKill);
+            if (cut > 0f && _flareCd > 0f) _flareCd = Mathf.Max(0f, _flareCd - cut);
+        }
 
         void Flare()
         {

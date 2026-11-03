@@ -30,11 +30,11 @@ namespace HearthHollow.Core
     public enum SkillKind { Cleave, Volley, HeartySnack }
     /// Gear tracks bought in the Workshop. Weapon, Body (armour points), Head (max HP), Boots (move speed) are per class;
     /// the Bag is shared. Append only.
-    public enum GearSlot { Weapon, Body, Head, Boots, Bag }
+    public enum GearSlot { Weapon, Body, Head, Boots, Bag, Lantern }   // Design v2 (ticket 16): only Boots, Bag and Lantern are bought; shared by every class
     /// How rare a meal is (shown on its card, used to sort and filter the meal grid). Append only.
     public enum Rarity { Common, Uncommon, Rare, Epic, Legendary }
     /// A trinket's special effect on top of its stat mods. Append only.
-    public enum TrinketPerk { None, MoveSpeed, DashCooldown, SkillCooldown, HealOnKill, AttackPower, SkillPower, HazardWard }
+    public enum TrinketPerk { None, MoveSpeed, DashCooldown, SkillCooldown, HealOnKill, AttackPower, SkillPower, HazardWard, FlareOnKill, SecondWind, LootOnKill }   // ticket 16: rule-benders
 
     // ── moves & skill trees (real-time dungeon) ──
     /// Which loadout slot a move fits: Attack (J), Skill (K or U), Dash (Space).
@@ -295,6 +295,7 @@ namespace HearthHollow.Core
         public bool merchant;          // the travelling merchant can stock it
         public bool drop;              // bosses / elites can drop it
         public string fromRouteId;     // first clear of this route gives it
+        public bool slice;             // ticket 16: one of the vertical slice's trinkets (the only ones sold / dropped while Slice.On)
     }
 
     [Serializable] public class MerchantOffer { public string ingredientId; public int count; public int price; public bool sold; }
@@ -422,6 +423,7 @@ namespace HearthHollow.Core
         public int contentVersion;   // 2 = moves + skill trees + level 50; 3 = meals-first rebalance; 4 = story + side dungeons; 5 = darkness, mutators, 4 more side dungeons; 6 = bag tiers; 7 = head/boots + trinkets; 8 = meal rarity (DefaultContent.Upgrade)
         public List<KeyItemData> keyItems = new List<KeyItemData>();
         public List<GearTier> bagTiers = new List<GearTier>();   // bag upgrades: value = slots (contentVersion 6)
+        public List<GearTier> lanternTiers = new List<GearTier>();   // ticket 16: value = extra light reach (0.15 = +15%)
         public string storyTitle;
         public string storyPrologue;
         public List<GearTier> headTiers = new List<GearTier>();    // Workshop: value = max HP (contentVersion 7)
@@ -481,6 +483,7 @@ namespace HearthHollow.Core
         public List<string> storyFlags = new List<string>();              // story beats that have happened (ticket 14: "wren_fire_hint" reveals Chili Ridge)
         public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
+        public int bootsTier, lanternTier;   // Design v2 (ticket 16, saveVersion 12): shared by every class
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
         public List<string> equippedTrinkets = new List<string>();  // worn, shared by every class (max = Gear.TrinketSlots)
         public List<CookedMeal> mealPantry = new List<CookedMeal>();  // cooked meals kept at camp (saveVersion 6)

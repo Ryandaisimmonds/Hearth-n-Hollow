@@ -75,6 +75,12 @@ namespace HearthHollow.Core
             int dmg = DungeonRules.IncomingDamage(raw, Stats, DungeonGuardMult);
             Run.hp -= dmg;
             Emit(new GameEvent(GameEventType.MonsterHit, dmg, true, "-" + dmg));
+            if (Run.hp <= 0 && !Run.secondWindUsed && Gear.Perk(Content, Profile, TrinketPerk.SecondWind) > 0f)
+            {
+                Run.secondWindUsed = true;   // Pocket Hearth (ticket 16): once a run, a fall leaves you on 1 HP
+                Run.hp = 1;
+                Info("🕯️ The Pocket Hearth flares — you're back on your feet!");
+            }
             if (Run.hp <= 0)
             {
                 Run.hp = 0;

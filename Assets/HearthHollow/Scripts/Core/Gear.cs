@@ -1,5 +1,7 @@
-// Hearth & Hollow — Workshop gear tracks (weapon, body, head, boots, bag) and trinkets. Pure C#, no UnityEngine.
-// Gear is a small step each tier; meals stay the main source of power.
+// Hearth & Hollow — gear tracks and trinkets. Pure C#, no UnityEngine.
+// Design v2 (ticket 16): gear is utility, not power, and shared by every class: bag (carry more), boots (speed;
+// the first pair unlocks the dash) and lantern (light reach). Weapon / body / head stay at their first tier
+// (power comes from food); old purchases were refunded in saveVersion 12.
 using System;
 using System.Collections.Generic;
 
@@ -7,11 +9,16 @@ namespace HearthHollow.Core
 {
     public static class Gear
     {
+        /// The tracks the smithy sells (Design v2).
+        public static readonly GearSlot[] Shop = { GearSlot.Boots, GearSlot.Lantern, GearSlot.Bag };
+        public static bool IsUtility(GearSlot s) { return s == GearSlot.Boots || s == GearSlot.Bag || s == GearSlot.Lantern; }
+
         // ───────────── tracks ─────────────
         public static List<GearTier> Tiers(GameContent c, GearSlot slot)
         {
             switch (slot)
             {
+                case GearSlot.Lantern: return c.lanternTiers;
                 case GearSlot.Weapon: return c.weaponTiers;
                 case GearSlot.Body: return c.armourTiers;
                 case GearSlot.Head: return c.headTiers;
@@ -24,28 +31,22 @@ namespace HearthHollow.Core
         public static int TierIndex(Profile p, GearSlot slot, ClassId cls)
         {
             if (p == null) return 0;
-            if (slot == GearSlot.Bag) return p.bagTier;
-            var cp = p.Progress(cls);
             switch (slot)
             {
-                case GearSlot.Weapon: return cp.weaponTier;
-                case GearSlot.Body: return cp.armourTier;
-                case GearSlot.Head: return cp.headTier;
-                case GearSlot.Boots: return cp.bootsTier;
+                case GearSlot.Bag: return p.bagTier;
+                case GearSlot.Boots: return p.bootsTier;
+                case GearSlot.Lantern: return p.lanternTier;
             }
-            return 0;
+            return 0;   // weapon / body / head: always the first tier (Design v2)
         }
 
         static void Bump(Profile p, GearSlot slot, ClassId cls)
         {
-            if (slot == GearSlot.Bag) { p.bagTier++; return; }
-            var cp = p.Progress(cls);
             switch (slot)
             {
-                case GearSlot.Weapon: cp.weaponTier++; break;
-                case GearSlot.Body: cp.armourTier++; break;
-                case GearSlot.Head: cp.headTier++; break;
-                case GearSlot.Boots: cp.bootsTier++; break;
+                case GearSlot.Bag: p.bagTier++; break;
+                case GearSlot.Boots: p.bootsTier++; break;
+                case GearSlot.Lantern: p.lanternTier++; break;
             }
         }
 
@@ -64,9 +65,10 @@ namespace HearthHollow.Core
             return n < t.Count ? t[n] : null;
         }
 
-        /// Buy the next tier of a track for the selected class (bag: shared). Armourer event discount applies.
+        /// Buy the next tier of a shared utility track. Armourer event discount applies.
         public static bool Buy(GameContent c, Profile p, HearthState h, GearSlot slot, out string reason)
         {
+            if (!IsUtility(slot)) { reason = "Power comes from food now: the smithy sells boots, lanterns and bags"; return false; }
             GearTier next = Next(c, p, slot, p.selectedClass);
             if (next == null) { reason = SlotName(slot) + " is maxed"; return false; }
             int price = Economy.GearPrice(c, h, next);
@@ -79,6 +81,7 @@ namespace HearthHollow.Core
         /// Free: the next tier of a track for <paramref name="cls"/> (the opening arc's pit cache). Null if it's maxed.
         public static GearTier Grant(GameContent c, Profile p, GearSlot slot, ClassId cls)
         {
+            if (!IsUtility(slot)) return null;
             GearTier next = Next(c, p, slot, cls);
             if (next == null) return null;
             Bump(p, slot, cls);
@@ -94,6 +97,7 @@ namespace HearthHollow.Core
                 case GearSlot.Head: return "Head";
                 case GearSlot.Boots: return "Boots";
                 case GearSlot.Bag: return "Bag";
+                case GearSlot.Lantern: return "Lantern";
             }
             return s.ToString();
         }
@@ -109,6 +113,7 @@ namespace HearthHollow.Core
                 case GearSlot.Head: return "+" + Num(t.value) + " max HP";
                 case GearSlot.Boots: return "+" + (int)Math.Round(t.value * 100) + "% speed";
                 case GearSlot.Bag: return Num(t.value) + " slots";
+                case GearSlot.Lantern: return t.value > 0.001f ? "+" + (int)Math.Round(t.value * 100) + "% light" : "a candle's glow";
             }
             return Num(t.value);
         }
@@ -117,6 +122,39 @@ namespace HearthHollow.Core
 
         public static int HeadHp(GameContent c, Profile p, ClassId cls) { var t = Current(c, p, GearSlot.Head, cls); return t != null ? (int)Math.Round(t.value) : 0; }
         public static float BootsSpeed(GameContent c, Profile p, ClassId cls) { var t = Current(c, p, GearSlot.Boots, cls); return t != null ? t.value : 0f; }
+        /// Extra carried-light reach from the lantern (0.15 = +15%).
+        public static float LanternReach(GameContent c, Profile p) { var t = Current(c, p, GearSlot.Lantern, ClassId.Cook); return t != null ? Math.Max(0f, t.value) : 0f; }
+
+        /// saveVersion 12 (ticket 16): one shared set. Weapon / body / head purchases are refunded; boots become
+        /// shared at the best pair any class had (the rest refunded). Returns the coins refunded.
+        public static int ShareGear(GameContent c, Profile p)
+        {
+            if (p == null || p.saveVersion >= 12) return 0;
+            int refund = 0, best = p.bootsTier;
+            foreach (var cp in p.classes) best = Math.Max(best, cp.bootsTier);
+            int bestCost = Spent(c.bootsTiers, best);
+            int bootsSpent = 0;
+            foreach (var cp in p.classes)
+            {
+                refund += Spent(c.weaponTiers, cp.weaponTier) + Spent(c.armourTiers, cp.armourTier) + Spent(c.headTiers, cp.headTier);
+                bootsSpent += Spent(c.bootsTiers, cp.bootsTier);
+                cp.weaponTier = cp.armourTier = cp.headTier = 0;
+                cp.bootsTier = 0;
+            }
+            refund += Math.Max(0, bootsSpent - bestCost);
+            p.bootsTier = Math.Min(best, Math.Max(0, (c.bootsTiers != null ? c.bootsTiers.Count : 1) - 1));
+            p.coins += refund;
+            p.saveVersion = 12;
+            return refund;
+        }
+
+        static int Spent(List<GearTier> tiers, int index)
+        {
+            int s = 0;
+            if (tiers == null) return 0;
+            for (int i = 1; i <= index && i < tiers.Count; i++) s += Math.Max(0, tiers[i].price);
+            return s;
+        }
 
         // ───────────── trinkets ─────────────
         public static TrinketData Trinket(GameContent c, string id)
@@ -184,9 +222,12 @@ namespace HearthHollow.Core
             var list = new List<TrinketData>();
             if (c.trinkets == null) return list;
             int ch = ChapterReached(c, p);
-            foreach (var t in c.trinkets) if (t.inWorkshop && t.price > 0 && ch >= t.shopChapter && !Owns(p, t.id)) list.Add(t);
+            foreach (var t in c.trinkets) if (t.inWorkshop && t.price > 0 && ch >= t.shopChapter && !Owns(p, t.id) && InSlice(t)) list.Add(t);
             return list;
         }
+
+        /// While the slice is on, only its trinkets are sold or dropped.
+        public static bool InSlice(TrinketData t) { return t != null && (!Slice.On || t.slice); }
 
         /// Trinkets the Workshop will sell later (so the player can see what's coming).
         public static List<TrinketData> WorkshopLater(GameContent c, Profile p)
@@ -194,7 +235,7 @@ namespace HearthHollow.Core
             var list = new List<TrinketData>();
             if (c.trinkets == null) return list;
             int ch = ChapterReached(c, p);
-            foreach (var t in c.trinkets) if (t.inWorkshop && t.price > 0 && ch < t.shopChapter && !Owns(p, t.id)) list.Add(t);
+            foreach (var t in c.trinkets) if (t.inWorkshop && t.price > 0 && ch < t.shopChapter && !Owns(p, t.id) && InSlice(t)) list.Add(t);
             return list;
         }
 
@@ -255,6 +296,9 @@ namespace HearthHollow.Core
                 case TrinketPerk.DashCooldown: parts.Add("−" + Pct(t.perkValue) + " dash cooldown"); break;
                 case TrinketPerk.SkillCooldown: parts.Add("−" + Pct(t.perkValue) + " skill cooldowns"); break;
                 case TrinketPerk.HealOnKill: parts.Add("heal " + (int)Math.Round(t.perkValue) + " HP per kill"); break;
+                case TrinketPerk.FlareOnKill: parts.Add("each kill: −" + (int)Math.Round(t.perkValue) + " s Flare cooldown"); break;
+                case TrinketPerk.LootOnKill: parts.Add("+" + Pct(t.perkValue) + " ingredient drops"); break;
+                case TrinketPerk.SecondWind: parts.Add("once a run: survive a fall on 1 HP"); break;
                 case TrinketPerk.AttackPower: parts.Add("+" + Pct(t.perkValue) + " attack power"); break;
                 case TrinketPerk.SkillPower: parts.Add("+" + Pct(t.perkValue) + " skill power"); break;
                 case TrinketPerk.HazardWard:
@@ -305,7 +349,7 @@ namespace HearthHollow.Core
             float chance = boss ? c.tuning.trinketBossDrop : elite ? c.tuning.trinketEliteDrop : 0f;
             if (chance <= 0f || c.trinkets == null || !rng.Chance(chance)) return null;
             var pool = new List<string>();
-            foreach (var t in c.trinkets) if (t.drop && !Owns(p, t.id)) pool.Add(t.id);
+            foreach (var t in c.trinkets) if (t.drop && !Owns(p, t.id) && InSlice(t)) pool.Add(t.id);
             return pool.Count == 0 ? null : rng.Pick(pool);
         }
 

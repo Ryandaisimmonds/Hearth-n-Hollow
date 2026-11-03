@@ -5059,7 +5059,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 32
+    contentVersion: 33
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -5110,6 +5110,27 @@ MonoBehaviour:
       name: Hollow-Walker's Pack
       price: 600
       value: 30
+    lanternTiers:
+    - tier: 0
+      name: Tallow Stub
+      price: 0
+      value: 0
+    - tier: 1
+      name: Tin Lantern
+      price: 40
+      value: 0.15
+    - tier: 2
+      name: Brass Lantern
+      price: 90
+      value: 0.3
+    - tier: 3
+      name: Glass Lantern
+      price: 160
+      value: 0.45
+    - tier: 4
+      name: Hearthglow Lantern
+      price: 260
+      value: 0.6
     storyTitle: The Everflame
     storyPrologue: 'Every hearth in the valley was lit from the Everflame, a fire that has burned in the Hollow Heart for a thousand winters. This autumn it guttered. The fog crept in, the hearths went cold, and the old roads closed. Old Wren, keeper of the camp, has one map left: the Ember Path. Cook well, travel light, and bring the flame home.'
     headTiers:
@@ -5171,6 +5192,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: purse
       name: Copper Coin Purse
       emoji: "\U0001F45B"
@@ -5187,6 +5209,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: pendant
       name: Hearthstone Pendant
       emoji: "\U0001F4FF"
@@ -5203,6 +5226,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: twine
       name: Forager's Twine
       emoji: "\U0001F9F6"
@@ -5219,6 +5243,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: feather
       name: Feather Charm
       emoji: "\U0001FAB6"
@@ -5233,6 +5258,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: whetstone
       name: Pocket Whetstone
       emoji: "\U0001FAA8"
@@ -5247,6 +5273,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: bookmark
       name: Scholar's Bookmark
       emoji: "\U0001F516"
@@ -5263,6 +5290,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: hourglass
       name: Hourglass Bead
       emoji: "\u23F3"
@@ -5277,6 +5305,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: rabbitfoot
       name: Rabbit's Foot
       emoji: "\U0001F407"
@@ -5293,6 +5322,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: harerun
+      slice: 0
     - id: fireflyjar
       name: Firefly Jar
       emoji: "\U0001FAD9"
@@ -5307,6 +5337,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: firefly
+      slice: 0
     - id: mirecharm
       name: Mire Charm
       emoji: "\U0001F344"
@@ -5321,6 +5352,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: spore
+      slice: 0
     - id: glowbrooch
       name: Glowcap Brooch
       emoji: "\U0001F4A1"
@@ -5335,6 +5367,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: glowcap
+      slice: 0
     - id: signet
       name: Warden's Signet
       emoji: "\U0001F48D"
@@ -5353,6 +5386,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: watchtower
+      slice: 0
     - id: thunderstone
       name: Thunder Stone
       emoji: "\u26A1"
@@ -5369,6 +5403,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: thunder
+      slice: 0
     - id: thornband
       name: Thornsilk Band
       emoji: "\U0001F33F"
@@ -5385,6 +5420,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: canopy
+      slice: 0
     - id: honeylocket
       name: Honey Locket
       emoji: "\U0001F36F"
@@ -5393,12 +5429,13 @@ MonoBehaviour:
       perk: 4
       perkValue: 1
       wardHazard: 0
-      price: 0
-      inWorkshop: 0
+      price: 100
+      inWorkshop: 1
       shopChapter: 1
       merchant: 0
       drop: 0
       fromRouteId: hive
+      slice: 1
     - id: grannyspoon
       name: Granny's Spoon
       emoji: "\U0001F944"
@@ -5415,6 +5452,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: larder
+      slice: 0
     - id: frostamulet
       name: Frost Ward Amulet
       emoji: "\u2744\uFE0F"
@@ -5429,6 +5467,7 @@ MonoBehaviour:
       merchant: 0
       drop: 0
       fromRouteId: frosthollow
+      slice: 0
     - id: emberward
       name: Ember Ward Charm
       emoji: "\U0001F525"
@@ -5443,6 +5482,7 @@ MonoBehaviour:
       merchant: 1
       drop: 1
       fromRouteId: 
+      slice: 0
     - id: slimeheart
       name: Slime Heart
       emoji: "\U0001F7E2"
@@ -5459,6 +5499,7 @@ MonoBehaviour:
       merchant: 0
       drop: 1
       fromRouteId: 
+      slice: 0
     - id: wolffang
       name: Wolf Fang Necklace
       emoji: "\U0001F43A"
@@ -5477,6 +5518,7 @@ MonoBehaviour:
       merchant: 0
       drop: 1
       fromRouteId: 
+      slice: 0
     - id: dragonscale
       name: Dragon Scale
       emoji: "\U0001F409"
@@ -5493,6 +5535,7 @@ MonoBehaviour:
       merchant: 0
       drop: 1
       fromRouteId: 
+      slice: 0
     - id: fetish
       name: Shaman's Fetish
       emoji: "\U0001FAAC"
@@ -5509,6 +5552,7 @@ MonoBehaviour:
       merchant: 0
       drop: 1
       fromRouteId: 
+      slice: 0
     - id: compass
       name: Traveller's Compass
       emoji: "\U0001F9ED"
@@ -5527,6 +5571,7 @@ MonoBehaviour:
       merchant: 1
       drop: 0
       fromRouteId: 
+      slice: 0
     - id: spicetin
       name: Merchant's Spice Tin
       emoji: "\U0001FADA"
@@ -5545,6 +5590,52 @@ MonoBehaviour:
       merchant: 1
       drop: 0
       fromRouteId: 
+      slice: 0
+    - id: ember_locket
+      name: Ember Locket
+      emoji: "\U0001F525"
+      description: Every kill takes 3 s off Flare's cooldown.
+      buffs: []
+      perk: 8
+      perkValue: 3
+      wardHazard: 0
+      price: 60
+      inWorkshop: 1
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+      slice: 1
+    - id: magpie_spoon
+      name: Magpie Spoon
+      emoji: "\U0001F944"
+      description: Monsters drop ingredients a lot more often.
+      buffs: []
+      perk: 10
+      perkValue: 0.2
+      wardHazard: 0
+      price: 90
+      inWorkshop: 1
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+      slice: 1
+    - id: pocket_hearth
+      name: Pocket Hearth
+      emoji: "\U0001F56F\uFE0F"
+      description: Once a run, a blow that would fell you leaves you on 1 HP instead.
+      buffs: []
+      perk: 9
+      perkValue: 1
+      wardHazard: 0
+      price: 140
+      inWorkshop: 1
+      shopChapter: 1
+      merchant: 0
+      drop: 0
+      fromRouteId: 
+      slice: 1
     stationTiers:
     - level: 1
       name: Camp fire

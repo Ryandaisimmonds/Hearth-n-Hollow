@@ -31,7 +31,7 @@ namespace HearthHollow.Core
         public float baseSpeed = 0.75f;                       // × the walk speed, before boots, charms, skill nodes and meals
         public bool dashNeedsBoots = true;                    // no dash until the stage that gives the first boots (or any class owns boots)
         public float pitRadius = 0.55f;                       // how close to the pit's centre you have to step to fall in
-        public List<GearSlot> pitCache = new List<GearSlot> { GearSlot.Weapon, GearSlot.Body, GearSlot.Head };   // the cache's equipment (next tier each, for the run's class)
+        public List<GearSlot> pitCache = new List<GearSlot> { GearSlot.Lantern };   // the cache's equipment (next tier each; Design v2: shared utility gear only)
         public List<ArcStage> stages = Defaults();
 
         public static List<ArcStage> Defaults()
@@ -115,7 +115,7 @@ namespace HearthHollow.Core
             if (s.giveStarterFood && c.starterPantry != null)
                 foreach (var ic in c.starterPantry) Economy.AddToPantry(p, ic.ingredientId, ic.count);
             if (s.giveFirstBoots)
-                foreach (var cd in c.classes) { var cp = p.Progress(cd.id); if (cp.bootsTier < 1 && c.bootsTiers.Count > 1) cp.bootsTier = 1; }
+                if (p.bootsTier < 1 && c.bootsTiers.Count > 1) p.bootsTier = 1;   // shared boots (ticket 16)
             if (s.giveCoins > 0) p.coins += s.giveCoins;
             return s;
         }

@@ -16,6 +16,7 @@
 // Ginger (Frost guard) drops from floor 4; the three tier-2 ingredients from floor 6; timber is its material.
 // v32 (ticket 14): Chili Ridge. A 5-floor side dungeon, hidden until Old Wren's directions (flag "wren_fire_hint",
 // ticket 15). Fire-leaning monsters, the Ridge Drake on floor 5, chilies (Fire infusion) and mint (Fire guard), ember coal.
+// v33 (ticket 16): utility gear. A lantern track (light reach) joins boots and bag; four slice trinkets that bend rules.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -184,6 +185,34 @@ namespace HearthHollow.Core
             r.floorDrops = new List<FloorDrop> { new FloorDrop { ingredientId = "mint", minFloor = 2, weight = 0.5f } };
             r.floorDrops.RemoveAll(d => c.Ingredient(d.ingredientId) == null);
             r.materialIds = new List<string> { "ember_coal" };
+        }
+
+        static void UtilityGear33(GameContent c)
+        {
+            if (c.lanternTiers == null) c.lanternTiers = new List<GearTier>();
+            if (c.lanternTiers.Count == 0)
+            {
+                Gear(c.lanternTiers, 0, "Tallow Stub", 0, 0f);
+                Gear(c.lanternTiers, 1, "Tin Lantern", 40, 0.15f);
+                Gear(c.lanternTiers, 2, "Brass Lantern", 90, 0.3f);
+                Gear(c.lanternTiers, 3, "Glass Lantern", 160, 0.45f);
+                Gear(c.lanternTiers, 4, "Hearthglow Lantern", 260, 0.6f);
+            }
+            foreach (var t in c.trinkets) t.slice = false;
+            Trinket33(c, "ember_locket", "Ember Locket", "🔥", "Every kill takes 3 s off Flare's cooldown.", TrinketPerk.FlareOnKill, 3f, 60);
+            Trinket33(c, "magpie_spoon", "Magpie Spoon", "🥄", "Monsters drop ingredients a lot more often.", TrinketPerk.LootOnKill, 0.2f, 90);
+            Trinket33(c, "pocket_hearth", "Pocket Hearth", "🕯️", "Once a run, a blow that would fell you leaves you on 1 HP instead.", TrinketPerk.SecondWind, 1f, 140);
+            var honey = c.trinkets.Find(x => x.id == "honeylocket");
+            if (honey != null) { honey.slice = true; honey.inWorkshop = true; honey.price = 100; honey.shopChapter = 1; }
+        }
+
+        static void Trinket33(GameContent c, string id, string name, string emoji, string desc, TrinketPerk perk, float value, int price)
+        {
+            var t = c.trinkets.Find(x => x.id == id);
+            if (t == null) { t = new TrinketData { id = id }; c.trinkets.Add(t); }
+            t.name = name; t.emoji = emoji; t.description = desc; t.perk = perk; t.perkValue = value;
+            t.price = price; t.inWorkshop = true; t.shopChapter = 1; t.slice = true;
+            if (t.buffs == null) t.buffs = new List<StatMod>();
         }
 
         static void Elements26(GameContent c)
