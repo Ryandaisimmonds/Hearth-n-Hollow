@@ -259,10 +259,7 @@ MonoBehaviour:
   dashSeconds: 0.16
   arc:
     enabled: 1
-    baseSpeed: 0.75
     dashNeedsBoots: 1
-    pitRadius: 0.55
-    pitCache: 05000000i
     stages:
     - name: Arrival
       reachedBy: 0
@@ -275,34 +272,21 @@ MonoBehaviour:
       giveFirstBoots: 0
       giveCoins: 0
     - name: Fed
-      reachedBy: 1
-      toast: "\U0001F372 Old Wren drags you back to the fire and feeds you. \"Eat first, then go back down.\" The kitchen is open."
+      reachedBy: 5
+      toast: "\U0001F372 Old Wren sits you down by the fire and feeds you. \"Eat first, then go back down.\" The kitchen is open: cook a meal and pack it on your tray."
       opens:
       - kitchen
+      - larder
       giveStarterFood: 1
       giveFirstBoots: 0
       giveCoins: 0
-    - name: Deeper
-      reachedBy: 2
-      toast: "\U0001F97E Some old walking boots by the ladder. Now you can roll (Space / B). The Smithy and Workshop will open at camp."
+    - name: Town
+      reachedBy: 6
+      toast: "\U0001F3D8\uFE0F Word of your win spreads. The camp grows into a little town: the smithy (buy boots to dash), the workshop and an empty plot for a lamp-maker are open."
       opens:
       - smithy
       - workshop
-      giveStarterFood: 0
-      giveFirstBoots: 1
-      giveCoins: 0
-    - name: The Pit
-      reachedBy: 3
-      toast: "\U0001F573\uFE0F The floor gives way! You land in a forgotten cache\u2026"
-      opens: []
-      giveStarterFood: 0
-      giveFirstBoots: 0
-      giveCoins: 0
-    - name: Hollow
-      reachedBy: 4
-      toast: "\U0001F3D8\uFE0F With what you found below, the camp starts to grow into a proper little town."
-      opens:
-      - town
+      - lampmaker
       giveStarterFood: 0
       giveFirstBoots: 0
       giveCoins: 50

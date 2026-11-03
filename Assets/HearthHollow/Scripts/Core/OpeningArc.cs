@@ -1,37 +1,33 @@
-// Hearth & Hollow — the opening arc: a staged tutorial that grows a tiny camp into a village. Pure C#, no UnityEngine.
-// The stages live in the Dungeon Settings asset (DungeonSettings.arc) so they can be tuned in the Inspector:
-//   0 Arrival     — a dead fire, Old Wren and the route board. Slow, no dash.
-//   1 Fed         — your first death: Wren feeds you and the kitchen opens.
-//   2 Deeper      — your first ladder down: old boots (the dash) and the Smithy / Workshop.
-//   3 The Pit     — a cleared room caves in; you fall into a hidden cache of equipment.
-//   4 Hollow      — home again after the pit: the camp becomes a basic town.
-// Speed: everyone starts at baseSpeed × the walk speed; boots, charms, skill nodes and meals build it back up.
+// Hearth & Hollow — the opening arc: a staged tutorial that grows a dead campfire into a little town. Pure C#.
+// Design v2 (ticket 18) trims it to the slice's beats. The stages live in the Dungeon Settings asset (DungeonSettings.arc):
+//   0 Arrival — a dead fire, Old Wren and the Route board. No dash (no boots yet).
+//   1 Fed     — home from your first dive (fallen or not): Wren feeds you and the kitchen and larder open. Cook a first meal.
+//   2 Town    — home after your first boss (Meadow Hollow floor 5): the camp grows into a town; the smithy (boots = the dash),
+//               workshop and the plot for the Lamp-maker open.
+// The pit, its cache and the 75% start speed were cut.
 using System;
 using System.Collections.Generic;
 
 namespace HearthHollow.Core
 {
-    /// What moves the arc on to its next stage (each stage names the one event that reaches it).
-    public enum ArcTrigger { None, FirstDeath, FirstLadder, PitFall, HomeAfterPit }
+    /// What moves the arc on to its next stage. Append only (FirstDeath / FirstLadder / PitFall / HomeAfterPit are retired).
+    public enum ArcTrigger { None, FirstDeath, FirstLadder, PitFall, HomeAfterPit, FirstRunEnd, HomeAfterBoss }
 
     [Serializable] public class ArcStage
     {
         public string name;
         public ArcTrigger reachedBy;
         public string toast;                                  // shown when the stage is reached
-        public List<string> opens = new List<string>();      // town areas this stage opens (hearth, wren, board, kitchen, smithy, workshop, town…)
+        public List<string> opens = new List<string>();      // town areas this stage opens (kitchen, larder, smithy, workshop, lampmaker…)
         public bool giveStarterFood;                          // the content's starter pantry goes into your pantry
-        public bool giveFirstBoots;                           // every class gets the first boots (tier 1); the dash unlocks from here
+        public bool giveFirstBoots;                           // the first boots (tier 1); the dash unlocks from here (unused in Design v2: buy them)
         public int giveCoins;
     }
 
     [Serializable] public class OpeningArc
     {
-        public bool enabled = true;                           // off = every area open, dash always on (speed rules still apply)
-        public float baseSpeed = 0.75f;                       // × the walk speed, before boots, charms, skill nodes and meals
-        public bool dashNeedsBoots = true;                    // no dash until the stage that gives the first boots (or any class owns boots)
-        public float pitRadius = 0.55f;                       // how close to the pit's centre you have to step to fall in
-        public List<GearSlot> pitCache = new List<GearSlot> { GearSlot.Lantern };   // the cache's equipment (next tier each; Design v2: shared utility gear only)
+        public bool enabled = true;                           // off = every area open, dash always on
+        public bool dashNeedsBoots = true;                    // no dash until you own boots
         public List<ArcStage> stages = Defaults();
 
         public static List<ArcStage> Defaults()
@@ -40,14 +36,10 @@ namespace HearthHollow.Core
             {
                 new ArcStage { name = "Arrival", reachedBy = ArcTrigger.None, opens = new List<string> { "hearth", "wren", "board" },
                     toast = "" },
-                new ArcStage { name = "Fed", reachedBy = ArcTrigger.FirstDeath, opens = new List<string> { "kitchen" }, giveStarterFood = true,
-                    toast = "🍲 Old Wren drags you back to the fire and feeds you. \"Eat first, then go back down.\" The kitchen is open." },
-                new ArcStage { name = "Deeper", reachedBy = ArcTrigger.FirstLadder, opens = new List<string> { "smithy", "workshop" }, giveFirstBoots = true,
-                    toast = "🥾 Some old walking boots by the ladder. Now you can roll (Space / B). The Smithy and Workshop will open at camp." },
-                new ArcStage { name = "The Pit", reachedBy = ArcTrigger.PitFall, opens = new List<string>(),
-                    toast = "🕳️ The floor gives way! You land in a forgotten cache…" },
-                new ArcStage { name = "Hollow", reachedBy = ArcTrigger.HomeAfterPit, opens = new List<string> { "town" }, giveCoins = 50,
-                    toast = "🏘️ With what you found below, the camp starts to grow into a proper little town." },
+                new ArcStage { name = "Fed", reachedBy = ArcTrigger.FirstRunEnd, opens = new List<string> { "kitchen", "larder" }, giveStarterFood = true,
+                    toast = "🍲 Old Wren sits you down by the fire and feeds you. \"Eat first, then go back down.\" The kitchen is open: cook a meal and pack it on your tray." },
+                new ArcStage { name = "Town", reachedBy = ArcTrigger.HomeAfterBoss, opens = new List<string> { "smithy", "workshop", "lampmaker" }, giveCoins = 50,
+                    toast = "🏘️ Word of your win spreads. The camp grows into a little town: the smithy (buy boots to dash), the workshop and an empty plot for a lamp-maker are open." },
             };
         }
     }
@@ -57,11 +49,6 @@ namespace HearthHollow.Core
         public int arcStage;   // the opening arc's stage (OpeningArc.cs): 0 = just arrived
     }
 
-    public partial class RunState
-    {
-        public bool pitTaken;  // opening arc: already fell through the pit this run
-        public bool pitRoom;   // the next floor starts in the pit's cache room
-    }
 
     public static class Arc
     {

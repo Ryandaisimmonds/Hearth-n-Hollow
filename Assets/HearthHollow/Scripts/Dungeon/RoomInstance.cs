@@ -206,13 +206,6 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Opening arc: the floor of a cleared room caves in here.
-        public Interactable AddPit(Vector2 world)
-        {
-            AddProp(InteractKind.Pit, world, true);
-            return _props[_props.Count - 1];
-        }
-
         void AddProp(InteractKind kind, Vector2 world, bool available)
         {
             var go = new GameObject(kind.ToString());
@@ -220,7 +213,7 @@ namespace HearthHollow.Dungeon
             go.transform.position = world;
             var it = go.AddComponent<Interactable>();
             Sprite sp = null;
-            if (_theme != null && kind != InteractKind.Pit)
+            if (_theme != null)
                 sp = kind == InteractKind.Forage ? _theme.forage : kind == InteractKind.Campfire ? _theme.campfire : kind == InteractKind.Ladder ? _theme.ladder : _theme.exitPortal;
             it.Setup(this, kind, sp, available);
             _props.Add(it);

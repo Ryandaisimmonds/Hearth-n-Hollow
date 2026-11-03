@@ -47,6 +47,7 @@ namespace HearthHollow.Core
             ChiliRidge32(c);         // DefaultContentDesignV2.cs: Chili Ridge, revealed by Old Wren
             UtilityGear33(c);        // DefaultContentDesignV2.cs: lantern track, slice trinkets
             LampMaker34(c);          // DefaultContentDesignV2.cs: the Lamp-maker's three stages
+            NormalSpeed35(c);        // DefaultContentDesignV2.cs: boot speeds back to normal
             return c;
         }
 

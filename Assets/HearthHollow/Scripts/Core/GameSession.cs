@@ -509,7 +509,7 @@ namespace HearthHollow.Core
             var joinedBefore = JoinedNow();
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
-            if (outcome == RunOutcome.Died) ArcEvent(ArcTrigger.FirstDeath);   // opening arc: Wren feeds you, the kitchen opens
+            ArcEvent(ArcTrigger.FirstRunEnd);   // opening arc: home from the first dive (fallen or not), Wren feeds you, the kitchen opens
             Phase = Phase.RunEnd;
             Touch(true);
         }
@@ -521,7 +521,7 @@ namespace HearthHollow.Core
             Run = null;
             RollNewCamp();
             Phase = Phase.Hearth;
-            ArcEvent(ArcTrigger.HomeAfterPit);   // opening arc: home after the pit, the camp grows into a town
+            if (Profile.bossesBeaten != null && Profile.bossesBeaten.Count > 0) ArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town
             // Today's camp event is announced by the UI's camp-event pop-up (no toast).
             Touch(true);
         }

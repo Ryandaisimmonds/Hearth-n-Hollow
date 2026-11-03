@@ -4,7 +4,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace HearthHollow.Dungeon
 {
-    public enum InteractKind { Forage, Campfire, Ladder, Exit, Pit }   // Pit: opening arc stage 3 (step on it and you fall a floor)
+    public enum InteractKind { Forage, Campfire, Ladder, Exit }   // (the opening arc's Pit was cut in Design v2, ticket 18)
 
     public class Interactable : MonoBehaviour
     {
@@ -32,11 +32,6 @@ namespace HearthHollow.Dungeon
             // props read better a bit larger than one tile
             _scale = kind == InteractKind.Exit ? 2f : kind == InteractKind.Campfire ? 1.8f : kind == InteractKind.Ladder ? 1.6f : 1.4f;
             transform.localScale = new Vector3(_scale, _scale, 1f);
-            if (kind == InteractKind.Pit)
-            {
-                _sr.sprite = DungeonFx.Circle; _sr.color = new Color(0.02f, 0.015f, 0.03f, 0.92f);   // a dark hole in the floor
-                transform.localScale = new Vector3(2.4f, 1.2f, 1f);   // about a tile and a half across
-            }
             // campfires and exits glow
             if (kind == InteractKind.Campfire || kind == InteractKind.Exit)
             {
@@ -73,7 +68,6 @@ namespace HearthHollow.Dungeon
                 case InteractKind.Forage: return "Forage";
                 case InteractKind.Campfire: return "Rest by the fire";
                 case InteractKind.Ladder: return dc.Session.DungeonHomeChoice ? "Floor " + (dc.Session.Run.floor + 1) + " below — go deeper or head home?" : "Climb down to floor " + (dc.Session.Run.floor + 1);
-                case InteractKind.Pit: return "A hole in the floor… careful";
                 default: return dc.Session.DungeonOnLastFloor ? "Leave — route cleared!" : "Head home with your haul";
             }
         }
@@ -95,10 +89,6 @@ namespace HearthHollow.Dungeon
                     if (_sr != null) _sr.color = new Color(0.7f, 0.6f, 0.55f);
                     _lightBase *= 0.45f;   // embers
                     return true;
-                case InteractKind.Pit:
-                    Used = true;
-                    dc.FallIntoPit(this);
-                    return true;
                 case InteractKind.Ladder:
                     dc.AskLadder(this);   // go deeper or head home (contentVersion 14); descending marks it used
                     return true;
@@ -113,14 +103,6 @@ namespace HearthHollow.Dungeon
         {
             if (_sr == null || !Available) return;
             _t += Time.deltaTime;
-            if (Kind == InteractKind.Pit)
-            {
-                // step on it and you fall: no button needed
-                var dc = DungeonController.Instance;
-                if (!Used && dc != null && dc.GameplayActive && dc.Player != null && dc.Session.Arc != null
-                    && Vector2.Distance(dc.Player.Feet, transform.position) < dc.Session.Arc.pitRadius) Use(dc);
-                return;
-            }
             if (_light != null) _light.intensity = _lightBase * (1f + Mathf.Sin(_t * 11f) * 0.07f + Mathf.Sin(_t * 23f) * 0.05f);
             if (Kind == InteractKind.Campfire && !Used)
             {

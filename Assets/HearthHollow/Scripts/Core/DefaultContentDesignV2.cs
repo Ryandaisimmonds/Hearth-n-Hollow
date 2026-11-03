@@ -18,6 +18,7 @@
 // ticket 15). Fire-leaning monsters, the Ridge Drake on floor 5, chilies (Fire infusion) and mint (Fire guard), ember coal.
 // v33 (ticket 16): utility gear. A lantern track (light reach) joins boots and bag; four slice trinkets that bend rules.
 // v34 (ticket 17): the Lamp-maker, three stages built with Meadow timber and Ridge ember coal (light reach + Flare).
+// v35 (ticket 18): the 75% start speed is gone, so boot speeds go back to what they were before v24 doubled them.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -229,6 +230,13 @@ namespace HearthHollow.Core
             c.lampMaker.Add(new LampStage { level = 3, name = "Lighthouse workshop", price = 160, materials = new List<IngredientCost> { Cost("timber", 12), Cost("ember_coal", 8) },
                 lightReach = 0.35f, flareRadius = 0.35f, flareCooldownCut = 6f,
                 description = "A tall workshop with a lamp on top you can see from the gate. The best light in the valley." });
+        }
+
+        static void NormalSpeed35(GameContent c)
+        {
+            float[] doubled = { 0f, 0.08f, 0.14f, 0.2f, 0.28f };
+            for (int i = 0; i < c.bootsTiers.Count && i < doubled.Length; i++)
+                if (Near(c.bootsTiers[i].value, doubled[i])) c.bootsTiers[i].value = doubled[i] * 0.5f;
         }
 
         static void Elements26(GameContent c)

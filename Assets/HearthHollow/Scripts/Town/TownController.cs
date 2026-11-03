@@ -115,8 +115,29 @@ namespace HearthHollow.Town
         }
 
         // ───────────────────────── interactions ─────────────────────────
+        /// The town area a spot belongs to (opening arc: some open later); null = always open.
+        static string AreaOf(TownAction a)
+        {
+            switch (a)
+            {
+                case TownAction.Cooking: return "kitchen";
+                case TownAction.Larder: return "larder";
+                case TownAction.Upgrades: return "smithy";
+                case TownAction.Workshop: return "workshop";
+                case TownAction.LampMaker: return "lampmaker";
+            }
+            return null;
+        }
+
         void Use(TownSpot s)
         {
+            string area = AreaOf(s.action);
+            if (area != null && !Session.AreaOpen(area))   // opening arc (ticket 18)
+            {
+                _ui.Toast(area == "kitchen" || area == "larder" ? "🔒 Cold and empty for now. Old Wren will get it going once you've been down there."
+                                                                : "🔒 Not open yet. The town grows once you've beaten your first boss.");
+                return;
+            }
             switch (s.action)
             {
                 case TownAction.Cooking: _ui.OpenTownMenu(CampTab.Cooking); break;

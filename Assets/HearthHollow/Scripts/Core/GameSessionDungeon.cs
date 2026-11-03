@@ -276,7 +276,6 @@ namespace HearthHollow.Core
             if (!InDungeon || Run.floor >= Run.floorsTotal) return false;
             Run.floor++;
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
-            ArcEvent(ArcTrigger.FirstLadder);   // opening arc: old boots (the dash) by the ladder
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : !DungeonHomeChoice ? " — no way home on this floor; find the ladder" : ""));
             Touch(false);
             return true;

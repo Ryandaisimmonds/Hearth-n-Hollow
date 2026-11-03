@@ -88,7 +88,6 @@ namespace HearthHollow.Dungeon
             DungeonHud.Reset();
             DungeonHud.Active = true;
             _builtKey = key;
-            _pitShown = false;
 
             var C = Session.Content;
             var T = C.tuning;
@@ -143,7 +142,6 @@ namespace HearthHollow.Dungeon
                 if (_theme != null) _cam.backgroundColor = _theme.background;
             }
             EnterRoom(start, true);
-            if (run.pitRoom) { run.pitRoom = false; BuildPitCache(start); }   // opening arc: you fell into the cache room
             GameLook.ForTheme(_theme);   // this route's colour grade + the tilt-shift
         }
 
@@ -454,40 +452,6 @@ namespace HearthHollow.Dungeon
             if (room.Lights != null) room.Lights.IgniteWave(room.LastKill != Vector2.zero ? room.LastKill : (Vector2)(room.Origin + RoomTemplate.Centre));   // braziers flare on from the last kill
             DungeonFx.RingAt(Player != null ? (Vector3)Player.Body : (Vector3)(room.Origin + RoomTemplate.Centre), new Color(1f, 0.95f, 0.7f, 0.7f), 3f, 0.6f);
             RefreshMap();
-            if (!_pitShown && Session.DungeonPitWanted && room.Node != _plan.start && room == _current) OpenPit(room);   // opening arc: the floor caves in
-        }
-
-        // ───────────────────────── opening arc: the pit ─────────────────────────
-        bool _pitShown;
-
-        /// A cleared room's floor cracks open, away from the player. Step on it and you fall a floor.
-        void OpenPit(RoomInstance room)
-        {
-            Vector2 at = room.RandomFloorPoint(Player != null ? Player.Feet : (Vector2)(room.Origin + RoomTemplate.Centre), 2.5f);
-            room.AddPit(at);
-            _pitShown = true;
-            Shake(0.35f, 0.12f);
-            DungeonFx.Puff(at, new Color(0.45f, 0.4f, 0.36f, 0.8f), 16, 0.7f);
-            DungeonHud.Number(at + new Vector2(0, 0.8f), "The floor cracks…", "dnum--info");
-        }
-
-        public void FallIntoPit(Interactable pit)
-        {
-            if (Player != null) DungeonFx.Puff(Player.Feet, new Color(0.3f, 0.27f, 0.25f, 0.85f), 18, 0.8f);
-            Shake(0.4f, 0.15f);
-            if (!Session.DungeonFallIntoPit()) return;   // the floor below is built on Changed
-        }
-
-        /// The cache room: a lit chest of equipment near where you land.
-        void BuildPitCache(RoomInstance room)
-        {
-            Vector2 at = room.RandomFloorPoint(room.PlayerStart, 2f);
-            var go = new GameObject("Pit cache");
-            go.transform.SetParent(room.transform, false);
-            go.transform.position = at;
-            go.AddComponent<PitCache>().Setup(this, room);
-            FloodLight(0.25f, 3f);
-            if (Player != null) DungeonHud.Number(Player.Body + new Vector2(0, 0.9f), "Ow… where is this?", "dnum--info");
         }
 
         public EnemyController SpawnEnemy(RoomInstance room, string monsterId, bool elite, bool boss, Vector2 at)

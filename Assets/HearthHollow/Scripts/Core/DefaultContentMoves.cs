@@ -57,6 +57,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 32) { ChiliRidge32(c); c.contentVersion = 32; }  // Chili Ridge: 5 floors, Ridge Drake, the chili source, revealed by Wren (DefaultContentDesignV2.cs)
             if (c.contentVersion < 33) { UtilityGear33(c); c.contentVersion = 33; }  // utility gear: lantern track + four slice trinkets (DefaultContentDesignV2.cs)
             if (c.contentVersion < 34) { LampMaker34(c); c.contentVersion = 34; }  // the Lamp-maker: a town building for light and Flare (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 35) { NormalSpeed35(c); c.contentVersion = 35; }  // no slow start: boot speeds un-doubled (DefaultContentDesignV2.cs)
             return true;
         }
 

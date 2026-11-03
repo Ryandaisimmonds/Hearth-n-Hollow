@@ -5059,7 +5059,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 34
+    contentVersion: 35
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -5200,19 +5200,19 @@ MonoBehaviour:
     - tier: 1
       name: Walking Boots
       price: 35
-      value: 0.08
+      value: 0.04
     - tier: 2
       name: Trail Boots
       price: 80
-      value: 0.14
+      value: 0.07
     - tier: 3
       name: Ranger's Boots
       price: 140
-      value: 0.2
+      value: 0.1
     - tier: 4
       name: Windstep Boots
       price: 230
-      value: 0.28
+      value: 0.14
     trinkets:
     - id: clover
       name: Lucky Clover Charm
