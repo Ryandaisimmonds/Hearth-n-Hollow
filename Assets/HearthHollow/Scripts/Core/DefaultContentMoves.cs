@@ -46,6 +46,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 21) { Colours21(c); c.contentVersion = 21; }  // class colour themes + bigger, brighter basic moves (DefaultContentColours.cs)
             if (c.contentVersion < 22) { Colours22(c); c.contentVersion = 22; }  // stronger, more saturated class colours (DefaultContentColours.cs)
             if (c.contentVersion < 23) { UltCooldown23(c); c.contentVersion = 23; }  // ultimates recharge twice as fast (DefaultContentUltimates.cs)
+            if (c.contentVersion < 24) { Speed24(c); c.contentVersion = 24; }  // opening arc: slower start, speed gear doubled (DefaultContentArc.cs)
             return true;
         }
 

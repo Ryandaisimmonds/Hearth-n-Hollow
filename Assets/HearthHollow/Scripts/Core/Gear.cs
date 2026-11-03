@@ -76,6 +76,15 @@ namespace HearthHollow.Core
             reason = null; return true;
         }
 
+        /// Free: the next tier of a track for <paramref name="cls"/> (the opening arc's pit cache). Null if it's maxed.
+        public static GearTier Grant(GameContent c, Profile p, GearSlot slot, ClassId cls)
+        {
+            GearTier next = Next(c, p, slot, cls);
+            if (next == null) return null;
+            Bump(p, slot, cls);
+            return next;
+        }
+
         public static string SlotName(GearSlot s)
         {
             switch (s)

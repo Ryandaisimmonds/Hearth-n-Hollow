@@ -16,6 +16,7 @@ namespace HearthHollow.Town
         Vector2 _move, _aim = Vector2.down;
         Facing _facing = Facing.Down;
         float _dashT, _dashCd, _ghostT, _attackCd;
+        float _speedMult = 1f, _speedAt;   // opening arc start speed × boots, charms and skill nodes (refreshed every second)
         Vector2 _dashDir;
 
         public void Setup(TownController tc, ClassId cls)
@@ -57,7 +58,8 @@ namespace HearthHollow.Town
             else if (_move.sqrMagnitude > 0.01f) _aim = _move.normalized;
             if (_dashT <= 0f) _facing = CharacterAnimator.FacingFrom(_aim, _facing);
 
-            if (DungeonInput.Dash && _dashCd <= 0f) StartDash();
+            if (DungeonInput.Dash && _dashCd <= 0f && _tc.Session.DashUnlocked) StartDash();   // opening arc: no boots, no dash
+            if (Time.unscaledTime > _speedAt) { _speedAt = Time.unscaledTime + 1f; _speedMult = _tc.Session.ArcSpeed * _tc.Session.TownMods.moveSpeed; }
             if ((DungeonInput.Attack || DungeonInput.AttackHeld) && _attackCd <= 0f && _dashT <= 0f) Swing();
 
             if (_dashT > 0f)
@@ -110,7 +112,7 @@ namespace HearthHollow.Town
         {
             if (_rb == null) return;
             var set = _tc != null ? _tc.Settings : null;
-            float speed = set != null ? set.playerSpeed * set.townSpeedMult : 5f;
+            float speed = (set != null ? set.playerSpeed * set.townSpeedMult : 5f) * _speedMult;
             if (_tc == null || !_tc.Walking) { _rb.linearVelocity = Vector2.zero; return; }
             _rb.linearVelocity = _dashT > 0f && set != null ? _dashDir * set.dashSpeed : _move * speed;
         }

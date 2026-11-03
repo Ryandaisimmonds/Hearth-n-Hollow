@@ -64,6 +64,7 @@ namespace HearthHollow.UI
                 dev.Add(row);
                 var row2 = UIKit.E("settings__row");
                 row2.Add(Art.IconButton("xp", "⭐", "+10 levels (current class)", () => S.DevAddLevels(S.Run != null ? S.Run.classId : S.Profile.selectedClass, 10), "btn--primary", "settings__btn"));
+                row2.Add(Art.IconButton("trophy", "👑", "Max everything", () => S.DevMaxEverything(), "btn--primary", "settings__btn"));   // all classes, skills, gear, kitchen + a Prime tray
                 dev.Add(row2);
                 var row3 = UIKit.E("settings__row");
                 row3.Add(Art.IconButton("map", "📖", "Skip story chapter", () => S.DevClearChapter(), "btn--primary", "settings__btn"));
@@ -94,6 +95,16 @@ namespace HearthHollow.UI
                 tw.Add(UIKit.B("🎣 Fish again today", () => S.DevResetFishing(), "btn--secondary", "btn--small", "settings__btn"));
                 tw.Add(UIKit.B("👵 Meet Old Wren again", () => S.DevResetWren(), "btn--secondary", "btn--small", "settings__btn"));
                 dev.Add(tw);
+                // opening arc: jump between tutorial stages (0 arrival … 4 town)
+                var arc = UIKit.E("settings__row");
+                arc.Add(UIKit.L("Opening arc stage:", "small"));
+                for (int st = 0; st <= HearthHollow.Core.Arc.LastStage(S.Arc); st++)
+                {
+                    int stage = st;
+                    string nm = S.Arc.stages[st] != null ? S.Arc.stages[st].name : st.ToString();
+                    arc.Add(UIKit.B(st + " " + nm, () => S.DevSetArcStage(stage), "btn--secondary", "btn--small", "settings__btn"));
+                }
+                dev.Add(arc);
                 var kt = UIKit.E("settings__row");
                 kt.Add(UIKit.B("🔨 Kitchen: max all", () => S.DevKitchen(true), "btn--secondary", "btn--small", "settings__btn"));
                 kt.Add(UIKit.B("🔨 Kitchen: back to level 1", () => S.DevKitchen(false), "btn--secondary", "btn--small", "settings__btn"));

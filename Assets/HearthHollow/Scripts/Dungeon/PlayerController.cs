@@ -164,7 +164,11 @@ namespace HearthHollow.Dungeon
             if (!attacking) TurnToInput();
 
             BoostUpdate(dt);
-            if (DungeonInput.Dash && _dashCd <= 0f && _knockT <= 0f) StartDash();
+            if (DungeonInput.Dash && _dashCd <= 0f && _knockT <= 0f)
+            {
+                if (_dc.Session.DashUnlocked) StartDash();
+                else if (Time.unscaledTime > _noDashHintAt) { _noDashHintAt = Time.unscaledTime + 2.5f; DungeonHud.Number(Body + new Vector2(0, 0.6f), "No boots to roll in yet", "dnum--info"); }
+            }
             if ((DungeonInput.Attack || DungeonInput.AttackHeld) && _attackCd <= 0f && !Dashing) StartAttack();
             if (DungeonInput.Special) TrySkill(_skill1, ref _skill1Cd, "K");
             if (DungeonInput.Special2) TrySkill(_skill2, ref _skill2Cd, "L");
@@ -215,7 +219,7 @@ namespace HearthHollow.Dungeon
             else if (_stepT > 0f) v = _stepVel;
             else
             {
-                float speed = _dc.Settings.playerSpeed * _mods.moveSpeed;
+                float speed = _dc.Settings.playerSpeed * _dc.Session.ArcSpeed * _mods.moveSpeed;   // opening arc: a slower start that gear builds back up
                 if (Time.time < _hasteUntil) speed *= 1.3f;
                 speed *= 1f - _dc.Session.DungeonHazardSlow;   // Frostfang cold
                 speed *= _dc.Session.MutatorSpeed;              // Swift ×2 / Frantic ×3
@@ -441,6 +445,8 @@ namespace HearthHollow.Dungeon
         }
 
         // ───────────────────────── dash (Space) ─────────────────────────
+        float _noDashHintAt;   // opening arc: the dash comes with the first boots
+
         void StartDash()
         {
             var m = _dash;

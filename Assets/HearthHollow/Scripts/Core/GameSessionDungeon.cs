@@ -249,6 +249,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || Run.floor >= Run.floorsTotal) return false;
             Run.floor++;
+            ArcEvent(ArcTrigger.FirstLadder);   // opening arc: old boots (the dash) by the ladder
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (Run.floor == Run.floorsTotal ? " — something big waits below" : ""));
             Touch(false);
             return true;

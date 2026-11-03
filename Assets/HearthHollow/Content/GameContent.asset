@@ -3363,11 +3363,11 @@ MonoBehaviour:
       minLevel: 1
       name: Light Pack
       emoji: "\U0001F392"
-      description: Move 3% faster per rank.
+      description: Move 6% faster per rank.
       effect: 6
       moveId: 
       stat: 0
-      valuePerRank: 0.03
+      valuePerRank: 0.06
       maxRank: 5
       cost: 1
       requires: 
@@ -4038,11 +4038,11 @@ MonoBehaviour:
       minLevel: 20
       name: Drifting Light
       emoji: "\U0001F343"
-      description: Move 3% faster per rank.
+      description: Move 6% faster per rank.
       effect: 6
       moveId: 
       stat: 0
-      valuePerRank: 0.03
+      valuePerRank: 0.06
       maxRank: 5
       cost: 1
       requires: l_flicker
@@ -4338,11 +4338,11 @@ MonoBehaviour:
       minLevel: 15
       name: Light Feet
       emoji: "\U0001F343"
-      description: Move 3% faster per rank.
+      description: Move 6% faster per rank.
       effect: 6
       moveId: 
       stat: 0
-      valuePerRank: 0.03
+      valuePerRank: 0.06
       maxRank: 5
       cost: 1
       requires: e_wraps
@@ -4511,7 +4511,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 23
+    contentVersion: 24
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
@@ -4593,19 +4593,19 @@ MonoBehaviour:
     - tier: 1
       name: Walking Boots
       price: 35
-      value: 0.04
+      value: 0.08
     - tier: 2
       name: Trail Boots
       price: 80
-      value: 0.07
+      value: 0.14
     - tier: 3
       name: Ranger's Boots
       price: 140
-      value: 0.1
+      value: 0.2
     - tier: 4
       name: Windstep Boots
       price: 230
-      value: 0.14
+      value: 0.28
     trinkets:
     - id: clover
       name: Lucky Clover Charm
@@ -4677,7 +4677,7 @@ MonoBehaviour:
       description: Light on your feet.
       buffs: []
       perk: 1
-      perkValue: 0.08
+      perkValue: 0.16
       wardHazard: 0
       price: 120
       inWorkshop: 1
@@ -4829,7 +4829,7 @@ MonoBehaviour:
       - stat: 4
         value: 0.05
       perk: 1
-      perkValue: 0.1
+      perkValue: 0.2
       wardHazard: 0
       price: 0
       inWorkshop: 0

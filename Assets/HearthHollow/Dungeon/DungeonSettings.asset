@@ -187,8 +187,58 @@ MonoBehaviour:
     shields: 3
     weak: 0100000004000000i
   playerSpeed: 5.2
+  townSpeedMult: 1.5
   dashSpeed: 15
   dashSeconds: 0.16
+  arc:
+    enabled: 1
+    baseSpeed: 0.75
+    dashNeedsBoots: 1
+    pitRadius: 0.55
+    pitCache: 000000000100000002000000i
+    stages:
+    - name: Arrival
+      reachedBy: 0
+      toast: 
+      opens:
+      - hearth
+      - wren
+      - board
+      giveStarterFood: 0
+      giveFirstBoots: 0
+      giveCoins: 0
+    - name: Fed
+      reachedBy: 1
+      toast: "\U0001F372 Old Wren drags you back to the fire and feeds you. \"Eat first, then go back down.\" The kitchen is open."
+      opens:
+      - kitchen
+      giveStarterFood: 1
+      giveFirstBoots: 0
+      giveCoins: 0
+    - name: Deeper
+      reachedBy: 2
+      toast: "\U0001F97E Some old walking boots by the ladder. Now you can roll (Space / B). The Smithy and Workshop will open at camp."
+      opens:
+      - smithy
+      - workshop
+      giveStarterFood: 0
+      giveFirstBoots: 1
+      giveCoins: 0
+    - name: The Pit
+      reachedBy: 3
+      toast: "\U0001F573\uFE0F The floor gives way! You land in a forgotten cache\u2026"
+      opens: []
+      giveStarterFood: 0
+      giveFirstBoots: 0
+      giveCoins: 0
+    - name: Hollow
+      reachedBy: 4
+      toast: "\U0001F3D8\uFE0F With what you found below, the camp starts to grow into a proper little town."
+      opens:
+      - town
+      giveStarterFood: 0
+      giveFirstBoots: 0
+      giveCoins: 50
   characterPixelsPerUnit: 32
   cameraSize: 8
   townCameraSize: 8.4
@@ -198,6 +248,7 @@ MonoBehaviour:
   lightUpSeconds: 1.4
   carriedLight: 1.7
   carriedLightRadius: 12
+  carriedLightClassTint: 0.25
   carriedLightFalloff: 0.55
   wallGlow: 1
   wallGlowReach: 1.5
@@ -245,6 +296,8 @@ MonoBehaviour:
   meleeAimAssist: 40
   rangedAimAssist: 30
   comboWindow: 0.6
+  ultChargePerHit: 0.5
+  mouseAimAssist: 0.35
   heatPerHit: 6
   heatHold: 1.2
   heatDecay: 30

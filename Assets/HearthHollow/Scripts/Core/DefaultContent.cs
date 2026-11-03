@@ -36,6 +36,7 @@ namespace HearthHollow.Core
             c.starterPantry.Add(Cost("wheat", 4));
             c.starterPantry.Add(Cost("berries", 3));
             c.starterPantry.Add(Cost("mushroom", 3));
+            Speed24(c);              // DefaultContentArc.cs: speed gear doubled for the slower start
             return c;
         }
 

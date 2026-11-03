@@ -498,6 +498,7 @@ namespace HearthHollow.Core
             var joinedBefore = JoinedNow();
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
+            if (outcome == RunOutcome.Died) ArcEvent(ArcTrigger.FirstDeath);   // opening arc: Wren feeds you, the kitchen opens
             if (LastSummary != null && LastSummary.levelAfter > levelBefore)
                 Emit(new GameEvent(GameEventType.LevelUp, LastSummary.levelAfter, true, "Level " + LastSummary.levelAfter + "!"));
             Phase = Phase.RunEnd;
@@ -511,6 +512,7 @@ namespace HearthHollow.Core
             Run = null;
             RollNewCamp();
             Phase = Phase.Hearth;
+            ArcEvent(ArcTrigger.HomeAfterPit);   // opening arc: home after the pit, the camp grows into a town
             // Today's camp event is announced by the UI's camp-event pop-up (no toast).
             Touch(true);
         }

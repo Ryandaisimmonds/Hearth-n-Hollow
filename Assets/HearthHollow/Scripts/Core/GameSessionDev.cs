@@ -133,5 +133,63 @@ namespace HearthHollow.Core
             Info("Dev: coins set to " + Profile.coins + ".");
             Touch(true);
         }
+
+        /// Dev: max everything — every class joins, reaches the level cap and fills its skill tree as far as its points go,
+        /// every gear track and the bag at their top tier, all trinkets owned, the kitchen maxed, and a tray of the
+        /// best Prime meals (the top dish of each station). Camp only.
+        public void DevMaxEverything()
+        {
+            if (Phase != Phase.Hearth) { Info("Dev: max everything at camp"); return; }
+
+            // every class joins your camp (their join route counts as cleared)
+            foreach (var cd in Content.classes)
+                if (!string.IsNullOrEmpty(cd.joinRoute) && !Profile.clearedRouteIds.Contains(cd.joinRoute)) Profile.clearedRouteIds.Add(cd.joinRoute);
+
+            GearSlot[] tracks = { GearSlot.Weapon, GearSlot.Body, GearSlot.Head, GearSlot.Boots };
+            foreach (var cd in Content.classes)
+            {
+                var cp = Profile.Progress(cd.id);
+                cp.level = T.levelCap; cp.xp = 0;
+                // skill tree: buy every rank the points allow, top rows first so later nodes unlock
+                var nodes = Content.skillNodes.FindAll(n => n.classId == cd.id);
+                nodes.Sort((x, y) => x.row != y.row ? x.row.CompareTo(y.row) : x.branch.CompareTo(y.branch));
+                for (bool bought = true; bought;)
+                {
+                    bought = false;
+                    foreach (var n in nodes) if (Progression.Buy(Content, Profile, cd.id, n.id)) bought = true;
+                }
+                Progression.EnsureLoadout(Content, Profile, cd.id);
+                // gear: every track to its top tier
+                foreach (var slot in tracks) while (Gear.Grant(Content, Profile, slot, cd.id) != null) { }
+            }
+            if (Content.bagTiers != null && Content.bagTiers.Count > 0) Profile.bagTier = Content.bagTiers.Count - 1;
+            foreach (var t in Content.trinkets) Gear.Give(Content, Profile, t.id);
+
+            // kitchen: every station and the pantry at the top level
+            if (Profile.stationTier == null) Profile.stationTier = new System.Collections.Generic.List<int>();
+            int stations = System.Enum.GetValues(typeof(Station)).Length;
+            while (Profile.stationTier.Count < stations) Profile.stationTier.Add(0);
+            for (int i = 0; i < stations; i++) Profile.stationTier[i] = Kitchen.MaxLevel(Content) - 1;
+            Profile.pantryTier = Content.pantryTiers != null ? System.Math.Max(0, Content.pantryTiers.Count - 1) : 0;
+
+            // the tray: the top dish of each station, Prime (anything already packed goes back to the meal pantry)
+            foreach (var m in Profile.packed) Profile.mealPantry.Add(m);
+            Profile.packed.Clear();
+            var best = new System.Collections.Generic.List<RecipeData>();
+            foreach (Station st in System.Enum.GetValues(typeof(Station)))
+            {
+                RecipeData top = null;
+                foreach (var r in Content.recipes) if (!r.always && r.station == st && (top == null || r.stationLevel > top.stationLevel)) top = r;
+                if (top != null) best.Add(top);
+            }
+            for (int i = 0; i < Content.tuning.traySize && best.Count > 0; i++)
+                Profile.packed.Add(new CookedMeal { recipeId = best[i % best.Count].id, grade = Cooking.Grades - 1 });
+            Cooking.SyncTray(Profile);
+
+            EnsureJoinedSelection();
+            Info("Dev: everything maxed — all classes, skills, gear, trinkets, kitchen, and a tray of Prime " +
+                 string.Join(", ", best.ConvertAll(r => r.name).ToArray()));
+            Touch(true);
+        }
     }
 }

@@ -74,6 +74,10 @@ namespace HearthHollow.Dungeon
         [Tooltip("Walking speed in town, as a multiple of playerSpeed (the town's big: get about quicker).")] public float townSpeedMult = 1.5f;
         public float dashSpeed = 15f;
         public float dashSeconds = 0.16f;
+
+        [Header("Opening arc (tutorial stages, start speed, dash lock, the pit)")]
+        [Tooltip("Stages from a dead campfire to a small town. baseSpeed scales playerSpeed for everyone before boots, charms, skill nodes and meals.")]
+        public OpeningArc arc = new OpeningArc();
         [Tooltip("Character art: source pixels per world unit (tiles are 32 px).")] public float characterPixelsPerUnit = 32f;
         [Tooltip("Dungeon camera half-height in tiles. 6 = a room fills the screen (Moonlighter-style).")] public float cameraSize = 6f;
         [Tooltip("Town camera half-height in tiles.")] public float townCameraSize = 8.4f;

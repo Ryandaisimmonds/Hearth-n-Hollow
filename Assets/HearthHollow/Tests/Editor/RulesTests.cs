@@ -135,6 +135,26 @@ namespace HearthHollow.Tests
         }
 
         [Test]
+        public void DevMaxEverything_MaxesClassesGearKitchenAndTray()
+        {
+            var s = new GameSession(_c, null, 1);
+            s.DevMaxEverything();
+            foreach (var cd in _c.classes)
+            {
+                Assert.IsTrue(s.ClassJoined(cd.id), cd.id + " hasn't joined");
+                var cp = s.Profile.Progress(cd.id);
+                Assert.AreEqual(_c.tuning.levelCap, cp.level);
+                Assert.LessOrEqual(s.SkillPointsFree(cd.id), 1, cd.id + " still has points to spend");
+                foreach (var slot in new[] { GearSlot.Weapon, GearSlot.Body, GearSlot.Head, GearSlot.Boots })
+                    Assert.IsNull(Gear.Next(_c, s.Profile, slot, cd.id), cd.id + " " + slot + " isn't maxed");
+            }
+            Assert.AreEqual(_c.tuning.traySize, s.Profile.packed.Count);
+            foreach (var m in s.Profile.packed) Assert.AreEqual(Cooking.Grades - 1, m.grade, "tray meals should be Prime");
+            Assert.AreEqual(s.Profile.packed.Count, s.Profile.tray.Count);
+            Assert.AreEqual(_c.trinkets.Count, s.Profile.trinkets.Count);
+        }
+
+        [Test]
         public void ChangingClass_AsksForASave()
         {
             var s = new GameSession(_c, null, 1);

@@ -39,6 +39,7 @@ namespace HearthHollow.Runtime
             int seed = (int)(DateTime.Now.Ticks & 0x7FFFFFFF);
 
             Session = new GameSession(gc, profile, seed);
+            if (dungeon != null) Session.Arc = dungeon.arc;   // the opening arc's stages and speeds live in the Dungeon Settings
             Session.ProfileSaveRequested += SaveNow;
             if (firstLaunch) SaveNow();
 
