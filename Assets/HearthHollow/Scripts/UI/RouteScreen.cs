@@ -348,7 +348,6 @@ namespace HearthHollow.UI
                 float mit = Routes.Mitigation(C, S.Profile, eaten, r.hazard);
                 string state = mit >= 0.999f ? "Fully protected." :
                                mit > 0f ? "Partly protected: " + UIKit.Pct(mit) + " less. Pack another guard to stop it." :
-                               r.hazard == Hazard.Darkness ? "No glowcap guard packed: you'll only see a few steps around you." :
                                "No guard packed: it'll wear you down (it can't take you below 1 HP, but monsters can).";
                 hz.Add(UIKit.L(state, "small", mit >= 0.999f ? "expedition__ok" : "expedition__warn"));
                 var names = new List<string>();

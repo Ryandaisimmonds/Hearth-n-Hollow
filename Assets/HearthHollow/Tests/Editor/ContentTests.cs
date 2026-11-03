@@ -106,6 +106,18 @@ namespace HearthHollow.Tests
         }
 
         [Test]
+        public void DesignV2_CutSystemsAreGoneFromContent()
+        {
+            foreach (var r in _c.routes) Assert.AreNotEqual(Hazard.Darkness, r.hazard, r.id + " still has the Darkness hazard");
+            foreach (var m in _c.moves)
+            {
+                StringAssert.DoesNotContain("Boost:", m.description, m.id);
+                StringAssert.DoesNotContain("shield pip", m.description, m.id);
+                StringAssert.DoesNotContain("Heat", m.description, m.id);
+            }
+        }
+
+        [Test]
         public void ContentAsset_IsUpToDate()
         {
             var guids = AssetDatabase.FindAssets("t:GameContentAsset");

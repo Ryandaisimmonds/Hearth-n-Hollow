@@ -17,7 +17,7 @@ namespace HearthHollow.Core
     public enum MonsterBehaviour { None, DoubleHit, Heal, WindUp }
     public enum RouteKind { Trail, Hunt }
     /// A dungeon-wide hazard. Poison/Cold/Heat drain HP (never below 1); Cold also slows you, Heat bites harder while you
-    /// stand still, Darkness shrinks what you can see. Meals that counter it soften or stop it.
+    /// stand still. Meals that counter it soften or stop it. Darkness is no longer used (Design v2: deeper floors are just darker).
     public enum Hazard { None, Poison, Cold, Heat, Darkness }
 
     /// A fun dungeon-wide rule (no meal needed). Several can stack on one route.
@@ -343,8 +343,6 @@ namespace HearthHollow.Core
         public float hazardMitigationPerMeal = 0.5f;          // each counter meal eaten cuts it by this much (2 = immune)
         public float coldSlow = 0.25f;                        // Cold: move this much slower (also softened by meals)
         public float heatStillMult = 2f;                      // Heat: bites this much harder while you stand still
-        public float darkLight = 0.07f;                       // Darkness: world light with no counter meal (× the theme's)
-        public float darkRadiusMin = 2.6f, darkRadiusMax = 7.5f;   // Darkness: your light's reach, no meals → fully protected
         // ── mutators (fun dungeon rules) ──
         public float swiftSpeed = 2f, franticSpeed = 3f;      // everyone walks this much faster
         public float bigBangDamage = 2f, bigBangRadius = 1.25f;   // area hits (swings, cleaves, zones) hit harder and wider

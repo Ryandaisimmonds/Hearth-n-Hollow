@@ -45,8 +45,6 @@ namespace HearthHollow.Dungeon
         float _doorLockUntil;
         Light2D _playerLight;
         float _lightBaseR;
-        /// The Emberfist's Heat (0..1): her carried light grows from a candle to a bonfire.
-        public float HeatGlow;
 
         public static int SortOrder(float y) { return 10000 - Mathf.RoundToInt(y * 10f); }
 
@@ -190,9 +188,6 @@ namespace HearthHollow.Dungeon
             light.lightType = Light2D.LightType.Global;
             light.color = _theme.lightColor;
             light.intensity = _theme.lightIntensity * Settings.roomLight;   // dark rooms: light comes from you, your moves and the fire
-            // Darkness hazard: the world goes nearly black; glowcap dishes bring the light back
-            if (Session.DungeonHazard == Hazard.Darkness)
-                light.intensity *= Mathf.Lerp(Session.Content.tuning.darkLight, 1f, Session.DungeonLight);
             // darker the deeper you go (step 5): floor 1 as set, floor 2 dusky, floor 3 properly dark; caves start darker
             int floorNo = Session.Run != null ? Mathf.Max(1, Session.Run.floor) : 1;
             var fl = Settings.floorLight;
@@ -252,14 +247,6 @@ namespace HearthHollow.Dungeon
             wl.pointLightInnerRadius = 0.5f;
             wl.falloffIntensity = Settings.wallGlowFalloff;
             ApplyToLayers(wl, "Walls");
-            if (Session.DungeonHazard == Hazard.Darkness)
-            {
-                // you only see as far as your light reaches; glowcap dishes widen it
-                var t = Session.Content.tuning;
-                _playerLight.intensity = Mathf.Max(_theme.playerLight, 1.15f);
-                _playerLight.pointLightOuterRadius = Mathf.Lerp(t.darkRadiusMin, t.darkRadiusMax, Session.DungeonLight);
-                _playerLight.pointLightInnerRadius = _playerLight.pointLightOuterRadius * 0.35f;
-            }
             ApplyToAllLayers(_playerLight);
             _lightBaseI = _playerLight.intensity;   // the flicker in Update works round this
             _lightBaseR = _playerLight.pointLightOuterRadius;
@@ -578,8 +565,7 @@ namespace HearthHollow.Dungeon
             {
                 float amp = 0.08f / (1f + _mealSteady);
                 float tt = Time.time;
-                _playerLight.intensity = _lightBaseI * (1f + amp * (Mathf.Sin(tt * 7.3f) * 0.6f + Mathf.Sin(tt * 17.1f) * 0.4f)) * (1f + HeatGlow * Settings.heatLightBright);
-                if (_lightBaseR > 0f) _playerLight.pointLightOuterRadius = _lightBaseR * (1f + HeatGlow * Settings.heatLightReach);
+                _playerLight.intensity = _lightBaseI * (1f + amp * (Mathf.Sin(tt * 7.3f) * 0.6f + Mathf.Sin(tt * 17.1f) * 0.4f));
             }
             if (GameplayActive)
             {

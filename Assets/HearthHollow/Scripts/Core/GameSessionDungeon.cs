@@ -88,8 +88,6 @@ namespace HearthHollow.Core
         /// Cold: fraction of move speed lost right now (0 elsewhere).
         public float DungeonHazardSlow { get { return DungeonHazard == Hazard.Cold ? T.coldSlow * (1f - DungeonHazardMitigation) : 0f; } }
 
-        /// Darkness: 0 = pitch black (no counter meal) … 1 = you can see fine. Always 1 elsewhere.
-        public float DungeonLight { get { return DungeonHazard == Hazard.Darkness ? DungeonHazardMitigation : 1f; } }
 
         /// One hazard bite (call every TuningData.hazardTickSeconds). Never drops HP below 1. Returns HP lost.
         /// <paramref name="standingStill"/>: Heat bites harder (heatStillMult) when the player isn't moving.

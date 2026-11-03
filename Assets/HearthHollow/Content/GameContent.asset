@@ -104,9 +104,6 @@ MonoBehaviour:
       hazardMitigationPerMeal: 0.5
       coldSlow: 0.25
       heatStillMult: 2
-      darkLight: 0.07
-      darkRadiusMin: 2.6
-      darkRadiusMax: 7.5
       swiftSpeed: 2
       franticSpeed: 3
       bigBangDamage: 2
@@ -265,7 +262,7 @@ MonoBehaviour:
       name: Emberfist
       emoji: "\U0001F44A"
       role: Brawler
-      description: 'A wandering monk who fights with burning fists. Every hit stokes her Heat, and her light grows from a candle to a bonfire. Grilled food fuels her: BBQ meals are 50% stronger.'
+      description: 'A wandering monk who fights with burning fists. Grilled food fuels her: BBQ meals are 50% stronger.'
       baseMaxHp: 14
       damageMult: 1.05
       gatherZoneMult: 1
@@ -1331,7 +1328,7 @@ MonoBehaviour:
       rewardKeyItem: 
       classLocked: 0
       requiredClass: 0
-      hazard: 4
+      hazard: 0
       hazardPct: 0
       mutators: 
       storyIntro: With the Everflame Recipe in your pack, you step into the Hollow Heart. The fog is so thick you can barely see your own hands; glowcap dishes from the Glowcap Grotto will light your way. Somewhere in the dark, the great drake that feeds on the fog wakes.
@@ -1458,7 +1455,7 @@ MonoBehaviour:
       rewardKeyItem: 
       classLocked: 0
       requiredClass: 0
-      hazard: 4
+      hazard: 0
       hazardPct: 0
       mutators: 
       storyIntro: 'The Grotto is utterly dark. Glowcaps grow here and nowhere else: cook them and your eyes will glow for a day. You''ll need that light in the Hollow Heart.'
@@ -1738,7 +1735,7 @@ MonoBehaviour:
     - id: w_sweep
       name: Blazing Combo
       emoji: "\U0001F525"
-      description: 'Two wide flaming sword arcs, then a Lantern Bash (Blunt) that stuns. Boost: +1 bash per level.'
+      description: Two wide flaming sword arcs, then a Lantern Bash (Blunt) that stuns.
       owner: 0
       anyClass: 0
       slot: 0
@@ -1813,7 +1810,7 @@ MonoBehaviour:
     - id: w_cleave
       name: Flame Cleave
       emoji: "\U0001F525"
-      description: "Spin your blade in a ring of fire: \xD71.75 damage to everything around you (a Fire hit). Boost: a bigger ring."
+      description: "Spin your blade in a ring of fire: \xD71.75 damage to everything around you (a Fire hit)."
       owner: 0
       anyClass: 0
       slot: 1
@@ -1838,7 +1835,7 @@ MonoBehaviour:
     - id: w_slam
       name: Dawnbreaker
       emoji: "\U0001F305"
-      description: 'Leap ahead (onto the nearest enemy) and slam down: a ring of Light that hits and stuns everything around you. Boost: a bigger ring and a second shockwave.'
+      description: 'Leap ahead (onto the nearest enemy) and slam down: a ring of Light that hits and stuns everything around you.'
       owner: 0
       anyClass: 0
       slot: 1
@@ -1888,7 +1885,7 @@ MonoBehaviour:
     - id: w_shieldwall
       name: Sunshield
       emoji: "\u2600\uFE0F"
-      description: 'Raise your lantern-shield for 2 s: take 70% less damage, bounce shots back, and throw a cone of light that lights every enemy in it (a Light hit). Boost: lasts longer and burns brighter.'
+      description: 'Raise your lantern-shield for 2 s: take 70% less damage, bounce shots back, and throw a cone of light that lights every enemy in it (a Light hit).'
       owner: 0
       anyClass: 0
       slot: 1
@@ -1963,7 +1960,7 @@ MonoBehaviour:
     - id: r_shot
       name: Triple Shot
       emoji: "\U0001F3F9"
-      description: 'Three arrows in a fan, each carrying its own light. Boost: +2 arrows per level.'
+      description: Three arrows in a fan, each carrying its own light.
       owner: 1
       anyClass: 0
       slot: 0
@@ -1988,7 +1985,7 @@ MonoBehaviour:
     - id: r_spread
       name: Spread Shot
       emoji: "\U0001F390"
-      description: 'Five arrows in a wide fan. Weaker each, hard to dodge. Boost: +2 arrows per level.'
+      description: Five arrows in a wide fan. Weaker each, hard to dodge.
       owner: 1
       anyClass: 0
       slot: 0
@@ -2038,7 +2035,7 @@ MonoBehaviour:
     - id: r_volley
       name: Ember Arrow
       emoji: "\U0001F525"
-      description: 'A fire arrow that sticks where it lands and burns like a torch for 8 s: lights braziers and burns anything standing there (Fire). Boost: splits into more arrows.'
+      description: 'A fire arrow that sticks where it lands and burns like a torch for 8 s: lights braziers and burns anything standing there (Fire).'
       owner: 1
       anyClass: 0
       slot: 1
@@ -2063,7 +2060,7 @@ MonoBehaviour:
     - id: r_trap
       name: Flare Arrow
       emoji: "\u2728"
-      description: 'An arrow that bursts into a ball of light: hits everything nearby (Light), stuns shadow creatures, and shows secrets and weaknesses. Boost: a bigger burst.'
+      description: 'An arrow that bursts into a ball of light: hits everything nearby (Light), stuns shadow creatures, and shows secrets and weaknesses.'
       owner: 1
       anyClass: 0
       slot: 1
@@ -2113,7 +2110,7 @@ MonoBehaviour:
     - id: r_rain
       name: Arrow Storm
       emoji: "\U0001F327\uFE0F"
-      description: 'A storm of arrows over a wide area ahead for 2 seconds, lighting it up. Boost: a bigger storm.'
+      description: A storm of arrows over a wide area ahead for 2 seconds, lighting it up.
       owner: 1
       anyClass: 0
       slot: 1
@@ -2188,7 +2185,7 @@ MonoBehaviour:
     - id: c_ladle
       name: Pan & Ladle
       emoji: "\U0001F373"
-      description: 'A ladle bonk, then a flaming pan (Fire) that stuns. Boost: +1 flaming pan per level.'
+      description: A ladle bonk, then a flaming pan (Fire) that stuns.
       owner: 2
       anyClass: 0
       slot: 0
@@ -2263,7 +2260,7 @@ MonoBehaviour:
     - id: c_snack
       name: Skewer Toss
       emoji: "\U0001F362"
-      description: 'Throw 3 flaming skewers in a fan (Pierce). Boost: +2 skewers per level.'
+      description: Throw 3 flaming skewers in a fan (Pierce).
       owner: 2
       anyClass: 0
       slot: 1
@@ -2288,7 +2285,7 @@ MonoBehaviour:
     - id: c_pepper
       name: "Flamb\xE9"
       emoji: "\U0001F525"
-      description: 'Blast a wide cone of flame (Fire): hurts and slows enemies by half for 3 s, with a huge burst of light. Boost: leaves the ground burning.'
+      description: 'Blast a wide cone of flame (Fire): hurts and slows enemies by half for 3 s, with a huge burst of light.'
       owner: 2
       anyClass: 0
       slot: 1
@@ -2313,7 +2310,7 @@ MonoBehaviour:
     - id: c_hotpot
       name: Hot Pot
       emoji: "\U0001F372"
-      description: 'Lob a pot ahead. It leaves a glowing, scalding pool for 4 seconds (Fire). Boost: a bigger pool.'
+      description: Lob a pot ahead. It leaves a glowing, scalding pool for 4 seconds (Fire).
       owner: 2
       anyClass: 0
       slot: 1
@@ -2338,7 +2335,7 @@ MonoBehaviour:
     - id: c_picnic
       name: Cookfire
       emoji: "\U0001F525"
-      description: 'Drop a cookfire for 8 s: heals 2 every half second while you stand in its light. Light-shy monsters keep away and it lights braziers. Boost: bigger, and heals more.'
+      description: 'Drop a cookfire for 8 s: heals 2 every half second while you stand in its light. Light-shy monsters keep away and it lights braziers.'
       owner: 2
       anyClass: 0
       slot: 1
@@ -2413,7 +2410,7 @@ MonoBehaviour:
     - id: l_wisp
       name: Wisp Bolts
       emoji: "\u2728"
-      description: 'Two homing motes of light that seek the nearest enemy. Boost: +2 wisps per level.'
+      description: Two homing motes of light that seek the nearest enemy.
       owner: 3
       anyClass: 0
       slot: 0
@@ -2438,7 +2435,7 @@ MonoBehaviour:
     - id: l_lantern
       name: Lantern
       emoji: "\U0001F3EE"
-      description: 'Hang a floating lantern for 10 s: a strong light that looses a homing wisp at the nearest enemy every second. Boost: +1 lantern per level.'
+      description: 'Hang a floating lantern for 10 s: a strong light that looses a homing wisp at the nearest enemy every second.'
       owner: 3
       anyClass: 0
       slot: 1
@@ -2463,7 +2460,7 @@ MonoBehaviour:
     - id: l_sunbeam
       name: Sunbeam
       emoji: "\u2600\uFE0F"
-      description: 'Channel a beam of sunlight for 1.5 s and steer it as you move: it hits everything in its line again and again (Light). Boost: longer and wider.'
+      description: 'Channel a beam of sunlight for 1.5 s and steer it as you move: it hits everything in its line again and again (Light).'
       owner: 3
       anyClass: 0
       slot: 1
@@ -2488,7 +2485,7 @@ MonoBehaviour:
     - id: l_prism
       name: Prism
       emoji: "\U0001F52E"
-      description: 'A crystal bolt that splits on impact: it strikes its target with every one of its weaknesses at once (great for Breaking) and showers the enemies nearby. Boost: knocks off more shield.'
+      description: 'A crystal bolt that splits on impact: it strikes its target with every one of its weaknesses at once (great for Breaking) and showers the enemies nearby.'
       owner: 3
       anyClass: 0
       slot: 1
@@ -2563,7 +2560,7 @@ MonoBehaviour:
     - id: e_fists
       name: Ember Fists
       emoji: "\U0001F44A"
-      description: 'A fast four-punch chain; the last punch bursts into flame (Fire). Every hit stokes your Heat. Boost: +1 fire burst per level.'
+      description: A fast four-punch chain; the last punch bursts into flame (Fire).
       owner: 4
       anyClass: 0
       slot: 0
@@ -2588,7 +2585,7 @@ MonoBehaviour:
     - id: e_phoenix
       name: Rising Phoenix
       emoji: "\U0001F985"
-      description: 'Rush forward through everything in your way and finish with a flaming uppercut that stuns, leaving fire behind (Fire). Boost: rush further.'
+      description: Rush forward through everything in your way and finish with a flaming uppercut that stuns, leaving fire behind (Fire).
       owner: 4
       anyClass: 0
       slot: 1
@@ -2613,7 +2610,7 @@ MonoBehaviour:
     - id: e_wheel
       name: Flame Wheel
       emoji: "\U0001F300"
-      description: 'A spinning kick that hits everything around you twice (Slash). Boost: a bigger wheel.'
+      description: A spinning kick that hits everything around you twice (Slash).
       owner: 4
       anyClass: 0
       slot: 1
@@ -2638,7 +2635,7 @@ MonoBehaviour:
     - id: e_detonate
       name: Detonate
       emoji: "\U0001F4A5"
-      description: 'Spend all your Heat in one explosion of fire: the more Heat, the bigger and harder it hits (Fire). Needs at least 20 Heat.'
+      description: One big explosion of fire around you (Fire).
       owner: 4
       anyClass: 0
       slot: 1
@@ -2663,7 +2660,7 @@ MonoBehaviour:
     - id: e_counter
       name: Cinder Step
       emoji: "\U0001F525"
-      description: 'Take a fighting stance for a moment: if anything hits you, you take no damage and strike back in a burst of fire (+20 Heat). Boost: a longer stance.'
+      description: 'Take a fighting stance for a moment: if anything hits you, you take no damage and strike back in a burst of fire.'
       owner: 4
       anyClass: 0
       slot: 1
@@ -2713,7 +2710,7 @@ MonoBehaviour:
     - id: l_lance
       name: Light Lance
       emoji: "\U0001F506"
-      description: 'A fast bolt of light that pierces every enemy in a line. Boost: +1 lance per level.'
+      description: A fast bolt of light that pierces every enemy in a line.
       owner: 3
       anyClass: 0
       slot: 0
@@ -2738,7 +2735,7 @@ MonoBehaviour:
     - id: l_swarm
       name: Ember Swarm
       emoji: "\U0001F525"
-      description: 'Loose four little homing embers (Fire): weak alone, deadly together. Boost: +2 embers per level.'
+      description: 'Loose four little homing embers (Fire): weak alone, deadly together.'
       owner: 3
       anyClass: 0
       slot: 0
@@ -2763,7 +2760,7 @@ MonoBehaviour:
     - id: e_kick
       name: Ember Kick
       emoji: "\U0001F9B6"
-      description: 'A long, sweeping kick that hits everything in a line (Slash). Boost: a wider kick.'
+      description: A long, sweeping kick that hits everything in a line (Slash).
       owner: 4
       anyClass: 0
       slot: 0
@@ -2788,7 +2785,7 @@ MonoBehaviour:
     - id: e_palm
       name: Burning Palm
       emoji: "\U0001F590\uFE0F"
-      description: 'A slow, crushing palm strike that stuns (Blunt). Boost: a bigger blast.'
+      description: A slow, crushing palm strike that stuns (Blunt).
       owner: 4
       anyClass: 0
       slot: 0
@@ -2888,7 +2885,7 @@ MonoBehaviour:
     - id: l_ult
       name: Dawn
       emoji: "\U0001F305"
-      description: 'Raise your lamp and call up the dawn: every brazier lights, the room floods with light, and every enemy in it takes a Light hit that knocks off 3 shield pips and stuns it.'
+      description: 'Raise your lamp and call up the dawn: every brazier lights, the room floods with light, and every enemy in it takes a Light hit and stuns it.'
       owner: 3
       anyClass: 0
       slot: 3
@@ -2913,7 +2910,7 @@ MonoBehaviour:
     - id: e_ult
       name: Supernova
       emoji: "\U0001F4A5"
-      description: 'Pull in every ember: your Heat fills, then a huge explosion of fire around you (Fire) that stuns, and your Heat stays full for 6 s.'
+      description: Pull in every ember, then a huge explosion of fire around you (Fire) that stuns.
       owner: 4
       anyClass: 0
       slot: 3
@@ -4511,7 +4508,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 24
+    contentVersion: 25
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

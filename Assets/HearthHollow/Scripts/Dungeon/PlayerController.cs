@@ -34,7 +34,6 @@ namespace HearthHollow.Dungeon
         // skills
         float _skill1Cd, _skill2Cd, _ultCd;
         int _ghostN;   // dash trail counter (alternates colours / lights)
-        float _heatLockUntil;   // Supernova keeps Heat full until then
         // buffs
         float _guardUntil, _guardMult = 1f;
         float _furyUntil, _furyBonus;
@@ -60,12 +59,10 @@ namespace HearthHollow.Dungeon
         // Lamplighter: Sunbeam
         MoveData _beamMove; float _beamUntil, _beamTick, _beamMult, _beamK; HitType _beamType; int _beamPips;
         SpriteRenderer _beamSr; UnityEngine.Rendering.Universal.Light2D[] _beamLights;
-        // Emberfist: Heat, Rising Phoenix, Cinder Step
-        float _heat, _heatIdle, _heatEmberT;
+        // Emberfist: Rising Phoenix, Cinder Step
         MoveData _phoenixMove; float _phoenixT, _phoenixMult; int _phoenixLvl, _phoenixPips; HitType _phoenixType;
         readonly HashSet<EnemyController> _phoenixHit = new HashSet<EnemyController>();
         MoveData _counterMove; float _counterUntil, _counterMult;
-        public float Heat { get { return _heat; } }
         Vector2 _sweepFrom;   // where a fast move's body was last frame (so a low frame rate can't skip past enemies)
         bool _dashTail;       // one last sweep on the frame a dash ends (a short dash can finish between two frames)
 
@@ -184,7 +181,6 @@ namespace HearthHollow.Dungeon
             SunUpdate();
             BeamUpdate(dt);
             if (!Alive) return;
-            HeatUpdate(dt);
             PhoenixUpdate(dt);
             if (!Alive) return;
             if (!Alive) return;
@@ -260,12 +256,11 @@ namespace HearthHollow.Dungeon
             if (hazard != null) buff = (buff != null ? buff + "  " : "") + hazard;
             string muts = _dc != null ? _dc.Session.DungeonMutatorText : null;   // 💨 Swift  💥 Big Bangs
             if (muts != null) buff = (buff != null ? buff + "  " : "") + muts;
-            if (_class == ClassId.Emberfist) buff = "🔥 Heat " + Mathf.RoundToInt(_heat) + (buff != null ? "  " + buff : "");
             DungeonHud.BuffText = buff;
         }
 
         // ───────────────────────── numbers ─────────────────────────
-        float DamageBuff { get { return 1f + (_furyUntil > Time.time ? _furyBonus : 0f) + Heat01 * _dc.Settings.heatDamage; } }
+        float DamageBuff { get { return 1f + (_furyUntil > Time.time ? _furyBonus : 0f); } }
         float AttackMult(MoveData m) { return (m != null ? m.power : 1f) * _mods.attackPower * DamageBuff; }
         float SkillMult(MoveData m) { return (m != null ? m.power : 1f) * _mods.skillPower * DamageBuff; }
         float SkillCooldown(MoveData m) { return m == null ? 1f : Mathf.Max(0.5f, m.cooldown * _mods.skillCooldown); }
@@ -321,7 +316,6 @@ namespace HearthHollow.Dungeon
             float dmg = S.DungeonRollDamage(mult, out crit);
             e.TakeHit(dmg, crit, knockDir, knock);
             if (e != null && !e.Dead) e.TypedHit(type, pips);
-            AddHeat(_dc.Settings.heatPerHit);   // Emberfist: every hit stokes her Heat
         }
 
         Projectile Arrow(float mult, Vector2 dir, float speed, bool pierce, float scale = 1.4f)
@@ -724,7 +718,6 @@ namespace HearthHollow.Dungeon
                 case MoveKind.Supernova:
                 {
                     _anim.PlayAttack(0.5f);
-                    _heat = 100f; _heatIdle = 0f;
                     Color col = MoveColour(m);
                     DungeonFx.Flash(Body, col, 6f, 2f, 0.4f, transform); DungeonFx.Embers(Body, col, 30, 0.6f);
                     var snm = m; float snMult = mult; var snT = _curType;
@@ -738,7 +731,6 @@ namespace HearthHollow.Dungeon
                         for (int i = 0; i < 24; i++) DungeonFx.Throw(Body, UnityEngine.Random.insideUnitCircle.normalized, col, 1, 4f, 12f);
                         _dc.Shake(0.35f, 0.25f); GameLook.Punch(0.9f); GameFeel.HitStop(0.1f); _dc.FloodLight(0.7f, 2f);
                         HitArea(Body, rad, snMult, Vector2.zero, 12f, snm.duration);
-                        _heat = 100f; _heatLockUntil = Time.time + snm.value;
                     });
                     return true;
                 }
@@ -971,9 +963,8 @@ namespace HearthHollow.Dungeon
                 }
                 case MoveKind.Detonate:
                 {
-                    if (_heat < 20f) { DungeonHud.Number(Body + Vector2.up * 0.8f, "Not enough Heat", "dnum--info"); return false; }
                     _anim.PlayAttack(0.35f);
-                    float h = Heat01; _heat = 0f;
+                    const float h = 0.6f;   // Heat was cut in Design v2: a fixed-size blast (what 60 Heat used to give)
                     float rad = (m.radius + h * m.range) * _dc.Settings.playerReach;
                     float dmult = mult * (0.5f + h * m.value);
                     Color col = MoveColour(m);
@@ -981,7 +972,7 @@ namespace HearthHollow.Dungeon
                     DungeonFx.Embers(Body, col, 40, rad * 0.5f);
                     for (int i = 0; i < 20; i++) DungeonFx.Throw(Body, UnityEngine.Random.insideUnitCircle.normalized, col, 1, 4f, 10f);
                     _dc.Shake(0.3f, 0.2f); GameLook.Punch(0.8f); GameFeel.HitStop(0.08f); _dc.FloodLight(0.5f, 1.5f);
-                    DungeonHud.Number(Body + Vector2.up * 1f, "Detonate! " + Mathf.RoundToInt(h * 100f), "dnum--crit");
+                    DungeonHud.Number(Body + Vector2.up * 1f, "Detonate!", "dnum--crit");
                     HitArea(Body, rad, dmult, Vector2.zero, 11f, 0.4f);
                     return true;
                 }
@@ -1414,30 +1405,6 @@ namespace HearthHollow.Dungeon
             return list;
         }
 
-        // ───────── Emberfist ─────────
-        float Heat01 { get { return Mathf.Clamp01(_heat / 100f); } }
-
-        void AddHeat(float n)
-        {
-            if (_class != ClassId.Emberfist) return;
-            _heat = Mathf.Min(100f, _heat + n); _heatIdle = 0f;
-        }
-
-        /// Heat holds for a moment after each hit, then cools; it grows your carried light and your damage, and you smoulder when it's high.
-        void HeatUpdate(float dt)
-        {
-            if (_class != ClassId.Emberfist) { _dc.HeatGlow = 0f; return; }
-            _heatIdle += dt;
-            if (Time.time < _heatLockUntil) { _heat = 100f; _heatIdle = 0f; }   // Supernova
-            if (_heatIdle > _dc.Settings.heatHold) _heat = Mathf.Max(0f, _heat - _dc.Settings.heatDecay * dt);
-            _dc.HeatGlow = Heat01;
-            if (_heat > 50f)
-            {
-                _heatEmberT -= dt;
-                if (_heatEmberT <= 0f) { _heatEmberT = Mathf.Lerp(0.3f, 0.05f, (Heat01 - 0.5f) * 2f); DungeonFx.Embers(Feet + UnityEngine.Random.insideUnitCircle * 0.25f, (_heatEmberT * 100f) % 2f < 1f ? ClassLight[(int)ClassId.Emberfist] : Accent, 1, 0.15f); }
-            }
-        }
-
         /// Rising Phoenix in flight: hits everything you rush through, then a flaming uppercut where you stop.
         void PhoenixUpdate(float dt)
         {
@@ -1475,7 +1442,6 @@ namespace HearthHollow.Dungeon
             DungeonFx.Flash(Body, col, 5f, 2.2f, 0.4f); DungeonFx.RingAt(Body, col, 1.6f, 0.35f); DungeonFx.Sparks(Body, toward, col, 14);
             GameFeel.SlowMo(0.3f, 0.35f); GameLook.Punch(0.5f);
             DungeonHud.Number(Body + Vector2.up * 0.9f, "Counter!", "dnum--crit");
-            AddHeat(20f);
             HitArea(Body + toward * 0.6f, m.radius * _dc.Settings.playerReach, _counterMult, toward, 10f, 0.5f);
         }
 

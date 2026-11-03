@@ -162,8 +162,7 @@ namespace HearthHollow.Core
         public static string HazardName(Hazard h) { return h == Hazard.Poison ? "Poison" : h == Hazard.Cold ? "Cold" : h == Hazard.Heat ? "Heat" : h == Hazard.Darkness ? "Darkness" : ""; }
         public static string HazardEmoji(Hazard h) { return h == Hazard.Poison ? "☠️" : h == Hazard.Cold ? "🥶" : h == Hazard.Heat ? "🥵" : h == Hazard.Darkness ? "🌑" : ""; }
 
-        /// Darkness doesn't hurt — it just hides things — so it needs no drain amount to be active.
-        public static bool HazardActive(RouteData r) { return r != null && r.hazard != Hazard.None && (r.hazardPct > 0f || r.hazard == Hazard.Darkness); }
+        public static bool HazardActive(RouteData r) { return r != null && r.hazard != Hazard.None && r.hazard != Hazard.Darkness && r.hazardPct > 0f; }
 
         /// What helps: "nettle dishes (antidote)".
         public static string CounterHint(Hazard h)

@@ -338,9 +338,8 @@ namespace HearthHollow.Dungeon
             if (Dead || _st == St.Spawning) return;
             if (_dc != null && _dc.Player != null && Time.time >= _ultChargeAt) { _ultChargeAt = Time.time + 0.15f; _dc.Player.ChargeUltimate(); }   // hits charge the ultimate
             if (_markT > 0f) dmg *= 1f + _markBonus;   // Hunter's Mark
-            // light: everything is easier to hurt in strong light; shadow creatures shrug off hits in the dark
+            // light: shadow creatures shrug off hits in the dark (the old "lit = weak spot" bonus was cut in Design v2)
             var set = _dc.Settings;
-            dmg *= 1f + set.litDamageBonus * Lit01;
             if (Shadow) dmg *= Mathf.Lerp(set.shadowDarkDamage, 1f + set.shadowLitBonus, Lit01);
             int d = Mathf.Max(1, Mathf.RoundToInt(dmg));
             Hp -= d;

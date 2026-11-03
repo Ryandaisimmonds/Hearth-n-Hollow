@@ -107,7 +107,6 @@ namespace HearthHollow.Dungeon
         public float flareCooldown = 20f, flareMinCooldown = 10f, flareSeconds = 4f, flareRadius = 12f, flareIntensity = 2.4f;
 
         [Header("Monsters and light (light plan step 6)")]
-        [Tooltip("Every monster takes up to this much extra damage while it's well lit (0.15 = +15%).")] public float litDamageBonus = 0.15f;
         [Tooltip("Light-shy monsters in the dark: speed × this and attack cooldown ÷ this.")] public float shyBoldness = 1.25f;
         [Tooltip("Light-shy monsters circle round a light for about this long, then lose patience and push through it.")] public float shyNerveSeconds = 2.5f;
         [Tooltip("Speed × this while a light-shy monster pushes through light.")] public float shyBraveSpeed = 0.55f;
@@ -125,10 +124,6 @@ namespace HearthHollow.Dungeon
         [Tooltip("Ultimate: seconds taken off its cooldown for each hit you land (each enemy counts at most every 0.15 s).")] public float ultChargePerHit = 0.5f;
         [Tooltip("Aim assist cone multiplier while aiming with the mouse (the cursor already points where you want).")] public float mouseAimAssist = 0.35f;
         [Header("Emberfist Heat")]
-        [Tooltip("Heat (0–100) gained per hit.")] public float heatPerHit = 6f;
-        [Tooltip("Heat holds this long after a hit, then cools at heatDecay per second.")] public float heatHold = 1.2f, heatDecay = 30f;
-        [Tooltip("Damage + this share at full Heat.")] public float heatDamage = 0.15f;
-        [Tooltip("Your carried light at full Heat: reach + this share, brightness + this share.")] public float heatLightReach = 0.8f, heatLightBright = 0.6f;
 
         [Header("Secrets (light plan step 7)")]
         [Tooltip("Chance a room hides a forage spot that only light shows.")] public float secretForageChance = 0.3f;
