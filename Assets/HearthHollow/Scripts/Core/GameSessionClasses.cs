@@ -19,6 +19,8 @@ namespace HearthHollow.Core
         }
 
         public bool ClassJoined(ClassId id) { return ClassJoined(Content, Profile, id); }
+        /// Joined and part of the current build (the vertical slice hides the other classes, see Slice.cs).
+        public bool ClassAvailable(ClassId id) { return ClassJoined(id) && Slice.HasClass(id); }
 
         /// For a locked class card: where they join, e.g. "Joins your camp after you clear 🌾 Meadow Trail".
         public string ClassJoinHint(ClassId id)
@@ -58,7 +60,7 @@ namespace HearthHollow.Core
         /// Never leave a class selected that hasn't joined (old saves, edited content).
         void EnsureJoinedSelection()
         {
-            if (!ClassJoined(Profile.selectedClass)) Profile.selectedClass = ClassId.Cook;
+            if (!ClassAvailable(Profile.selectedClass)) Profile.selectedClass = ClassId.Cook;
         }
     }
 }

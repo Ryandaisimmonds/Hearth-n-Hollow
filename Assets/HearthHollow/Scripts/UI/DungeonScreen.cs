@@ -118,6 +118,7 @@ namespace HearthHollow.UI
             var chips = UIKit.E("dhud__chips");
             chips.Add(Art.Chip("coin", "🪙", out _coins, "chip--coins"));
             chips.Add(Art.Chip("xp", "✨", out _xp, "chip--xp"));
+            UIKit.Show(_xp.parent, false);   // no XP since Design v2 (ticket 04)
             chips.Add(Art.Chip("skull", "💀", out _kills));
             var bagChip = Art.Chip("bag", "🎒", out _bagChip, "dhud__bag-chip");
             bagChip.RegisterCallback<ClickEvent>(e => ToggleBag());

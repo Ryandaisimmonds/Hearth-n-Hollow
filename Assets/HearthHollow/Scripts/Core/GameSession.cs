@@ -81,6 +81,7 @@ namespace HearthHollow.Core
         public void SelectClass(ClassId id)
         {
             if (Phase != Phase.Hearth) return;
+            if (!Slice.HasClass(id)) { Info("Not in this build yet"); return; }
             if (!ClassJoined(id)) { Info(ClassJoinHint(id)); return; }
             Profile.selectedClass = id;
             Touch(true);
@@ -290,7 +291,8 @@ namespace HearthHollow.Core
         public bool StartRun(string routeId)
         {
             if (Phase != Phase.Hearth) return false;
-            if (!ClassJoined(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
+            if (!ClassAvailable(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
+            if (!Slice.ShowsRoute(routeId)) { Info("Not in this build yet"); return false; }
             string block = Routes.EnterBlock(Content, Profile, routeId, Profile.selectedClass);
             if (block != null) { Info(block); return false; }
             RouteOffer offer = Hearth.routeOffers.Find(o => o.routeId == routeId) ?? new RouteOffer { routeId = routeId, mod = RouteMod.None };

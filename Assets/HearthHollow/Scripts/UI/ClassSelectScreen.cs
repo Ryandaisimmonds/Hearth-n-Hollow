@@ -50,6 +50,7 @@ namespace HearthHollow.UI
             for (int i = 0; i < C.classes.Count; i++)
             {
                 ClassData cd = C.classes[i];
+                if (!Slice.HasClass(cd.id)) continue;   // the vertical slice only has the Cook
                 ClassProgress cp = p.Progress(cd.id);
                 bool picked = _pending == cd.id;
                 bool joined = S.ClassJoined(cd.id);

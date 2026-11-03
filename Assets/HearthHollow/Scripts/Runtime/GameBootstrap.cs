@@ -26,6 +26,7 @@ namespace HearthHollow.Runtime
 
         public GameSession Session { get; private set; }
         GameUI _ui;
+        public const string SlicePref = "hh_slice";
         UIDocument _doc;
 
         void Start()
@@ -34,6 +35,7 @@ namespace HearthHollow.Runtime
             ArtLibrary.Active = art;   // the UI reads art through ArtLibrary.Active (emoji fallback when null)
 
             GameContent gc = content != null ? content.GetContentOrDefault() : DefaultContent.Create();
+            Slice.On = PlayerPrefs.GetInt(SlicePref, 1) == 1;   // the vertical slice gate (dev panel can switch it off)
             Profile profile = SaveService.Load();
             bool firstLaunch = profile == null;
             int seed = (int)(DateTime.Now.Ticks & 0x7FFFFFFF);
@@ -48,6 +50,7 @@ namespace HearthHollow.Runtime
             if (styleSheet != null) root.styleSheets.Add(styleSheet);
             else Debug.LogWarning("[Hearth & Hollow] No style sheet assigned on GameBootstrap — UI will be unstyled.");
             _ui = new GameUI(Session, root, firstLaunch);
+            if (Slice.On) _ui.OpenTown();   // the slice's hub is the town; the old camp screen isn't used
 
             if (dungeon != null)
             {

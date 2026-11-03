@@ -105,8 +105,8 @@ namespace HearthHollow.UI
             {
                 // default: the current story chapter if it's open, else the deepest open route
                 var ch = Routes.CurrentChapter(C, p);
-                if (ch != null && S.IsRouteUnlocked(ch.id)) _selected = ch.id;
-                else for (int i = 0; i < C.routes.Count; i++) if (S.IsRouteUnlocked(C.routes[i].id) && C.routes[i].chapter > 0) _selected = C.routes[i].id;
+                if (ch != null && S.IsRouteUnlocked(ch.id) && Slice.ShowsRoute(ch.id)) _selected = ch.id;
+                else for (int i = 0; i < C.routes.Count; i++) if (S.IsRouteUnlocked(C.routes[i].id) && C.routes[i].chapter > 0 && Slice.ShowsRoute(C.routes[i].id)) _selected = C.routes[i].id;
             }
 
             RefreshStory();
@@ -141,10 +141,10 @@ namespace HearthHollow.UI
 
             _board.Add(SectionHead("📖 " + (string.IsNullOrEmpty(C.storyTitle) ? "The story" : C.storyTitle) + " — the Ember Path"));
             var story = UIKit.E("route-board");
-            foreach (var r in Routes.Chapters(C)) story.Add(Discovered(r) ? RouteCard(r) : HiddenCard(r));
+            foreach (var r in Routes.Chapters(C)) if (Slice.ShowsRoute(r.id)) story.Add(Discovered(r) ? RouteCard(r) : HiddenCard(r));
             _board.Add(story);
 
-            var sides = C.routes.FindAll(x => x.chapter <= 0);
+            var sides = C.routes.FindAll(x => x.chapter <= 0 && Slice.ShowsRoute(x.id));
             if (sides.Count > 0)
             {
                 _board.Add(SectionHead("🧭 Side paths"));
@@ -334,7 +334,7 @@ namespace HearthHollow.UI
                 if (S.Hearth != null && S.Hearth.campEvent == CampEvent.Storm)
                     routeBox.Add(Art.IconText("event_storm", "⛈️", "Storm today — every route is Dangerous.", "small", "expedition__warn"));
                 int floors = C.tuning.dungeonFloors;
-                routeBox.Add(Art.IconText("trophy", "🏆", floors + " floors. Beat the guardian on floor " + floors + ": +" + r.clearReward + " coins, +" + r.clearXp + " XP (leaving early pays a share).", "small", "expedition__note"));
+                routeBox.Add(Art.IconText("trophy", "🏆", floors + " floors. Beat the guardian on floor " + floors + ": +" + r.clearReward + " coins (leaving early pays a share).", "small", "expedition__note"));
             }
             _expedition.Add(routeBox);
 

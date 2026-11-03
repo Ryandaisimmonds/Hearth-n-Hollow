@@ -3,6 +3,7 @@
 // and is planted with trees and bushes. Spots get Cainos props instead of placeholder blocks where the pack has something
 // that fits (the Hearth sits on the altar, the gate is a stone arch, crates and barrels at the larder, the smithy, the workshop…).
 // The cooking stations, the flame, people, creatures and stalls stay as they were (the pack has none of those).
+using HearthHollow.Core;
 using HearthHollow.Dungeon;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -110,6 +111,7 @@ namespace HearthHollow.Town
             SetLayer(walls.GetComponent<TilemapRenderer>(), "Walls");
             DungeonController.AddWallShadows(walls);
             Spots = TownLayout.Spots();   // (so decor keeps clear of them; Build() fills the full list next)
+            if (Slice.On) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);
             var rng = new System.Random(1234);
             for (int x = -4; x < TownLayout.Width + 4; x++)
                 for (int y = -4; y < TownLayout.Height + 4; y++)

@@ -8,6 +8,7 @@ namespace HearthHollow.UI
     public class SettingsOverlay : UIScreen
     {
         /// Dev tools are hidden in release builds.
+        Button _sliceBtn;
         public static bool DevModeEnabled { get { return Application.isEditor || Debug.isDebugBuild; } }
 
         public const int DevCoins = 9999;
@@ -50,7 +51,7 @@ namespace HearthHollow.UI
             game.Add(UIKit.L("Game", "subhead"));
             _reset = new ConfirmButton("Reset game", "Click again to wipe everything", () => Ui.ResetGame(), "btn--danger", "settings__btn");
             game.Add(_reset.Button);
-            game.Add(UIKit.L("Deletes all progress — coins, levels, gear, pantry and routes — and you pick a class again.", "muted", "small", "settings__hint"));
+            game.Add(UIKit.L("Deletes all progress — coins, gear, pantry and routes — and you start again.", "muted", "small", "settings__hint"));
             box.Add(game);
 
             // ── Dev mode ──
@@ -62,6 +63,10 @@ namespace HearthHollow.UI
                 row.Add(Art.IconButton("coin", "🪙", "Coins → " + DevCoins.ToString("N0"), () => S.DevSetCoins(DevCoins), "btn--primary", "settings__btn"));
                 row.Add(Art.IconButton("pantry", "🥕", DevIngredientCount + " of every ingredient", () => S.DevFillPantry(DevIngredientCount), "btn--primary", "settings__btn"));
                 dev.Add(row);
+                var rowSlice = UIKit.E("settings__row");
+                _sliceBtn = UIKit.B("", ToggleSlice, "btn--secondary", "btn--small", "settings__btn");
+                rowSlice.Add(_sliceBtn);
+                dev.Add(rowSlice);
                 var row2 = UIKit.E("settings__row");
                 row2.Add(Art.IconButton("trophy", "👑", "Max everything", () => S.DevMaxEverything(), "btn--primary", "settings__btn"));   // all classes, skills, gear, kitchen + a Prime tray
                 dev.Add(row2);
@@ -118,13 +123,24 @@ namespace HearthHollow.UI
             }
         }
 
+        /// Dev: switch the vertical-slice gate (remembered between sessions). Old routes, classes and events come back when off.
+        void ToggleSlice()
+        {
+            HearthHollow.Core.Slice.On = !HearthHollow.Core.Slice.On;
+            PlayerPrefs.SetInt(HearthHollow.Runtime.GameBootstrap.SlicePref, HearthHollow.Core.Slice.On ? 1 : 0);
+            PlayerPrefs.Save();
+            if (HearthHollow.Core.Slice.On && S.Phase == HearthHollow.Core.Phase.Hearth) Ui.OpenTown();
+            Refresh();
+        }
+
         protected override void OnShow() { _reset.Reset(); _flee.Reset(); }
 
         public override void Refresh()
         {
             var p = S.Phase;
             UIKit.Show(_runSection, S.Run != null && p != HearthHollow.Core.Phase.Hearth && p != HearthHollow.Core.Phase.RunEnd);
-            UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null);
+            UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null && !HearthHollow.Core.Slice.On);   // the slice has no camp screen to go back to
+            if (_sliceBtn != null) _sliceBtn.text = HearthHollow.Core.Slice.On ? "🧪 Vertical slice: ON (Cook, Meadow, Chili Ridge)" : "🧪 Vertical slice: OFF (everything visible)";
             _townBtn.text = Ui.TownOpen ? "🏕️ Back to the camp screen" : "🏘️ Visit Hearth's Hollow";
             _townHint.text = Ui.TownOpen ? "Leave the town preview and go back to the usual camp screen." : "A walkable town that will replace the camp screen once it's finished. Uses your real save.";
         }

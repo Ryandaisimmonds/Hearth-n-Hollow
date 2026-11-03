@@ -185,11 +185,12 @@ namespace HearthHollow.Town
 
             BuildTiles(theme);
             Spots = TownLayout.Spots();
+            if (Slice.On) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);   // the slice has no old camp screen
             // your other two classes hang around the training yard; talk to one to swap
             int k = 0;
             foreach (var cd in Session.Content.classes)
             {
-                if (cd.id == Session.Profile.selectedClass || k >= TownLayout.ClassSpots.Length) continue;
+                if (cd.id == Session.Profile.selectedClass || !Session.ClassAvailable(cd.id) || k >= TownLayout.ClassSpots.Length) continue;
                 var at = TownLayout.ClassSpots[k++];
                 Spots.Add(new TownSpot { id = "class_" + cd.id, name = cd.name, emoji = cd.emoji, verb = "Talk", action = TownAction.ClassNpc, classId = cd.id, pos = at, reach = 1.4f });
             }

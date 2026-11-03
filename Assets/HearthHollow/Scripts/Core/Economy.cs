@@ -201,6 +201,7 @@ namespace HearthHollow.Core
             else if (roll < (edge += t.armourerChance)) h.campEvent = CampEvent.Armourer;
             else if (roll < (edge += t.foragerChance)) h.campEvent = CampEvent.Forager;
             else if (roll < (edge += t.harvestMoonChance)) h.campEvent = CampEvent.HarvestMoon;
+            if (Slice.On) h.campEvent = CampEvent.None;   // no camp events in the slice
 
             if (h.campEvent == CampEvent.Forager)
             {
@@ -233,7 +234,7 @@ namespace HearthHollow.Core
                 Gear.RollMerchant(c, p, h, rng);   // sometimes a trinket too
             }
 
-            RouteMod[] mods = { RouteMod.Double, RouteMod.Rich, RouteMod.Dangerous, RouteMod.Lucky };
+            RouteMod[] mods = { RouteMod.Rich, RouteMod.Dangerous, RouteMod.Lucky };   // (Double XP retired with XP, ticket 04)
             for (int i = 0; i < c.routes.Count; i++)
             {
                 RouteMod mod = RouteMod.None;
