@@ -40,6 +40,7 @@ namespace HearthHollow.UI
         readonly CampEventOverlay _campEvent;
         readonly PantryOverlay _pantry;
         readonly CookOverlay _cook;
+        readonly SeasonOverlay _season;   // ticket 27: the spice rack
         readonly TownHud _townHud;   // Hearth's Hollow (town preview)
         readonly FishingOverlay _fishing;   // town fishing pond
         readonly DialogueOverlay _dialogue;   // town people talking
@@ -51,7 +52,7 @@ namespace HearthHollow.UI
         bool _settingsOpen;
         bool _campEventOpen;
         bool _pantryOpen;
-        bool _cookOpen;
+        bool _cookOpen, _seasonOpen;
         bool _fishOpen, _dialogueOpen, _ladderOpen;
         bool _townOpen, _townMenuOpen;   // town preview: walking around, or a building's menu (the camp screen) on top
         bool _routesOpen;
@@ -103,6 +104,8 @@ namespace HearthHollow.UI
             Root.Insert(Root.IndexOf(DragLayer), _pantry.Root);
             _cook = new CookOverlay(this);
             Root.Insert(Root.IndexOf(DragLayer), _cook.Root);
+            _season = new SeasonOverlay(this);
+            Root.Insert(Root.IndexOf(DragLayer), _season.Root);
             _fishing = new FishingOverlay(this);
             Root.Insert(Root.IndexOf(DragLayer), _fishing.Root);
             _dialogue = new DialogueOverlay(this);
@@ -169,7 +172,7 @@ namespace HearthHollow.UI
         /// A town station's page (cooking, smithy, workshop, training yard) is open as a window over the town.
         public bool TownStationOpen { get { return _townOpen && _townMenuOpen && Session.Phase == Phase.Hearth && !_routesOpen && !_classSelectOpen; } }
         /// You can walk around: the world is showing and no pop-up is open.
-        public bool TownWalking { get { return TownWorldVisible && !_settingsOpen && !_campEventOpen && !_pantryOpen && !_cookOpen && !_fishOpen && !_dialogueOpen; } }
+        public bool TownWalking { get { return TownWorldVisible && !_settingsOpen && !_campEventOpen && !_pantryOpen && !_cookOpen && !_seasonOpen && !_fishOpen && !_dialogueOpen; } }
         /// Someone in town talks to you (pages of text; the last page may offer an action).
         public void OpenDialogue(string speaker, string face, System.Collections.Generic.List<string> pages, string actionLabel = null, Action onAction = null)
         {
@@ -199,6 +202,8 @@ namespace HearthHollow.UI
         // ───────── the stove (camp): cook one recipe ─────────
         public void OpenCook(string recipeId) { if (Session.Phase == Phase.Hearth) { _cook.SetRecipe(recipeId); _cookOpen = true; ApplyLayout(); } }
         public void CloseCook() { _cookOpen = false; ApplyLayout(); }
+        public void OpenSeason() { if (Session.Phase == Phase.Hearth) { _seasonOpen = true; ApplyLayout(); } }
+        public void CloseSeason() { _seasonOpen = false; ApplyLayout(); }
 
         // ───────── settings ─────────
         public void OpenSettings() { _settingsOpen = true; ApplyLayout(); }
@@ -250,7 +255,7 @@ namespace HearthHollow.UI
                 _fight.PlayOutro(ended, ApplyLayout);
             }
             if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Slice.On) { _townOpen = true; _townMenuOpen = false; }   // ticket 17: home is the town
-            if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
+            if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _seasonOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
             // (In the town, events are visitors and weather you walk into instead — no pop-up.)
             else if (_lastPhase != Phase.Hearth && !_townOpen && Session.Hearth != null && Session.Hearth.campEvent != CampEvent.None)
@@ -283,6 +288,7 @@ namespace HearthHollow.UI
             _campEvent.SetVisible(_campEventOpen && p == Phase.Hearth && !_classSelectOpen);
             _pantry.SetVisible(_pantryOpen && !_campEventOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
             _cook.SetVisible(_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
+            _season.SetVisible(_seasonOpen && !_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
             _fishing.SetVisible(_fishOpen && TownWorldVisible && !_campEventOpen);
             _dialogue.SetVisible(_dialogueOpen && TownWorldVisible && !_campEventOpen);
             if (_ladderOpen && !(dungeon && p == Phase.Dungeon)) _ladderOpen = false;
@@ -358,6 +364,7 @@ namespace HearthHollow.UI
             if (_campEvent.Visible) { _campEvent.HandleKey(k); return true; }
             if (_pantry.Visible) { _pantry.HandleKey(k); return true; }
             if (_cook.Visible) { _cook.HandleKey(k); return true; }
+            if (_season.Visible) { _season.HandleKey(k); return true; }
             if (_fishing.Visible) { _fishing.HandleKey(k); return true; }
             if (_dialogue.Visible) { _dialogue.HandleKey(k); return true; }
             if (k == KeyCode.Escape && _townOpen && _townMenuOpen && _hearth.Visible) { CloseTownMenu(); return true; }   // town: back to walking

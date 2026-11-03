@@ -220,6 +220,23 @@ namespace HearthHollow.Core
             for (int i = 0; i < p.packed.Count; i++) p.tray.Add(p.packed[i].recipeId);
         }
 
+        // ───────── the spice rack (ticket 27): add the element ingredient after cooking ─────────
+        /// Season a cooked meal (in the meal pantry or on the tray) with one element ingredient: spends it.
+        public static bool Season(GameContent c, Profile p, CookedMeal m, string ingId, out string reason)
+        {
+            var ing = string.IsNullOrEmpty(ingId) ? null : c.Ingredient(ingId);
+            if (m == null || (!p.mealPantry.Contains(m) && !p.packed.Contains(m))) { reason = "Pick a cooked meal"; return false; }
+            if (!string.IsNullOrEmpty(m.accelId)) { reason = "That meal is already seasoned"; return false; }
+            if (ing == null || (ing.infuse == Element.None && ing.guard == Element.None)) { reason = "Pick an element ingredient"; return false; }
+            if (Economy.PantryCount(p, ingId) <= 0) { reason = "You have no " + ing.name + " left"; return false; }
+            if (ing.infuse != Element.None && p.packed.Contains(m))
+                foreach (var q in p.packed)
+                    if (q != m && InfusionOf(c, q.accelId) != Element.None) { reason = "Only one infused meal per tray"; return false; }
+            Economy.RemoveFromPantry(p, ingId, 1);
+            m.accelId = ingId;
+            reason = null; return true;
+        }
+
         public static bool Pack(GameContent c, Profile p, int pantryIndex, out string reason)
         {
             if (pantryIndex < 0 || pantryIndex >= p.mealPantry.Count) { reason = "No such meal"; return false; }

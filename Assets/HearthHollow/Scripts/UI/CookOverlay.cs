@@ -39,9 +39,7 @@ namespace HearthHollow.UI
             box.Add(UIKit.L("Ingredients", "subhead", "cook-pop__sub"));
             _lines = UIKit.E("cook-pop__lines");
             box.Add(_lines);
-            box.Add(UIKit.L("Element slot (optional) — infuse your attacks, or guard against an element", "subhead", "cook-pop__sub"));
-            _accel = UIKit.E("cook-pop__accel");
-            box.Add(_accel);
+            _accel = UIKit.E("cook-pop__accel");   // ticket 27: element ingredients go in at the spice rack, after cooking
             box.Add(UIKit.L("Quality", "subhead", "cook-pop__sub"));
             _odds = UIKit.E("cook-pop__odds");
             box.Add(_odds);
@@ -232,6 +230,7 @@ namespace HearthHollow.UI
                 _preview.Add(UIKit.L(Cooking.GradeGem(g) + " " + Cooking.GradeName(g) + " (×" + UIKit.Num(Cooking.GradeMult(C.tuning, g)) + "): "
                     + UIKit.BuffSummary(Cooking.MealBuffs(C, cls, em)), "small", "cook-pop__line"));
             }
+            _preview.Add(UIKit.L("🧂 Want Fire in your attacks, or a guard? Season the meal at the spice rack, next to the stove.", "small", "muted"));
             var slotIng = string.IsNullOrEmpty(_choice.accelId) ? null : C.Ingredient(_choice.accelId);
             if (slotIng != null) _preview.Add(UIKit.L(Cooking.SlotText(slotIng) + " for the whole run", "small", "cook-pop__line"));
             var t2 = C.recipes.Find(x => x.upgradeOf == r.id);

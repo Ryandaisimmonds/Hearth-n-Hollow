@@ -1700,3 +1700,21 @@ Label { white-space: normal; color: var(--hh-text); }
 .settings__box { max-height: 96%; }
 .run-log { min-height: 150px; flex-shrink: 0; }
 .settings__body { flex-shrink: 1; align-self: stretch; }
+
+/* ticket 27: the spice rack */
+.season-pop__box { min-width: 640px; max-width: 860px; align-items: stretch; }
+.season-pop__intro { margin-bottom: 6px; white-space: normal; }
+.season-pop__step { margin-top: 8px; }
+.season-pop__meals { flex-direction: row; flex-wrap: wrap; }
+.season-pop__meal { width: 220px; }
+.season-pop__meal--on { border-color: var(--hh-gold-bright); border-width: 2px; border-left-width: 5px; background-color: rgba(255, 210, 120, 0.18); }
+.season-pop__spices { flex-direction: row; flex-wrap: wrap; margin-bottom: 6px; }
+.season-pop__spice { font-size: 15px; padding: 6px 12px; margin: 3px 6px 3px 0; }
+.season-pop__effect { padding: 10px 14px; border-radius: 10px; border-width: 2px; margin: 6px 0; background-color: rgba(0, 0, 0, 0.3); border-color: rgba(255, 210, 120, 0.4); }
+.season-pop__effect.el-tint--fire { background-color: rgba(255, 115, 30, 0.22); border-color: rgba(255, 115, 30, 0.85); }
+.season-pop__effect.el-tint--frost { background-color: rgba(150, 225, 255, 0.2); border-color: rgba(150, 225, 255, 0.85); }
+.season-pop__effect.el-tint--nature { background-color: rgba(90, 230, 75, 0.2); border-color: rgba(90, 230, 75, 0.85); }
+.season-pop__effect.el-tint--water { background-color: rgba(65, 130, 255, 0.22); border-color: rgba(65, 130, 255, 0.85); }
+.season-pop__effect.el-tint--light { background-color: rgba(255, 240, 140, 0.2); border-color: rgba(255, 240, 140, 0.85); }
+.season-pop__effect-head { font-size: 22px; -unity-font-style: bold; color: var(--hh-cream); }
+.season-pop__effect-line { font-size: 15px; color: var(--hh-cream); white-space: normal; margin-top: 3px; }

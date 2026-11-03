@@ -13,7 +13,7 @@ using UnityEngine;
 namespace HearthHollow.Town
 {
     public enum TownAction { Hearth, Cooking, Larder, Upgrades, Workshop, Training, Gate, Bed, Wren, BackToCamp, Plot,
-                             Notice, Merchant, Armourer, Baker, Florist, Fishing, ClassNpc, Forager, LampMaker }
+                             Notice, Merchant, Armourer, Baker, Florist, Fishing, ClassNpc, Forager, LampMaker, SpiceRack }
 
     public class TownSpot
     {
@@ -107,6 +107,7 @@ namespace HearthHollow.Town
             s.Add(Spot("hearth", "The Hearth", "🔥", "Look at the fire", TownAction.Hearth, 25f, 19.5f, 2.2f, 0.9f, new Color(0.45f, 0.43f, 0.4f)));
             s.Add(Spot("cooking", "Cooking area", "🍳", "Cook", TownAction.Cooking, 20f, 24f, 3f, 1.2f, new Color(0.55f, 0.36f, 0.2f)));
             s.Add(Spot("larder", "Larder", "🥕", "Open the larder", TownAction.Larder, 30f, 24f, 2.4f, 1.4f, new Color(0.62f, 0.45f, 0.26f)));
+            s.Add(Spot("spice", "Spice rack", "🧂", "Season a meal", TownAction.SpiceRack, 17.2f, 24.2f, 1.2f, 1.1f, new Color(0.5f, 0.32f, 0.2f)));   // ticket 27
             s.Add(Spot("smithy", "Smithy", "⚒️", "Gear & trinkets", TownAction.Upgrades, 42f, 25f, 3f, 1.6f, new Color(0.35f, 0.35f, 0.38f)));
             s.Add(Spot("workshop", "Workshop", "🔨", "Kitchen upgrades", TownAction.Workshop, 42f, 15f, 3f, 1.6f, new Color(0.6f, 0.42f, 0.22f)));
             s.Add(Spot("training", "Training yard", "⭐", "Skills & loadout", TownAction.Training, 7f, 20f, 1f, 1.5f, new Color(0.85f, 0.75f, 0.4f)));

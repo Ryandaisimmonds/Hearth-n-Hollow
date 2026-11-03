@@ -138,6 +138,25 @@ namespace HearthHollow.Core
         }
 
         /// Pack a cooked meal from the meal pantry onto the tray.
+        /// Cooked meals with an empty element slot (meal pantry first, then the tray). Ticket 27.
+        public List<CookedMeal> SeasonableMeals()
+        {
+            var list = new List<CookedMeal>();
+            foreach (var m in Profile.mealPantry) if (m != null && string.IsNullOrEmpty(m.accelId)) list.Add(m);
+            foreach (var m in Profile.packed) if (m != null && string.IsNullOrEmpty(m.accelId)) list.Add(m);
+            return list;
+        }
+
+        public bool SeasonMeal(CookedMeal m, string ingId, out string reason)
+        {
+            if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }
+            if (!Cooking.Season(Content, Profile, m, ingId, out reason)) return false;
+            var r = Content.Recipe(m.recipeId); var ing = Content.Ingredient(ingId);
+            Info("🧂 " + (r != null ? r.name : "Meal") + " seasoned: " + Cooking.SlotText(ing));
+            Touch(true);
+            return true;
+        }
+
         public bool PackMeal(int pantryIndex)
         {
             if (Phase != Phase.Hearth) return false;

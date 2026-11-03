@@ -122,6 +122,7 @@ namespace HearthHollow.Town
             {
                 case TownAction.Cooking: return "kitchen";
                 case TownAction.Larder: return "larder";
+                case TownAction.SpiceRack: return "kitchen";
                 case TownAction.Upgrades: return "smithy";
                 case TownAction.Workshop: return "workshop";
                 case TownAction.LampMaker: return "lampmaker";
@@ -167,6 +168,7 @@ namespace HearthHollow.Town
                 }
                 case TownAction.Plot: _ui.Toast("🚧 Fenced off. Something new will be built here one day."); break;
                 case TownAction.LampMaker: TalkToLampMaker(); break;
+                case TownAction.SpiceRack: _ui.OpenSeason(); break;
                 case TownAction.Notice: _ui.OpenCampEvent(); break;
                 case TownAction.Merchant:
                     if (Session.Hearth != null && Session.Hearth.campEvent == CampEvent.Merchant) _ui.OpenCampEvent();
