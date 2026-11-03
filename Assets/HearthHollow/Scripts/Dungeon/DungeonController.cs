@@ -95,8 +95,8 @@ namespace HearthHollow.Dungeon
             var route = C.Route(run.routeId);
             int seed = unchecked(run.dungeonSeed * 31 + run.floor * 7919);
             var rng = new System.Random(seed);
-            int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + (run.floor - 1);
-            _plan = DungeonGenerator.Generate(seed, count, Session.DungeonOnLastFloor, run.floor, route != null ? route.gatherChance : 0.2f);
+            int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
+            _plan = DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor, Session.DungeonHomeChoice, run.floor, route != null ? route.gatherChance : 0.2f);
             _theme = Settings.ThemeFor(run.routeId);
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);
@@ -527,7 +527,7 @@ namespace HearthHollow.Dungeon
         /// A ladder: ask whether to go deeper or head home with the haul (the dungeon pauses meanwhile).
         public void AskLadder(Interactable ladder)
         {
-            if (_ui == null) { if (Session.DungeonDescend()) ladder.MarkUsed(); return; }
+            if (_ui == null || !Session.DungeonHomeChoice) { if (Session.DungeonDescend()) ladder.MarkUsed(); return; }   // between choice floors the ladder just goes down
             _ui.OpenLadderChoice(() => { if (Session.DungeonDescend()) ladder.MarkUsed(); }, () => Session.DungeonExit());
         }
 

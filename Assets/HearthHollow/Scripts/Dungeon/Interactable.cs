@@ -72,7 +72,7 @@ namespace HearthHollow.Dungeon
             {
                 case InteractKind.Forage: return "Forage";
                 case InteractKind.Campfire: return "Rest by the fire";
-                case InteractKind.Ladder: return "Floor " + (dc.Session.Run.floor + 1) + " below — go deeper or head home?";
+                case InteractKind.Ladder: return dc.Session.DungeonHomeChoice ? "Floor " + (dc.Session.Run.floor + 1) + " below — go deeper or head home?" : "Climb down to floor " + (dc.Session.Run.floor + 1);
                 case InteractKind.Pit: return "A hole in the floor… careful";
                 default: return dc.Session.DungeonOnLastFloor ? "Leave — route cleared!" : "Head home with your haul";
             }

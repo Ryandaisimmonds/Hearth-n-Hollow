@@ -18,6 +18,7 @@ namespace HearthHollow.UI
         readonly ScrollView _scroll;
         readonly Button _go;
         string _selected;
+        int _startFloor = 1;   // ticket 12: 1, or a shortcut floor past a beaten boss
         float _shownAt;
 
         public RouteScreen(GameUI ui) : base(ui, "routes")
@@ -281,7 +282,7 @@ namespace HearthHollow.UI
             if (why != null) card.Add(Art.IconText("lock", "🔒", why, "reason", "route-big__lock"));
 
             string id = r.id;
-            card.RegisterCallback<ClickEvent>(e => { _selected = id; Refresh(); });
+            card.RegisterCallback<ClickEvent>(e => { if (_selected != id) _startFloor = 1; _selected = id; Refresh(); });
             return card;
         }
 
@@ -333,8 +334,26 @@ namespace HearthHollow.UI
                 if (m != RouteMod.None) routeBox.Add(UIKit.L(UIKit.ModHint(m), "small", "expedition__note"));
                 if (S.Hearth != null && S.Hearth.campEvent == CampEvent.Storm)
                     routeBox.Add(Art.IconText("event_storm", "⛈️", "Storm today — every route is Dangerous.", "small", "expedition__warn"));
-                int floors = C.tuning.dungeonFloors;
-                routeBox.Add(Art.IconText("trophy", "🏆", floors + " floors. Beat the guardian on floor " + floors + ": +" + r.clearReward + " coins (leaving early pays a share).", "small", "expedition__note"));
+                int floors = DungeonRules.Floors(C, r.id);
+                string bosses = r.bossEvery > 0 && r.bossEvery < floors ? "A boss every " + r.bossEvery + " floors; the last on floor " + floors : "The guardian waits on floor " + floors;
+                routeBox.Add(Art.IconText("trophy", "🏆", floors + " floors. " + bosses + ": +" + r.clearReward + " coins for the bottom (heading home early pays a share).", "small", "expedition__note"));
+                // shortcuts: start past a boss you've beaten
+                var starts = S.StartFloors(r.id);
+                if (!starts.Contains(_startFloor)) _startFloor = 1;
+                if (starts.Count > 1)
+                {
+                    var sr = UIKit.E("meal-filters__row", "expedition__starts");
+                    sr.Add(UIKit.L("Start from", "meal-filters__label"));
+                    foreach (int f in starts)
+                    {
+                        int ff = f;
+                        var chip = UIKit.B(f == 1 ? "Floor 1" : "⏬ Floor " + f + " (shortcut)", () => { _startFloor = ff; Refresh(); }, "filter-chip");
+                        chip.EnableInClassList("filter-chip--on", _startFloor == f);
+                        if (f > 1) chip.tooltip = "You've beaten the floor-" + (f - 1) + " boss: start just below it.";
+                        sr.Add(chip);
+                    }
+                    routeBox.Add(sr);
+                }
             }
             _expedition.Add(routeBox);
 
@@ -426,7 +445,7 @@ namespace HearthHollow.UI
 
         void Go()
         {
-            if (_selected != null && Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) == null) S.StartRun(_selected);
+            if (_selected != null && Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) == null) S.StartRun(_selected, _startFloor);
         }
 
         public override bool HandleKey(KeyCode key)

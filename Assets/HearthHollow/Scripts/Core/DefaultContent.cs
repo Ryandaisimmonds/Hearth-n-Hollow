@@ -42,6 +42,7 @@ namespace HearthHollow.Core
             Cooking27(c);            // DefaultContentDesignV2.cs: cooking v10 (element slot, quality, tiers, light combos)
             Classes28(c);            // DefaultContentDesignV2.cs: minimal base stats, per-stat class meal lens
             CookPool29(c);           // DefaultContentDesignV2.cs: the Cook's move pool + Five-Alarm Chili
+            DeepDungeons30(c);       // DefaultContentDesignV2.cs: Meadow 10 floors, Chili Ridge 5, boss every 5
             return c;
         }
 

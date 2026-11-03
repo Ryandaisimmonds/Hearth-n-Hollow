@@ -34,9 +34,15 @@ namespace HearthHollow.Dungeon
         static readonly Side[] Sides = { Side.North, Side.South, Side.East, Side.West };
 
         /// <param name="roomCount">Total rooms including start.</param>
-        /// <param name="lastFloor">Boss floor (no ladder).</param>
+        /// <param name="lastFloor">Boss floor: the far room is the boss (its room gets the exit, and a ladder unless it's the final floor).</param>
+        /// <param name="homeChoice">This floor has a separate exit room (Design v2: every other floor). Ignored on boss floors.</param>
         /// <param name="gatherShare">Route's gather chance (≈ share of forage rooms).</param>
         public static FloorPlan Generate(int seed, int roomCount, bool lastFloor, int floor, float gatherShare)
+        {
+            return Generate(seed, roomCount, lastFloor, true, floor, gatherShare);
+        }
+
+        public static FloorPlan Generate(int seed, int roomCount, bool lastFloor, bool homeChoice, int floor, float gatherShare)
         {
             var rng = new System.Random(seed);
             var plan = new FloorPlan();
@@ -85,9 +91,11 @@ namespace HearthHollow.Dungeon
             {
                 far.kind = RoomKind.Ladder;
                 RoomNode exit = null;
+                if (homeChoice) {
                 foreach (var r in byDepth) if (r != far && DoorCount(r) == 1) { exit = r; break; }
                 if (exit == null) exit = byDepth.Count > 1 ? byDepth[1] : null;
                 if (exit != null) exit.kind = RoomKind.Exit;
+                }
             }
 
             // calm rooms: forage groves (dead ends first) and a campfire from floor 2

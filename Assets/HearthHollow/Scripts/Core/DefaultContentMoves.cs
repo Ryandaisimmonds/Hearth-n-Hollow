@@ -52,6 +52,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 27) { Cooking27(c); c.contentVersion = 27; }  // cooking v10: element slot, quality, tiers, light combos (DefaultContentDesignV2.cs)  // Design v2 cuts: no Darkness hazard, no Heat/Boost/pips in move text (DefaultContentDesignV2.cs)
             if (c.contentVersion < 28) { Classes28(c); c.contentVersion = 28; }  // classes are a lens on food: minimal base stats, per-stat meal multipliers (DefaultContentDesignV2.cs)
             if (c.contentVersion < 29) { CookPool29(c); c.contentVersion = 29; }  // the Cook's move pool, unlocked along the arc (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 30) { DeepDungeons30(c); c.contentVersion = 30; }  // deep dungeons: Meadow 10 floors, Chili Ridge 5, a boss every 5 (DefaultContentDesignV2.cs)
             return true;
         }
 

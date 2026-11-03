@@ -175,8 +175,26 @@ namespace HearthHollow.Dungeon
                     AddProp(InteractKind.Ladder, FirstPoint(SpawnKind.Ladder), false);
                     break;
                 case RoomKind.Exit:
-                case RoomKind.Boss:
                     AddProp(InteractKind.Exit, FirstPoint(SpawnKind.Exit), false);
+                    break;
+                case RoomKind.Boss:
+                    {
+                        // after the boss: the way home, and (unless this is the bottom) a ladder on down
+                        var ex = FirstPoint(SpawnKind.Exit);
+                        AddProp(InteractKind.Exit, ex, false);
+                        if (!Controller.Session.DungeonOnLastFloor)
+                        {
+                            var lp = Points(SpawnKind.Ladder);
+                            Vector2 la = lp.Count > 0 ? lp[0] : NearestWalkable(Origin + RoomTemplate.Centre);
+                            Vector2 mid = Origin + RoomTemplate.Centre;
+                            if (Vector2.Distance(la, ex) < 2.5f)   // side by side with the exit, a few steps apart
+                            {
+                                la = NearestWalkable(ex + new Vector2(ex.x <= mid.x ? 3.5f : -3.5f, 0f));
+                                if (Vector2.Distance(la, ex) < 2.5f) la = NearestWalkable(ex + new Vector2(ex.x <= mid.x ? -3.5f : 3.5f, 0f));
+                            }
+                            AddProp(InteractKind.Ladder, la, false);
+                        }
+                    }
                     break;
                 case RoomKind.Combat:
                     if (_rng.NextDouble() < 0.25)   // the odd bonus forage spot after a fight
@@ -298,7 +316,7 @@ namespace HearthHollow.Dungeon
 
             var spots = Points(SpawnKind.Enemy);
             var eliteSpots = Points(SpawnKind.Elite);
-            int count = T.enemiesPerRoomMin + _rng.Next(Mathf.Max(1, T.enemiesPerRoomMax - T.enemiesPerRoomMin + 1)) + Mathf.Max(0, run.floor - 1);
+            int count = T.enemiesPerRoomMin + _rng.Next(Mathf.Max(1, T.enemiesPerRoomMax - T.enemiesPerRoomMin + 1)) + DungeonRules.ExtraEnemies(run.floor);
             if (Node.kind == RoomKind.Ladder || Node.kind == RoomKind.Exit) count += 1;
             count = Mathf.RoundToInt(count * S.MutatorEnemyCount);   // Swarm
 
@@ -311,7 +329,7 @@ namespace HearthHollow.Dungeon
                 if (best < 4f) at = RandomFloorPoint(playerAt, 5f);
                 Boss = Controller.SpawnEnemy(this, bossId, true, true, at);
                 if (Boss != null) _enemies.Add(Boss);
-                count = 2 + Mathf.Max(0, run.floor - 2);
+                count = 2 + Mathf.Min(2, Mathf.Max(0, run.floor - 2) / 3);   // a few minions, not a horde, on deep boss floors
             }
             else
             {

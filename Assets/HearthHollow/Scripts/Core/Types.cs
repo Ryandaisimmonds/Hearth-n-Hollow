@@ -238,6 +238,10 @@ namespace HearthHollow.Core
         public int clearXp = 15;            // XP on portal clear (+ rooms×3)
         public string unlockedByRouteId;    // null/empty = unlocked from start; else clear that route first
         public List<string> monsterIds = new List<string>();
+        // Design v2 deep dungeons (ticket 12): floors (0 = tuning.dungeonFloors), a boss every bossEvery floors
+        // (0 = only on the last), and optionally which monster is each boss (boss 1, boss 2, …; empty = the route's toughest).
+        public int floors, bossEvery;
+        public List<string> bossIds = new List<string>();
         public List<string> gatherIngredientIds = new List<string>();
         public List<string> materialIds = new List<string>();   // building materials monsters here drop (contentVersion 13)
         // ── story & gates (contentVersion 4) ──

@@ -287,7 +287,10 @@ namespace HearthHollow.Core
 
         public bool IsRouteUnlocked(string routeId) { return Economy.IsRouteUnlocked(Content, Profile, routeId); }
 
-        public bool StartRun(string routeId)
+        public bool StartRun(string routeId) { return StartRun(routeId, 1); }
+
+        /// Start a run, optionally from a shortcut floor (one past a boss you've beaten; ticket 12).
+        public bool StartRun(string routeId, int startFloor)
         {
             if (Phase != Phase.Hearth) return false;
             if (!ClassAvailable(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
@@ -309,7 +312,8 @@ namespace HearthHollow.Core
             Profile.runsStarted++;
             Recompute();
             Run.hp = Stats.maxHp;
-            if (UseDungeon) BeginDungeon(); else Phase = Phase.Explore;
+            if (!DungeonRules.StartFloors(Content, Profile, routeId).Contains(startFloor)) startFloor = 1;
+            if (UseDungeon) BeginDungeon(startFloor); else Phase = Phase.Explore;
             LastSummary = null;
             var r = Content.Route(routeId);
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));

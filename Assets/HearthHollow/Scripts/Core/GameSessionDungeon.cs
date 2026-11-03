@@ -15,11 +15,11 @@ namespace HearthHollow.Core
         /// Damage multiplier on incoming hits while the Cook's Hearty Snack guard is up (set by the Unity side).
         public float DungeonGuardMult = 1f;
 
-        private void BeginDungeon()
+        private void BeginDungeon(int startFloor = 1)
         {
             Run.dungeon = true;
-            Run.floor = 1;
-            Run.floorsTotal = Math.Max(1, T.dungeonFloors);
+            Run.floorsTotal = DungeonRules.Floors(Content, Run.routeId);
+            Run.floor = Math.Max(1, Math.Min(Run.floorsTotal, startFloor));   // a shortcut starts deeper (ticket 12)
             ReachedFloor();
             Run.dungeonSeed = _rng.Range(1, int.MaxValue - 1);
             Run.tiles.Clear();          // no fog grid in the dungeon
@@ -30,6 +30,11 @@ namespace HearthHollow.Core
         // ───────────── queries ─────────────
         public int DungeonDifficulty { get { return Run != null ? DungeonRules.Difficulty(Content, Run) : 0; } }
         public bool DungeonOnLastFloor { get { return Run != null && Run.floor >= Run.floorsTotal; } }
+        /// A boss guards this floor (every 5th floor in a deep dungeon, and always the last).
+        public bool DungeonBossFloor { get { return Run != null && DungeonRules.IsBossFloor(Content, Run.routeId, Run.floor); } }
+        /// This floor offers the way home (an exit, and the ladder asks deeper-or-home); between those floors the ladder just goes down.
+        public bool DungeonHomeChoice { get { return Run != null && DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor); } }
+        public List<int> StartFloors(string routeId) { return DungeonRules.StartFloors(Content, Profile, routeId); }
 
         public EnemyStats DungeonEnemy(string monsterId, bool elite, bool boss) { return DungeonRules.Enemy(Content, Run, monsterId, elite, boss); }
 
@@ -267,7 +272,7 @@ namespace HearthHollow.Core
             Run.floor++;
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
             ArcEvent(ArcTrigger.FirstLadder);   // opening arc: old boots (the dash) by the ladder
-            Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (Run.floor == Run.floorsTotal ? " — something big waits below" : ""));
+            Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : !DungeonHomeChoice ? " — no way home on this floor; find the ladder" : ""));
             Touch(false);
             return true;
         }

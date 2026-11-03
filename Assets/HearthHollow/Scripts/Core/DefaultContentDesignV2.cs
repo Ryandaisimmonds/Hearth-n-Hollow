@@ -10,6 +10,7 @@
 // v29 (ticket 10): the Cook's move pool. Pan & Ladle, Skewer Toss and Roll from the start; Butter Slide, Flambé,
 // Grand Feast, Hot Pot, Cookfire and a second Ultimate (Five-Alarm Chili) unlock along the arc, learned in town.
 // The Cook's other old moves (Skewer, Frying Pan, Rolling Pin) leave the pool.
+// v30 (ticket 12): deep dungeons. The slice's Meadow is 10 floors with a boss every 5; Chili Ridge is 5 floors.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -109,6 +110,14 @@ namespace HearthHollow.Core
             var u = c.moveUnlocks.Find(x => x != null && x.moveId == moveId);
             if (u == null) { u = new MoveUnlock { moveId = moveId }; c.moveUnlocks.Add(u); }
             u.kind = kind; u.routeId = routeId; u.floor = floor; u.learnAt = learnAt;
+        }
+
+        static void DeepDungeons30(GameContent c)
+        {
+            var meadow = c.Route("meadow");
+            if (meadow != null) { meadow.floors = 10; meadow.bossEvery = 5; }
+            var chili = c.Route("chili");
+            if (chili != null) { chili.floors = 5; chili.bossEvery = 5; }
         }
 
         static void Elements26(GameContent c)

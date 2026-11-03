@@ -263,8 +263,15 @@ MonoBehaviour:
   silhouetteAbove: 0.9
   floorLight:
   - 1
-  - 0.65
-  - 0.4
+  - 0.88
+  - 0.76
+  - 0.66
+  - 0.58
+  - 0.5
+  - 0.44
+  - 0.38
+  - 0.34
+  - 0.3
   bossRoomLight: 0.3
   caveLight: 0.8
   mealReach: 0.1
@@ -279,9 +286,16 @@ MonoBehaviour:
   shyNerveSeconds: 2.5
   shyBraveSpeed: 0.55
   shadowChance:
-  - 0.05
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   - 0.12
+  - 0.16
   - 0.2
+  - 0.25
+  - 0.3
   shadowDarkDamage: 0.5
   shadowLitBonus: 0.5
   flareStunReach: 0.6

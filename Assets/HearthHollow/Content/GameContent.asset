@@ -114,6 +114,11 @@ MonoBehaviour:
       qualityPrimeChance: 0.05
       qualityNudgeFine: 0.15
       qualityNudgePrime: 0.1
+      cookGameSeconds: 1.6
+      cookGameTarget: 0.72
+      cookGamePerfect: 0.1
+      cookGameGood: 0.3
+      cookGameGoodNudge: 0.5
       guardMult: 0.5
       jackpotChance: 0.05
       mealPantrySlots: 6
@@ -1293,6 +1298,9 @@ MonoBehaviour:
       monsterIds:
       - slime
       - boar
+      floors: 10
+      bossEvery: 5
+      bossIds: []
       gatherIngredientIds:
       - herbs
       - wheat
@@ -1323,6 +1331,9 @@ MonoBehaviour:
       - boar
       - bat
       - wolf
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - berries
       - mushroom
@@ -1355,6 +1366,9 @@ MonoBehaviour:
       - crab
       - slime
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - salt
       - fish
@@ -1387,6 +1401,9 @@ MonoBehaviour:
       - wolf
       - shaman
       - dragon
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - cave_egg
       - truffle
@@ -1420,6 +1437,9 @@ MonoBehaviour:
       - boar
       - wolf
       - shaman
+      floors: 5
+      bossEvery: 5
+      bossIds: []
       gatherIngredientIds:
       - chili
       - garlic
@@ -1453,6 +1473,9 @@ MonoBehaviour:
       - shaman
       - crab
       - dragon
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - ember_meat
       - fire_honey
@@ -1485,6 +1508,9 @@ MonoBehaviour:
       - wolf
       - crab
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - ginger
       - frost_berry
@@ -1518,6 +1544,9 @@ MonoBehaviour:
       - shaman
       - bat
       - dragon
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - ember_meat
       - frost_berry
@@ -1550,6 +1579,9 @@ MonoBehaviour:
       - boar
       - wolf
       - slime
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - wheat
       - berries
@@ -1581,6 +1613,9 @@ MonoBehaviour:
       monsterIds:
       - bat
       - slime
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - nettle
       - mint
@@ -1613,6 +1648,9 @@ MonoBehaviour:
       - slime
       - crab
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - mushroom
       - nettle
@@ -1645,6 +1683,9 @@ MonoBehaviour:
       - bat
       - crab
       - slime
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - glowcap
       - cave_egg
@@ -1677,6 +1718,9 @@ MonoBehaviour:
       - boar
       - wolf
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - garlic
       - salt
@@ -1710,6 +1754,9 @@ MonoBehaviour:
       - bat
       - wolf
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - chili
       - garlic
@@ -1742,6 +1789,9 @@ MonoBehaviour:
       - bat
       - crab
       - wolf
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - ginger
       - berries
@@ -1774,6 +1824,9 @@ MonoBehaviour:
       - bat
       - boar
       - crab
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - fire_honey
       - berries
@@ -1806,6 +1859,9 @@ MonoBehaviour:
       - slime
       - boar
       - shaman
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - truffle
       - cave_egg
@@ -1839,6 +1895,9 @@ MonoBehaviour:
       - wolf
       - shaman
       - dragon
+      floors: 0
+      bossEvery: 0
+      bossIds: []
       gatherIngredientIds:
       - frost_berry
       - ginger
@@ -4876,7 +4935,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 29
+    contentVersion: 30
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

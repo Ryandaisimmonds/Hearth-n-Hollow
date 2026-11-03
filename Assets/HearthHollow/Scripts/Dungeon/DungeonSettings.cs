@@ -99,7 +99,7 @@ namespace HearthHollow.Dungeon
         public float silhouetteBelow = 0.3f, silhouetteAbove = 0.9f;
 
         [Header("Darkness by depth (light plan step 5)")]
-        [Tooltip("Room light × this on floor 1, 2, 3 (later floors use the last value).")] public float[] floorLight = { 1f, 0.65f, 0.4f };
+        [Tooltip("Room light × this on floor 1, 2, 3… (later floors use the last value). Design v2: deep dungeons darken over 10 floors.")] public float[] floorLight = { 1f, 0.88f, 0.76f, 0.66f, 0.58f, 0.5f, 0.44f, 0.38f, 0.34f, 0.3f };
         [Tooltip("Room light × this in a boss room until the boss is down.")] [Range(0.05f, 1f)] public float bossRoomLight = 0.3f;
         [Tooltip("Caves (mushroom / crystal / lava routes) start darker: room light × this.")] [Range(0.1f, 1f)] public float caveLight = 0.8f;
 
@@ -116,7 +116,7 @@ namespace HearthHollow.Dungeon
         [Tooltip("Light-shy monsters circle round a light for about this long, then lose patience and push through it.")] public float shyNerveSeconds = 2.5f;
         [Tooltip("Speed × this while a light-shy monster pushes through light.")] public float shyBraveSpeed = 0.55f;
 
-        [Tooltip("Chance a monster is a shadow creature on floor 1, 2, 3… (caves × 1.5; never bosses or elites).")] public float[] shadowChance = { 0.05f, 0.12f, 0.2f };
+        [Tooltip("Chance a monster is a shadow creature on floor 1, 2, 3… (caves × 1.5; never bosses or elites).")] public float[] shadowChance = { 0f, 0f, 0f, 0f, 0f, 0.12f, 0.16f, 0.2f, 0.25f, 0.3f };   // Design v2: shadow creatures from floor 6
         [Tooltip("Shadow creatures: damage taken × this while in the dark, + this bonus while lit.")] public float shadowDarkDamage = 0.5f, shadowLitBonus = 0.5f;
         [Tooltip("Flare stuns shadow creatures within this share of its radius, for this long.")] public float flareStunReach = 0.6f, flareStunSeconds = 2.5f;
         [Tooltip("Out of a fight (calm or cleared room), Flare's cooldown is only this long, so you can sweep for secrets.")] public float flareCalmCooldown = 2f;
