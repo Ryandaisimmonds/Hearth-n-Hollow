@@ -12,7 +12,7 @@ namespace HearthHollow.Core
 {
     public static partial class DefaultContent
     {
-        public const int LatestContentVersion = 27;
+        public const int LatestContentVersion = 28;
 
         static string F(float v) { return v.ToString("R", CultureInfo.InvariantCulture); }
 
@@ -158,7 +158,6 @@ namespace HearthHollow.Core
                 var f = fresh.classes.Find(x => x.id == cls.id);
                 if (f == null) continue;
                 if (old.Contains(Sig(cls))) { cls.baseMaxHp = f.baseMaxHp; cls.description = f.description; }
-                if (cls.favouriteBonus <= 0f) { cls.favouriteStation = f.favouriteStation; cls.favouriteBonus = f.favouriteBonus; }
             }
             for (int i = 0; i < c.synergies.Count; i++)
             {

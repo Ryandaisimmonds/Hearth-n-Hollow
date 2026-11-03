@@ -150,9 +150,8 @@ namespace HearthHollow.Core
         public int baseMaxHp = 20;
         public float damageMult = 1f;       // Warden 1.15
         public float gatherZoneMult = 1f;   // Ranger wider golden (perfect) zone, e.g. 1.6
-        public float mealBuffMult = 1f;     // Cook 1.25
-        public Station favouriteStation;    // meals from this station count extra for this class
-        public float favouriteBonus;        // e.g. 0.5 = favourite meals ×1.5 (0 = no favourite)
+        public float mealBuffMult = 1f;     // every meal stat for this class (Design v2: Cook 1.1)
+        public List<StatMod> mealStatMults = new List<StatMod>();   // per-stat lens on meals (value = multiplier: strong 1.25, weak 0.8)
         public SkillData skill = new SkillData();   // old turn-based fights (fog grid) only
         // real-time dungeon: the moves a fresh character starts with, and the names of its three tree branches
         public string starterAttack, starterSkill, starterDash;

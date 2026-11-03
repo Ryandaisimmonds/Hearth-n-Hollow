@@ -40,6 +40,7 @@ namespace HearthHollow.Core
             DesignV2Cuts25(c);       // DefaultContentDesignV2.cs: no Darkness hazard, no cut-system text
             Elements26(c);           // DefaultContentDesignV2.cs: moves carry an element
             Cooking27(c);            // DefaultContentDesignV2.cs: cooking v10 (element slot, quality, tiers, light combos)
+            Classes28(c);            // DefaultContentDesignV2.cs: minimal base stats, per-stat class meal lens
             return c;
         }
 
@@ -56,7 +57,6 @@ namespace HearthHollow.Core
                 id = ClassId.Warden, name = "Warden", emoji = "⚔️", role = "Bruiser",
                 description = "A steady guardian of the campfire. Hits 15% harder. Loves the BBQ: grilled meals are 50% stronger.",
                 baseMaxHp = 16, damageMult = 1.15f, gatherZoneMult = 1f, mealBuffMult = 1f,
-                favouriteStation = Station.BBQ, favouriteBonus = 0.5f,
                 skill = new SkillData { kind = SkillKind.Cleave, name = "Cleave", emoji = "🪓", cooldownTurns = 3, value = 1.75f,
                     description = "One mighty swing for ×1.75 damage. Can crit." }
             });
@@ -65,7 +65,6 @@ namespace HearthHollow.Core
                 id = ClassId.Ranger, name = "Ranger", emoji = "🏹", role = "Forager",
                 description = "Knows the wilds by heart. Much wider golden gather zone. Lives on trail food: sandwiches are 50% stronger.",
                 baseMaxHp = 12, damageMult = 1f, gatherZoneMult = 1.6f, mealBuffMult = 1f,
-                favouriteStation = Station.Sandwich, favouriteBonus = 0.5f,
                 skill = new SkillData { kind = SkillKind.Volley, name = "Volley", emoji = "🎯", cooldownTurns = 3, value = 0.75f,
                     description = "Two quick arrows for ×0.75 damage each. Each can crit." }
             });
@@ -74,7 +73,6 @@ namespace HearthHollow.Core
                 id = ClassId.Cook, name = "Cook", emoji = "🍳", role = "Support",
                 description = "Every meal tastes like home: all meals 25% stronger, and pot meals 50% on top.",
                 baseMaxHp = 14, damageMult = 1f, gatherZoneMult = 1f, mealBuffMult = 1.25f,
-                favouriteStation = Station.Pot, favouriteBonus = 0.5f,
                 skill = new SkillData { kind = SkillKind.HeartySnack, name = "Hearty Snack", emoji = "🥐", cooldownTurns = 3, value = 12f,
                     description = "Munch a snack: heal 12 and guard this turn." }
             });

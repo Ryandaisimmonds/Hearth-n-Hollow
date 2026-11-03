@@ -71,6 +71,8 @@ namespace HearthHollow.Core
         /// The element a meal infuses (None if its slot is empty or guards).
         public static Element InfusionOf(GameContent c, string accelId) { var i = SlotIngredient(c, accelId); return i != null ? i.infuse : Element.None; }
         public static Element GuardOf(GameContent c, string accelId) { var i = SlotIngredient(c, accelId); return i != null ? i.guard : Element.None; }
+        /// The element a meal's element slot carries, infused or guarded (None = empty slot) — tints its card.
+        public static Element SlotElement(GameContent c, string accelId) { var e = InfusionOf(c, accelId); return e != Element.None ? e : GuardOf(c, accelId); }
 
         /// The run's infused element from a set of meals: the first infusing meal (a tray only ever holds one).
         public static Element Infusion(GameContent c, List<EatenMeal> meals)
@@ -273,8 +275,8 @@ namespace HearthHollow.Core
             var list = new List<StatMod>();
             var r = c.Recipe(m.recipeId);
             if (r == null) return list;
-            float mult = GradeMult(c.tuning, m.grade) * Meals.ClassMult(cls, r) * m.potency;
-            if (r.buffs != null) foreach (var b in r.buffs) Add(list, b.stat, b.value * mult);
+            float mult = GradeMult(c.tuning, m.grade) * m.potency;
+            if (r.buffs != null) foreach (var b in r.buffs) Add(list, b.stat, b.value * mult * Meals.StatMult(cls, b.stat));
             return list;
         }
 

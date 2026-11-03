@@ -93,6 +93,53 @@ namespace HearthHollow.UI
             return m.stat + " " + Num(v);
         }
 
+        /// Tints a meal card / tray slot / route-board row in its element-slot element's colour (USS el-tint--*).
+        public static void ElementTint(VisualElement e, Element el)
+        {
+            if (e == null || el == Element.None) return;
+            e.AddToClassList("el-tint");
+            e.AddToClassList("el-tint--" + el.ToString().ToLowerInvariant());
+        }
+
+        /// What a meal's element slot does, in words: "🔥 Fire infused" / "❄️ Frost guard".
+        public static string SlotLine(GameContent c, string accelId)
+        {
+            Element inf = Cooking.InfusionOf(c, accelId), g = Cooking.GuardOf(c, accelId);
+            if (inf != Element.None) return Elements.Emoji(inf) + " " + Elements.Name(inf) + " infused";
+            if (g != Element.None) return Elements.Emoji(g) + " " + Elements.Name(g) + " guard";
+            return "";
+        }
+
+        /// One word per meal stat, for "gets more from …" lines.
+        public static string StatWord(BuffStat s)
+        {
+            switch (s)
+            {
+                case BuffStat.DamagePct: return "damage";
+                case BuffStat.MaxHp: return "health";
+                case BuffStat.Armour: return "armour";
+                case BuffStat.CritPct: return "crit";
+                case BuffStat.GatherZonePct: return "gathering";
+                case BuffStat.CoinPct: return "coins";
+                case BuffStat.MoveSpeedPct: return "speed";
+                case BuffStat.HealOnKill: return "heal on kill";
+            }
+            return s.ToString();
+        }
+
+        /// How a class takes its food, in words (no maths): "Gets more from health, armour · less from speed".
+        public static string LensText(ClassData cls)
+        {
+            if (cls == null) return "";
+            var strong = Meals.StrongStats(cls); var weak = Meals.WeakStats(cls);
+            if (strong.Count == 0 && weak.Count == 0)
+                return cls.mealBuffMult > 1.001f ? "Gets a bit more from every meal" : "";
+            var parts = new List<string>();
+            if (strong.Count > 0) parts.Add("Gets more from " + string.Join(", ", strong.ConvertAll(StatWord).ToArray()));
+            if (weak.Count > 0) parts.Add("less from " + string.Join(", ", weak.ConvertAll(StatWord).ToArray()));
+            return string.Join(" · ", parts.ToArray());
+        }
+
         public static string BuffSummary(List<StatMod> buffs, float mult = 1f)
         {
             if (buffs == null || buffs.Count == 0) return "no buffs";

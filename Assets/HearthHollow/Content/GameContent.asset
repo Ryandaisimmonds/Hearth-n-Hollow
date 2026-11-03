@@ -144,13 +144,18 @@ MonoBehaviour:
       name: Warden
       emoji: "\u2694\uFE0F"
       role: Bruiser
-      description: 'A steady guardian of the campfire. Hits 15% harder. Loves the BBQ: grilled meals are 50% stronger.'
-      baseMaxHp: 16
-      damageMult: 1.15
+      description: A steady guardian of the campfire. Gets the most out of hearty food (health, armour); light, quick food does less for her.
+      baseMaxHp: 14
+      damageMult: 1
       gatherZoneMult: 1
       mealBuffMult: 1
-      favouriteStation: 1
-      favouriteBonus: 0.5
+      mealStatMults:
+      - stat: 1
+        value: 1.25
+      - stat: 3
+        value: 1.25
+      - stat: 8
+        value: 0.8
       skill:
         kind: 0
         name: Cleave
@@ -172,13 +177,20 @@ MonoBehaviour:
       name: Ranger
       emoji: "\U0001F3F9"
       role: Forager
-      description: 'Knows the wilds by heart. Much wider golden gather zone. Lives on trail food: sandwiches are 50% stronger.'
-      baseMaxHp: 12
+      description: Knows the wilds by heart. Trail food sharpens her (speed, crit, gathering); stodgy food does less for her.
+      baseMaxHp: 14
       damageMult: 1
-      gatherZoneMult: 1.6
+      gatherZoneMult: 1
       mealBuffMult: 1
-      favouriteStation: 2
-      favouriteBonus: 0.5
+      mealStatMults:
+      - stat: 8
+        value: 1.25
+      - stat: 4
+        value: 1.25
+      - stat: 5
+        value: 1.25
+      - stat: 1
+        value: 0.8
       skill:
         kind: 1
         name: Volley
@@ -200,13 +212,12 @@ MonoBehaviour:
       name: Cook
       emoji: "\U0001F373"
       role: Support
-      description: 'Every meal tastes like home: all meals 25% stronger, and pot meals 50% on top.'
+      description: 'Every meal tastes like home: every meal stat is a little stronger for the Cook.'
       baseMaxHp: 14
       damageMult: 1
       gatherZoneMult: 1
-      mealBuffMult: 1.25
-      favouriteStation: 0
-      favouriteBonus: 0.5
+      mealBuffMult: 1.1
+      mealStatMults: []
       skill:
         kind: 2
         name: Hearty Snack
@@ -228,13 +239,18 @@ MonoBehaviour:
       name: Lamplighter
       emoji: "\U0001F3EE"
       role: Mage
-      description: 'Keeper of the old lamps. Fragile, but her light magic seeks out its targets and breaks guards with ease. Slow-cooked comfort suits her: pot meals are 50% stronger.'
-      baseMaxHp: 11
+      description: Keeper of the old lamps. Her light magic seeks out its targets. Restoring food suits her (heal on kill, coins); armour food does less for her.
+      baseMaxHp: 14
       damageMult: 1
       gatherZoneMult: 1
       mealBuffMult: 1
-      favouriteStation: 0
-      favouriteBonus: 0.5
+      mealStatMults:
+      - stat: 9
+        value: 1.25
+      - stat: 6
+        value: 1.25
+      - stat: 3
+        value: 0.8
       skill:
         kind: 0
         name: 
@@ -256,13 +272,16 @@ MonoBehaviour:
       name: Emberfist
       emoji: "\U0001F44A"
       role: Brawler
-      description: 'A wandering monk who fights with burning fists. Grilled food fuels her: BBQ meals are 50% stronger.'
+      description: A wandering monk who fights with burning fists. Fiery food hits hardest for her (damage); she's too impatient to gather well.
       baseMaxHp: 14
-      damageMult: 1.05
+      damageMult: 1
       gatherZoneMult: 1
       mealBuffMult: 1
-      favouriteStation: 1
-      favouriteBonus: 0.5
+      mealStatMults:
+      - stat: 0
+        value: 1.25
+      - stat: 5
+        value: 0.8
       skill:
         kind: 0
         name: 
@@ -4789,7 +4808,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 27
+    contentVersion: 28
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

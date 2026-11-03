@@ -42,7 +42,7 @@ namespace HearthHollow.UI
         static readonly string[] FilterStatNames = { "HP", "Damage", "Armour", "Crit", "Gather", "Coins", "Speed" };
         int _fStation = -1;          // -1 = all stations, else index into Stations
         int _fStat = -1;             // -1 = any bonus, else index into FilterStats
-        bool _fCanCook, _fFavourite;
+        bool _fCanCook;
         // workshop
         readonly VisualElement _gear, _trinkets, _keyItems;
         readonly Label _gearTitle;
@@ -269,8 +269,8 @@ namespace HearthHollow.UI
             foreach (var c in e.Children()) SetIgnore(c);
         }
 
-        /// What the selected class gets out of this meal (Cook's bonus, favourite station).
-        float MealMult(RecipeData r) { return Meals.ClassMult(C.Class(S.Profile.selectedClass), r); }
+        /// What the selected class gets out of this meal (its per-stat lens), as a plain-quality helping.
+        List<StatMod> ClassBuffs(RecipeData r) { return Cooking.MealBuffs(C, C.Class(S.Profile.selectedClass), new EatenMeal { recipeId = r.id, potency = 1f }); }
 
         // ───────────────────────── refresh ─────────────────────────
         public override void Refresh()
@@ -322,6 +322,7 @@ namespace HearthHollow.UI
                     var pm = i < p.packed.Count ? p.packed[i] : null;
                     float pot = Meals.TrayPotency(C, p.tray, i);
                     slot.AddToClassList("slot--filled");
+                    if (pm != null) UIKit.ElementTint(slot, Cooking.SlotElement(C, pm.accelId));
                     slot.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(p.tray[i]), r != null ? r.emoji : "🍽️", "slot__emoji"), "tray-slot__well"));
                     var txt = UIKit.E("tray-slot__text");
                     var acc = pm != null && !string.IsNullOrEmpty(pm.accelId) ? C.Ingredient(pm.accelId) : null;
@@ -497,7 +498,7 @@ namespace HearthHollow.UI
                 var card = UIKit.E("meal-card", "clickable", "meal-card--always", "meal-card--" + ar.station.ToString().ToLowerInvariant());
                 card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(ar.id), ar.emoji, "meal-card__emoji"), "meal-card__well"));
                 var at = UIKit.E("meal-card__text");
-                at.Add(UIKit.L(ar.name + (Meals.IsFavourite(cls, ar) ? " ⭐" : "") + "  ∞", "meal-card__name"));
+                at.Add(UIKit.L(ar.name + "  ∞", "meal-card__name"));
                 at.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f })), "meal-card__buffs"));
                 at.Add(UIKit.L("Always available · free", "meal-card__accel"));
                 card.Add(at);
@@ -512,12 +513,14 @@ namespace HearthHollow.UI
                 var r = C.Recipe(m.recipeId);
                 var acc = !string.IsNullOrEmpty(m.accelId) ? C.Ingredient(m.accelId) : null;
                 var card = UIKit.E("meal-card", "clickable", "meal-card--grade-" + m.grade, "meal-card--" + (r != null ? r.station.ToString().ToLowerInvariant() : "pot"));
+                UIKit.ElementTint(card, Cooking.SlotElement(C, m.accelId));   // element meals read at a glance
                 card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(m.recipeId), r != null ? r.emoji : "🍽️", "meal-card__emoji"), "meal-card__well"));
                 var txt = UIKit.E("meal-card__text");
                 var nameRow = UIKit.E("meal-card__name-row");
-                nameRow.Add(UIKit.L(Cooking.GradeGem(m.grade) + " " + (r != null ? r.name : m.recipeId) + (Meals.IsFavourite(cls, r) ? " ⭐" : ""), "meal-card__name"));
+                nameRow.Add(UIKit.L(Cooking.GradeGem(m.grade) + " " + (r != null ? r.name : m.recipeId), "meal-card__name"));
                 txt.Add(nameRow);
-                string accTxt = acc != null ? acc.emoji + " " + acc.name + (acc.accelGuard != Hazard.None ? " " + Routes.HazardEmoji(acc.accelGuard) + " guard" : "") : "";
+                string slotLine = acc != null ? UIKit.SlotLine(C, m.accelId) : "";
+                string accTxt = acc != null ? acc.emoji + " " + acc.name + (slotLine.Length > 0 ? " · " + slotLine : "") : "";
                 txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m))), "meal-card__buffs"));
                 if (acc != null) txt.Add(UIKit.L("+ " + accTxt, "meal-card__accel"));
                 card.Add(txt);
@@ -526,7 +529,7 @@ namespace HearthHollow.UI
                 x.tooltip = "Throw out";
                 card.Add(x);
                 card.tooltip = (r != null ? r.name + " — " + r.description + "\n" : "") + Cooking.GradeName(m.grade) + " — stats ×" + UIKit.Num(Cooking.GradeMult(C.tuning, m.grade)) +
-                    (acc != null ? "\nAccelerator: " + accTxt + (acc.accelGuard != Hazard.None ? " — guards against " + Routes.HazardName(acc.accelGuard).ToLower() : "") : "") +
+                    (acc != null ? "\nElement slot: " + accTxt : "") +
                     "\nClick or drag onto the tray to pack it";
                 foreach (var child in card.Children()) if (!(child is Button)) SetIgnore(child);
                 _recipeDrag.AddSource(card, i.ToString(), r != null ? r.emoji : "🍽️", () => p.packed.Count < C.tuning.traySize);
@@ -561,16 +564,12 @@ namespace HearthHollow.UI
             for (int i = 0; i < Stations.Length; i++)
             {
                 int k = i;
-                bool fav = cls != null && cls.favouriteBonus > 0f && cls.favouriteStation == Stations[i];
-                rowA.Add(Chip(StationLabels[i] + (fav ? " ⭐" : ""), _fStation == i, () => _fStation = _fStation == k ? -1 : k,
-                    fav ? "The " + cls.name + "'s favourite: these meals are " + UIKit.Pct(cls.favouriteBonus) + " stronger" : null,
+                rowA.Add(Chip(StationLabels[i], _fStation == i, () => _fStation = _fStation == k ? -1 : k, null,
                     "filter-chip--" + Stations[i].ToString().ToLowerInvariant()));
             }
             rowA.Add(UIKit.E("meal-filters__gap"));
             rowA.Add(UIKit.L("Show", "meal-filters__label"));
             rowA.Add(Chip("✅ Can cook now", _fCanCook, () => _fCanCook = !_fCanCook, "Only meals you have the ingredients for"));
-            if (cls != null && cls.favouriteBonus > 0f)
-                rowA.Add(Chip("⭐ Favourites", _fFavourite, () => _fFavourite = !_fFavourite, "Only the " + cls.name + "'s favourite station"));
             _filters.Add(rowA);
 
             var rowB = UIKit.E("meal-filters__row");
@@ -581,21 +580,21 @@ namespace HearthHollow.UI
                 int k = i;
                 rowB.Add(Chip(Art.StatEmoji(FilterStats[i]) + " " + FilterStatNames[i], _fStat == i, () => _fStat = _fStat == k ? -1 : k));
             }
-            bool any = _fStation >= 0 || _fStat >= 0 || _fCanCook || _fFavourite;
+            bool any = _fStation >= 0 || _fStat >= 0 || _fCanCook;
             if (any)
             {
                 rowB.Add(UIKit.E("meal-filters__gap"));
-                rowB.Add(Chip("✖ Clear", false, () => { _fStation = -1; _fStat = -1; _fCanCook = _fFavourite = false; }, "Show everything again", "filter-chip--clear"));
+                rowB.Add(Chip("✖ Clear", false, () => { _fStation = -1; _fStat = -1; _fCanCook = false; }, "Show everything again", "filter-chip--clear"));
             }
             _filters.Add(rowB);
         }
 
-        /// How much of a stat a meal gives this class (after its favourite/Cook bonus).
+        /// How much of a stat a meal gives this class (after its per-stat lens).
         float StatValue(RecipeData r, BuffStat st)
         {
             float v = 0f;
-            foreach (var m in r.buffs) if (m.stat == st) v += m.value;
-            return v * MealMult(r);
+            foreach (var m in ClassBuffs(r)) if (m.stat == st) v += m.value;
+            return v;
         }
 
         void RefreshRecipes()
@@ -616,7 +615,6 @@ namespace HearthHollow.UI
                 if (_fStation >= 0 && r.station != Stations[_fStation]) continue;
                 if (_fStat >= 0 && StatValue(r, FilterStats[_fStat]) <= 0f) continue;
                 if (_fCanCook && !can) continue;
-                if (_fFavourite && (cls == null || r.station != cls.favouriteStation)) continue;
                 shown.Add(r);
             }
             // one column per station (Pot · BBQ · Sandwich), in menu order
@@ -652,11 +650,10 @@ namespace HearthHollow.UI
             row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(r.id), r.emoji, "recipe-row__emoji"), "recipe-row__well"));
             var mid = UIKit.E("recipe-row__mid");
             var cls = C.Class(p.selectedClass);
-            bool fav = cls != null && cls.favouriteBonus > 0f && cls.favouriteStation == r.station;
             var nameRow = UIKit.E("recipe-row__name-row");
-            nameRow.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★2" : "") + (fav ? " ⭐" : "") + (r.counters != Hazard.None ? "  " + Routes.HazardEmoji(r.counters) : ""), "recipe-row__name"));
+            nameRow.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★2" : "") + (r.counters != Hazard.None ? "  " + Routes.HazardEmoji(r.counters) : ""), "recipe-row__name"));
             mid.Add(nameRow);
-            mid.Add(UIKit.L(UIKit.BuffSummary(r.buffs, MealMult(r)), "recipe-row__buffs"));
+            mid.Add(UIKit.L(UIKit.BuffSummary(ClassBuffs(r)), "recipe-row__buffs"));
             row.Add(mid);
 
             var costs = UIKit.E("recipe-row__costs");
@@ -679,7 +676,7 @@ namespace HearthHollow.UI
             string tip = (r.description ?? "") + (ings.Count > 0 ? "\nNeeds " + string.Join(", ", ings.ToArray()) : "");
             if (r.counters != Hazard.None) tip += "\n" + Routes.HazardEmoji(r.counters) + " guards against " + Routes.HazardName(r.counters).ToLower();
             if (!can && !string.IsNullOrEmpty(reason)) tip += "\n" + reason;
-            row.tooltip = StationLabels[(int)r.station] + (fav ? " ⭐ favourite" : "") + "\nClick to cook (choose ingredient grades and an accelerator)\n" + tip;
+            row.tooltip = StationLabels[(int)r.station] + "\nClick to cook (choose ingredient grades and an accelerator)\n" + tip;
             foreach (var child in row.Children()) SetIgnore(child);
             return row;
         }
@@ -900,7 +897,7 @@ namespace HearthHollow.UI
             _portrait.SetAnim(Art.ClassAnim(p.selectedClass), cls != null ? cls.emoji : "🧑‍🍳");
             _className.text = cls != null ? cls.name : p.selectedClass.ToString();
             _classSub.text = (cls != null && !string.IsNullOrEmpty(cls.role) ? cls.role : "")
-                + (cls != null && cls.favouriteBonus > 0f ? " · loves " + StationLabels[(int)cls.favouriteStation] : "");
+                + (cls != null && UIKit.LensText(cls).Length > 0 ? " · " + UIKit.LensText(cls) : "");
             _xpHolder.Clear();
             RefreshStats();
             RefreshLoadout();

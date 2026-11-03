@@ -64,7 +64,6 @@ namespace HearthHollow.UI
                 card.Add(UIKit.L(cd.name, "class-card__name"));
                 card.Add(UIKit.L(cd.role, "badge", "class-card__role"));
                 card.Add(UIKit.L(BonusText(cd), "class-card__bonus"));
-                if (cd.favouriteBonus > 0f) card.Add(UIKit.L("⭐ Favourite: " + StationName(cd.favouriteStation) + " meals +" + UIKit.Pct(cd.favouriteBonus), "class-card__bonus"));
                 if (!string.IsNullOrEmpty(cd.description)) card.Add(UIKit.L(cd.description, "muted", "class-card__desc"));
                 if (!joined)   // not in your camp yet: say where they join
                 {
@@ -106,17 +105,10 @@ namespace HearthHollow.UI
             foreach (var c in e.Children()) SetIgnore(c);
         }
 
-        static string StationName(Station s)
-        {
-            return s == Station.Pot ? "🍲 Pot" : s == Station.BBQ ? "🍖 BBQ" : "🥪 Sandwich";
-        }
-
         static string BonusText(ClassData cd)
         {
-            if (cd.damageMult > 1.001f) return "+" + UIKit.Pct(cd.damageMult - 1f) + " damage";
-            if (cd.gatherZoneMult > 1.001f) return "Golden gather zone ×" + UIKit.Num(cd.gatherZoneMult);
-            if (cd.mealBuffMult > 1.001f) return "Meal buffs ×" + UIKit.Num(cd.mealBuffMult);
-            return cd.baseMaxHp + " base HP";
+            string lens = UIKit.LensText(cd);   // classes are a lens on food (Design v2)
+            return lens.Length > 0 ? lens : cd.baseMaxHp + " base HP";
         }
 
         public override bool HandleKey(KeyCode key)

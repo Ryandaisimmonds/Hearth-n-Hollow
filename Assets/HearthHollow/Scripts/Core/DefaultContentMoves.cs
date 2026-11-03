@@ -50,6 +50,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 25) { DesignV2Cuts25(c); c.contentVersion = 25; }
             if (c.contentVersion < 26) { Elements26(c); c.contentVersion = 26; }  // moves carry an element (DefaultContentDesignV2.cs)
             if (c.contentVersion < 27) { Cooking27(c); c.contentVersion = 27; }  // cooking v10: element slot, quality, tiers, light combos (DefaultContentDesignV2.cs)  // Design v2 cuts: no Darkness hazard, no Heat/Boost/pips in move text (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 28) { Classes28(c); c.contentVersion = 28; }  // classes are a lens on food: minimal base stats, per-stat meal multipliers (DefaultContentDesignV2.cs)
             return true;
         }
 
@@ -246,7 +247,7 @@ namespace HearthHollow.Core
                 {
                     id = L, name = "Lamplighter", emoji = "🏮", role = "Mage",
                     description = "Keeper of the old lamps. Fragile, but her light magic seeks out its targets and breaks guards with ease. Slow-cooked comfort suits her: pot meals are 50% stronger.",
-                    baseMaxHp = 11, damageMult = 1f, gatherZoneMult = 1f, mealBuffMult = 1f, favouriteStation = Station.Pot, favouriteBonus = 0.5f,
+                    baseMaxHp = 11, damageMult = 1f, gatherZoneMult = 1f, mealBuffMult = 1f,
                 });
             if (c.moves.Exists(x => x.id == "l_wisp")) return;
             MoveData m;
@@ -302,7 +303,7 @@ namespace HearthHollow.Core
                 {
                     id = F, name = "Emberfist", emoji = "👊", role = "Brawler",
                     description = "A wandering monk who fights with burning fists. Every hit stokes her Heat, and her light grows from a candle to a bonfire. Grilled food fuels her: BBQ meals are 50% stronger.",
-                    baseMaxHp = 14, damageMult = 1.05f, gatherZoneMult = 1f, mealBuffMult = 1f, favouriteStation = Station.BBQ, favouriteBonus = 0.5f,
+                    baseMaxHp = 14, damageMult = 1.05f, gatherZoneMult = 1f, mealBuffMult = 1f,
                 });
             if (c.moves.Exists(x => x.id == "e_fists")) return;
             MoveData m;

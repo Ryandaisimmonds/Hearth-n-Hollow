@@ -1657,3 +1657,21 @@ Label { white-space: normal; color: var(--hh-text); }
 
 /* ultimate cards in camp (gold) */
 .load-slot--ult, .who-move--ult { border-left-color: rgb(214, 160, 60); border-right-color: rgb(214, 160, 60); border-top-color: rgb(214, 160, 60); border-bottom-color: rgb(214, 160, 60); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; background-color: rgba(120, 80, 20, 0.35); }
+
+/* ticket 09: a meal with an element slot takes that element's colour (pantry card, tray, route board) */
+.expedition__meal.el-tint { border-radius: 8px; padding: 2px 6px 2px 2px; border-width: 1px; }
+.meal-card.el-tint--fire, .expedition__meal.el-tint--fire { background-color: rgba(255, 115, 30, 0.22); border-color: rgba(255, 115, 30, 0.85); }
+.meal-card.el-tint--fire:hover { background-color: rgba(255, 115, 30, 0.32); }
+.tray-slot.slot--filled.el-tint--fire { -unity-background-image-tint-color: rgb(255, 115, 30); background-color: rgba(255, 115, 30, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(255, 115, 30, 0.9); }
+.meal-card.el-tint--frost, .expedition__meal.el-tint--frost { background-color: rgba(150, 225, 255, 0.22); border-color: rgba(150, 225, 255, 0.85); }
+.meal-card.el-tint--frost:hover { background-color: rgba(150, 225, 255, 0.32); }
+.tray-slot.slot--filled.el-tint--frost { -unity-background-image-tint-color: rgb(150, 225, 255); background-color: rgba(150, 225, 255, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(150, 225, 255, 0.9); }
+.meal-card.el-tint--nature, .expedition__meal.el-tint--nature { background-color: rgba(90, 230, 75, 0.22); border-color: rgba(90, 230, 75, 0.85); }
+.meal-card.el-tint--nature:hover { background-color: rgba(90, 230, 75, 0.32); }
+.tray-slot.slot--filled.el-tint--nature { -unity-background-image-tint-color: rgb(90, 230, 75); background-color: rgba(90, 230, 75, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(90, 230, 75, 0.9); }
+.meal-card.el-tint--water, .expedition__meal.el-tint--water { background-color: rgba(65, 130, 255, 0.22); border-color: rgba(65, 130, 255, 0.85); }
+.meal-card.el-tint--water:hover { background-color: rgba(65, 130, 255, 0.32); }
+.tray-slot.slot--filled.el-tint--water { -unity-background-image-tint-color: rgb(65, 130, 255); background-color: rgba(65, 130, 255, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(65, 130, 255, 0.9); }
+.meal-card.el-tint--light, .expedition__meal.el-tint--light { background-color: rgba(255, 240, 140, 0.22); border-color: rgba(255, 240, 140, 0.85); }
+.meal-card.el-tint--light:hover { background-color: rgba(255, 240, 140, 0.32); }
+.tray-slot.slot--filled.el-tint--light { -unity-background-image-tint-color: rgb(255, 240, 140); background-color: rgba(255, 240, 140, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(255, 240, 140, 0.9); }

@@ -5,6 +5,8 @@
 // v27 (ticket 08): cooking v10. The element slot (infuse / guard) replaces accelerator stats, quality multipliers
 // shrink to ×1.1 / ×1.2, three tier-2 dishes need ingredients found deep, combos become light utility bonuses,
 // and XP bonuses (XP was cut in ticket 04) become coin bonuses.
+// v28 (ticket 09): classes are a lens on food. Everyone starts on the same minimal base stats; each class gets
+// some meal stats ×1.25 and others ×0.8 (the Cook gets every meal ×1.1 instead). Favourite stations go.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -34,6 +36,46 @@ namespace HearthHollow.Core
             if (det != null) det.description = "One big explosion of fire around you (Fire).";
             var sn = c.Move("e_ult");
             if (sn != null) sn.description = "Pull in every ember, then a huge explosion of fire around you (Fire) that stuns.";
+        }
+
+        public const int MinimalBaseHp = 14;
+
+        static void Classes28(GameContent c)
+        {
+            foreach (var k in c.classes)
+            {
+                if (k == null) continue;
+                k.baseMaxHp = MinimalBaseHp; k.damageMult = 1f; k.gatherZoneMult = 1f; k.mealBuffMult = 1f;
+                k.mealStatMults = new List<StatMod>();
+                switch (k.id)
+                {
+                    case ClassId.Warden:
+                        Lens(k, 1.25f, BuffStat.MaxHp, BuffStat.Armour); Lens(k, 0.8f, BuffStat.MoveSpeedPct);
+                        k.description = "A steady guardian of the campfire. Gets the most out of hearty food (health, armour); light, quick food does less for her.";
+                        break;
+                    case ClassId.Ranger:
+                        Lens(k, 1.25f, BuffStat.MoveSpeedPct, BuffStat.CritPct, BuffStat.GatherZonePct); Lens(k, 0.8f, BuffStat.MaxHp);
+                        k.description = "Knows the wilds by heart. Trail food sharpens her (speed, crit, gathering); stodgy food does less for her.";
+                        break;
+                    case ClassId.Cook:
+                        k.mealBuffMult = 1.1f;
+                        k.description = "Every meal tastes like home: every meal stat is a little stronger for the Cook.";
+                        break;
+                    case ClassId.Lamplighter:
+                        Lens(k, 1.25f, BuffStat.HealOnKill, BuffStat.CoinPct); Lens(k, 0.8f, BuffStat.Armour);
+                        k.description = "Keeper of the old lamps. Her light magic seeks out its targets. Restoring food suits her (heal on kill, coins); armour food does less for her.";
+                        break;
+                    case ClassId.Emberfist:
+                        Lens(k, 1.25f, BuffStat.DamagePct); Lens(k, 0.8f, BuffStat.GatherZonePct);
+                        k.description = "A wandering monk who fights with burning fists. Fiery food hits hardest for her (damage); she's too impatient to gather well.";
+                        break;
+                }
+            }
+        }
+
+        static void Lens(ClassData k, float mult, params BuffStat[] stats)
+        {
+            foreach (var st in stats) k.mealStatMults.Add(new StatMod { stat = st, value = mult });
         }
 
         static void Elements26(GameContent c)

@@ -111,28 +111,36 @@ namespace HearthHollow.Core
             return best;
         }
 
-        /// How much a class gets out of one meal: the class's general meal bonus (Cook ×1.25), times its
-        /// favourite-station bonus when the meal comes from that station (Warden BBQ, Ranger Sandwich, Cook Pot).
-        public static float ClassMult(ClassData cls, RecipeData r)
+        /// How much a class gets out of one meal stat (Design v2): its every-meal bonus (Cook ×1.1) times its
+        /// per-stat lens (strong ×1.25, weak ×0.8). Classes are a lens on food, not a power track.
+        public static float StatMult(ClassData cls, BuffStat st)
         {
             if (cls == null) return 1f;
-            float m = cls.mealBuffMult;
-            if (IsFavourite(cls, r)) m *= 1f + cls.favouriteBonus;
+            float m = cls.mealBuffMult > 0f ? cls.mealBuffMult : 1f;
+            if (cls.mealStatMults != null)
+                for (int i = 0; i < cls.mealStatMults.Count; i++)
+                    if (cls.mealStatMults[i] != null && cls.mealStatMults[i].stat == st) m *= cls.mealStatMults[i].value;
             return m;
         }
 
-        public static bool IsFavourite(ClassData cls, RecipeData r)
+        /// Stats this class gets extra (≥1.2×) or less (≤0.85×) of from meals — for "strong / weak" labels.
+        public static List<BuffStat> StrongStats(ClassData cls) { return Lens(cls, true); }
+        public static List<BuffStat> WeakStats(ClassData cls) { return Lens(cls, false); }
+        static List<BuffStat> Lens(ClassData cls, bool strong)
         {
-            return cls != null && r != null && cls.favouriteBonus > 0f && r.station == cls.favouriteStation;
+            var list = new List<BuffStat>();
+            if (cls == null || cls.mealStatMults == null) return list;
+            foreach (var s in cls.mealStatMults)
+                if (s != null && (strong ? s.value > 1.001f : s.value < 0.999f) && !list.Contains(s.stat)) list.Add(s.stat);
+            return list;
         }
 
         /// Everything a set of meals adds, indexed by (int)BuffStat: each meal's buffs × helping potency ×
-        /// class meal bonus (incl. favourite station) × combo multipliers, plus combo bonuses (incl. Comfort Food's extra helping).
+        /// class meal lens (per stat) × combo multipliers, plus combo bonuses (incl. Comfort Food's extra helping).
         public static float[] TotalBonus(GameContent c, ClassData cls, List<EatenMeal> meals)
         {
             float[] sum = new float[Enum.GetValues(typeof(BuffStat)).Length];
             if (meals == null || meals.Count == 0) return sum;
-            float mealMult = cls != null ? cls.mealBuffMult : 1f;
             var recipes = new List<RecipeData>();
             for (int i = 0; i < meals.Count; i++) { RecipeData r = c.Recipe(meals[i].recipeId); if (r != null) recipes.Add(r); }
 
@@ -143,15 +151,15 @@ namespace HearthHollow.Core
                 synMult *= active[i].allBuffMultiplier;
                 if (active[i].bonus != null)
                     for (int b = 0; b < active[i].bonus.Count; b++)
-                        sum[(int)active[i].bonus[b].stat] += active[i].bonus[b].value * mealMult;
+                        sum[(int)active[i].bonus[b].stat] += active[i].bonus[b].value * StatMult(cls, active[i].bonus[b].stat);
             }
             for (int i = 0; i < meals.Count; i++)
             {
                 RecipeData r = c.Recipe(meals[i].recipeId);
                 if (r == null || r.buffs == null) continue;
-                float own = ClassMult(cls, r) * Cooking.GradeMult(c.tuning, meals[i].grade);   // a better-graded meal: bigger numbers
+                float own = Cooking.GradeMult(c.tuning, meals[i].grade);   // a better-quality meal: slightly bigger numbers
                 for (int b = 0; b < r.buffs.Count; b++)
-                    sum[(int)r.buffs[b].stat] += r.buffs[b].value * meals[i].potency * own * synMult;
+                    sum[(int)r.buffs[b].stat] += r.buffs[b].value * meals[i].potency * own * StatMult(cls, r.buffs[b].stat) * synMult;
             }
             for (int i = 0; i < active.Count; i++)
             {
@@ -159,9 +167,9 @@ namespace HearthHollow.Core
                 int n; RecipeData rep = MostRepeated(recipes, out n);
                 if (rep == null || rep.buffs == null) continue;
                 EatenMeal first = meals.Find(x => x.recipeId == rep.id);
-                float repMult = ClassMult(cls, rep) * Cooking.GradeMult(c.tuning, first != null ? first.grade : 0);
+                float repMult = Cooking.GradeMult(c.tuning, first != null ? first.grade : 0);
                 for (int b = 0; b < rep.buffs.Count; b++)
-                    sum[(int)rep.buffs[b].stat] += rep.buffs[b].value * active[i].sameRecipeBonus * repMult * synMult;
+                    sum[(int)rep.buffs[b].stat] += rep.buffs[b].value * active[i].sameRecipeBonus * repMult * StatMult(cls, rep.buffs[b].stat) * synMult;
             }
             return sum;
         }

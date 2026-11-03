@@ -83,7 +83,7 @@ namespace HearthHollow.UI
             // header
             _head.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(r.id), r.emoji, "cook-pop__emoji"), "cook-pop__well"));
             var ht = UIKit.E("cook-pop__head-text");
-            ht.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★ Tier 2" : "") + (Meals.IsFavourite(cls, r) ? " ⭐" : ""), "overlay__title", "cook-pop__title"));
+            ht.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★ Tier 2" : ""), "overlay__title", "cook-pop__title"));
             ht.Add(UIKit.L(r.station + " · " + (r.description ?? ""), "small", "muted"));
             _head.Add(ht);
 

@@ -404,11 +404,12 @@ namespace HearthHollow.UI
                     var rec = C.Recipe(p.tray[i]);
                     var pm = i < packed.Count ? packed[i] : null;
                     var row = UIKit.E("expedition__meal");
+                    if (pm != null) UIKit.ElementTint(row, Cooking.SlotElement(C, pm.accelId));
                     row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(p.tray[i]), rec != null ? rec.emoji : "🍽️", "expedition__meal-pic"), "item-frame--sm"));
                     var acc = pm != null && !string.IsNullOrEmpty(pm.accelId) ? C.Ingredient(pm.accelId) : null;
-                    string tag = acc != null && acc.accelGuard != Hazard.None ? "  " + Routes.HazardEmoji(acc.accelGuard) + "✓" : "";
+                    string tag = acc != null && UIKit.SlotLine(C, pm.accelId).Length > 0 ? "  " + UIKit.SlotLine(C, pm.accelId) : "";
                     row.Add(UIKit.L((pm != null ? Cooking.GradeGem(pm.grade) + " " : "") + (rec != null ? rec.name : p.tray[i]) + (acc != null ? " + " + acc.emoji : "") + tag, "expedition__meal-name"));
-                    if (rec != null && pm != null) row.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, pm)) + (Meals.IsFavourite(cls, rec) ? " ⭐" : ""), "expedition__meal-buffs"));
+                    if (rec != null && pm != null) row.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, pm)), "expedition__meal-buffs"));
                     mealBox.Add(row);
                 }
                 var syns = Meals.ActiveSynergies(C, packed);
