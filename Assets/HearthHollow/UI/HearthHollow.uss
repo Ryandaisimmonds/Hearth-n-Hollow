@@ -1675,3 +1675,8 @@ Label { white-space: normal; color: var(--hh-text); }
 .meal-card.el-tint--light, .expedition__meal.el-tint--light { background-color: rgba(255, 240, 140, 0.22); border-color: rgba(255, 240, 140, 0.85); }
 .meal-card.el-tint--light:hover { background-color: rgba(255, 240, 140, 0.32); }
 .tray-slot.slot--filled.el-tint--light { -unity-background-image-tint-color: rgb(255, 240, 140); background-color: rgba(255, 240, 140, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(255, 240, 140, 0.9); }
+
+/* ticket 10: a move unlocked along the arc, waiting to be learned */
+.move-row--ready { border-color: rgba(255, 210, 90, 0.85); background-color: rgba(120, 90, 20, 0.35); }
+.move-row__learn { margin-left: auto; flex-shrink: 0; }
+.skill-detail__unlock { margin-top: 6px; color: var(--hh-gold-soft); white-space: normal; }

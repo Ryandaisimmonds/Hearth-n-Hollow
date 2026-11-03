@@ -3232,6 +3232,74 @@ MonoBehaviour:
       aimAssist: 0
       boostShape: 0
       boostStep: 0
+    - id: c_ult2
+      name: Five-Alarm Chili
+      emoji: "\U0001F336\uFE0F"
+      description: 'Bite the hottest chili in the bag: a moment later a huge burst of fire erupts around you (Fire), hitting and stunning everything nearby.'
+      owner: 2
+      anyClass: 0
+      slot: 3
+      kind: 48
+      power: 3
+      cooldown: 22.5
+      range: 1
+      radius: 3.4
+      duration: 1.5
+      value: 0
+      hitType: 3
+      hitType2: 3
+      element: 1
+      element2: 0
+      lightRadius: 12
+      lightIntensity: 2.6
+      lightColour: 
+      count: 1
+      spread: 0
+      homing: 0
+      aimAssist: 0
+      boostShape: 0
+      boostStep: 0
+    moveUnlocks:
+    - moveId: c_ladle
+      kind: 0
+      routeId: 
+      floor: 0
+      learnAt: 
+    - moveId: c_snack
+      kind: 0
+      routeId: 
+      floor: 0
+      learnAt: 
+    - moveId: c_slide
+      kind: 1
+      routeId: meadow
+      floor: 2
+      learnAt: kitchen
+    - moveId: c_pepper
+      kind: 1
+      routeId: meadow
+      floor: 3
+      learnAt: kitchen
+    - moveId: c_ult
+      kind: 1
+      routeId: meadow
+      floor: 4
+      learnAt: yard
+    - moveId: c_hotpot
+      kind: 2
+      routeId: meadow
+      floor: 5
+      learnAt: kitchen
+    - moveId: c_picnic
+      kind: 1
+      routeId: chili
+      floor: 3
+      learnAt: kitchen
+    - moveId: c_ult2
+      kind: 2
+      routeId: chili
+      floor: 5
+      learnAt: yard
     skillNodes:
     - id: w_whetstone
       classId: 0
@@ -4808,7 +4876,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 28
+    contentVersion: 29
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

@@ -91,8 +91,7 @@ namespace HearthHollow.Dungeon
             _class = cls;
             var load = dc.Session.Loadout(cls);
             _atk = load[0]; _skill1 = load[1]; _skill2 = load[2]; _dash = load[3];
-            var cdat = dc.Session.Content.classes.Find(x => x.id == cls);
-            _ult = cdat != null && !string.IsNullOrEmpty(cdat.ultimate) ? dc.Session.Content.moves.Find(x => x.id == cdat.ultimate) : null;
+            _ult = dc.Session.UltimateMove(cls);   // the chosen Ultimate (none until one is learned)
             _ultCd = 0f;   // each run starts with the ultimate ready
             _mods = dc.Session.Mods ?? new CombatMods();
 

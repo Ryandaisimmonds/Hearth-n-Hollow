@@ -62,7 +62,7 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void Loadout_NoLevels_EveryOwnSkillCanGoInEitherSkillSlot()
+        public void Loadout_NoLevels_EveryOwnedSkillCanGoInEitherSkillSlot()
         {
             var s = new GameSession(_c, null, 1);
             foreach (var cd in _c.classes)
@@ -71,6 +71,7 @@ namespace HearthHollow.Tests
                 foreach (var m in s.SlotChoices(cd.id, LoadSlot.Skill2))
                 {
                     if (m.owner != cd.id || m.id == s.Profile.Progress(cd.id).loadSkill1) continue;
+                    if (!Progression.Owns(_c, s.Profile, cd.id, m)) continue;   // ticket 10: locked pool moves are learned first
                     Assert.IsNull(s.EquipBlock(cd.id, LoadSlot.Skill2, m.id), cd.id + " can't put " + m.id + " in the L slot");
                 }
             }

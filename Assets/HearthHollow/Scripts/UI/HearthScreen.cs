@@ -967,9 +967,8 @@ namespace HearthHollow.UI
                 foreach (var ch in card.Children()) SetIgnore(ch);
                 _loadout.Add(card);
             }
-            // the ultimate (C / I), fixed per class
-            var cdat = C.classes.Find(x => x.id == p.selectedClass);
-            var um = cdat != null && !string.IsNullOrEmpty(cdat.ultimate) ? C.moves.Find(x => x.id == cdat.ultimate) : null;
+            // the chosen Ultimate (C / I)
+            var um = S.UltimateMove(p.selectedClass);
             if (um != null)
             {
                 var card = UIKit.E("who-move", "who-move--ult", "clickable");

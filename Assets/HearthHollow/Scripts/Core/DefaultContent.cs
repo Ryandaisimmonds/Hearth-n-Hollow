@@ -41,6 +41,7 @@ namespace HearthHollow.Core
             Elements26(c);           // DefaultContentDesignV2.cs: moves carry an element
             Cooking27(c);            // DefaultContentDesignV2.cs: cooking v10 (element slot, quality, tiers, light combos)
             Classes28(c);            // DefaultContentDesignV2.cs: minimal base stats, per-stat class meal lens
+            CookPool29(c);           // DefaultContentDesignV2.cs: the Cook's move pool + Five-Alarm Chili
             return c;
         }
 

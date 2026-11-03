@@ -7,6 +7,9 @@
 // and XP bonuses (XP was cut in ticket 04) become coin bonuses.
 // v28 (ticket 09): classes are a lens on food. Everyone starts on the same minimal base stats; each class gets
 // some meal stats ×1.25 and others ×0.8 (the Cook gets every meal ×1.1 instead). Favourite stations go.
+// v29 (ticket 10): the Cook's move pool. Pan & Ladle, Skewer Toss and Roll from the start; Butter Slide, Flambé,
+// Grand Feast, Hot Pot, Cookfire and a second Ultimate (Five-Alarm Chili) unlock along the arc, learned in town.
+// The Cook's other old moves (Skewer, Frying Pan, Rolling Pin) leave the pool.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -76,6 +79,36 @@ namespace HearthHollow.Core
         static void Lens(ClassData k, float mult, params BuffStat[] stats)
         {
             foreach (var st in stats) k.mealStatMults.Add(new StatMod { stat = st, value = mult });
+        }
+
+        static void CookPool29(GameContent c)
+        {
+            if (c.moveUnlocks == null) c.moveUnlocks = new List<MoveUnlock>();
+            var cook = c.classes.Find(x => x.id == ClassId.Cook);
+            string sig = cook != null ? cook.ultimate : "c_ult";
+            Ult(c, "c_ult2", ClassId.Cook, MoveKind.Supernova, "Five-Alarm Chili", "🌶️",
+                "Bite the hottest chili in the bag: a moment later a huge burst of fire erupts around you (Fire), hitting and stunning everything nearby.",
+                HitType.Fire, 3.0f, 1f, 3.4f, 1.5f, 0f, 12f);
+            var u2 = c.Move("c_ult2");
+            if (u2 != null) { u2.element = Element.Fire; u2.cooldown = 22.5f; }
+            if (cook != null) cook.ultimate = string.IsNullOrEmpty(sig) ? "c_ult" : sig;   // Grand Feast stays the signature
+
+            Pool(c, "c_ladle", UnlockKind.Start, null, 0, null);
+            Pool(c, "c_snack", UnlockKind.Start, null, 0, null);
+            Pool(c, "c_slide", UnlockKind.ReachFloor, "meadow", 2, "kitchen");
+            Pool(c, "c_pepper", UnlockKind.ReachFloor, "meadow", 3, "kitchen");
+            Pool(c, "c_ult", UnlockKind.ReachFloor, "meadow", 4, "yard");
+            Pool(c, "c_hotpot", UnlockKind.BeatBoss, "meadow", 5, "kitchen");
+            Pool(c, "c_picnic", UnlockKind.ReachFloor, "chili", 3, "kitchen");
+            Pool(c, "c_ult2", UnlockKind.BeatBoss, "chili", 5, "yard");
+        }
+
+        static void Pool(GameContent c, string moveId, UnlockKind kind, string routeId, int floor, string learnAt)
+        {
+            if (c.Move(moveId) == null) return;
+            var u = c.moveUnlocks.Find(x => x != null && x.moveId == moveId);
+            if (u == null) { u = new MoveUnlock { moveId = moveId }; c.moveUnlocks.Add(u); }
+            u.kind = kind; u.routeId = routeId; u.floor = floor; u.learnAt = learnAt;
         }
 
         static void Elements26(GameContent c)

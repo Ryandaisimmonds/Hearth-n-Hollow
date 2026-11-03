@@ -20,6 +20,7 @@ namespace HearthHollow.Core
             Run.dungeon = true;
             Run.floor = 1;
             Run.floorsTotal = Math.Max(1, T.dungeonFloors);
+            ReachedFloor();
             Run.dungeonSeed = _rng.Range(1, int.MaxValue - 1);
             Run.tiles.Clear();          // no fog grid in the dungeon
             DungeonGuardMult = 1f;
@@ -173,6 +174,7 @@ namespace HearthHollow.Core
             Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
             Emit(new GameEvent(GameEventType.Xp, xp, false, "+" + xp + " XP"));
             DropLoot(f);
+            if (e.boss) BeatBoss();   // arc step (ticket 10)
             if (e.boss) { string ing = PickRouteIngredient(); if (ing != null) AddLoot(ing, 2, false, true); DropMaterial(false, true); }
             string trinket = Gear.RollDrop(Content, Profile, e.boss, e.elite, _rng);   // rare: kept straight away, even if you fall
             if (trinket != null && Gear.Give(Content, Profile, trinket))
@@ -263,6 +265,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || Run.floor >= Run.floorsTotal) return false;
             Run.floor++;
+            ReachedFloor();   // arc steps can unlock moves (ticket 10)
             ArcEvent(ArcTrigger.FirstLadder);   // opening arc: old boots (the dash) by the ladder
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (Run.floor == Run.floorsTotal ? " — something big waits below" : ""));
             Touch(false);

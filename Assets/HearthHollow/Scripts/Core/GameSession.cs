@@ -39,6 +39,8 @@ namespace HearthHollow.Core
             if (Profile.saveVersion < 8) Profile.saveVersion = 8;
             if (Profile.knownElements == null) Profile.knownElements = new System.Collections.Generic.List<KnownElement>();
             if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2 (ticket 07): element discovery starts empty   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
+            UpgradeArcProgress();                     // deepest floors / bosses / learned moves (saveVersion 11, ticket 10)
+            UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
             _rng = new Rng(seed);

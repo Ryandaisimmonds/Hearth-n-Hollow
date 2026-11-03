@@ -40,7 +40,9 @@ namespace HearthHollow.Core
     /// Which loadout slot a move fits: Attack (J), Skill (K or U), Dash (Space).
     public enum MoveSlot { Attack, Skill, Dash, Ultimate }   // Ultimate: one per class on its own button (contentVersion 20)
     /// The four loadout slots.
-    public enum LoadSlot { Attack, Skill1, Skill2, Dash }
+    public enum LoadSlot { Attack, Skill1, Skill2, Dash, Ultimate }
+    /// Design v2 (ticket 10): what unlocks a move. Start = known from the beginning; the rest are arc steps.
+    public enum UnlockKind { Start, ReachFloor, BeatBoss }
     /// How a move behaves in the dungeon (implemented by the Unity PlayerController). Append only — saved by value.
     public enum MoveKind
     {
@@ -91,6 +93,13 @@ namespace HearthHollow.Core
 
     // ───────────────────────── Content (designer data) ─────────────────────────
     [Serializable] public class StatMod { public BuffStat stat; public float value; }
+    /// One move in a class's pool and the arc step that unlocks it; once unlocked it's learned in town.
+    [Serializable] public class MoveUnlock
+    {
+        public string moveId; public UnlockKind kind; public string routeId; public int floor;
+        public string learnAt;   // where in town it's learned: "kitchen" or "yard"
+    }
+    [Serializable] public class RouteFloor { public string routeId; public int floor; }
 
     [Serializable] public class IngredientData
     {
@@ -391,6 +400,7 @@ namespace HearthHollow.Core
         public List<IngredientCost> starterPantry = new List<IngredientCost>();
         public int starterCoins = 30;
         public List<MoveData> moves = new List<MoveData>();
+        public List<MoveUnlock> moveUnlocks = new List<MoveUnlock>();   // Design v2: a class's move pool and how each move unlocks (a class with none owns all its moves)
         public List<SkillNodeData> skillNodes = new List<SkillNodeData>();
         public int contentVersion;   // 2 = moves + skill trees + level 50; 3 = meals-first rebalance; 4 = story + side dungeons; 5 = darkness, mutators, 4 more side dungeons; 6 = bag tiers; 7 = head/boots + trinkets; 8 = meal rarity (DefaultContent.Upgrade)
         public List<KeyItemData> keyItems = new List<KeyItemData>();
@@ -422,6 +432,7 @@ namespace HearthHollow.Core
         public int weaponTier; public int armourTier;   // indexes into content tiers (armour = Body)
         public int headTier, bootsTier;                 // Workshop head / boots tiers (saveVersion 5; 0 for old saves)
         public string loadAttack, loadSkill1, loadSkill2, loadDash;   // equipped move ids (Skill2 may be borrowed)
+        public string loadUltimate;   // Design v2 (ticket 10): the chosen Ultimate (empty = none learned yet)
     }
 
     /// Combat bonuses from the skill tree, used by the real-time dungeon.
@@ -447,6 +458,9 @@ namespace HearthHollow.Core
         public int campDay;        // day the saved camp belongs to
         public int saveVersion;    // 2 = tray meals only reserve ingredients; they're spent at set-out · 3 = skill trees + loadouts · 4 = bag tiers
         public List<string> keyItems = new List<string>();   // story key items found (kept forever)
+        public List<RouteFloor> deepestFloors = new List<RouteFloor>();   // deepest floor reached per route (ticket 10, saveVersion 11)
+        public List<string> bossesBeaten = new List<string>();            // "routeId:floor" for every boss beaten
+        public List<string> learnedMoves = new List<string>();            // moves learned in town (Start moves are known without learning)
         public List<KnownElement> knownElements = new List<KnownElement>();   // element discovery (saveVersion 9): how each element works on each kind of monster
         public int bagTier;          // index into content bagTiers (saveVersion 4; replaces hasBackpack)
         public List<string> trinkets = new List<string>();          // trinkets owned (kept forever)
