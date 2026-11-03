@@ -74,6 +74,8 @@ namespace HearthHollow.Town
 
             // a short grace period after a menu closes, so the key that closed it doesn't reopen something
             if (!Walking) { _walkSince = Time.unscaledTime; Near = null; PushHud(); return; }
+            // ticket 15: home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
+            if (Session.WrenFireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
             Near = Nearest();
             if (Near != null && Time.unscaledTime - _walkSince > 0.2f && DungeonInput.Interact) Use(Near);
             PushHud();
@@ -379,6 +381,14 @@ namespace HearthHollow.Town
         void TalkToWren()
         {
             var C = Session.Content; var p = Session.Profile;
+            if (Session.WrenFireHintDue)   // ticket 15: the floor-10 boss fears fire; chilies grow on Chili Ridge
+            {
+                var hint = Session.WrenFireHintPages();
+                Session.GiveWrenFireHint();
+                _ui.OpenDialogue("Old Wren", "👵", hint, "🗺️ Open the route board", () => _ui.OpenRoutes());
+                Session.SaveProfile();
+                return;
+            }
             var pages = new List<string>();
             if (!p.metWren)
             {
