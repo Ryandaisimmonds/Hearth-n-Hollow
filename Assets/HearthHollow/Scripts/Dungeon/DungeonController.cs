@@ -487,7 +487,9 @@ namespace HearthHollow.Dungeon
             go.transform.SetParent(room.transform, false);
             go.transform.position = at;
             var e = go.AddComponent<EnemyController>();
-            var art = boss ? (ArtLibrary.GetBoss(monsterId) ?? ArtLibrary.GetMonster(monsterId)) : ArtLibrary.GetMonster(monsterId);   // bosses get their own big sprite
+            var md = Session.Content.Monster(monsterId);
+            string artId = md != null && !string.IsNullOrEmpty(md.artId) ? md.artId : monsterId;   // named bosses borrow a base monster's sprites (ticket 13)
+            var art = boss ? (ArtLibrary.GetBoss(artId) ?? ArtLibrary.GetMonster(artId)) : ArtLibrary.GetMonster(artId);   // bosses get their own big sprite
             e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed);
             // shadow creatures: more the deeper you go, more in caves; never bosses or elites
             if (!boss && !elite && Settings.shadowChance != null && Settings.shadowChance.Length > 0)

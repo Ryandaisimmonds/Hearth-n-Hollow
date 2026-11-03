@@ -100,6 +100,10 @@ namespace HearthHollow.Core
         public string learnAt;   // where in town it's learned: "kitchen" or "yard"
     }
     [Serializable] public class RouteFloor { public string routeId; public int floor; }
+    /// A monster that joins a route's pool from this floor down.
+    [Serializable] public class FloorMonster { public string monsterId; public int minFloor; }
+    /// An ingredient a route's monsters / bosses / hidden forage can give from this floor down (weight vs 1 per gather ingredient).
+    [Serializable] public class FloorDrop { public string ingredientId; public int minFloor; public float weight = 1f; }
 
     [Serializable] public class IngredientData
     {
@@ -226,6 +230,7 @@ namespace HearthHollow.Core
         public string id; public string name; public string emoji;
         public MonsterBehaviour behaviour; public float hpMult = 1f;  // dragon 1.5
         public bool eliteOnly;
+        public string artId;   // ticket 13: draw with another monster's sprites (a named boss on a base monster's art); empty = id
     }
 
     [Serializable] public class RouteData
@@ -242,6 +247,9 @@ namespace HearthHollow.Core
         // (0 = only on the last), and optionally which monster is each boss (boss 1, boss 2, …; empty = the route's toughest).
         public int floors, bossEvery;
         public List<string> bossIds = new List<string>();
+        // ticket 13: deeper floors add monsters and drops (each from its minFloor down)
+        public List<FloorMonster> floorMonsters = new List<FloorMonster>();
+        public List<FloorDrop> floorDrops = new List<FloorDrop>();
         public List<string> gatherIngredientIds = new List<string>();
         public List<string> materialIds = new List<string>();   // building materials monsters here drop (contentVersion 13)
         // ── story & gates (contentVersion 4) ──

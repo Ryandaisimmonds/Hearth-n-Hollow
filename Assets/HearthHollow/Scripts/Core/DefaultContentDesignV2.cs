@@ -11,6 +11,9 @@
 // Grand Feast, Hot Pot, Cookfire and a second Ultimate (Five-Alarm Chili) unlock along the arc, learned in town.
 // The Cook's other old moves (Skewer, Frying Pan, Rolling Pin) leave the pool.
 // v30 (ticket 12): deep dungeons. The slice's Meadow is 10 floors with a boss every 5; Chili Ridge is 5 floors.
+// v31 (ticket 13): Meadow Hollow. Nature monsters up top, Lantern Bees from floor 3 and Fog Wolves from floor 6;
+// the Bramble Sow (Nature) guards floor 5 and the Hoarfrost Alpha (Frost: weak to Fire, resists Frost) floor 10.
+// Ginger (Frost guard) drops from floor 4; the three tier-2 ingredients from floor 6; timber is its material.
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -118,6 +121,42 @@ namespace HearthHollow.Core
             if (meadow != null) { meadow.floors = 10; meadow.bossEvery = 5; }
             var chili = c.Route("chili");
             if (chili != null) { chili.floors = 5; chili.bossEvery = 5; }
+        }
+
+        static void MeadowHollow31(GameContent c)
+        {
+            AddMonster(c, "bramble_sow", "Bramble Sow", "🐗", "boar", MonsterBehaviour.None, 1.3f);
+            AddMonster(c, "hoarfrost_alpha", "Hoarfrost Alpha", "🐺", "wolf", MonsterBehaviour.DoubleHit, 1.5f);
+            var r = c.Route("meadow");
+            if (r == null) return;
+            r.name = "Meadow Hollow";
+            r.description = "Sunlit grass and sleepy slimes up top. It goes down a long way, and gets colder the deeper you go.";
+            r.storyIntro = "The meadow dips into a hollow, and the hollow goes down — ten floors of it. Something bristly snores on the fifth. Something colder waits at the bottom.";
+            r.floors = 10; r.bossEvery = 5;
+            r.monsterIds = new List<string> { "slime", "boar" };
+            r.bossIds = new List<string> { "bramble_sow", "hoarfrost_alpha" };
+            r.floorMonsters = new List<FloorMonster>
+            {
+                new FloorMonster { monsterId = "bat", minFloor = 3 },
+                new FloorMonster { monsterId = "wolf", minFloor = 6 },
+            };
+            r.gatherIngredientIds = new List<string> { "herbs", "wheat", "mushroom", "berries" };
+            r.floorDrops = new List<FloorDrop>
+            {
+                new FloorDrop { ingredientId = "ginger", minFloor = 4, weight = 0.6f },
+                new FloorDrop { ingredientId = "starmoss", minFloor = 6, weight = 0.35f },
+                new FloorDrop { ingredientId = "wild_honeycomb", minFloor = 6, weight = 0.35f },
+                new FloorDrop { ingredientId = "golden_wheat", minFloor = 6, weight = 0.35f },
+            };
+            r.floorDrops.RemoveAll(d => c.Ingredient(d.ingredientId) == null);
+            if (r.materialIds == null || r.materialIds.Count == 0) r.materialIds = new List<string> { "timber" };
+        }
+
+        static void AddMonster(GameContent c, string id, string name, string emoji, string artId, MonsterBehaviour b, float hp)
+        {
+            var m = c.monsters.Find(x => x.id == id);
+            if (m == null) { m = new MonsterData { id = id }; c.monsters.Add(m); }
+            m.name = name; m.emoji = emoji; m.artId = artId; m.behaviour = b; m.hpMult = hp; m.eliteOnly = true;   // bosses only, never in normal pools
         }
 
         static void Elements26(GameContent c)

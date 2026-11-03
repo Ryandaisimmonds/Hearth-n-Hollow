@@ -196,8 +196,7 @@ namespace HearthHollow.Core
 
         private string PickRouteIngredient()
         {
-            var route = Content.Route(Run.routeId);
-            return route != null && route.gatherIngredientIds.Count > 0 ? _rng.Pick(route.gatherIngredientIds) : null;
+            return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.dungeon ? Run.floor : 1, _rng.Value());   // deeper floors add their drops (ticket 13)
         }
 
         /// An event room's enemies are all down (its doors open again).

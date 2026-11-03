@@ -407,9 +407,10 @@ namespace HearthHollow.Core
         {
             DropMaterial(f.elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
-            if (route == null || route.gatherIngredientIds.Count == 0) return;
+            if (route == null) return;
             if (!f.elite && !_rng.Chance(T.monsterDropChance)) return;
-            string id = _rng.Pick(route.gatherIngredientIds);
+            string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops (ticket 13)
+            if (id == null) return;
             // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)
             if (route.hazard != Hazard.None && _rng.Chance(T.guardDropChance))
             {

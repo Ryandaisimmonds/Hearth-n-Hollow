@@ -59,7 +59,10 @@ namespace HearthHollow.Core
             var list = new List<string>();
             RouteData route = c.Route(run.routeId);
             if (route != null)
+            {
                 foreach (var id in route.monsterIds) { var m = c.Monster(id); if (m != null && !m.eliteOnly) list.Add(id); }
+                foreach (var id in DeepMonsters(c, route, run.floor)) { var m = c.Monster(id); if (m != null && !m.eliteOnly && !list.Contains(id)) list.Add(id); }
+            }
             if (list.Count == 0) foreach (var m in c.monsters) if (!m.eliteOnly) list.Add(m.id);
             if (list.Count == 0 && c.monsters.Count > 0) list.Add(c.monsters[0].id);
             return list;
@@ -71,8 +74,34 @@ namespace HearthHollow.Core
             var list = new List<string>();
             RouteData route = c.Route(run.routeId);
             if (route != null) foreach (var id in route.monsterIds) if (c.Monster(id) != null) list.Add(id);
+            if (route != null) foreach (var id in DeepMonsters(c, route, run.floor)) if (c.Monster(id) != null && !list.Contains(id)) list.Add(id);
             if (list.Count == 0) list.AddRange(NormalPool(c, run));
             return list;
+        }
+
+        /// Monsters that join this route from this floor down (ticket 13).
+        public static List<string> DeepMonsters(GameContent c, RouteData route, int floor)
+        {
+            var list = new List<string>();
+            if (route != null && route.floorMonsters != null)
+                foreach (var fm in route.floorMonsters) if (fm != null && floor >= fm.minFloor && !list.Contains(fm.monsterId)) list.Add(fm.monsterId);
+            return list;
+        }
+
+        /// One ingredient this route gives on this floor: a gather ingredient (weight 1 each) or a floor drop it has reached.
+        public static string PickIngredient(GameContent c, RouteData route, int floor, float roll01)
+        {
+            if (route == null) return null;
+            var ids = new List<string>(); var w = new List<float>();
+            foreach (var id in route.gatherIngredientIds) { ids.Add(id); w.Add(1f); }
+            if (route.floorDrops != null)
+                foreach (var d in route.floorDrops)
+                    if (d != null && floor >= d.minFloor && c.Ingredient(d.ingredientId) != null && d.weight > 0f) { ids.Add(d.ingredientId); w.Add(d.weight); }
+            if (ids.Count == 0) return null;
+            float total = 0f; foreach (var x in w) total += x;
+            float r = Math.Max(0f, Math.Min(0.99999f, roll01)) * total;
+            for (int i = 0; i < ids.Count; i++) { if (r < w[i]) return ids[i]; r -= w[i]; }
+            return ids[ids.Count - 1];
         }
 
         // ───────────── deep dungeons (Design v2, ticket 12) ─────────────

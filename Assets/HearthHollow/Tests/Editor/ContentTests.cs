@@ -136,7 +136,7 @@ namespace HearthHollow.Tests
             var lib = AssetDatabase.LoadAssetAtPath<ArtLibrary>(AssetDatabase.GUIDToAssetPath(guids[0]));
             var missing = new List<string>();
             foreach (var cls in _c.classes) if (lib.Class(cls.id.ToString()) == null) missing.Add("class " + cls.id);
-            foreach (var m in _c.monsters) if (lib.Monster(m.id) == null) missing.Add("monster " + m.id);
+            foreach (var m in _c.monsters) if (lib.Monster(string.IsNullOrEmpty(m.artId) ? m.id : m.artId) == null) missing.Add("monster " + m.id);   // named bosses use a base monster's art (ticket 13)
             Assert.IsEmpty(missing, "no art for: " + string.Join(", ", missing));
         }
     }

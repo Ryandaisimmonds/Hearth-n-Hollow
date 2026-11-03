@@ -1247,48 +1247,69 @@ MonoBehaviour:
       behaviour: 0
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: boar
       name: Bramble Boar
       emoji: "\U0001F417"
       behaviour: 0
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: bat
       name: Lantern Bee
       emoji: "\U0001F41D"
       behaviour: 0
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: crab
       name: Marsh Viper
       emoji: "\U0001F40D"
       behaviour: 0
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: wolf
       name: Fog Wolf
       emoji: "\U0001F43A"
       behaviour: 1
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: shaman
       name: Bog Shaman
       emoji: "\U0001F9D9"
       behaviour: 2
       hpMult: 1
       eliteOnly: 0
+      artId: 
     - id: dragon
       name: Ember Drake
       emoji: "\U0001F409"
       behaviour: 3
       hpMult: 1.5
       eliteOnly: 1
+      artId: 
+    - id: bramble_sow
+      name: Bramble Sow
+      emoji: "\U0001F417"
+      behaviour: 0
+      hpMult: 1.3
+      eliteOnly: 1
+      artId: boar
+    - id: hoarfrost_alpha
+      name: Hoarfrost Alpha
+      emoji: "\U0001F43A"
+      behaviour: 1
+      hpMult: 1.5
+      eliteOnly: 1
+      artId: wolf
     routes:
     - id: meadow
-      name: Meadow Trail
+      name: Meadow Hollow
       emoji: "\U0001F33C"
       kind: 0
-      description: Sunlit grass and sleepy slimes. A gentle first stroll.
+      description: Sunlit grass and sleepy slimes up top. It goes down a long way, and gets colder the deeper you go.
       baseDifficulty: 0
       gatherChance: 0.3
       coinMult: 1
@@ -1300,10 +1321,32 @@ MonoBehaviour:
       - boar
       floors: 10
       bossEvery: 5
-      bossIds: []
+      bossIds:
+      - bramble_sow
+      - hoarfrost_alpha
+      floorMonsters:
+      - monsterId: bat
+        minFloor: 3
+      - monsterId: wolf
+        minFloor: 6
+      floorDrops:
+      - ingredientId: ginger
+        minFloor: 4
+        weight: 0.6
+      - ingredientId: starmoss
+        minFloor: 6
+        weight: 0.35
+      - ingredientId: wild_honeycomb
+        minFloor: 6
+        weight: 0.35
+      - ingredientId: golden_wheat
+        minFloor: 6
+        weight: 0.35
       gatherIngredientIds:
       - herbs
       - wheat
+      - mushroom
+      - berries
       materialIds:
       - timber
       chapter: 1
@@ -1314,7 +1357,7 @@ MonoBehaviour:
       hazard: 0
       hazardPct: 0
       mutators: 
-      storyIntro: 'Old Wren needs herbs and wheat for travelling bread before anyone can walk the Ember Path. The meadow is gentle: a few sleepy slimes, nothing more.'
+      storyIntro: "The meadow dips into a hollow, and the hollow goes down \u2014 ten floors of it. Something bristly snores on the fifth. Something colder waits at the bottom."
       storyOutro: Your bag smells of fresh herbs. From the hill you can see the bramble woods. The Ember Path runs right through them.
     - id: berry
       name: Berry Hunt
@@ -1334,6 +1377,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - berries
       - mushroom
@@ -1369,6 +1414,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - salt
       - fish
@@ -1404,6 +1451,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - cave_egg
       - truffle
@@ -1440,6 +1489,8 @@ MonoBehaviour:
       floors: 5
       bossEvery: 5
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - chili
       - garlic
@@ -1476,6 +1527,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - ember_meat
       - fire_honey
@@ -1511,6 +1564,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - ginger
       - frost_berry
@@ -1547,6 +1602,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - ember_meat
       - frost_berry
@@ -1582,6 +1639,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - wheat
       - berries
@@ -1616,6 +1675,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - nettle
       - mint
@@ -1651,6 +1712,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - mushroom
       - nettle
@@ -1686,6 +1749,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - glowcap
       - cave_egg
@@ -1721,6 +1786,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - garlic
       - salt
@@ -1757,6 +1824,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - chili
       - garlic
@@ -1792,6 +1861,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - ginger
       - berries
@@ -1827,6 +1898,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - fire_honey
       - berries
@@ -1862,6 +1935,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - truffle
       - cave_egg
@@ -1898,6 +1973,8 @@ MonoBehaviour:
       floors: 0
       bossEvery: 0
       bossIds: []
+      floorMonsters: []
+      floorDrops: []
       gatherIngredientIds:
       - frost_berry
       - ginger
@@ -4935,7 +5012,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 30
+    contentVersion: 31
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
