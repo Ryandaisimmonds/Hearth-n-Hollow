@@ -32,3 +32,11 @@ Core (Profile), EnemyController, enemy UI (reuse the old pip anchor).
   - Tests: `DiscoveryTests` (4, incl. save and load). 53/53 pass. In play: two Fog Wolves showed nothing,
     then a Fire hit gave both a Fire diamond, a Frost hit added a Frost square, a Water hit added nothing;
     screenshot checked. No console errors. Save backed up and restored.
+- 3 Nov 2026 (Claude): Fix after Ryan's play-test ("I can't see the icons"). His three discoveries (Fire and
+  Light on boar, Fire on slime) were all neutral, which showed nothing, and with no Frost source yet the
+  Meadow's Nature monsters can't show a weakness. Changes:
+  - Neutral results now show too: a small outlined square in the element's colour.
+  - Every first discovery pops a message, including "🔥 No effect"; it replaces that hit's "Weak!" / "Resists"
+    so they no longer stack.
+  - Icons about twice the size, each on a dark backing so they read on bright grass and in firelight.
+  - Checked on Ryan's own save (screenshot): the boar shows its two "no effect" markers. 53/53 tests pass.

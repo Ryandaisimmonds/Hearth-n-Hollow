@@ -349,9 +349,9 @@ namespace HearthHollow.Dungeon
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
-            if (em > 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Weak!", "dnum--crit");
-            else if (em < 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Resists", "dnum--info");
-            ElementContact(element);
+            bool learned = ElementContact(element);   // a first discovery shows its own "found" message instead
+            if (!learned && em > 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Weak!", "dnum--crit");
+            else if (!learned && em < 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Resists", "dnum--info");
             // impact: sparks + a flash of light, a white flash on the body, a few frames' freeze (more for crits)
             Color hitCol = crit ? new Color(1f, 0.9f, 0.45f) : new Color(1f, 0.62f, 0.25f);
             DungeonFx.Sparks(Body, knockDir, hitCol, crit ? 18 : 10);
@@ -455,22 +455,27 @@ namespace HearthHollow.Dungeon
 
         /// This monster was touched by an element (a hit, Flare's Light, a brazier's fire), damage or not.
         /// Discovery (ticket 07): you now know how that element works on every monster of this kind.
-        public void ElementContact(Element element)
+        /// Returns true when this taught you something new.
+        public bool ElementContact(Element element)
         {
-            if (element == Element.None || Dead || _dc == null || Stats == null) return;
-            if (Shadow && element == Element.Light) return;   // shadows are always weak to Light: a rule, not a fact about this kind
-            if (!_dc.Session.DiscoverElement(Stats.monsterId, element)) return;
+            if (element == Element.None || Dead || _dc == null || Stats == null) return false;
+            if (Shadow && element == Element.Light) return false;   // shadows are always weak to Light: a rule, not a fact about this kind
+            if (!_dc.Session.DiscoverElement(Stats.monsterId, element)) return false;
             DiscoveryVersion++;   // every monster of this kind redraws its icons
             bool weak = _weak.Contains(element), res = _resist.Contains(element);
-            if (weak || res)
-                DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f),
-                    Elements.Emoji(element) + (weak ? " Weakness found!" : " Resistance found"), "dnum--info");
+            DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f),
+                Elements.Emoji(element) + (weak ? " Weakness found!" : res ? " Resistance found" : " No effect"), weak ? "dnum--crit" : "dnum--info");
+            return true;
         }
 
-        // ───── element icons over the head: a diamond per known weakness, a faded square per known resistance ─────
+        // ───── element icons over the head (what you've learned about this kind of monster) ─────
+        //   weakness: a big diamond in the element's colour · resistance: a faded square · no effect: a small outlined square
         public static int DiscoveryVersion;
         readonly List<SpriteRenderer> _elIcons = new List<SpriteRenderer>();
+        readonly List<float> _elAlpha = new List<float>();
+        readonly List<int> _elOrder = new List<int>();
         int _elShown = -1;
+        const float IconWeak = 0.22f, IconResist = 0.17f, IconNeutral = 0.15f, IconGap = 0.09f;
 
         public static Color ElementColour(Element e)
         {
@@ -488,28 +493,50 @@ namespace HearthHollow.Dungeon
         void BuildElementIcons()
         {
             foreach (var sr in _elIcons) if (sr != null) Destroy(sr.gameObject);
-            _elIcons.Clear();
+            _elIcons.Clear(); _elAlpha.Clear(); _elOrder.Clear();
             _elShown = DiscoveryVersion;
             if (_anim == null) return;
             var p = _dc.Session.Profile;
             var weak = Discovery.KnownOf(p, Stats.monsterId, _weak);
             if (Shadow && !weak.Contains(Element.Light)) weak.Add(Element.Light);
             var res = Discovery.KnownOf(p, Stats.monsterId, _resist);
-            int n = weak.Count + res.Count;
+            var none = new List<Element>();
+            foreach (Element e in System.Enum.GetValues(typeof(Element)))
+                if (e != Element.None && !weak.Contains(e) && !res.Contains(e) && Discovery.Knows(p, Stats.monsterId, e)) none.Add(e);
+            int n = weak.Count + res.Count + none.Count;
             if (n == 0) return;
-            float y = _anim.FigureHeight + 0.34f, s = 0.11f, gap = 0.07f, w = n * s + (n - 1) * gap, x = -w * 0.5f + s * 0.5f;
-            foreach (var e in weak) { _elIcons.Add(ElementIcon(new Vector3(x, y, 0), s, 45f, ElementColour(e))); x += s + gap; }
-            foreach (var e in res) { var c = ElementColour(e); c.a = 0.45f; _elIcons.Add(ElementIcon(new Vector3(x, y, 0), s * 0.8f, 0f, c)); x += s + gap; }
+            float w = weak.Count * IconWeak + res.Count * IconResist + none.Count * IconNeutral + (n - 1) * IconGap;
+            float x = -w * 0.5f, y = _anim.FigureHeight + 0.42f;
+            var dark = new Color(0.08f, 0.07f, 0.06f);   // a dark backing so the icons read on bright floors and in firelight
+            foreach (var e in weak)
+            {
+                Icon(x + IconWeak * 0.5f, y, IconWeak * 0.75f + 0.05f, 45f, dark, 0.7f);
+                Icon(x + IconWeak * 0.5f, y, IconWeak * 0.75f, 45f, ElementColour(e), 1f, 1);
+                x += IconWeak + IconGap;
+            }
+            foreach (var e in res)
+            {
+                Icon(x + IconResist * 0.5f, y, IconResist + 0.05f, 0f, dark, 0.7f);
+                Icon(x + IconResist * 0.5f, y, IconResist, 0f, ElementColour(e), 0.5f, 1);
+                x += IconResist + IconGap;
+            }
+            foreach (var e in none)
+            {
+                Icon(x + IconNeutral * 0.5f, y, IconNeutral + 0.05f, 0f, dark, 0.7f);
+                Icon(x + IconNeutral * 0.5f, y, IconNeutral, 0f, ElementColour(e), 0.9f, 1);            // outline…
+                Icon(x + IconNeutral * 0.5f, y, IconNeutral * 0.55f, 0f, dark, 1f, 2);                    // …dark middle
+                x += IconNeutral + IconGap;
+            }
         }
 
-        SpriteRenderer ElementIcon(Vector3 local, float size, float rot, Color c)
+        void Icon(float x, float y, float size, float rot, Color c, float alpha, int orderOffset = 0)
         {
             var g = new GameObject("Element"); g.transform.SetParent(transform, false);
-            g.transform.localPosition = local; g.transform.localRotation = Quaternion.Euler(0, 0, rot);
+            g.transform.localPosition = new Vector3(x, y, 0f); g.transform.localRotation = Quaternion.Euler(0, 0, rot);
             var b = DungeonFx.Pixel.bounds.size;
             g.transform.localScale = new Vector3(size / b.x, size / b.y, 1f);
-            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel; sr.color = c;
-            return sr;
+            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel; c.a = alpha; sr.color = c;
+            _elIcons.Add(sr); _elAlpha.Add(alpha); _elOrder.Add(orderOffset);
         }
 
         void UpdateElementIcons()
@@ -518,11 +545,10 @@ namespace HearthHollow.Dungeon
             if (_elIcons.Count == 0) return;
             float a = Shadow ? Mathf.Lerp(0.15f, 1f, Lit01) : 1f;
             int order = DungeonController.SortOrder(transform.position.y) + 3;
-            foreach (var sr in _elIcons)
+            for (int i = 0; i < _elIcons.Count; i++)
             {
-                if (sr == null) continue;
-                var c = sr.color; c.a = (sr.transform.localRotation.eulerAngles.z > 1f ? 1f : 0.45f) * a;
-                sr.color = c; sr.sortingOrder = order;
+                var sr = _elIcons[i]; if (sr == null) continue;
+                var c = sr.color; c.a = _elAlpha[i] * a; sr.color = c; sr.sortingOrder = order + _elOrder[i];
             }
         }
 
