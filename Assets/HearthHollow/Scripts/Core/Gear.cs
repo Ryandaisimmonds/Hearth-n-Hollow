@@ -325,6 +325,7 @@ namespace HearthHollow.Core
                 case BuffStat.XpPct: return "+" + Pct(m.value) + " XP";
                 case BuffStat.MoveSpeedPct: return "+" + Pct(m.value) + " speed";
                 case BuffStat.HealOnKill: return "+" + Num(m.value) + " HP per kill";
+                case BuffStat.Regen: return "+" + Num(m.value) + " HP every 10 s";
             }
             return m.stat.ToString();
         }

@@ -49,6 +49,7 @@ namespace HearthHollow.Core
             LampMaker34(c);          // DefaultContentDesignV2.cs: the Lamp-maker's three stages
             NormalSpeed35(c);        // DefaultContentDesignV2.cs: boot speeds back to normal
             BbqEarlier36(c);         // DefaultContentDesignV2.cs: slice BBQ dishes at level 1
+            Healing37(c);            // DefaultContentDesignV2.cs: Regen on Pot meals and Camp Bread
             return c;
         }
 

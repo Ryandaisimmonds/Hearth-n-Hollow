@@ -114,11 +114,21 @@ namespace HearthHollow.UI
                     row.Add(item);
                 }
             goods.Add(row);
-            if (s.lost != null && s.lost.Count > 0)
+            if (s.lost != null && s.lost.Count > 0)   // ticket 37: what you lost, the same size as what you kept, crossed out
             {
-                var lost = new System.Collections.Generic.List<string>();
-                foreach (var l in s.lost) lost.Add(l.count + "× " + UIKit.IngName(C, l.ingredientId));
-                goods.Add(UIKit.L("💀 Lost in the fall: " + string.Join(", ", lost.ToArray()), "small", "summary__lost"));
+                goods.Add(UIKit.L("💀 Lost in the fall", "subhead", "summary__lost-head"));
+                var lostRow = UIKit.E("pantry-grid");
+                foreach (var l in s.lost)
+                {
+                    var item = UIKit.E("pantry-item", "pantry-item--lost");
+                    item.Add(Art.Framed(Art.Pic(ArtLibrary.GetIngredient(l.ingredientId), UIKit.IngEmoji(C, l.ingredientId), "pantry-item__emoji"), "item-frame--sm"));
+                    item.Add(UIKit.L("<s>" + UIKit.IngName(C, l.ingredientId) + "</s>", "pantry-item__name"));
+                    item.Add(UIKit.L("<s>×" + l.count + "</s>", "pantry-item__count"));
+                    var strike = UIKit.E("pantry-item__strike"); strike.pickingMode = PickingMode.Ignore;
+                    item.Add(strike);
+                    lostRow.Add(item);
+                }
+                goods.Add(lostRow);
             }
             _body.Add(goods);
 

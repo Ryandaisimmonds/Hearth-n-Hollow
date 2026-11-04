@@ -339,6 +339,7 @@ namespace HearthHollow.Core
             float[] sum = Meals.TotalBonus(c, cls, meals);
             m.moveSpeed += sum[(int)BuffStat.MoveSpeedPct];
             m.healOnKill += (int)Math.Round(sum[(int)BuffStat.HealOnKill]);
+            m.regen += sum[(int)BuffStat.Regen];   // ticket 38
         }
 
         /// Cooked meals whose recipe no longer exists are dropped.

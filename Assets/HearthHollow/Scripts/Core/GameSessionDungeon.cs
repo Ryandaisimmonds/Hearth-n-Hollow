@@ -265,6 +265,7 @@ namespace HearthHollow.Core
         public bool DungeonStartGather()
         {
             if (!InDungeon) return false;
+            if (T.forageHeal > 0 && Run.hp < Stats.maxHp) { int h = DungeonHealPlayer(T.forageHeal); if (h > 0) Info("🫐 You snack while you forage: +" + h + " HP"); }   // ticket 38
             Run.gather = Explore.StartGather(Content, Run, Stats, _rng);
             Phase = Phase.Gather;
             Touch(false);

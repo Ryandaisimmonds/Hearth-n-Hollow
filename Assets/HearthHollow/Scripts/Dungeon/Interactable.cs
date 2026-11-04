@@ -27,6 +27,9 @@ namespace HearthHollow.Dungeon
             _sr = gameObject.AddComponent<SpriteRenderer>();
             _sr.sprite = sprite != null ? sprite : DungeonFx.Circle;
             if (sprite == null) _sr.color = kind == InteractKind.Forage ? new Color(0.4f, 1f, 0.4f) : kind == InteractKind.Campfire ? new Color(1f, 0.6f, 0.2f) : new Color(0.6f, 0.75f, 1f);
+            // ticket 36: a way-home portal (not a boss's exit) shimmers violet so you can't mistake it
+            var dcp = DungeonController.Instance;
+            if (kind == InteractKind.Exit && dcp != null && dcp.Session != null && dcp.Session.DungeonPortalFloor) _sr.color = new Color(0.8f, 0.55f, 1f);
             _base = transform.localPosition;
             _t = Random.value * 6f;
             // props read better a bit larger than one tile
@@ -67,7 +70,7 @@ namespace HearthHollow.Dungeon
             {
                 case InteractKind.Forage: return "Forage";
                 case InteractKind.Campfire: return "Rest by the fire";
-                case InteractKind.Ladder: return dc.Session.DungeonHomeChoice ? "Floor " + (dc.Session.Run.floor + 1) + " below — go deeper or head home?" : "Climb down to floor " + (dc.Session.Run.floor + 1);
+                case InteractKind.Ladder: return "Climb down to floor " + (dc.Session.Run.floor + 1) + " (no way back up)";
                 default: return dc.Session.DungeonOnLastFloor ? "Leave — route cleared!" : dc.Session.DungeonPortalFloor ? "✨ Step through the portal — home with your haul" : "Head home with your haul";
             }
         }

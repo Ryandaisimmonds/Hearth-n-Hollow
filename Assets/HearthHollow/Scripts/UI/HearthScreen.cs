@@ -38,7 +38,7 @@ namespace HearthHollow.UI
         readonly Label _mealShelfTitle;
         readonly VisualElement _kitchen;         // kitchen upgrades: station levels + pantry shelves (contentVersion 13)
         // cooking filters (kept while the game runs)
-        static readonly BuffStat[] FilterStats = { BuffStat.MaxHp, BuffStat.DamagePct, BuffStat.Armour, BuffStat.CritPct, BuffStat.GatherZonePct, BuffStat.CoinPct, BuffStat.MoveSpeedPct };
+        static readonly BuffStat[] FilterStats = { BuffStat.MaxHp, BuffStat.DamagePct, BuffStat.Armour, BuffStat.CritPct, BuffStat.GatherZonePct, BuffStat.CoinPct, BuffStat.MoveSpeedPct, BuffStat.Regen };
         static readonly string[] FilterStatNames = { "HP", "Damage", "Armour", "Crit", "Gather", "Coins", "Speed" };
         int _fStation = -1;          // -1 = all stations, else index into Stations
         int _fStat = -1;             // -1 = any bonus, else index into FilterStats

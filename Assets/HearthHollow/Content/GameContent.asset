@@ -65,6 +65,9 @@ MonoBehaviour:
       harvestMoonGatherBonus: 1
       routeModChance: 0.35
       restHealPct: 0.3
+      calmRegenSeconds: 2.5
+      calmRegenCap: 0.6
+      forageHeal: 2
       gatherSafeWidth: 0.3
       gatherPerfectWidth: 0.1
       gatherBarSpeed: 1.2
@@ -571,6 +574,8 @@ MonoBehaviour:
       buffs:
       - stat: 1
         value: 18
+      - stat: 10
+        value: 2
       tags:
       - stone
       - veg
@@ -595,6 +600,8 @@ MonoBehaviour:
       buffs:
       - stat: 1
         value: 31.5
+      - stat: 10
+        value: 3
       tags:
       - stone
       - veg
@@ -619,6 +626,8 @@ MonoBehaviour:
         value: 10
       - stat: 9
         value: 1
+      - stat: 10
+        value: 1
       tags:
       - sweet
       description: Creamy oats swirled with bramble berries. Every win feels like a second breakfast.
@@ -641,6 +650,8 @@ MonoBehaviour:
       - stat: 1
         value: 16
       - stat: 3
+        value: 2
+      - stat: 10
         value: 2
       tags:
       - stone
@@ -665,6 +676,8 @@ MonoBehaviour:
       - stat: 1
         value: 10
       - stat: 9
+        value: 2
+      - stat: 10
         value: 2
       tags:
       - veg
@@ -959,6 +972,8 @@ MonoBehaviour:
         value: 0.03
       - stat: 5
         value: 0.1
+      - stat: 10
+        value: 1
       tags:
       - plain
       description: "Free \u2014 there's always a loaf by the fire. Simple, light, better than nothing. Always Plain."
@@ -5062,7 +5077,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 36
+    contentVersion: 37
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

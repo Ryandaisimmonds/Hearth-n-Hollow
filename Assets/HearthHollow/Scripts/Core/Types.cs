@@ -80,7 +80,8 @@ namespace HearthHollow.Core
         CoinPct,       // +% coins earned this run
         XpPct,         // +% XP earned this run
         MoveSpeedPct,  // +% move speed this run (cooking v9)
-        HealOnKill     // + HP healed per kill this run (cooking v9)
+        HealOnKill,    // + HP healed per kill this run (cooking v9)
+        Regen          // ticket 38: HP healed every 10 s, all run long (Pot meals, Camp Bread)
     }
 
     public enum GameEventType
@@ -347,6 +348,10 @@ namespace HearthHollow.Core
         public int harvestMoonGatherBonus = 1;    // +1 per successful gather on a harvest-moon run
         public float routeModChance = 0.35f;
         public float restHealPct = 0.30f;
+        // ticket 38: slow healing. Out of a fight you get back 1 HP every calmRegenSeconds, up to calmRegenCap of max HP;
+        // foraging is a snack (forageHeal HP). Meals with Regen heal all the time, fights included.
+        public float calmRegenSeconds = 2.5f, calmRegenCap = 0.6f;
+        public int forageHeal = 2;
 
         // gather minigame (bar 0..1, zones centred on a random point each attempt)
         public float gatherSafeWidth = 0.30f, gatherPerfectWidth = 0.10f, gatherBarSpeed = 1.2f;
@@ -474,6 +479,7 @@ namespace HearthHollow.Core
         public float skillCooldown = 1f, dashCooldown = 1f;      // multipliers on cooldowns
         public float moveSpeed = 1f;
         public int healOnKill;
+        public float regen;   // ticket 38: HP per 10 s from meals
     }
 
     [Serializable] public partial class Profile

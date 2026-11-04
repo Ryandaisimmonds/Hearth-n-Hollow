@@ -59,6 +59,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 34) { LampMaker34(c); c.contentVersion = 34; }  // the Lamp-maker: a town building for light and Flare (DefaultContentDesignV2.cs)
             if (c.contentVersion < 35) { NormalSpeed35(c); c.contentVersion = 35; }  // no slow start: boot speeds un-doubled (DefaultContentDesignV2.cs)
             if (c.contentVersion < 36) { BbqEarlier36(c); c.contentVersion = 36; }  // BBQ dishes from slice ingredients at BBQ level 1 (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 37) { Healing37(c); c.contentVersion = 37; }  // Regen on Pot meals and Camp Bread (DefaultContentDesignV2.cs)
             return true;
         }
 

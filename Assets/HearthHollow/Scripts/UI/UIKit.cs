@@ -89,6 +89,7 @@ namespace HearthHollow.UI
                 case BuffStat.XpPct: return "+" + Pct(v) + " XP";
                 case BuffStat.MoveSpeedPct: return "+" + Pct(v) + " speed";
                 case BuffStat.HealOnKill: return "+" + Num(Mathf.Round(v * 10f) / 10f) + " HP per kill";
+                case BuffStat.Regen: return "+" + Num(Mathf.Round(v * 10f) / 10f) + " HP every 10 s";
             }
             return m.stat + " " + Num(v);
         }
@@ -123,6 +124,7 @@ namespace HearthHollow.UI
                 case BuffStat.CoinPct: return "coins";
                 case BuffStat.MoveSpeedPct: return "speed";
                 case BuffStat.HealOnKill: return "heal on kill";
+                case BuffStat.Regen: return "healing over time";
             }
             return s.ToString();
         }

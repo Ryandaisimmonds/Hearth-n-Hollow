@@ -20,6 +20,7 @@
 // v34 (ticket 17): the Lamp-maker, three stages built with Meadow timber and Ridge ember coal (light reach + Flare).
 // v35 (ticket 18): the 75% start speed is gone, so boot speeds go back to what they were before v24 doubled them.
 // v36 (ticket 23): BBQ dishes made from slice ingredients need only BBQ level 1 (Firecracker Skewer was level 3).
+// v37 (ticket 38): slow healing. Pot meals and Camp Bread heal over time (Regen: HP every 10 s).
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -249,6 +250,23 @@ namespace HearthHollow.Core
                     || ic.ingredientId == "garlic" || ic.ingredientId == "wheat" || ic.ingredientId == "berries" || ic.ingredientId == "fish");
                 if (slice) r.stationLevel = 1;
             }
+        }
+
+        static void Healing37(GameContent c)
+        {
+            AddRegen(c, "bread", 1f);          // everyone has a little: Camp Bread is free
+            AddRegen(c, "herb_stew", 2f);
+            AddRegen(c, "herb_stew_2", 3f);
+            AddRegen(c, "berry_porridge", 1f);
+            AddRegen(c, "marsh_chowder", 2f);
+            AddRegen(c, "nettle_soup", 2f);
+        }
+
+        static void AddRegen(GameContent c, string recipeId, float v)
+        {
+            var r = c.Recipe(recipeId);
+            if (r == null || r.buffs == null || r.buffs.Exists(b => b.stat == BuffStat.Regen)) return;
+            r.buffs.Add(new StatMod { stat = BuffStat.Regen, value = v });
         }
 
         static void Elements26(GameContent c)

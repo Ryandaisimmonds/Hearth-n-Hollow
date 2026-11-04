@@ -120,6 +120,7 @@ namespace HearthHollow.UI
                 case BuffStat.XpPct: return "xp";
                 case BuffStat.MoveSpeedPct: return "speed";
                 case BuffStat.HealOnKill: return "heal";
+                case BuffStat.Regen: return "regen";
             }
             return null;
         }
@@ -137,6 +138,7 @@ namespace HearthHollow.UI
                 case BuffStat.XpPct: return "✨";
                 case BuffStat.MoveSpeedPct: return "👟";
                 case BuffStat.HealOnKill: return "💚";
+                case BuffStat.Regen: return "💗";
             }
             return "•";
         }

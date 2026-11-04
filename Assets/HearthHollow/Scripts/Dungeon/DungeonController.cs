@@ -87,6 +87,7 @@ namespace HearthHollow.Dungeon
             if (_root != null) DestroyFloor();
             DungeonHud.Reset();
             DungeonHud.Active = true;
+            _regenRate = -1f; _regenAcc = 0f; _calmHealT = 0f;   // ticket 38: re-read meal Regen each floor
             _builtKey = key;
 
             var C = Session.Content;
@@ -374,6 +375,34 @@ namespace HearthHollow.Dungeon
         /// A big move floods the room with light for a moment (class rework).
         public void FloodLight(float add, float seconds) { if (add > _glowAdd) { _glowAdd = add; _glowDecay = add / Mathf.Max(0.1f, seconds); } }
 
+        // ── ticket 38: slow healing — catch your breath between fights, and meals that heal over time ──
+        float _calmHealT, _regenAcc, _regenRate = -1f;
+        void SlowHealing(float dt)
+        {
+            var run = Session.Run; var st = Session.Stats;
+            if (run == null || st == null || Player == null || run.hp <= 0 || run.hp >= st.maxHp) { _calmHealT = 0f; return; }
+            if (_regenRate < 0f) { var m = Session.Mods; _regenRate = m != null ? m.regen : 0f; }
+            // meals with Regen: always, fights included
+            if (_regenRate > 0f)
+            {
+                _regenAcc += _regenRate * dt / 10f;
+                if (_regenAcc >= 1f) { int h = Session.DungeonHealPlayer((int)_regenAcc); _regenAcc -= (int)_regenAcc; if (h > 0) DungeonHud.Number(Player.Body + Vector2.up * 0.7f, "+" + h, "dnum--heal"); }
+            }
+            // out of a fight: 1 HP every few seconds, up to a share of your max HP
+            var T = Session.Content.tuning;
+            if (OutOfFight && T.calmRegenSeconds > 0f && run.hp < Mathf.CeilToInt(st.maxHp * T.calmRegenCap))
+            {
+                _calmHealT += dt;
+                if (_calmHealT >= T.calmRegenSeconds)
+                {
+                    _calmHealT = 0f;
+                    int h = Session.DungeonHealPlayer(1);
+                    if (h > 0) DungeonHud.Number(Player.Body + Vector2.up * 0.7f, "+" + h, "dnum--heal");
+                }
+            }
+            else _calmHealT = 0f;
+        }
+
         /// A monster went down: the Ember Locket takes time off Flare's cooldown (ticket 16).
         public void OnEnemyKilled()
         {
@@ -506,7 +535,8 @@ namespace HearthHollow.Dungeon
         /// A ladder: ask whether to go deeper or head home with the haul (the dungeon pauses meanwhile).
         public void AskLadder(Interactable ladder)
         {
-            if (_ui == null || !Session.DungeonHomeChoice) { if (Session.DungeonDescend()) ladder.MarkUsed(); return; }   // between choice floors the ladder just goes down
+            if (Session.DungeonDescend()) ladder.MarkUsed();   // ticket 36: a ladder only goes down — the way home is a portal or a boss's exit
+            return;
             _ui.OpenLadderChoice(() => { if (Session.DungeonDescend()) ladder.MarkUsed(); }, () => Session.DungeonExit());
         }
 
@@ -551,6 +581,7 @@ namespace HearthHollow.Dungeon
                 if (_flareCd > Settings.flareCalmCooldown && OutOfFight) _flareCd = Settings.flareCalmCooldown;   // the fight's over: Flare is nearly ready again
             if (_flareCd > 0f) _flareCd -= Time.deltaTime;
                 if (DungeonInput.Flare && Player != null && _flareCd <= 0f) Flare();
+                SlowHealing(Time.deltaTime);   // ticket 38
             }
             DungeonHud.FlareCooldown = Mathf.Max(0f, _flareCd);
 

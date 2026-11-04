@@ -1739,3 +1739,9 @@ Label { white-space: normal; color: var(--hh-text); }
 
 /* ticket 35: Old Wren's next step, always on screen in town */
 .town-hud__objective { position: absolute; top: 74px; left: 50%; translate: -50% 0; padding: 6px 14px; font-size: 16px; -unity-font-style: bold; color: var(--hh-cream); border-color: rgba(255, 210, 120, 0.6); border-width: 1px; border-radius: 10px; }
+
+/* ticket 37: goods lost in a fall, the same size as the ones you kept, crossed out */
+.summary__lost-head { color: var(--hh-coral); margin-top: 10px; }
+.pantry-item--lost { opacity: 0.6; border-color: rgba(230, 90, 80, 0.7); background-color: rgba(120, 30, 25, 0.25); }
+.pantry-item--lost .pantry-item__name, .pantry-item--lost .pantry-item__count { color: #e7a39b; }
+.pantry-item__strike { position: absolute; left: 4px; right: 4px; top: 50%; height: 3px; background-color: rgba(230, 70, 60, 0.9); rotate: -12deg; border-radius: 2px; }
