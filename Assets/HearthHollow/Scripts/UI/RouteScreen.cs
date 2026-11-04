@@ -356,6 +356,14 @@ namespace HearthHollow.UI
                     }
                     routeBox.Add(sr);
                 }
+                if (Slice.On)   // ticket 40: they know the route already; keep just its name, any warning and the shortcuts
+                {
+                    var keep = new List<VisualElement>();
+                    foreach (var ch in routeBox.Children()) if (ch.ClassListContains("expedition__starts") || ch.ClassListContains("expedition__warn") || ch.ClassListContains("expedition__class-row")) keep.Add(ch);
+                    routeBox.Clear();
+                    routeBox.Add(UIKit.L(r.emoji + " " + r.name, "expedition__route-name", "expedition__route-compact"));
+                    foreach (var ch in keep) routeBox.Add(ch);
+                }
             }
             _expedition.Add(routeBox);
 
@@ -408,7 +416,7 @@ namespace HearthHollow.UI
             whoText.Add(UIKit.L("with meals · bag " + Economy.BagSlots(C, p) + " slots", "muted", "small"));
             who.Add(whoText);
             cookBox.Add(who);
-            _expedition.Add(cookBox);
+            if (!Slice.On) _expedition.Add(cookBox);
 
             // meals: ticket 29: you pack the tray here, as you set out
             var mealBox = UIKit.E("expedition__section");
@@ -466,14 +474,17 @@ namespace HearthHollow.UI
             if (p.tray.Count == 0) mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
             mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
             _expedition.Add(mealBox);
+            if (Slice.On) _expedition.Add(cookBox);   // ticket 40: the tray comes first
 
             bool can = r != null && lockWhy == null && classWhy == null;
-            _go.SetEnabled(can);
-            _go.text = r == null ? "Pick a route" : can ? "Enter " + r.name + " ➜" : "🔒 " + r.name;
+            string trayWhy = S.TrayBlock;   // ticket 40: a full tray before you head out (not on the first dive)
+            _go.SetEnabled(can && trayWhy == null);
+            _go.text = r == null ? "Pick a route" : !can ? "🔒 " + r.name : trayWhy != null ? "🧺 " + trayWhy : "Enter " + r.name + " ➜";
         }
 
         void Go()
         {
+            if (S.TrayBlock != null) { Ui.Toast("🧺 " + S.TrayBlock); return; }
             if (_selected != null && Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) == null) S.StartRun(_selected, _startFloor);
         }
 

@@ -45,5 +45,19 @@ namespace HearthHollow.Tests
             s.DungeonRoomCleared();
             Assert.AreEqual(max, s.Run.hp, "never above max");
         }
+
+        [Test]
+        public void SettingOut_NeedsAFullTray_ExceptTheFirstDive()
+        {
+            var s = new GameSession(_c, null, 83);
+            s.Profile.selectedClass = ClassId.Cook;
+            s.Profile.tray.Clear();
+            Assert.IsNull(s.TrayBlock, "first encounter: no meals needed");
+            s.Profile.arcStage = 1;
+            Assert.IsNotNull(s.TrayBlock);
+            StringAssert.Contains("0/3", s.TrayBlock);
+            for (int i = 0; i < _c.tuning.traySize; i++) Assert.IsTrue(s.PackAlwaysMeal("bread"), "Camp Bread always fills the tray");
+            Assert.IsNull(s.TrayBlock);
+        }
     }
 }

@@ -1745,3 +1745,6 @@ Label { white-space: normal; color: var(--hh-text); }
 .pantry-item--lost { opacity: 0.6; border-color: rgba(230, 90, 80, 0.7); background-color: rgba(120, 30, 25, 0.25); }
 .pantry-item--lost .pantry-item__name, .pantry-item--lost .pantry-item__count { color: #e7a39b; }
 .pantry-item__strike { position: absolute; left: 4px; right: 4px; top: 50%; height: 3px; background-color: rgba(230, 70, 60, 0.9); rotate: -12deg; border-radius: 2px; }
+
+/* ticket 40: the Route board's expedition panel, slimmed for the slice */
+.expedition__route-compact { font-size: 22px; margin-bottom: 2px; }

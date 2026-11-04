@@ -36,6 +36,17 @@ namespace HearthHollow.Core
             }
         }
 
+        /// Ticket 40: why you can't set out yet: the tray must be full (any meals, Camp Bread included). Not on the first dive.
+        public string TrayBlock
+        {
+            get
+            {
+                if (!Slice.On || Profile.arcStage == 0) return null;
+                int n = Profile.tray.Count, max = Content.tuning.traySize;
+                return n < max ? "Pack " + max + " meals to set out (" + n + "/" + max + ")" : null;
+            }
+        }
+
         /// What to do next, in one line (town HUD, Wren's reminders).
         public string WrenObjective
         {
