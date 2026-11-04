@@ -96,8 +96,10 @@ namespace HearthHollow.Dungeon
             int seed = unchecked(run.dungeonSeed * 31 + run.floor * 7919);
             var rng = new System.Random(seed);
             int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
-            _plan = DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice, Session.DungeonNoLadder, run.floor, route != null ? route.gatherChance : 0.2f);
-            _theme = Settings.ThemeFor(run.routeId);
+            bool fall = run.routeId == GameSession.FallRoute;   // ticket 43: the nameless opening dungeon
+            _plan = fall ? DungeonGenerator.Gauntlet(seed, T.fallRooms)
+                         : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice, Session.DungeonNoLadder, run.floor, route != null ? route.gatherChance : 0.2f);
+            _theme = Settings.ThemeFor(fall ? "heart" : run.routeId);   // it borrows the Hollow Heart's purple gloom
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);
             MakeLights();
@@ -487,7 +489,7 @@ namespace HearthHollow.Dungeon
             var md = Session.Content.Monster(monsterId);
             string artId = md != null && !string.IsNullOrEmpty(md.artId) ? md.artId : monsterId;   // named bosses borrow a base monster's sprites (ticket 13)
             var art = boss ? (ArtLibrary.GetBoss(artId) ?? ArtLibrary.GetMonster(artId)) : ArtLibrary.GetMonster(artId);   // bosses get their own big sprite
-            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed);
+            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.FallEnemySpeed);   // the fall: faster each room (ticket 43)
             // shadow creatures: more the deeper you go, more in caves; never bosses or elites
             if (!boss && !elite && Settings.shadowChance != null && Settings.shadowChance.Length > 0)
             {

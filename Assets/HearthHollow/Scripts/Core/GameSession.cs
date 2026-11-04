@@ -327,10 +327,11 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.Hearth) return false;
             if (!ClassAvailable(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
-            if (!Slice.ShowsRoute(routeId)) { Info("Not in this build yet"); return false; }
+            if (!Slice.ShowsRoute(routeId) && routeId != FallRoute) { Info("Not in this build yet"); return false; }   // the fall's nameless dungeon is hidden (ticket 43)
             string block = Routes.EnterBlock(Content, Profile, routeId, Profile.selectedClass);
             if (block != null) { Info(block); return false; }
-            RouteOffer offer = Hearth.routeOffers.Find(o => o.routeId == routeId) ?? new RouteOffer { routeId = routeId, mod = RouteMod.None };
+            RouteOffer offer = routeId == FallRoute ? null : Hearth.routeOffers.Find(o => o.routeId == routeId);   // the fall's dungeon never rolls Rich / Lucky / Dangerous (ticket 43)
+            if (offer == null) offer = new RouteOffer { routeId = routeId, mod = RouteMod.None };
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);

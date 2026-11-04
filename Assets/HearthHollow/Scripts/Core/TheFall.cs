@@ -1,7 +1,8 @@
-// Hearth & Hollow — ticket 42: the game opens with a fall. Pure C#.
-// A new game doesn't start in town: you slip at the edge of the Hollow and wake in the fog of Meadow Hollow. Every room
-// you fight through is tougher than the last (DungeonRules.Enemy), so it ends in a fall. You wake up in town for the
-// first time, and Old Wren comes over: she found you, and she tells you about food.
+// Hearth & Hollow — ticket 42/43: the game opens with a fall. Pure C#.
+// A new game doesn't start in town: you wake up in a strange, nameless dungeon ("???", route FallRoute): a straight line
+// of rooms that are nothing but fights (DungeonGenerator.Gauntlet). Every room's monsters hit harder and move faster
+// than the last (DungeonRules.Enemy, FallEnemySpeed), so it ends in a fall. You wake up in town for the first time,
+// and Old Wren comes over: she found you, and she tells you about food.
 namespace HearthHollow.Core
 {
     public partial class RunState
@@ -12,6 +13,20 @@ namespace HearthHollow.Core
     public partial class GameSession
     {
         bool _falling;
+
+        /// Ticket 43: the nameless opening dungeon. Hidden from the Route board; only the fall goes there.
+        public const string FallRoute = "nowhere";
+
+        /// Ticket 43: × monster move speed on the first dive: faster with every room you fight in (so they reach you).
+        public float FallEnemySpeed
+        {
+            get
+            {
+                if (Run == null || !Run.firstDive) return 1f;
+                int k = System.Math.Max(0, Run.fightRooms - 1);
+                return System.Math.Min(T.firstDiveSpeedMax, 1f + k * T.firstDiveSpeedPerRoom);
+            }
+        }
 
         /// A brand-new game in the slice: nothing done yet, so it opens in the dungeon.
         public bool FallDue
@@ -27,13 +42,13 @@ namespace HearthHollow.Core
             Profile.tray.Clear();
             _falling = true;
             bool ok;
-            try { ok = StartRun(MeadowRoute); }
+            try { ok = StartRun(Content.Route(FallRoute) != null ? FallRoute : MeadowRoute); }
             finally { _falling = false; }
             if (ok) SetWren(WrenStep.FirstDive);
             return ok;
         }
 
-        public const string FallIntro = "🌫️ The mossy bank gives way and you tumble down into the fog. Meadow Hollow. No way back up: find a way out!";
+        public const string FallIntro = "🌀 You wake on cold stone, somewhere strange. Purple light, and no way back the way you came. Something is moving in the next room…";
 
         /// Called on the way home after a run (ReturnToHearth): the first time, you wake up in town.
         void WrenOnHome()

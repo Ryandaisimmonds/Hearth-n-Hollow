@@ -124,6 +124,48 @@ namespace HearthHollow.Dungeon
             return plan;
         }
 
+        /// Ticket 43: the opening's nameless dungeon: a start room, then a single line of fight rooms (no forage, no
+        /// campfire, no branches). The far end is an exit, a safety net for anyone who somehow survives them all.
+        public static FloorPlan Gauntlet(int seed, int roomCount)
+        {
+            FloorPlan best = null;
+            for (int attempt = 0; attempt < 30; attempt++)   // a random walk can box itself in: retry for the full length
+            {
+                var p = GauntletOnce(unchecked(seed + attempt * 7919), roomCount);
+                if (best == null || p.rooms.Count > best.rooms.Count) best = p;
+                if (best.rooms.Count >= Math.Max(3, roomCount)) break;
+            }
+            return best;
+        }
+
+        static FloorPlan GauntletOnce(int seed, int roomCount)
+        {
+            var rng = new System.Random(seed);
+            var plan = new FloorPlan();
+            var start = Add(plan, Vector2Int.zero);
+            plan.start = start; start.kind = RoomKind.Start;
+            var last = start;
+            int guard = 0;
+            while (plan.rooms.Count < Math.Max(3, roomCount) && guard++ < 500)
+            {
+                var opts = new List<Side>();
+                foreach (Side s in Sides)
+                {
+                    Vector2Int c = last.cell + RoomTemplate.Step(s);
+                    if (plan.At(c) == null && CountNeighbours(plan, c) == 1) opts.Add(s);   // only touches the room before it: a clean line
+                }
+                if (opts.Count == 0) break;
+                Side pick = opts[rng.Next(opts.Count)];
+                var node = Add(plan, last.cell + RoomTemplate.Step(pick));
+                node.kind = RoomKind.Combat;
+                node.depth = last.depth + 1;
+                Link(last, node, pick);
+                last = node;
+            }
+            if (last != start) last.kind = RoomKind.Exit;
+            return plan;
+        }
+
         static RoomNode Add(FloorPlan plan, Vector2Int cell)
         {
             var n = new RoomNode { index = plan.rooms.Count, cell = cell };

@@ -146,7 +146,10 @@ MonoBehaviour:
       firstDiveHpMult: 0.8
       firstDiveAtkMult: 0.6
       firstDiveHpPerRoom: 0.45
-      firstDiveAtkPerRoom: 0.65
+      firstDiveAtkPerRoom: 0.85
+      firstDiveSpeedPerRoom: 0.12
+      firstDiveSpeedMax: 2
+      fallRooms: 14
       fishCatchCount: 2
       fishGoodWidth: 0.34
       fishPerfectWidth: 0.12
@@ -2058,6 +2061,42 @@ MonoBehaviour:
       mutators: 05000000i
       storyIntro: Not on the Ember Path. Just very cold, very dangerous, and full of frostberries. Pack something warming.
       storyOutro: You made it out of Frost Hollow with frostberries to spare. Try them in a crumble.
+    - id: nowhere
+      name: ???
+      emoji: "\U0001F300"
+      kind: 1
+      description: Somewhere strange. You don't remember getting here.
+      baseDifficulty: 0
+      gatherChance: 0
+      coinMult: 1
+      clearReward: 0
+      clearXp: 0
+      unlockedByRouteId: 
+      monsterIds:
+      - slime
+      - bat
+      - crab
+      - wolf
+      - shaman
+      floors: 1
+      bossEvery: 0
+      bossIds: []
+      floorMonsters: []
+      floorDrops: []
+      requiredFlag: 
+      lockHint: 
+      gatherIngredientIds: []
+      materialIds: []
+      chapter: 0
+      requiredKeyItem: 
+      rewardKeyItem: 
+      classLocked: 0
+      requiredClass: 0
+      hazard: 0
+      hazardPct: 0
+      mutators: 
+      storyIntro: 
+      storyOutro: 
     weaponTiers:
     - tier: 0
       name: Wooden Spoon
@@ -5078,7 +5117,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 38
+    contentVersion: 39
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

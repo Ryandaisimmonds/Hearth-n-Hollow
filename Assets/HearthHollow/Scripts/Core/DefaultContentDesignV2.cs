@@ -269,6 +269,20 @@ namespace HearthHollow.Core
             t.firstDiveHpPerRoom = 0.45f; t.firstDiveAtkPerRoom = 0.65f;
         }
 
+        static void Nowhere39(GameContent c)
+        {
+            var t = c.tuning;
+            t.firstDiveAtkPerRoom = 0.85f; t.firstDiveSpeedPerRoom = 0.12f; t.firstDiveSpeedMax = 2f; t.fallRooms = 14;
+            if (c.Route(GameSession.FallRoute) != null) return;
+            c.routes.Add(new RouteData
+            {
+                id = GameSession.FallRoute, name = "???", emoji = "🌀", kind = RouteKind.Hunt,
+                description = "Somewhere strange. You don't remember getting here.",
+                baseDifficulty = 0, gatherChance = 0f, coinMult = 1f, clearReward = 0, clearXp = 0, floors = 1, bossEvery = 0,
+                monsterIds = new List<string> { "slime", "bat", "crab", "wolf", "shaman" },
+            });
+        }
+
         static void AddRegen(GameContent c, string recipeId, float v)
         {
             var r = c.Recipe(recipeId);

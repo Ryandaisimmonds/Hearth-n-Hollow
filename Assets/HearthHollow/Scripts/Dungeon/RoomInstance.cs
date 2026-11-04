@@ -197,7 +197,7 @@ namespace HearthHollow.Dungeon
                     }
                     break;
                 case RoomKind.Combat:
-                    if (_rng.NextDouble() < 0.25)   // the odd bonus forage spot after a fight
+                    if ((Controller.Session.Run == null || Controller.Session.Run.routeId != GameSession.FallRoute) && _rng.NextDouble() < 0.25)   // the odd bonus forage spot after a fight (none in the fall's dungeon)
                     {
                         var pts = Points(SpawnKind.Forage);
                         AddProp(InteractKind.Forage, pts.Count > 0 ? pts[0] : RandomFloorPoint(Origin + RoomTemplate.Centre, 2f), false);
@@ -312,6 +312,7 @@ namespace HearthHollow.Dungeon
             var eliteSpots = Points(SpawnKind.Elite);
             int count = T.enemiesPerRoomMin + _rng.Next(Mathf.Max(1, T.enemiesPerRoomMax - T.enemiesPerRoomMin + 1)) + DungeonRules.ExtraEnemies(run.floor);
             if (Node.kind == RoomKind.Ladder || Node.kind == RoomKind.Exit) count += 1;
+            if (run.routeId == GameSession.FallRoute) count += (run.fightRooms - 1) / 2;   // ticket 43: more of them as you go
             count = Mathf.RoundToInt(count * S.MutatorEnemyCount);   // Swarm
 
             if (Node.kind == RoomKind.Boss)

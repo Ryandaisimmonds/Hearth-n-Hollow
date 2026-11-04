@@ -90,7 +90,8 @@ namespace HearthHollow.Core
                     if (!Profile.metWren)   // ticket 42: you've never met: she found you after the fall
                     {
                         pages.Add("Easy, easy. Don't try to sit up yet. I found you at the edge of the fog, out cold, and carried you up here. I'm Wren.");
-                        pages.Add("This was a town once, before the fog came up out of the Hollow and the Hearth went cold. You fell right into it, and on an empty stomach too. No wonder it chewed you up.");
+                        pages.Add("Purple light, you say? Rooms full of things that kept coming? That's no part of the Hollow I know. Whatever it was, it spat you out half dead, and on an empty stomach too. No wonder it chewed you up.");
+                        pages.Add("This was a town once, before the fog came up out of the Hollow and the Hearth went cold. You'll stay a while. And if you're going back down anywhere, you'll eat first.");
                         Profile.metWren = true;
                     }
                     else pages.Add("There you are, and still in one piece, more or less. Sit. Eat. That fog takes it out of you, and you went down on an empty stomach.");

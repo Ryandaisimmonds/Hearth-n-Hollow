@@ -51,6 +51,7 @@ namespace HearthHollow.Core
             BbqEarlier36(c);         // DefaultContentDesignV2.cs: slice BBQ dishes at level 1
             Healing37(c);            // DefaultContentDesignV2.cs: Regen on Pot meals and Camp Bread
             TheFall38(c);            // DefaultContentDesignV2.cs: the opening fall ramps up room by room
+            Nowhere39(c);            // DefaultContentDesignV2.cs: the nameless opening dungeon "???"
             return c;
         }
 

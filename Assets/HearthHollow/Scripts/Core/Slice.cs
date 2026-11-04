@@ -15,7 +15,7 @@ namespace HearthHollow.Core
         public static readonly string[] RouteIds = { "meadow", "chili" };
         public static readonly ClassId[] Classes = { ClassId.Cook };
 
-        public static bool ShowsRoute(string routeId) { return !On || Array.IndexOf(RouteIds, routeId) >= 0; }
+        public static bool ShowsRoute(string routeId) { return routeId != GameSession.FallRoute && (!On || Array.IndexOf(RouteIds, routeId) >= 0); }   // the fall's dungeon never shows (ticket 43)
         public static bool HasClass(ClassId id) { return !On || Array.IndexOf(Classes, id) >= 0; }
     }
 }
