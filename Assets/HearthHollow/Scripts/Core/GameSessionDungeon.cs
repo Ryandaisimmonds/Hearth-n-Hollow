@@ -222,6 +222,12 @@ namespace HearthHollow.Core
         {
             if (!InDungeon) return;
             Run.roomsCleared++;
+            // ticket 39: catch your breath — every room you clear heals a share of your max HP
+            if (T.roomClearHealPct > 0f && Run.hp < Stats.maxHp)
+            {
+                int h = DungeonHealPlayer(Math.Max(1, (int)Math.Round(Stats.maxHp * T.roomClearHealPct)));
+                if (h > 0) Log("💗 Room cleared: +" + h + " HP");
+            }
             Touch(false);
         }
 

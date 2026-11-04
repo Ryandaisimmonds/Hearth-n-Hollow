@@ -348,9 +348,9 @@ namespace HearthHollow.Core
         public int harvestMoonGatherBonus = 1;    // +1 per successful gather on a harvest-moon run
         public float routeModChance = 0.35f;
         public float restHealPct = 0.30f;
-        // ticket 38: slow healing. Out of a fight you get back 1 HP every calmRegenSeconds, up to calmRegenCap of max HP;
+        // ticket 38/39: healing. Clearing a room heals roomClearHealPct of max HP (no standing about waiting);
         // foraging is a snack (forageHeal HP). Meals with Regen heal all the time, fights included.
-        public float calmRegenSeconds = 2.5f, calmRegenCap = 0.6f;
+        public float roomClearHealPct = 0.15f;
         public int forageHeal = 2;
 
         // gather minigame (bar 0..1, zones centred on a random point each attempt)

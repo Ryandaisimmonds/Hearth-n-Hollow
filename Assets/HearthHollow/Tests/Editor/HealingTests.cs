@@ -32,10 +32,18 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void CalmHealing_IsTunedToAShare()
+        public void ClearingARoom_HealsAShare()
         {
-            Assert.That(_c.tuning.calmRegenCap, Is.InRange(0.3f, 1f));
-            Assert.Greater(_c.tuning.calmRegenSeconds, 0f);
+            var s = new GameSession(_c, null, 82);
+            s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
+            Assert.IsTrue(s.StartRun("meadow"));
+            int max = s.Stats.maxHp;
+            s.Run.hp = 1;
+            s.DungeonRoomCleared();
+            Assert.AreEqual(1 + System.Math.Max(1, (int)System.Math.Round(max * _c.tuning.roomClearHealPct)), s.Run.hp);
+            s.Run.hp = max;
+            s.DungeonRoomCleared();
+            Assert.AreEqual(max, s.Run.hp, "never above max");
         }
     }
 }

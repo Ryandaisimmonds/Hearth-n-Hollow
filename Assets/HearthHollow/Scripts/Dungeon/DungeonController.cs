@@ -375,7 +375,7 @@ namespace HearthHollow.Dungeon
         /// A big move floods the room with light for a moment (class rework).
         public void FloodLight(float add, float seconds) { if (add > _glowAdd) { _glowAdd = add; _glowDecay = add / Mathf.Max(0.1f, seconds); } }
 
-        // ── ticket 38: slow healing — catch your breath between fights, and meals that heal over time ──
+        // ── ticket 38: meals that heal over time (Regen) ──
         float _calmHealT, _regenAcc, _regenRate = -1f;
         void SlowHealing(float dt)
         {
@@ -388,19 +388,7 @@ namespace HearthHollow.Dungeon
                 _regenAcc += _regenRate * dt / 10f;
                 if (_regenAcc >= 1f) { int h = Session.DungeonHealPlayer((int)_regenAcc); _regenAcc -= (int)_regenAcc; if (h > 0) DungeonHud.Number(Player.Body + Vector2.up * 0.7f, "+" + h, "dnum--heal"); }
             }
-            // out of a fight: 1 HP every few seconds, up to a share of your max HP
-            var T = Session.Content.tuning;
-            if (OutOfFight && T.calmRegenSeconds > 0f && run.hp < Mathf.CeilToInt(st.maxHp * T.calmRegenCap))
-            {
-                _calmHealT += dt;
-                if (_calmHealT >= T.calmRegenSeconds)
-                {
-                    _calmHealT = 0f;
-                    int h = Session.DungeonHealPlayer(1);
-                    if (h > 0) DungeonHud.Number(Player.Body + Vector2.up * 0.7f, "+" + h, "dnum--heal");
-                }
-            }
-            else _calmHealT = 0f;
+            // (ticket 39: the out-of-fight trickle was replaced by a heal for every room you clear: GameSession.DungeonRoomCleared)
         }
 
         /// A monster went down: the Ember Locket takes time off Flare's cooldown (ticket 16).
@@ -476,7 +464,10 @@ namespace HearthHollow.Dungeon
 
         public void OnRoomCleared(RoomInstance room)
         {
-            Session.DungeonRoomCleared();
+            int hpBefore = Session.Run != null ? Session.Run.hp : 0;
+            Session.DungeonRoomCleared();   // ticket 39: clearing a room heals a share of your max HP
+            int healed = Session.Run != null ? Session.Run.hp - hpBefore : 0;
+            if (healed > 0 && Player != null) DungeonHud.Number(Player.Body + Vector2.up * 0.9f, "💗 +" + healed, "dnum--heal");
             _roomMultTarget = 1f;
             if (room == _current) _lightUpAt = Time.time + Settings.lightUpDelay;   // cleared: the room lights up too
             if (room.Lights != null) room.Lights.IgniteWave(room.LastKill != Vector2.zero ? room.LastKill : (Vector2)(room.Origin + RoomTemplate.Centre));   // braziers flare on from the last kill
