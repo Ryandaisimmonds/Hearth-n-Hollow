@@ -1,6 +1,7 @@
 // Hearth & Hollow — small generated sprites + one-shot effects for the dungeon (slashes, rings, puffs,
 // arrows, orbs). Everything is made in code so there are no extra assets to manage; swap in real VFX later.
 using System.Collections.Generic;
+using HearthHollow.Core;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -23,6 +24,27 @@ namespace HearthHollow.Dungeon
             s.name = key;
             _cache[key] = s;
             return s;
+        }
+
+        /// Ticket 41: little 12×12 pixel-art element icons (flame, snowflake, leaf, droplet, sparkle) for the marks over monsters.
+        public static Sprite ElementIcon(Element e)
+        {
+            string[] rows; Color32 pa, pb, pc;
+            switch (e)
+            {
+                case Element.Fire: rows = new[] { "......o.....", ".....oao....", ".....oaao...", "....oaaao.o.", "...oaabaaoao", "...oaabbaaao", "..oaabbbbaao", ".oaabbccbbao", ".oabbccccbao", ".oabcccccbao", "..oabbccbao.", "...oooooo..." }; pa = new Color32(232, 70, 30, 255); pb = new Color32(255, 150, 40, 255); pc = new Color32(255, 230, 120, 255); break;
+                case Element.Frost: rows = new[] { ".....oo.....", ".oo.oabo.oo.", ".oaooabooao.", "..oaoaboao..", "..ooabbaoo..", "oaaabccbaaao", "oaaabccbaaao", "..ooabbaoo..", "..oaoaboao..", ".oaooabooao.", ".oo.oabo.oo.", ".....oo....." }; pa = new Color32(120, 200, 255, 255); pb = new Color32(225, 248, 255, 255); pc = new Color32(255, 255, 255, 255); break;
+                case Element.Nature: rows = new[] { "........ooo.", "......ooaao.", "....ooaaabo.", "...oaaabbao.", "..oaaabbaao.", "..oaabbaaao.", ".oaabbaaao..", ".oabbaaaao..", ".obbaaaoo...", "obbooooo....", "obo.........", "oo.........." }; pa = new Color32(60, 170, 60, 255); pb = new Color32(150, 235, 100, 255); pc = new Color32(220, 255, 180, 255); break;
+                case Element.Water: rows = new[] { ".....oo.....", ".....oao....", "....oaao....", "....oaaao...", "...oaaaao...", "..oaaaaaao..", "..oaaaaaaao.", ".oaabaaaaao.", ".oacbaaaaao.", ".oacbbaaaao.", "..oaaaaaao..", "...oooooo..." }; pa = new Color32(40, 110, 230, 255); pb = new Color32(120, 190, 255, 255); pc = new Color32(230, 245, 255, 255); break;
+                case Element.Light: rows = new[] { ".....oo.....", ".....oao....", "....oabo....", "....oabo....", ".oooabbaooo.", "oaabbccbbaao", "oaabbccbbaao", ".oooabbaooo.", "....oabo....", "....oabo....", ".....oao....", ".....oo....." }; pa = new Color32(240, 190, 60, 255); pb = new Color32(255, 240, 140, 255); pc = new Color32(255, 255, 240, 255); break;
+                default: return Pixel;
+            }
+            var ink = new Color32(28, 20, 16, 255);
+            return Make("el_" + e, 12, 12, (x, y) =>
+            {
+                char ch = rows[11 - y][x];   // rows are written top-down; textures fill bottom-up
+                return ch == 'o' ? (Color)ink : ch == 'a' ? (Color)pa : ch == 'b' ? (Color)pb : ch == 'c' ? (Color)pc : Color.clear;
+            }, new Vector2(0.5f, 0.5f));
         }
 
         public static Sprite Pixel { get { return Make("pixel", 1, 1, (x, y) => Color.white, new Vector2(0.5f, 0.5f)); } }

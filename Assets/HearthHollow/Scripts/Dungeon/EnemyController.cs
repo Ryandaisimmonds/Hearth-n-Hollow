@@ -377,7 +377,7 @@ namespace HearthHollow.Dungeon
             Shadow = true;
             DisplayName = "Shadow " + DisplayName;
             if (!_weak.Contains(Element.Light)) _weak.Add(Element.Light);   // shadows are always weak to Light
-            _elShown = -1;   // redraw the icons with the Light diamond
+            _elShown = -1;   // redraw the icons with the Light sparkle
             name = "Shadow " + name;
         }
 
@@ -474,13 +474,14 @@ namespace HearthHollow.Dungeon
         }
 
         // ───── element icons over the head (what you've learned about this kind of monster) ─────
-        //   weakness: a big diamond in the element's colour · resistance: a faded square · no effect: a small outlined square
+        //   ticket 41: the element's own icon (flame, snowflake, leaf, droplet, sparkle)
+        //   weakness: big and bright · resistance: faded with a slash through it · no effect: small and greyed
         public static int DiscoveryVersion;
         readonly List<SpriteRenderer> _elIcons = new List<SpriteRenderer>();
         readonly List<float> _elAlpha = new List<float>();
         readonly List<int> _elOrder = new List<int>();
         int _elShown = -1;
-        const float IconWeak = 0.22f, IconResist = 0.17f, IconNeutral = 0.15f, IconGap = 0.09f;
+        const float IconWeak = 0.32f, IconResist = 0.24f, IconNeutral = 0.21f, IconGap = 0.05f;
 
         public static Color ElementColour(Element e)
         {
@@ -515,32 +516,30 @@ namespace HearthHollow.Dungeon
             var dark = new Color(0.08f, 0.07f, 0.06f);   // a dark backing so the icons read on bright floors and in firelight
             foreach (var e in weak)
             {
-                Icon(x + IconWeak * 0.5f, y, IconWeak * 0.75f + 0.05f, 45f, dark, 0.7f);
-                Icon(x + IconWeak * 0.5f, y, IconWeak * 0.75f, 45f, ElementColour(e), 1f, 1);
+                Icon(x + IconWeak * 0.5f, y, IconWeak, 0f, Color.white, 1f, 1, DungeonFx.ElementIcon(e));
                 x += IconWeak + IconGap;
             }
             foreach (var e in res)
             {
-                Icon(x + IconResist * 0.5f, y, IconResist + 0.05f, 0f, dark, 0.7f);
-                Icon(x + IconResist * 0.5f, y, IconResist, 0f, ElementColour(e), 0.5f, 1);
+                Icon(x + IconResist * 0.5f, y, IconResist, 0f, Color.white, 0.5f, 1, DungeonFx.ElementIcon(e));
+                Icon(x + IconResist * 0.5f, y, IconResist * 1.05f, -45f, dark, 0.95f, 2, null, 0.045f);   // a slash through it
                 x += IconResist + IconGap;
             }
             foreach (var e in none)
             {
-                Icon(x + IconNeutral * 0.5f, y, IconNeutral + 0.05f, 0f, dark, 0.7f);
-                Icon(x + IconNeutral * 0.5f, y, IconNeutral, 0f, ElementColour(e), 0.9f, 1);            // outline…
-                Icon(x + IconNeutral * 0.5f, y, IconNeutral * 0.55f, 0f, dark, 1f, 2);                    // …dark middle
+                Icon(x + IconNeutral * 0.5f, y, IconNeutral, 0f, new Color(0.6f, 0.6f, 0.6f), 0.85f, 1, DungeonFx.ElementIcon(e));
                 x += IconNeutral + IconGap;
             }
         }
 
-        void Icon(float x, float y, float size, float rot, Color c, float alpha, int orderOffset = 0)
+        void Icon(float x, float y, float size, float rot, Color c, float alpha, int orderOffset = 0, Sprite sprite = null, float height = -1f)
         {
             var g = new GameObject("Element"); g.transform.SetParent(transform, false);
             g.transform.localPosition = new Vector3(x, y, 0f); g.transform.localRotation = Quaternion.Euler(0, 0, rot);
-            var b = DungeonFx.Pixel.bounds.size;
-            g.transform.localScale = new Vector3(size / b.x, size / b.y, 1f);
-            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel; c.a = alpha; sr.color = c;
+            if (sprite == null) sprite = DungeonFx.Pixel;
+            var b = sprite.bounds.size;
+            g.transform.localScale = new Vector3(size / b.x, (height > 0f ? height : size) / b.y, 1f);
+            var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = sprite; c.a = alpha; sr.color = c;
             _elIcons.Add(sr); _elAlpha.Add(alpha); _elOrder.Add(orderOffset);
         }
 
