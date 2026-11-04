@@ -262,6 +262,13 @@ namespace HearthHollow.Core
             AddRegen(c, "nettle_soup", 2f);
         }
 
+        static void TheFall38(GameContent c)
+        {
+            var t = c.tuning;
+            t.firstDiveHpMult = 0.8f; t.firstDiveAtkMult = 0.6f;
+            t.firstDiveHpPerRoom = 0.45f; t.firstDiveAtkPerRoom = 0.65f;
+        }
+
         static void AddRegen(GameContent c, string recipeId, float v)
         {
             var r = c.Recipe(recipeId);

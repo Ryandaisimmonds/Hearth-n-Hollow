@@ -65,8 +65,7 @@ MonoBehaviour:
       harvestMoonGatherBonus: 1
       routeModChance: 0.35
       restHealPct: 0.3
-      calmRegenSeconds: 2.5
-      calmRegenCap: 0.6
+      roomClearHealPct: 0.15
       forageHeal: 2
       gatherSafeWidth: 0.3
       gatherPerfectWidth: 0.1
@@ -144,8 +143,10 @@ MonoBehaviour:
       bossMaterials: 3
       fishIngredient: fish
       portalChance: 0.2
-      firstDiveHpMult: 1.6
-      firstDiveAtkMult: 2.2
+      firstDiveHpMult: 0.8
+      firstDiveAtkMult: 0.6
+      firstDiveHpPerRoom: 0.45
+      firstDiveAtkPerRoom: 0.65
       fishCatchCount: 2
       fishGoodWidth: 0.34
       fishPerfectWidth: 0.12
@@ -5077,7 +5078,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 37
+    contentVersion: 38
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

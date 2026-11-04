@@ -54,6 +54,7 @@ namespace HearthHollow.Tests
             s.Profile.tray.Clear();
             Assert.IsNull(s.TrayBlock, "first encounter: no meals needed");
             s.Profile.arcStage = 1;
+            s.Profile.wrenStep = (int)WrenStep.FirstBoss;   // ticket 42: the tray shows once Wren has explained it
             Assert.IsNotNull(s.TrayBlock);
             StringAssert.Contains("0/3", s.TrayBlock);
             for (int i = 0; i < _c.tuning.traySize; i++) Assert.IsTrue(s.PackAlwaysMeal("bread"), "Camp Bread always fills the tray");

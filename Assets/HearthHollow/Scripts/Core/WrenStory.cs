@@ -1,5 +1,6 @@
 // Hearth & Hollow — Old Wren's guiding thread through the slice (ticket 35). Pure C#.
 // Wren tells you what to do next at every step, and comes over by herself when she has something new to say:
+//   (ticket 42: a new game opens with a fall into Meadow Hollow, so you meet Wren on waking up after it)
 //   Meet → Meadow Hollow (first dive) → [Wren] cook a meal → show it to Wren → beat the floor-5 boss →
 //   [Wren] Chili Ridge (a short, easy first trip) → [Wren] season a meal with chili at the spice rack →
 //   take Fire food down to the Hoarfrost Alpha → done.
@@ -36,12 +37,15 @@ namespace HearthHollow.Core
             }
         }
 
+        /// Ticket 42: the Route board's meal tray stays hidden until Wren has told you about packing meals.
+        public bool TrayShown { get { return !Slice.On || Wren >= WrenStep.FirstBoss; } }
+
         /// Ticket 40: why you can't set out yet: the tray must be full (any meals, Camp Bread included). Not on the first dive.
         public string TrayBlock
         {
             get
             {
-                if (!Slice.On || Profile.arcStage == 0) return null;
+                if (!Slice.On || Profile.arcStage == 0 || !TrayShown) return null;
                 int n = Profile.tray.Count, max = Content.tuning.traySize;
                 return n < max ? "Pack " + max + " meals to set out (" + n + "/" + max + ")" : null;
             }
@@ -83,7 +87,13 @@ namespace HearthHollow.Core
                     SetWren(WrenStep.FirstDive);
                     break;
                 case WrenStep.AfterDive:
-                    pages.Add("There you are, and still in one piece, more or less. Sit. Eat. That fog takes it out of you, and you went down on an empty stomach.");
+                    if (!Profile.metWren)   // ticket 42: you've never met: she found you after the fall
+                    {
+                        pages.Add("Easy, easy. Don't try to sit up yet. I found you at the edge of the fog, out cold, and carried you up here. I'm Wren.");
+                        pages.Add("This was a town once, before the fog came up out of the Hollow and the Hearth went cold. You fell right into it, and on an empty stomach too. No wonder it chewed you up.");
+                        Profile.metWren = true;
+                    }
+                    else pages.Add("There you are, and still in one piece, more or less. Sit. Eat. That fog takes it out of you, and you went down on an empty stomach.");
                     pages.Add("That's the trick to the Hollow: food. What you eat before you go down is what keeps you on your feet. The kitchen's yours now. 🍳 Cook something proper at the cooking area, then bring it here and show me.");
                     SetWren(WrenStep.CookMeal);
                     break;

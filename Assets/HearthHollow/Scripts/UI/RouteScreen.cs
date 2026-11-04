@@ -473,7 +473,7 @@ namespace HearthHollow.UI
             }
             if (p.tray.Count == 0) mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
             mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
-            _expedition.Add(mealBox);
+            if (S.TrayShown) _expedition.Add(mealBox);   // ticket 42: hidden until Wren has told you about packing meals
             if (Slice.On) _expedition.Add(cookBox);   // ticket 40: the tray comes first
 
             bool can = r != null && lockWhy == null && classWhy == null;

@@ -414,8 +414,10 @@ namespace HearthHollow.Core
         public string fishIngredient = "fish";
         // ticket 26: going home is rare: a way-home portal on this share of floors (never floor 1), plus every boss room
         public float portalChance = 0.2f;
-        // ticket 25: the opening's first dive is short and brutal (no ladder; monsters much tougher) so it ends in a fall
-        public float firstDiveHpMult = 1.6f, firstDiveAtkMult = 2.2f;
+        // ticket 25/42: the opening fall (no ladder). Room 1 is gentle (× the base); each room you fight in after that
+        // adds the per-room step, so it ends in a fall a few rooms in.
+        public float firstDiveHpMult = 0.8f, firstDiveAtkMult = 0.6f;
+        public float firstDiveHpPerRoom = 0.45f, firstDiveAtkPerRoom = 0.65f;
         public int fishCatchCount = 2;
         public float fishGoodWidth = 0.34f, fishPerfectWidth = 0.12f;   // timing bar: good zone → Fine, perfect (centre) → Prime, else Plain
         public float fishBarSpeed = 1.1f;

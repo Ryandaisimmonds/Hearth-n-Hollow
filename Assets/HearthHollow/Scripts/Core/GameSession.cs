@@ -355,7 +355,11 @@ namespace HearthHollow.Core
             LastSummary = null;
             var r = Content.Route(routeId);
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
-            if (Run.firstDive) Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
+            if (Run.firstDive)
+            {
+                if (_falling) Log(FallIntro);   // the UI shows it as a banner once the dungeon is on screen (ticket 42)
+                else Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
+            }
             if (Run.firstRidge) Info("🌶️ A quick look round the foot of the Ridge: grab some chilies and head back to Wren.");
             Touch(true);
             return true;
@@ -560,6 +564,7 @@ namespace HearthHollow.Core
             RollNewCamp();
             Phase = Phase.Hearth;
             if (Profile.bossesBeaten != null && Profile.bossesBeaten.Count > 0) ArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town
+            WrenOnHome();   // ticket 42: waking up in town after the opening fall
             // Today's camp event is announced by the UI's camp-event pop-up (no toast).
             Touch(true);
         }

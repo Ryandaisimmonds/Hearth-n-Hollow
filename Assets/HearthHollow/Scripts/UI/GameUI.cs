@@ -133,7 +133,7 @@ namespace HearthHollow.UI
             // Global pulse clock for low-HP bars (USS: .pulse-on .bar--low ...).
             _pulse = Root.schedule.Execute(() => Root.ToggleInClassList("pulse-on")).Every(420);
 
-            _classSelectOpen = firstLaunch;
+            _classSelectOpen = firstLaunch && !Slice.On;   // the slice has only the Cook, and opens with a fall (ticket 42)
             _lastPhase = session.Phase;
             Session.Changed += OnChanged;
             Session.EventRaised += OnEvent;
@@ -239,8 +239,10 @@ namespace HearthHollow.UI
             _fishOpen = false;
             _dialogueOpen = false;
             Session.ResetGame();
-            _classSelectOpen = true;
+            _classSelectOpen = !Slice.On;
             ApplyLayout();
+            if (Slice.On && Session.BeginTheFall())   // ticket 42: a fresh game opens with the fall
+                Root.schedule.Execute(() => Juice.Toast(GameSession.FallIntro, "toast--level", 7f)).StartingIn(1200);
         }
 
         // ───────── session → UI ─────────

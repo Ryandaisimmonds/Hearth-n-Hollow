@@ -45,7 +45,12 @@ namespace HearthHollow.Core
             float hp = (t.monsterHpBase + diff * t.monsterHpPerDiff) * (m != null ? m.hpMult : 1f);
             float atk = t.monsterAtkBase + diff * t.monsterAtkPerDiff;
             if (elite || boss) { hp *= EliteHpMult; atk *= EliteAtkMult; }
-            if (run.firstDive) { hp *= t.firstDiveHpMult; atk *= t.firstDiveAtkMult; }   // ticket 25: the first dive is meant to end in a fall
+            if (run.firstDive)   // ticket 25/42: the opening fall: every room you fight through is tougher than the last, so it ends in a fall
+            {
+                int k = Math.Max(0, run.fightRooms - 1);
+                hp *= t.firstDiveHpMult + k * t.firstDiveHpPerRoom;
+                atk *= t.firstDiveAtkMult + k * t.firstDiveAtkPerRoom;
+            }
             if (run.firstRidge) { hp *= 0.6f; atk *= 0.6f; }   // ticket 35: the first Ridge trip is quick and easy
             if (boss) { hp *= t.bossHpMult; atk *= t.bossAtkMult; }
             if (Routes.Has(c.Route(run.routeId), Mutator.Giants)) hp *= t.giantHp;

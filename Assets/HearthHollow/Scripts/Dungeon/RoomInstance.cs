@@ -303,6 +303,7 @@ namespace HearthHollow.Dungeon
             var T = S.Content.tuning;
             var run = S.Run;
             if (run == null) yield break;
+            run.fightRooms++;   // ticket 42: the opening fall gets tougher room by room
             var normal = DungeonRules.NormalPool(S.Content, run);
             var elites = DungeonRules.ElitePool(S.Content, run);
             Vector2 playerAt = Controller.Player != null ? Controller.Player.Feet : Origin + RoomTemplate.Centre;

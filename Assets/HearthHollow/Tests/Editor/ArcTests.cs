@@ -96,7 +96,12 @@ namespace HearthHollow.Tests
             Assert.IsTrue(s.Run.firstDive);
             Assert.IsTrue(s.DungeonNoLadder);
             Assert.IsFalse(s.DungeonDescend(), "no way down on the first dive");
+            s.Run.fightRooms = 1;
+            var gentle = s.DungeonEnemy("slime", false, false);
+            s.Run.fightRooms = 5;   // ticket 42: tougher with every room you fight through
             var tough = s.DungeonEnemy("slime", false, false);
+            Assert.Greater(tough.maxHp, gentle.maxHp);
+            Assert.Greater(tough.damage, gentle.damage * 3f);
             s.DungeonExit(); s.ReturnToHearth();
             Assert.IsTrue(s.StartRun("meadow"));
             Assert.IsFalse(s.Run.firstDive);
