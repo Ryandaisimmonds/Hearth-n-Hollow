@@ -42,7 +42,7 @@ namespace HearthHollow.Core
                     Info("✨ New move unlocked: " + m.emoji + " " + m.name + " — learn it at " + Progression.LearnAtText(Progression.Unlock(Content, m.id)) + " when you're home");
         }
         private void ReachedFloor() { if (Run != null) ArcStep(() => Progression.RecordFloor(Profile, Run.routeId, Run.floor)); }
-        private void BeatBoss() { if (Run != null) ArcStep(() => Progression.RecordBoss(Profile, Run.routeId, Run.floor)); }
+        private void BeatBoss() { if (Run != null) { ArcStep(() => Progression.RecordBoss(Profile, Run.routeId, Run.floor)); WrenOnBoss(Run.routeId, Run.floor); } }
 
         /// saveVersion 11: older saves only know cleared routes (3 floors each back then).
         private void UpgradeArcProgress()

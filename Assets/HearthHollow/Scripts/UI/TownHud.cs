@@ -14,6 +14,7 @@ namespace HearthHollow.UI
 
         readonly Label _day, _coins, _class, _stats, _prompt, _weather;
         readonly VisualElement _labels;
+        readonly Label _objective;
         readonly Dictionary<string, Label> _spotLabels = new Dictionary<string, Label>();
         string _promptText;
 
@@ -46,6 +47,10 @@ namespace HearthHollow.UI
             who.Add(_class); who.Add(_stats);
             Root.Add(who);
 
+            _objective = UIKit.L("", "panel", "town-hud__objective");   // ticket 35: what Old Wren wants you to do next
+            _objective.pickingMode = PickingMode.Ignore;
+            Root.Add(_objective);
+
             _prompt = UIKit.L("", "town-hud__prompt");
             Root.Add(_prompt);
             UIKit.Show(_prompt, false);
@@ -64,6 +69,8 @@ namespace HearthHollow.UI
             var cls = C.Class(p.selectedClass);
             var cp = p.Progress(p.selectedClass);
             _class.text = cls != null ? cls.emoji + " " + cls.name : p.selectedClass.ToString();
+            _objective.text = "📌 " + S.WrenObjective;
+            UIKit.Show(_objective, Slice.On);
             var st = S.Stats;
             _stats.text = st == null ? "" : "❤️ " + st.maxHp + "   🗡️ " + UIKit.Num(st.damage) + "   🛡️ " + UIKit.Pct(st.armourPct) + "   💥 " + UIKit.Pct(st.critChance);
         }

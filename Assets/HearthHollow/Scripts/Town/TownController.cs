@@ -76,8 +76,8 @@ namespace HearthHollow.Town
             if (!Walking) { _walkSince = Time.unscaledTime; Near = null; PushHud(); return; }
             // ticket 15: home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
             if (Session.WrenFireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
-            // ticket 33: a new game starts with Old Wren coming over to talk
-            if (!Session.Profile.metWren && Session.ArcStage == 0 && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
+            // ticket 33/35: Old Wren comes over when she has something new to tell you (the start, after your first dive, the chilies)
+            if (Slice.On && Session.WrenTalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
             Near = Nearest();
             if (Near != null && Time.unscaledTime - _walkSince > 0.2f && DungeonInput.Interact) Use(Near);
             PushHud();
@@ -134,7 +134,7 @@ namespace HearthHollow.Town
 
         void Use(TownSpot s)
         {
-            if (s.action == TownAction.Gate && !Session.Profile.metWren) { _ui.Toast("👵 Old Wren's waving you over. Talk to her first."); return; }   // ticket 33
+            if (s.action == TownAction.Gate && Slice.On && Session.Wren == WrenStep.Meet) { _ui.Toast("👵 Old Wren's waving you over. Talk to her first."); return; }   // ticket 33
             string area = AreaOf(s.action);
             if (area != null && !Session.AreaOpen(area))   // opening arc (ticket 18)
             {
@@ -418,17 +418,21 @@ namespace HearthHollow.Town
                 Session.SaveProfile();
                 return;
             }
-            var pages = new List<string>();
-            if (!p.metWren && Session.ArcStage == 0)   // ticket 33: the opening's first words
+            // ticket 35: Wren guides you through the slice step by step
+            if (Slice.On)
             {
-                pages.Add("Well now, a new face by my fire! I'm Wren. This was a town once, before the fog came up out of the Hollow and the Hearth went cold. Look at it: barely an ember.");
-                pages.Add("Somebody has to go down there and bring back what the fog took. The Route board by the gate leads into 🌼 Meadow Hollow. The fog's thick today, so don't be a hero: get as far as you can, then come back to me.");
-                pages.Add("Go on, then. I'll have something warm waiting when you get back.");
-                p.metWren = true;
-                _ui.OpenDialogue("Old Wren", "👵", pages, "🗺️ To the Route board", () => _ui.OpenRoutes());
-                Session.SaveProfile();
+                var step = Session.Wren;
+                var talk = Session.WrenTalk();
+                var next = Session.Wren;
+                string act = null; System.Action onAct = null;
+                if (next == WrenStep.FirstDive || next == WrenStep.FirstBoss || next == WrenStep.Ridge || next == WrenStep.Alpha) { act = "🗺️ To the Route board"; onAct = () => _ui.OpenRoutes(); }
+                else if (next == WrenStep.CookMeal) { act = "🍳 To the cooking area"; onAct = () => _ui.OpenTownMenu(CampTab.Cooking); }
+                else if (next == WrenStep.SeasonMeal) { act = "🧂 To the spice rack"; onAct = () => _ui.OpenSeason(); }
+                if (next != step || step == WrenStep.Done) talk.Add("📌 " + Session.WrenObjective);
+                _ui.OpenDialogue("Old Wren", "👵", talk, act, onAct);
                 return;
             }
+            var pages = new List<string>();
             if (!p.metWren)
             {
                 pages.Add("Well now, a new face by my fire! I'm Wren — I've kept this town's Hearth since before you were born. It's guttering, and the fog's creeping in. You'll need to cook well and walk far to set it right.");

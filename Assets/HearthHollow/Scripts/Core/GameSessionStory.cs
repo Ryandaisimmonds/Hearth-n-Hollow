@@ -40,8 +40,8 @@ namespace HearthHollow.Core
             {
                 "Back from the Hollow with bramble in your hair! You beat that old Sow on the fifth floor, didn't you? Good. Then it's time you heard what's waiting further down.",
                 "At the very bottom, on the tenth floor, sleeps the " + bossName + ". Frost through and through: frost won't touch it, but it can't abide fire. 🔥 Hit it with Fire and it'll feel it, half again.",
-                "Fire food's what you want. " + (chili != null ? chili.emoji + " " + chili.name + "s" : "Chilies") + " put Fire in your attacks: cook one into a meal's element slot. They only grow up on " + ridgeName + ", past the east road. I've marked it on your route board.",
-                "And pack something warm. A bit of ginger in a meal will guard you from its bite. Off you go now, and mind the drake that nests up there.",
+                "Fire food's what you want. " + (chili != null ? chili.emoji + " " + chili.name + "s" : "Chilies") + " put Fire in your attacks: cook one into a meal's element slot. They only grow up on " + ridgeName + ", past the east road. I've marked it on your route board. First time up, just have a quick look round the foot of it and bring me back some chilies.",
+                "Off you go to Chili Ridge, then. Come straight back with the chilies and I'll show you what to do with them.",
             };
         }
 
@@ -61,6 +61,7 @@ namespace HearthHollow.Core
         {
             if (!WrenFireHintDue) return false;
             Routes.SetFlag(Profile, DefaultContent.WrenFireHint);
+            SetWren(WrenStep.Ridge);   // ticket 35
             DiscoverElement(MeadowDeepBoss, Element.Fire);
             var ridge = Content.Route(RidgeRoute);
             Info("🗺️ " + (ridge != null ? ridge.emoji + " " + ridge.name : "Chili Ridge") + " is on the route board. 🔥 The " + (Content.Monster(MeadowDeepBoss) != null ? Content.Monster(MeadowDeepBoss).name : "floor-10 boss") + " is weak to Fire.");

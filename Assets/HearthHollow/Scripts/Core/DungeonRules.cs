@@ -46,6 +46,7 @@ namespace HearthHollow.Core
             float atk = t.monsterAtkBase + diff * t.monsterAtkPerDiff;
             if (elite || boss) { hp *= EliteHpMult; atk *= EliteAtkMult; }
             if (run.firstDive) { hp *= t.firstDiveHpMult; atk *= t.firstDiveAtkMult; }   // ticket 25: the first dive is meant to end in a fall
+            if (run.firstRidge) { hp *= 0.6f; atk *= 0.6f; }   // ticket 35: the first Ridge trip is quick and easy
             if (boss) { hp *= t.bossHpMult; atk *= t.bossAtkMult; }
             if (Routes.Has(c.Route(run.routeId), Mutator.Giants)) hp *= t.giantHp;
             if (Routes.Has(c.Route(run.routeId), Mutator.Swarm) && !boss) hp *= t.swarmHp;

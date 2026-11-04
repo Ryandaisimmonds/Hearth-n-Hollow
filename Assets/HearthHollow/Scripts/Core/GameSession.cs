@@ -43,6 +43,7 @@ namespace HearthHollow.Core
             GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12, ticket 16)
             if (Profile.seenIngredients == null) Profile.seenIngredients = new System.Collections.Generic.List<string>();
             Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13, ticket 24)
+            UpgradeWren();                                    // Old Wren's guiding thread (saveVersion 14, ticket 35)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
@@ -133,6 +134,7 @@ namespace HearthHollow.Core
             if (meal == null) { Info(reason); return null; }
             Emit(new GameEvent(GameEventType.Info, meal.grade, false,
                 Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + r.emoji + " " + r.name + " — into the meal pantry"));
+            WrenOnCooked();   // ticket 35
             Touch(true);
             return meal;
         }
@@ -151,6 +153,7 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }
             if (!Cooking.Season(Content, Profile, m, ingId, out reason)) return false;
+            WrenOnSeasoned(m);   // ticket 35
             var r = Content.Recipe(m.recipeId); var ing = Content.Ingredient(ingId);
             Info("🧂 " + (r != null ? r.name : "Meal") + " seasoned: " + Cooking.SlotText(ing));
             Touch(true);
@@ -333,6 +336,7 @@ namespace HearthHollow.Core
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
             ClearRunLog();   // a fresh log each run (ticket 20)
             Run.firstDive = UseDungeon && !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
+            Run.firstRidge = UseDungeon && routeId == RidgeRoute && Progression.DeepestFloor(Profile, RidgeRoute) == 0;   // ticket 35: a short, easy first trip
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.element = Cooking.Infusion(Content, Run.eaten);   // a meal's infusion: attacks without their own element take it
             Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
@@ -352,6 +356,7 @@ namespace HearthHollow.Core
             var r = Content.Route(routeId);
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
             if (Run.firstDive) Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
+            if (Run.firstRidge) Info("🌶️ A quick look round the foot of the Ridge: grab some chilies and head back to Wren.");
             Touch(true);
             return true;
         }
@@ -443,7 +448,7 @@ namespace HearthHollow.Core
             DropMaterial(f.elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
             if (route == null) return;
-            if (!f.elite && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16)
+            if (!f.elite && !Run.firstRidge && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16); the first Ridge trip always drops
             string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops (ticket 13)
             if (id == null) return;
             // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)
@@ -542,6 +547,7 @@ namespace HearthHollow.Core
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
             ArcEvent(ArcTrigger.FirstRunEnd);   // opening arc: home from the first dive (fallen or not), Wren feeds you, the kitchen opens
+            WrenOnRunEnd();                      // ticket 35: Wren has something to say when you're home
             Phase = Phase.RunEnd;
             Touch(true);
         }

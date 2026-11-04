@@ -1736,3 +1736,6 @@ Label { white-space: normal; color: var(--hh-text); }
 .expedition__pick-chip.el-tint--frost { border-color: rgba(150, 225, 255, 0.9); background-color: rgba(150, 225, 255, 0.2); }
 .expedition__pick-chip.el-tint--nature { border-color: rgba(90, 230, 75, 0.9); background-color: rgba(90, 230, 75, 0.2); }
 .expedition__pick-chip.el-tint--water { border-color: rgba(65, 130, 255, 0.9); background-color: rgba(65, 130, 255, 0.22); }
+
+/* ticket 35: Old Wren's next step, always on screen in town */
+.town-hud__objective { position: absolute; top: 74px; left: 50%; translate: -50% 0; padding: 6px 14px; font-size: 16px; -unity-font-style: bold; color: var(--hh-cream); border-color: rgba(255, 210, 120, 0.6); border-width: 1px; border-radius: 10px; }

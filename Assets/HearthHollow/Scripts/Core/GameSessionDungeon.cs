@@ -33,11 +33,11 @@ namespace HearthHollow.Core
         /// A boss guards this floor (every 5th floor in a deep dungeon, and always the last).
         public bool DungeonBossFloor { get { return Run != null && DungeonRules.IsBossFloor(Content, Run.routeId, Run.floor); } }
         /// This floor offers the way home (an exit, and the ladder asks deeper-or-home); between those floors the ladder just goes down.
-        public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
+        public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || Run.firstRidge || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
         /// A way-home portal is on this floor (not a boss's exit). Ticket 26.
         public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
         /// The first dive has no ladder: its far room is the way home (ticket 25).
-        public bool DungeonNoLadder { get { return Run != null && Run.firstDive; } }
+        public bool DungeonNoLadder { get { return Run != null && (Run.firstDive || Run.firstRidge); } }
         /// This floor's boss would be your first ever: its room has only the way home (ticket 32).
         public bool DungeonFirstBossFloor { get { return Run != null && DungeonBossFloor && (Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0 || Run.mustGoHome); } }
         public List<int> StartFloors(string routeId) { return DungeonRules.StartFloors(Content, Profile, routeId); }
@@ -213,6 +213,7 @@ namespace HearthHollow.Core
 
         private string PickRouteIngredient()
         {
+            if (Run.firstRidge && _rng.Chance(0.7f) && Content.Ingredient("chili") != null) return "chili";   // ticket 35: the first Ridge trip is all about chilies
             return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.dungeon ? Run.floor : 1, _rng.Value());   // deeper floors add their drops (ticket 13)
         }
 
@@ -284,7 +285,7 @@ namespace HearthHollow.Core
         /// Ladder: down to the next floor (harder, richer). The Unity side builds the new floor on Changed.
         public bool DungeonDescend()
         {
-            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.mustGoHome) return false;
+            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.firstRidge || Run.mustGoHome) return false;
             Run.floor++;
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : DungeonPortalFloor ? " — ✨ a way-home portal shimmers somewhere on this floor" : " — no way home here"));
