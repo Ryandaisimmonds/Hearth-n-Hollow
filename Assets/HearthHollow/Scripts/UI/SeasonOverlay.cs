@@ -114,7 +114,7 @@ namespace HearthHollow.UI
                 {
                     _effect.Add(UIKit.L("For the whole run, your attacks that have no element of their own hit as " + Elements.Name(e) + ".", "season-pop__effect-line"));
                     var beats = Elements.StrongAgainst(e);
-                    if (beats != Element.None) _effect.Add(UIKit.L("Strong against " + Elements.Emoji(beats) + " " + Elements.Name(beats) + " monsters (×1.5 damage). Only one infused meal per tray.", "season-pop__effect-line"));
+                    if (beats != Element.None) _effect.Add(UIKit.L("Strong against " + Elements.Emoji(beats) + " " + Elements.Name(beats) + " monsters (×1.5 damage). Up to three infused meals: your attacks carry every element.", "season-pop__effect-line"));
                 }
                 else _effect.Add(UIKit.L(Elements.Name(e) + " attacks hit you for half, for the whole run.", "season-pop__effect-line"));
             }
@@ -134,10 +134,7 @@ namespace HearthHollow.UI
         bool CanSeason(out string why)
         {
             why = null;
-            var ing = C.Ingredient(_spice);
-            if (ing != null && ing.infuse != Element.None && S.Profile.packed.Contains(_meal))
-                foreach (var q in S.Profile.packed) if (q != _meal && Cooking.InfusionOf(C, q.accelId) != Element.None) { why = "Only one infused meal per tray"; return false; }
-            return true;
+            return true;   // ticket 46: any number of infused meals
         }
 
         public override bool HandleKey(KeyCode key)

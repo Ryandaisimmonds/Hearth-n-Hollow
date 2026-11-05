@@ -43,6 +43,35 @@ namespace HearthHollow.Core
         public static bool InLoop(Element e) { return e == Element.Fire || e == Element.Frost || e == Element.Nature || e == Element.Water; }
 
         /// Damage multiplier for an attack of <paramref name="attack"/> on something with these weaknesses / resistances.
+        /// Ticket 46: a hit carrying several elements. Weakness only ×1.5 · resistance only ×0.5 · a weakness and a
+        /// resistance cancel (×1, <paramref name="cancelled"/> true) · two weaknesses are still ×1.5.
+        public static float Multiplier(IList<Element> attack, ICollection<Element> weak, ICollection<Element> resist, out bool cancelled)
+        {
+            cancelled = false;
+            if (attack == null || attack.Count == 0) return 1f;
+            if (attack.Count == 1) return Multiplier(attack[0], weak, resist);
+            bool w = false, r = false;
+            foreach (var e in attack)
+            {
+                if (e == Element.None) continue;
+                if (weak != null && weak.Contains(e)) w = true;
+                else if (resist != null && resist.Contains(e)) r = true;
+            }
+            if (w && r) { cancelled = true; return 1f; }
+            return w ? WeakMult : r ? ResistMult : 1f;
+        }
+
+        /// "🔥❄️" for a list of elements.
+        public static string List(IList<Element> els) { var s = ""; if (els != null) foreach (var e in els) s += Emoji(e); return s; }
+        /// "Fire and Frost" / "Fire, Frost and Water".
+        public static string Names(IList<Element> els)
+        {
+            var n = new List<string>();
+            if (els != null) foreach (var e in els) if (e != Element.None) n.Add(Name(e));
+            if (n.Count <= 1) return n.Count == 1 ? n[0] : "";
+            return string.Join(", ", n.GetRange(0, n.Count - 1).ToArray()) + " and " + n[n.Count - 1];
+        }
+
         public static float Multiplier(Element attack, ICollection<Element> weak, ICollection<Element> resist)
         {
             if (attack == Element.None) return 1f;

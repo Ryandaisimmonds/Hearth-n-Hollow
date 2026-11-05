@@ -252,7 +252,7 @@ namespace HearthHollow.Dungeon
             if (_guardUntil > 0f) buff = "🛡 Guard";
             if (_furyUntil > 0f) buff = (buff != null ? buff + "  " : "") + "📯 Fury";
             if (Time.time < _hasteUntil) buff = (buff != null ? buff + "  " : "") + "💨 Haste";
-            if (S.RunElement != Element.None) buff = (buff != null ? buff + "  " : "") + Elements.Emoji(S.RunElement) + " Infused";
+            if (S.RunInfusions.Count > 0) buff = (buff != null ? buff + "  " : "") + Elements.List(S.RunInfusions) + " Infused";
             foreach (var g in S.RunGuards) buff = (buff != null ? buff + "  " : "") + Elements.Emoji(g) + " Guard";
             string hazard = _dc != null ? _dc.Session.DungeonHazardText : null;   // ☠️ Poison · 50% less
             if (hazard != null) buff = (buff != null ? buff + "  " : "") + hazard;
@@ -316,7 +316,7 @@ namespace HearthHollow.Dungeon
         {
             bool crit;
             float dmg = S.DungeonRollDamage(mult, out crit);
-            if (type != Element.None && type == S.RunElement && e != null) InfusedFlair(e.Body);   // ticket 34: meals add their element to your hits
+            if (type != Element.None && S.RunInfusions.Contains(type) && e != null) InfusedFlair(e.Body);   // ticket 34/46: meals add their elements to your hits
             e.TakeHit(dmg, crit, knockDir, knock, type);
         }
 
@@ -1380,20 +1380,27 @@ namespace HearthHollow.Dungeon
         /// A move's element: its own, or (for moves without one) the run's infused element from meals.
         // ── ticket 34: an infused meal shows on you and on every hit ──
         float _flairAt;
+        int _auraIx;
         void InfusedFlair(Vector3 at)
         {
-            var el = S.RunElement;
-            if (el == Element.None) return;
-            Color c = EnemyController.ElementColour(el);
-            DungeonFx.Embers(at, c, el == Element.Fire ? 10 : 7, 0.4f);
-            DungeonFx.RingAt(at, new Color(c.r, c.g, c.b, 0.7f), 0.6f, 0.25f);
+            var els = S.RunInfusions;   // ticket 46: one burst per infused element, each in its own colour
+            if (els.Count == 0) return;
+            int each = Mathf.Max(3, (els.Contains(Element.Fire) ? 10 : 7) / els.Count + 1);
+            for (int i = 0; i < els.Count; i++)
+            {
+                Color c = EnemyController.ElementColour(els[i]);
+                DungeonFx.Embers(at, c, each, 0.4f);
+                DungeonFx.RingAt(at, new Color(c.r, c.g, c.b, 0.7f), 0.6f + i * 0.18f, 0.25f);
+            }
         }
 
         /// A few element motes drift off you while an infused meal is working (called from Update).
         void InfusedAura()
         {
-            var el = S.RunElement;
-            if (el == Element.None || Time.time < _flairAt) return;
+            var els = S.RunInfusions;
+            if (els.Count == 0 || Time.time < _flairAt) return;
+            _auraIx = (_auraIx + 1) % els.Count;   // ticket 46: the motes take turns in each element's colour
+            var el = els[_auraIx];
             _flairAt = Time.time + (el == Element.Fire ? 0.12f : 0.18f);
             DungeonFx.Embers(Hip, EnemyController.ElementColour(el), 1, 0.35f);
         }

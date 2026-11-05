@@ -574,7 +574,8 @@ namespace HearthHollow.Core
     [Serializable] public partial class RunState
     {
         public string routeId; public RouteMod mod; public ClassId classId; public bool storm; public bool harvestMoon;
-        public Element element;   // the run's infused element (from a meal, ticket 08); attacks without their own element use it
+        public Element element;   // the run's first infused element (from a meal, ticket 08); attacks without their own element use it
+        public List<Element> infusions = new List<Element>();   // ticket 46: every infused element (up to one per meal); those attacks carry all of them
         public List<Element> guards = new List<Element>();   // elements the run's meals guard against: those attacks hit you for half
         public int width, height;
         public List<Tile> tiles = new List<Tile>();   // index = y*width + x

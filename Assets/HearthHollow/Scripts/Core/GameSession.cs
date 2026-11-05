@@ -339,9 +339,10 @@ namespace HearthHollow.Core
             Run.firstDive = UseDungeon && !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
             Run.firstRidge = UseDungeon && routeId == RidgeRoute && Progression.DeepestFloor(Profile, RidgeRoute) == 0;   // ticket 35: a short, easy first trip
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
-            Run.element = Cooking.Infusion(Content, Run.eaten);   // a meal's infusion: attacks without their own element take it
+            Run.infusions = Cooking.Infusions(Content, Run.eaten);   // ticket 46: every meal's infusion; attacks without their own element carry them all
+            Run.element = Run.infusions.Count > 0 ? Run.infusions[0] : Element.None;
             Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
-            if (Run.element != Element.None) Log(Elements.Emoji(Run.element) + " Your attacks are infused with " + Elements.Name(Run.element));
+            if (Run.infusions.Count > 0) Log(Elements.List(Run.infusions) + " Your attacks are infused with " + Elements.Names(Run.infusions));
             foreach (var g in Run.guards) Log(Elements.Emoji(g) + " Your meals guard you against " + Elements.Name(g));
             Run.storm = storm;
             Run.harvestMoon = Hearth.campEvent == CampEvent.HarvestMoon;

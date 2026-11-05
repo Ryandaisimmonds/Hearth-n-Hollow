@@ -66,6 +66,8 @@ namespace HearthHollow.Core
 
         /// The run's infused element (None outside a run).
         public Element RunElement { get { return Run != null ? Run.element : Element.None; } }
+        /// Ticket 46: every infused element this run.
+        public IList<Element> RunInfusions { get { return Run != null && Run.infusions != null ? (IList<Element>)Run.infusions : new Element[0]; } }
 
         public bool DungeonSkillUnlocked
         {

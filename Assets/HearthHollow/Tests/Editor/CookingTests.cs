@@ -70,15 +70,18 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void OnlyOneInfusedMealPerTray()
+        public void SeveralInfusedMeals_PackTogether()   // ticket 46 (was: only one per tray)
         {
             var s = Fresh();
             s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_stew", accelId = "chili" });
             s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_butty", accelId = "frost_berry" });
             s.Profile.mealPantry.Add(new CookedMeal { recipeId = "mushroom_skewer", accelId = "ginger" });
             Assert.IsTrue(s.PackMeal(0));
-            Assert.IsFalse(s.PackMeal(0), "a second infusion is refused");
-            Assert.IsTrue(s.PackMeal(1), "a guard meal is fine");
+            Assert.IsTrue(s.PackMeal(0), "a second infusion is fine now");
+            Assert.IsTrue(s.PackMeal(0), "and a guard meal");
+            var inf = Cooking.Infusions(_c, Cooking.Packed(_c, s.Profile));
+            Assert.AreEqual(2, inf.Count);
+            Assert.Contains(Element.Fire, inf);
         }
 
         [Test]

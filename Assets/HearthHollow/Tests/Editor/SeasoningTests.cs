@@ -44,15 +44,14 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void TrayMeals_KeepTheOneInfusionRule()
+        public void TrayMeals_CanAllBeInfused()   // ticket 46
         {
             var s = WithMeals();
             string why;
             Assert.IsTrue(s.SeasonMeal(s.Profile.mealPantry[0], "chili", out why), why);
             Assert.IsTrue(s.PackMeal(0)); Assert.IsTrue(s.PackMeal(0));
             var second = s.Profile.packed[1];
-            Assert.IsFalse(s.SeasonMeal(second, "chili", out why), "only one infused meal per tray");
-            Assert.IsTrue(s.SeasonMeal(second, "ginger", out why), "a guard is fine");
+            Assert.IsTrue(s.SeasonMeal(second, "chili", out why), "a second infused meal is fine");
         }
     }
 }

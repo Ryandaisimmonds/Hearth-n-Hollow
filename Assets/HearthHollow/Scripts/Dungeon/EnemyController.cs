@@ -338,7 +338,12 @@ namespace HearthHollow.Dungeon
         public void TakeHit(float dmg, bool crit, Vector2 knockDir, float knock = 6f, Element element = Element.None)
         {
             if (Dead || _st == St.Spawning) return;
-            float em = Elements.Multiplier(element, _weak, _resist);   // elements: weakness ×1.5, resistance ×0.5
+            // ticket 46: an attack carrying the meals' infusion carries every infused element (weakness ×1.5, resistance
+            // ×0.5, a weakness and a resistance cancel out)
+            var infused = _dc != null && _dc.Session != null ? _dc.Session.RunInfusions : null;
+            bool multi = element != Element.None && infused != null && infused.Count > 1 && infused.Contains(element);
+            bool cancelled = false;
+            float em = multi ? Elements.Multiplier(infused, _weak, _resist, out cancelled) : Elements.Multiplier(element, _weak, _resist);
             dmg *= em;
             if (_dc != null && _dc.Player != null && Time.time >= _ultChargeAt) { _ultChargeAt = Time.time + 0.15f; _dc.Player.ChargeUltimate(); }   // hits charge the ultimate
             if (_markT > 0f) dmg *= 1f + _markBonus;   // Hunter's Mark
@@ -350,9 +355,14 @@ namespace HearthHollow.Dungeon
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
-            bool learned = ElementContact(element);   // a first discovery shows its own "found" message instead
-            if (!learned && em > 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Weak!", "dnum--crit");
-            else if (!learned && em < 1f) DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.9f), Elements.Emoji(element) + " Resists", "dnum--info");
+            bool learned = false;   // a first discovery shows its own "found" message instead
+            if (multi) { int n = 0; foreach (var e in infused) if (ElementContact(e, n)) { learned = true; n++; } }   // each carried element teaches you its result, one line each
+            else learned = ElementContact(element);
+            string emo = multi ? Elements.List(infused) : Elements.Emoji(element);
+            Vector2 popAt = Body + Vector2.up * (_anim.FigureHeight * 0.9f);
+            if (!learned && cancelled) DungeonHud.Number(popAt, emo + " Cancelled", "dnum--info");
+            else if (!learned && em > 1f) DungeonHud.Number(popAt, emo + " Weak!", "dnum--crit");
+            else if (!learned && em < 1f) DungeonHud.Number(popAt, emo + " Resists", "dnum--info");
             // impact: sparks + a flash of light, a white flash on the body, a few frames' freeze (more for crits)
             Color hitCol = crit ? new Color(1f, 0.9f, 0.45f) : new Color(1f, 0.62f, 0.25f);
             DungeonFx.Sparks(Body, knockDir, hitCol, crit ? 18 : 10);
@@ -459,14 +469,17 @@ namespace HearthHollow.Dungeon
         /// This monster was touched by an element (a hit, Flare's Light, a brazier's fire), damage or not.
         /// Discovery (ticket 07): you now know how that element works on every monster of this kind.
         /// Returns true when this taught you something new.
-        public bool ElementContact(Element element)
+        public bool ElementContact(Element element) { return ElementContact(element, 0); }
+
+        /// <paramref name="stack"/>: the nth discovery from one hit (ticket 46), shown that many lines higher.
+        public bool ElementContact(Element element, int stack)
         {
             if (element == Element.None || Dead || _dc == null || Stats == null) return false;
             if (Shadow && element == Element.Light) return false;   // shadows are always weak to Light: a rule, not a fact about this kind
             if (!_dc.Session.DiscoverElement(Stats.monsterId, element)) return false;
             DiscoveryVersion++;   // every monster of this kind redraws its icons
             bool weak = _weak.Contains(element), res = _resist.Contains(element);
-            DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f),
+            DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f + stack * 0.38f),
                 Elements.Emoji(element) + (weak ? " Weakness found!" : res ? " Resistance found" : " No effect"), weak ? "dnum--crit" : "dnum--info");
             var md = _dc.Session.Content.Monster(Stats.monsterId);
             _dc.Session.Log(Elements.Emoji(element) + " " + (md != null ? md.name : Stats.monsterId) + (weak ? " is weak to " : res ? " resists " : " shrugs off ") + Elements.Name(element));   // run log (ticket 20)

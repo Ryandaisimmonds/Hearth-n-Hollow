@@ -75,11 +75,19 @@ namespace HearthHollow.Core
         /// The element a meal's element slot carries, infused or guarded (None = empty slot) — tints its card.
         public static Element SlotElement(GameContent c, string accelId) { var e = InfusionOf(c, accelId); return e != Element.None ? e : GuardOf(c, accelId); }
 
-        /// The run's infused element from a set of meals: the first infusing meal (a tray only ever holds one).
+        /// The run's first infused element from a set of meals (None if none).
         public static Element Infusion(GameContent c, List<EatenMeal> meals)
         {
-            if (meals != null) foreach (var m in meals) { var e = InfusionOf(c, m.accelId); if (e != Element.None) return e; }
-            return Element.None;
+            var all = Infusions(c, meals);
+            return all.Count > 0 ? all[0] : Element.None;
+        }
+
+        /// Ticket 46: every element the meals infuse (a tray can hold up to three infused meals).
+        public static List<Element> Infusions(GameContent c, List<EatenMeal> meals)
+        {
+            var list = new List<Element>();
+            if (meals != null) foreach (var m in meals) { var e = InfusionOf(c, m.accelId); if (e != Element.None && !list.Contains(e)) list.Add(e); }
+            return list;
         }
 
         /// Every element the meals guard against.
@@ -251,9 +259,6 @@ namespace HearthHollow.Core
             if (!string.IsNullOrEmpty(m.accelId)) { reason = "That meal is already seasoned"; return false; }
             if (ing == null || (ing.infuse == Element.None && ing.guard == Element.None)) { reason = "Pick an element ingredient"; return false; }
             if (Economy.PantryCount(p, ingId) <= 0) { reason = "You have no " + ing.name + " left"; return false; }
-            if (ing.infuse != Element.None && p.packed.Contains(m))
-                foreach (var q in p.packed)
-                    if (q != m && InfusionOf(c, q.accelId) != Element.None) { reason = "Only one infused meal per tray"; return false; }
             Economy.RemoveFromPantry(p, ingId, 1);
             m.accelId = ingId;
             reason = null; return true;
@@ -266,9 +271,6 @@ namespace HearthHollow.Core
             var m = p.mealPantry[pantryIndex];
             reason = Tray.CanAdd(c, p.tray, m.recipeId);   // ticket 44: room left for an 🗡️ Attack and a ❤️ Health meal
             if (reason != null) return false;
-            if (InfusionOf(c, m.accelId) != Element.None)
-                foreach (var q in p.packed)
-                    if (InfusionOf(c, q.accelId) != Element.None) { reason = "Only one infused meal per tray"; return false; }
             p.packed.Add(m);
             p.mealPantry.RemoveAt(pantryIndex);
             SyncTray(p);
