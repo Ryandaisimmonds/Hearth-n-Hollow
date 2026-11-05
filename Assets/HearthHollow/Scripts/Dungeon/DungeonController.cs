@@ -541,6 +541,8 @@ namespace HearthHollow.Dungeon
                 if (Session.DungeonPickUp(floorItem)) DungeonHud.BagOpen = true;   // ticket 48: the bag's full: swap something out
                 return;
             }
+            var dig = NearestDig(p.Feet);   // ticket 50: a buried chest underfoot
+            if (dig != null && it == null) { dig.Dig(this); return; }
             if (it != null) it.Use(this);
         }
 
@@ -550,6 +552,14 @@ namespace HearthHollow.Dungeon
             if (Session.DungeonDescend()) ladder.MarkUsed();   // ticket 36: a ladder only goes down — the way home is a portal or a boss's exit
             return;
             _ui.OpenLadderChoice(() => { if (Session.DungeonDescend()) ladder.MarkUsed(); }, () => Session.DungeonExit());
+        }
+
+        /// Ticket 50: a buried chest in reach in this room, or null.
+        HiddenForage NearestDig(Vector2 feet)
+        {
+            if (_current == null || _current.Secrets == null) return null;
+            foreach (var f in _current.Secrets.Forage) if (f != null && f.InReach(feet)) return f;
+            return null;
         }
 
         /// Ticket 49: the fall's last room: no monsters. The fog pours in and drains you until you fall.
@@ -662,6 +672,7 @@ namespace HearthHollow.Dungeon
                 var ing = Session.Content.Ingredient(lootNear.ingredientId);
                 DungeonHud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
             }
+            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) DungeonHud.Prompt = "⛏️ Dig here";   // ticket 50
             else DungeonHud.Prompt = near != null ? near.Prompt(this) : null;
             DungeonHud.Locked = _current != null && _current.EventRunning;
             DungeonHud.Status = StatusText();

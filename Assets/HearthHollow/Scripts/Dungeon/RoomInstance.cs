@@ -121,6 +121,25 @@ namespace HearthHollow.Dungeon
             return false;
         }
 
+        /// Ticket 50: water / lava / pits (the hazard marker, or the theme's hazard tile). Projectiles fly over these.
+        public bool IsHazardTile(TileBase t)
+        {
+            if (t == null) return false;
+            var set = Controller != null ? Controller.Settings : null;
+            return (set != null && t == set.markerHazard) || (_theme != null && t == _theme.hazard);
+        }
+
+        /// Ticket 50: a real wall (not water) at this world point.
+        public bool SolidAt(Vector2 world)
+        {
+            if (Template.walls == null) return false;
+            var t = Template.walls.GetTile(Template.walls.WorldToCell(world));
+            return t != null && !IsHazardTile(t);
+        }
+
+        /// Is this collider the room's walls tilemap (walls and hazards share it)?
+        public bool IsWallsCollider(Collider2D c) { return Template.walls != null && c != null && c.gameObject == Template.walls.gameObject; }
+
         public bool IsWalkable(Vector3Int p)
         {
             if (Template.floor == null || Template.floor.GetTile(p) == null) return false;

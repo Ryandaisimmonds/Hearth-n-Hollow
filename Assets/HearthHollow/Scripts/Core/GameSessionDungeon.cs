@@ -238,12 +238,20 @@ namespace HearthHollow.Core
         }
 
         // ───────────── secrets (light plan step 7) ─────────────
-        /// Hidden forage found by light: two of the route's ingredients, with elite odds of a good grade.
+        /// Ticket 50: a buried chest, dug up with E: two of the area's ingredients, and about one in four times a few
+        /// coins or a building material as well.
         public void DungeonHiddenForage()
         {
             if (!InDungeon) return;
             string ing = PickRouteIngredient();
             if (ing != null) AddLoot(ing, 2, true);
+            if (_rng.Chance(T.buriedBonusChance))
+            {
+                var route = Content.Route(Run.routeId);
+                bool mat = route != null && route.materialIds != null && route.materialIds.Count > 0 && _rng.Chance(0.5f);
+                if (mat) AddLoot(_rng.Pick(route.materialIds), 1);
+                else { int coins = Math.Max(3, 4 + Run.floor * 2); Run.coinsEarned += coins; Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins)); }
+            }
             Touch(false);
         }
 

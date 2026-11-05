@@ -426,6 +426,7 @@ namespace HearthHollow.Core
         public float firstDiveHpMult = 0.8f, firstDiveAtkMult = 0.6f;
         public float firstDiveHpPerRoom = 0.45f, firstDiveAtkPerRoom = 0.85f;
         public float firstDiveSpeedPerRoom = 0.12f, firstDiveSpeedMax = 2f;   // ticket 43: they move faster each room too
+        public float buriedBonusChance = 0.25f;                              // ticket 50: a buried chest's chance of coins or a material too
         public int fallRooms = 7;                                            // ticket 43/49: the wake-up room + 6 (2 tutorial, 3 ramp, the fog room)
         public float fallFogBitePct = 0.12f;                                 // ticket 49: the fog room takes this share of max HP every half second
         public int fishCatchCount = 2;

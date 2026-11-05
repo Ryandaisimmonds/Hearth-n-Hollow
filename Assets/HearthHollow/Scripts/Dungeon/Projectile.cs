@@ -114,6 +114,13 @@ namespace HearthHollow.Dungeon
                 }
             }
             if (_rb != null) _rb.linearVelocity = _vel;
+            // ticket 50: flying over water inside the walls tilemap: stop at the first real wall
+            if (_wallsRoom != null && _wallsRoom.SolidAt(transform.position))
+            {
+                _wallsRoom = null;
+                if (_boomerang) { if (!_returning) TurnBack(); }
+                else { Die(); return; }
+            }
             if (_fromPlayer && _dc.CurrentRoom != null && _dc.CurrentRoom.Lights != null) _dc.CurrentRoom.Lights.IgniteNear(transform.position, 0.45f);
             if (_fromPlayer && _dc.CurrentRoom != null && _dc.CurrentRoom.Secrets != null) _dc.CurrentRoom.Secrets.Hit(transform.position, 0.2f);
             if (_trail.HasValue)
@@ -156,12 +163,22 @@ namespace HearthHollow.Dungeon
                 if (other.GetComponentInParent<EnemyController>() != null) return;
             }
             if (other.isTrigger) return;
+            // ticket 50: walls and water share the walls tilemap. Water lets everything fly over; real walls still stop it.
+            var room = other.GetComponentInParent<RoomInstance>();
+            if (room != null && room.IsWallsCollider(other))
+            {
+                _wallsRoom = room;
+                if (!room.SolidAt(transform.position) && !room.SolidAt((Vector2)transform.position + _vel.normalized * 0.15f)) return;
+            }
             if (other.attachedRigidbody == null)
             {
                 if (_boomerang) { if (!_returning) TurnBack(); return; }   // bounces off walls and comes home
                 Die();
             }   // walls / pillars / hazards
         }
+
+        RoomInstance _wallsRoom;   // ticket 50: we're over the walls tilemap's water
+        void OnTriggerExit2D(Collider2D other) { if (_wallsRoom != null && _wallsRoom.IsWallsCollider(other)) _wallsRoom = null; }
 
         void TurnBack() { _returning = true; _hit.Clear(); }
 

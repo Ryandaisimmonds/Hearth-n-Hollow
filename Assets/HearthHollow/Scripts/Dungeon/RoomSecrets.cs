@@ -164,49 +164,54 @@ namespace HearthHollow.Dungeon
     }
 
     /// Forage that only light can find.
+    /// Ticket 50: a buried chest. A faint patch of disturbed earth you can spot if you look; Flare (or any strong light)
+    /// makes it sparkle. Stand on it and press E to dig it up (GameSession.DungeonHiddenForage: ingredients, sometimes
+    /// coins or a material).
     public class HiddenForage : MonoBehaviour
     {
-        RoomSecrets _s; SpriteRenderer _sr, _glint; bool _found, _taken; float _seed;
+        RoomSecrets _s; SpriteRenderer _sr, _glint; bool _taken; float _seed;
+        public bool Taken { get { return _taken; } }
 
         public void Setup(RoomSecrets s, Sprite sprite)
         {
             _s = s; _seed = Random.value * 10f;
             _sr = gameObject.AddComponent<SpriteRenderer>();
-            _sr.sprite = sprite != null ? sprite : DungeonFx.Circle;
-            _sr.color = new Color(1f, 1f, 1f, 0f);
-            transform.localScale = new Vector3(1.3f, 1.3f, 1f);
-            var g = new GameObject("Glint"); g.transform.SetParent(transform, false); g.transform.localPosition = new Vector3(0.12f, 0.35f, 0);
-            g.transform.localScale = new Vector3(2.5f, 2.5f, 1f);
+            _sr.sprite = DungeonFx.DirtPatch;   // (the old bush sprite is no longer used)
+            _sr.color = new Color(1f, 1f, 1f, 0.4f);
+            var b = DungeonFx.DirtPatch.bounds.size;
+            transform.localScale = new Vector3(0.95f / b.x, 0.95f / b.y, 1f);
+            var g = new GameObject("Glint"); g.transform.SetParent(transform, false); g.transform.localPosition = new Vector3(0.1f, 0.12f, 0);
             _glint = g.AddComponent<SpriteRenderer>(); _glint.sprite = DungeonFx.Pixel; _glint.color = new Color(1f, 0.9f, 0.6f, 0f);
             if (DungeonFx.GlowMat != null) _glint.sharedMaterial = DungeonFx.GlowMat;
+        }
+
+        /// Close enough to dig?
+        public bool InReach(Vector2 feet) { return !_taken && Vector2.Distance(feet, transform.position) < 0.9f; }
+
+        /// E: dig it up.
+        public void Dig(DungeonController dc)
+        {
+            if (_taken || dc == null) return;
+            _taken = true;
+            dc.Session.DungeonHiddenForage();
+            DungeonFx.Puff(transform.position + new Vector3(0, 0.2f), new Color(0.55f, 0.4f, 0.25f), 10, 0.5f);
+            DungeonFx.Embers(transform.position, new Color(1f, 0.85f, 0.45f), 12, 0.35f);
+            DungeonHud.Number((Vector2)transform.position + new Vector2(0, 0.9f), "📦 Buried chest!", "dnum--info");
+            Destroy(gameObject);
         }
 
         void Update()
         {
             var dc = _s != null ? _s.Room.Controller : null;
             if (_taken || dc == null || dc.CurrentRoom != _s.Room) return;
-            float r = _found ? 1f : _s.Reveal01(transform.position);
-            if (!_found && r >= 0.9f)
-            {
-                _found = true;
-                DungeonFx.RingAt(transform.position + new Vector3(0, 0.3f), new Color(1f, 0.9f, 0.6f, 0.9f), 0.9f, 0.5f);
-            }
-            float tw = 0.5f + 0.5f * Mathf.Sin(Time.time * 5f + _seed);
-            _sr.color = new Color(1f, 1f, 1f, _found ? 1f : r * 0.9f);
-            _glint.color = new Color(1f, 0.9f, 0.6f, Mathf.Max(r * 0.8f, 0f) * tw);
-            _glint.transform.localScale = Vector3.one * (1.8f + tw * 1.4f);
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
-            _sr.sortingOrder = DungeonController.SortOrder(transform.position.y) - 1; _glint.sortingOrder = _sr.sortingOrder + 1;
-
-            if (_found && dc.GameplayActive && dc.Player != null && Vector2.Distance(dc.Player.Feet, transform.position) < 0.8f)
-            {
-                _taken = true;
-                dc.Session.DungeonHiddenForage();
-                DungeonFx.Puff(transform.position + new Vector3(0, 0.3f), new Color(0.6f, 1f, 0.6f), 8, 0.5f);
-                DungeonFx.Embers(transform.position, new Color(1f, 0.9f, 0.6f), 10, 0.3f);
-                DungeonHud.Number((Vector2)transform.position + new Vector2(0, 0.9f), "Hidden forage!", "dnum--info");
-                Destroy(gameObject);
-            }
+            float r = _s.Reveal01(transform.position);   // light on it: Flare makes it sparkle
+            float tw = 0.5f + 0.5f * Mathf.Sin(Time.time * 6f + _seed);
+            bool lit = r >= 0.9f;
+            _sr.color = new Color(1f, 1f, 1f, Mathf.Lerp(0.4f, 1f, r));
+            _glint.color = new Color(1f, 0.92f, 0.6f, lit ? (0.55f + 0.45f * tw) : r * 0.35f * tw);
+            _glint.transform.localScale = Vector3.one * ((lit ? 0.16f : 0.1f) + tw * 0.1f) / Mathf.Max(0.01f, transform.localScale.x);
+            if (lit && Random.value < 0.05f) DungeonFx.Embers(transform.position + new Vector3(Random.Range(-0.3f, 0.3f), 0.1f), new Color(1f, 0.9f, 0.55f), 1, 0.25f);
+            _sr.sortingOrder = DungeonController.SortOrder(transform.position.y) - 3; _glint.sortingOrder = _sr.sortingOrder + 1;
         }
     }
 

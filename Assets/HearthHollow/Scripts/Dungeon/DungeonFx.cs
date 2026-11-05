@@ -47,6 +47,17 @@ namespace HearthHollow.Dungeon
             }, new Vector2(0.5f, 0.5f));
         }
 
+        /// Ticket 50: a patch of freshly turned earth: something's buried here.
+        public static Sprite DirtPatch
+        {
+            get
+            {
+                string[] rows = { "............", "............", "............", "....o..o....", "..oaaoaaao..", ".oabaacaabo.", "oaaacaaabaao", ".oaaaaaaaao.", "..oooooooo..", "............", "............", "............" };
+                var ink = new Color32(46, 30, 18, 255); var a = new Color32(112, 78, 46, 255); var b = new Color32(150, 110, 68, 255); var c = new Color32(128, 120, 110, 255);
+                return Make("dirtpatch", 12, 12, (x, y) => { char ch = rows[11 - y][x]; return ch == 'o' ? (Color)ink : ch == 'a' ? (Color)a : ch == 'b' ? (Color)b : ch == 'c' ? (Color)c : Color.clear; }, new Vector2(0.5f, 0.35f));
+            }
+        }
+
         /// Ticket 48: a little burlap pouch for loot lying on the floor.
         public static Sprite Pouch
         {
