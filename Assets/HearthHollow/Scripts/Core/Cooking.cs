@@ -22,6 +22,7 @@ namespace HearthHollow.Core
     {
         public List<int> lineGrades = new List<int>();   // unused since ingredients lost their grades (kept so old data loads)
         public string accelId;                            // the element ingredient (empty = none)
+        public int grade = -1;                            // ticket 45: the cooking bar's result (0 Plain / 1 Fine / 2 Prime); -1 = roll the odds
         public int accelGrade;                            // unused (kept so old data loads)
         public float qualityNudge;                        // 0..1 from the cooking minigame (ticket 11): a small push towards better quality
     }
@@ -165,11 +166,32 @@ namespace HearthHollow.Core
         // ───────── the cooking minigame (ticket 11) ─────────
         public enum Timing { Missed, Good, Perfect }
 
-        /// Where the heat marker is (0..1) after this many seconds: one sweep across the bar, then it stops at the end.
+        /// Where the heat marker is (0..1) after this many seconds. Ticket 45: it bounces back and forth at a steady pace
+        /// (cookGameSeconds per sweep) until you stop it.
         public static float CookMarkerAt(TuningData t, float seconds)
         {
             float dur = t.cookGameSeconds > 0.05f ? t.cookGameSeconds : 1.6f;
-            return Math.Max(0f, Math.Min(1f, seconds / dur));
+            float ph = Math.Max(0f, seconds) / dur;
+            ph -= (float)Math.Floor(ph / 2f) * 2f;   // 0..2
+            return ph <= 1f ? ph : 2f - ph;
+        }
+
+        /// Ticket 45: the gold (Prime) and warm (Fine) zone widths for a station: each kitchen level past 1 widens both.
+        public static void CookZones(GameContent c, Profile p, Station st, out float perfect, out float good)
+        {
+            var t = c.tuning;
+            int lv = p != null ? Math.Max(1, Kitchen.Level(c, p, st)) : 1;
+            perfect = Math.Min(0.5f, t.cookGamePerfect + (lv - 1) * t.cookGameZonePerLevel);
+            good = Math.Min(0.9f, Math.Max(perfect, t.cookGameGood + (lv - 1) * t.cookGameZonePerLevel * 2f));
+        }
+
+        /// Ticket 45: the bar decides the quality outright: gold = Prime, warm = Fine, anywhere else = Plain.
+        public static int CookGrade(GameContent c, Profile p, Station st, float marker)
+        {
+            float perfect, good;
+            CookZones(c, p, st, out perfect, out good);
+            float d = Math.Abs(marker - c.tuning.cookGameTarget);
+            return d <= perfect * 0.5f ? 2 : d <= good * 0.5f ? 1 : 0;
         }
 
         public static Timing CookTiming(TuningData t, float marker)
@@ -204,7 +226,7 @@ namespace HearthHollow.Core
         {
             if (!CanCook(c, p, r, ch, out reason)) return null;
             foreach (var kv in Needs(c, p, r, ch)) Economy.RemoveFromPantry(p, kv.Key, kv.Value);
-            int grade = Roll(Odds(c, p, r, ch), rng.Value());
+            int grade = ch != null && ch.grade >= 0 ? ClampGrade(ch.grade) : Roll(Odds(c, p, r, ch), rng.Value());   // ticket 45: the bar's result
             var meal = new CookedMeal { recipeId = r.id, grade = grade };
             if (ch != null && !string.IsNullOrEmpty(ch.accelId)) meal.accelId = ch.accelId;
             p.mealPantry.Add(meal);

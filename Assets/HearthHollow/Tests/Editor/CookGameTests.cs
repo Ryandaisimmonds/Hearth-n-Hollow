@@ -16,7 +16,10 @@ namespace HearthHollow.Tests
             Assert.That(t.cookGameSeconds, Is.InRange(1f, 2f));
             Assert.AreEqual(0f, Cooking.CookMarkerAt(t, 0f), 0.0001f);
             Assert.AreEqual(0.5f, Cooking.CookMarkerAt(t, t.cookGameSeconds / 2f), 0.0001f);
-            Assert.AreEqual(1f, Cooking.CookMarkerAt(t, t.cookGameSeconds * 3f), 0.0001f, "stops at the end, no ping-pong");
+            Assert.AreEqual(1f, Cooking.CookMarkerAt(t, t.cookGameSeconds), 0.0001f);
+            Assert.AreEqual(0.5f, Cooking.CookMarkerAt(t, t.cookGameSeconds * 1.5f), 0.0001f, "ticket 45: bounces back");
+            Assert.AreEqual(0f, Cooking.CookMarkerAt(t, t.cookGameSeconds * 2f), 0.0001f);
+            Assert.AreEqual(0.25f, Cooking.CookMarkerAt(t, t.cookGameSeconds * 4.25f), 0.0001f, "and keeps going at a steady pace");
         }
 
         [Test]
@@ -52,6 +55,52 @@ namespace HearthHollow.Tests
             var meal = s.Cook(r.id, new CookChoice { qualityNudge = 1f });
             Assert.IsNotNull(meal);
             Assert.AreEqual(r.id, meal.recipeId, "same dish, same tier");
+        }
+
+        [Test]
+        public void TheBar_DecidesTheQuality()   // ticket 45
+        {
+            var c = DefaultContent.Create();
+            var p = Economy.NewProfile(c);
+            float tg = c.tuning.cookGameTarget;
+            Assert.AreEqual(2, Cooking.CookGrade(c, p, Station.BBQ, tg), "gold = Prime");
+            Assert.AreEqual(1, Cooking.CookGrade(c, p, Station.BBQ, tg + c.tuning.cookGameGood * 0.45f), "warm = Fine");
+            Assert.AreEqual(0, Cooking.CookGrade(c, p, Station.BBQ, 0f), "anywhere else = Plain");
+        }
+
+        [Test]
+        public void KitchenLevels_WidenTheZones()
+        {
+            var c = DefaultContent.Create();
+            var p = Economy.NewProfile(c);
+            float p1, g1, p3, g3;
+            Cooking.CookZones(c, p, Station.Pot, out p1, out g1);
+            int baseLv = Kitchen.Level(c, p, Station.Pot);
+            SetLevel(c, p, Station.Pot, baseLv + 2);
+            Cooking.CookZones(c, p, Station.Pot, out p3, out g3);
+            Assert.Greater(p3, p1); Assert.Greater(g3, g1);
+        }
+
+        static void SetLevel(GameContent c, Profile p, Station st, int lv)
+        {
+            for (int guard = 0; guard < 10 && Kitchen.Level(c, p, st) < lv; guard++)
+            {
+                p.coins += 100000;
+                foreach (var ing in c.ingredients) Economy.AddToPantry(p, ing.id, 50);
+                string why;
+                if (!Kitchen.UpgradeStation(c, p, st, out why)) break;
+            }
+        }
+
+        [Test]
+        public void Cooking_UsesTheBarsGrade()
+        {
+            var c = DefaultContent.Create();
+            var s = new GameSession(c, null, 5);
+            s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
+            foreach (var ic in c.Recipe("mushroom_skewer").ingredients) Economy.AddToPantry(s.Profile, ic.ingredientId, ic.count * 3);
+            Assert.AreEqual(2, s.Cook("mushroom_skewer", new CookChoice { grade = 2 }).grade);
+            Assert.AreEqual(0, s.Cook("mushroom_skewer", new CookChoice { grade = 0 }).grade);
         }
     }
 }

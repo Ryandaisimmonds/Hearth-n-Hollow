@@ -1,9 +1,8 @@
-// Hearth & Hollow — the stove (cooking v10, Design v2). Opened by clicking a recipe on the Cooking tab.
-// Shows what the dish needs, lets you put one ingredient in the element slot (infuse or guard), shows the odds of
-// each quality, then cooks: the ingredients are spent, the quality is rolled and the meal goes into the meal pantry.
-// Ticket 11: "Cook" plays a short timing tap first (a heat marker sweeps once; stop it in the gold for a better
-// chance of Fine / Prime); "Quick cook" skips it at no cost. The tap never changes the dish or its tier.
-using System.Collections.Generic;
+// Hearth & Hollow — the stove. Opened by clicking a recipe on the Cooking tab.
+// Ticket 45: "you put in this, you get this, done". Four things on screen: the dish, its ingredients (have / need),
+// what it gives, and Cook. Cook starts the heat bar, which bounces back and forth at a steady pace until you stop
+// it: gold = Prime, warm = Fine, anywhere else = Plain (kitchen upgrades widen the zones). Then a result card, and
+// you're back in town at the cooking area: one meal per visit.
 using HearthHollow.Core;
 using HearthHollow.Data;
 using UnityEngine;
@@ -13,40 +12,38 @@ namespace HearthHollow.UI
 {
     public class CookOverlay : UIScreen
     {
-        readonly VisualElement _head, _lines, _accel, _odds, _preview;
-        readonly Label _result, _why;
-        readonly Button _cookBtn, _quickBtn;
+        enum Mode { Ready, Cooking, Done }
+
+        readonly VisualElement _main, _head, _lines, _card, _cardPic;
+        readonly Label _gives, _why, _cardTitle, _cardBuffs;
+        readonly Button _cookBtn, _doneBtn;
         readonly VisualElement _game, _gameTrack, _gameGood, _gamePerfect, _gameMarker;
         readonly Label _gameHint;
-        bool _gameOn;
+        Mode _mode;
         float _gameStart, _gameMarker01;
         IVisualElementScheduledItem _tick;
         string _recipeId;
-        CookChoice _choice;
-        string _lastResult;
 
         public CookOverlay(GameUI ui) : base(ui, "overlay", "cook-pop")
         {
             var box = UIKit.E("overlay__box", "cook-pop__box");
             Root.Add(box);
-            Root.RegisterCallback<PointerDownEvent>(e => { if (e.target == Root) Ui.CloseCook(); });
-            var close = UIKit.B("", () => Ui.CloseCook(), "settings__close");
+            Root.RegisterCallback<PointerDownEvent>(e => { if (e.target == Root && _mode != Mode.Cooking) Close(); });
+            var close = UIKit.B("", Close, "settings__close");
             close.tooltip = "Close (Esc)";
             box.Add(close);
 
+            // ── the recipe ──
+            _main = UIKit.E("cook-pop__main");
+            box.Add(_main);
             _head = UIKit.E("cook-pop__head");
-            box.Add(_head);
-            box.Add(UIKit.L("Ingredients", "subhead", "cook-pop__sub"));
+            _main.Add(_head);
             _lines = UIKit.E("cook-pop__lines");
-            box.Add(_lines);
-            _accel = UIKit.E("cook-pop__accel");   // ticket 27: element ingredients go in at the spice rack, after cooking
-            box.Add(UIKit.L("Quality", "subhead", "cook-pop__sub"));
-            _odds = UIKit.E("cook-pop__odds");
-            box.Add(_odds);
-            _preview = UIKit.E("cook-pop__preview");
-            box.Add(_preview);
+            _main.Add(_lines);
+            _gives = UIKit.L("", "cook-pop__gives");
+            _main.Add(_gives);
 
-            // the timing tap: hidden until you press Cook
+            // the heat bar: shown once you press Cook
             _game = UIKit.E("cook-game");
             _gameHint = UIKit.L("", "small", "cook-game__hint");
             _game.Add(_gameHint);
@@ -57,209 +54,158 @@ namespace HearthHollow.UI
             _gameMarker = UIKit.E("gather-bar__marker");
             _gameTrack.Add(_gameGood); _gameTrack.Add(_gamePerfect); _gameTrack.Add(_gameMarker);
             foreach (var ch in _gameTrack.Children()) ch.pickingMode = PickingMode.Ignore;
-            _gameTrack.RegisterCallback<PointerDownEvent>(e => { if (e.button == 0 && _gameOn) StopGame(); });
+            _gameTrack.RegisterCallback<PointerDownEvent>(e => { if (e.button == 0 && _mode == Mode.Cooking) StopGame(); });
             _game.Add(_gameTrack);
-            box.Add(_game);
-            UIKit.Show(_game, false);
+            _main.Add(_game);
 
             var foot = UIKit.E("cook-pop__foot");
             _why = UIKit.L("", "small", "cook-pop__why");
             foot.Add(_why);
-            _quickBtn = UIKit.B("Quick cook", () => DoCook(0f, null), "btn--secondary", "cook-pop__quick");
-            _quickBtn.tooltip = "Skip the timing tap: cook straight away at the normal odds (Q / gamepad X)";
-            foot.Add(_quickBtn);
-            _cookBtn = UIKit.B("🔥 Cook", CookPressed, "btn--primary", "cook-pop__cook");
-            _cookBtn.tooltip = "Tap again when the heat hits the gold for a better chance of Fine or Prime (Enter / Space / gamepad A)";
+            _cookBtn = UIKit.B("🔥 Cook", CookPressed, "btn--primary", "btn--huge", "cook-pop__cook");
+            _cookBtn.tooltip = "Enter / Space";
             foot.Add(_cookBtn);
-            box.Add(foot);
-            _result = UIKit.L("", "cook-pop__result");
-            box.Add(_result);
+            _main.Add(foot);
+
+            // ── the result card ──
+            _card = UIKit.E("cook-card");
+            _cardPic = UIKit.E("cook-card__pic");
+            _card.Add(_cardPic);
+            _cardTitle = UIKit.L("", "cook-card__title");
+            _card.Add(_cardTitle);
+            _cardBuffs = UIKit.L("", "cook-card__buffs");
+            _card.Add(_cardBuffs);
+            _doneBtn = UIKit.B("Back to the kitchen  (Enter)", Close, "btn--primary", "cook-card__done");
+            _card.Add(_doneBtn);
+            box.Add(_card);
         }
 
-        /// Open on a recipe with an empty element slot.
         public void SetRecipe(string recipeId)
         {
             _recipeId = recipeId;
-            _lastResult = null;
-            _choice = new CookChoice();
-            EndGame();
+            SetMode(Mode.Ready);
         }
 
-        protected override void OnHide() { EndGame(); }
+        protected override void OnHide() { StopTick(); _mode = Mode.Ready; }
 
-        // ───── the timing tap ─────
+        void Close()
+        {
+            StopTick();
+            bool cooked = _mode == Mode.Done;
+            _mode = Mode.Ready;
+            Ui.CloseCook();
+            if (cooked) Ui.CloseTownMenu();   // one meal per visit: back to town, at the cooking area
+        }
+
+        void SetMode(Mode m)
+        {
+            _mode = m;
+            UIKit.Show(_main, m != Mode.Done);
+            UIKit.Show(_card, m == Mode.Done);
+            UIKit.Show(_game, m == Mode.Cooking);
+            _cookBtn.text = m == Mode.Cooking ? "✋ Now!" : "🔥 Cook";
+            if (m != Mode.Cooking) StopTick();
+            Refresh();
+        }
+
+        void StopTick() { if (_tick != null) _tick.Pause(); }
+
+        // ───── the heat bar ─────
         void CookPressed()
         {
-            if (_gameOn) { StopGame(); return; }
+            if (_mode == Mode.Cooking) { StopGame(); return; }
+            if (_mode != Mode.Ready) return;
             string why;
-            if (!S.CanCook(_recipeId, _choice, out why)) return;
-            var t = C.tuning;
-            _gameOn = true;
+            if (!S.CanCook(_recipeId, new CookChoice(), out why)) return;
+            var r = C.Recipe(_recipeId);
+            float perfect, good;
+            Cooking.CookZones(C, S.Profile, r.station, out perfect, out good);
+            float target = C.tuning.cookGameTarget;
+            _gamePerfect.style.left = Length.Percent((target - perfect / 2f) * 100f);
+            _gamePerfect.style.width = Length.Percent(perfect * 100f);
+            _gameGood.style.left = Length.Percent((target - good / 2f) * 100f);
+            _gameGood.style.width = Length.Percent(good * 100f);
+            _gameHint.text = "Stop the heat in the gold for Prime, the warm zone for Fine";
             _gameStart = UIKit.Now;
             _gameMarker01 = 0f;
-            _gamePerfect.style.left = Length.Percent((t.cookGameTarget - t.cookGamePerfect / 2f) * 100f);
-            _gamePerfect.style.width = Length.Percent(t.cookGamePerfect * 100f);
-            _gameGood.style.left = Length.Percent((t.cookGameTarget - t.cookGameGood / 2f) * 100f);
-            _gameGood.style.width = Length.Percent(t.cookGameGood * 100f);
             _gameMarker.style.left = Length.Percent(0f);
-            _gameHint.text = "Tap when the heat hits the gold!";
-            UIKit.Show(_game, true);
-            _cookBtn.text = "✋ Now!";
-            _quickBtn.SetEnabled(false);
+            SetMode(Mode.Cooking);
             if (_tick == null) _tick = Root.schedule.Execute(Tick).Every(16); else _tick.Resume();
         }
 
         void Tick()
         {
-            if (!_gameOn) return;
+            if (_mode != Mode.Cooking) return;
             _gameMarker01 = Cooking.CookMarkerAt(C.tuning, UIKit.Now - _gameStart);
             _gameMarker.style.left = Length.Percent(_gameMarker01 * 100f);
-            if (_gameMarker01 >= 1f) StopGame();   // ran off the end: cooks at the normal odds
         }
 
         void StopGame()
         {
-            if (!_gameOn) return;
-            if (_gameMarker01 < 1f && UIKit.Now - _gameStart < 0.12f) return;   // the same press that started it (focused button + key)
-            float m = _gameMarker01;
-            var timing = Cooking.CookTiming(C.tuning, m);
-            float nudge = Cooking.CookNudge(C.tuning, m);
-            EndGame();
-            UIKit.Show(_game, true);   // keep the bar up to show where it stopped
-            _gameMarker.style.left = Length.Percent(m * 100f);
-            Juice.Pop(_gameMarker, 1.6f, 0.05f, 0.2f);
-            _gameHint.text = timing == Cooking.Timing.Perfect ? "✨ Perfect timing! Best chance of a better meal"
-                           : timing == Cooking.Timing.Good ? "👍 Nicely done — a better chance of Fine / Prime"
-                           : "Cooked at the normal odds";
-            DoCook(nudge, timing == Cooking.Timing.Perfect ? "Perfect timing! " : null);
-        }
-
-        void EndGame()
-        {
-            _gameOn = false;
-            if (_tick != null) _tick.Pause();
-            _cookBtn.text = "🔥 Cook";
-            if (_quickBtn != null) _quickBtn.SetEnabled(true);
-            UIKit.Show(_game, false);
-        }
-
-        void DoCook(float nudge, string prefix)
-        {
+            if (_mode != Mode.Cooking) return;
+            if (UIKit.Now - _gameStart < 0.12f) return;   // the same press that started it (focused button + key)
+            StopTick();
             var r = C.Recipe(_recipeId);
-            _choice.qualityNudge = nudge;   // ticket 11: only the quality roll; never the dish or its tier
-            var meal = S.Cook(_recipeId, _choice);
-            if (meal == null) return;
-            _lastResult = (prefix ?? "") + "Cooked: " + Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + (r != null ? r.name : "") + "!";
-            // keep the element ingredient if there's another one
-            string acc = _choice.accelId;
-            _choice = new CookChoice();
-            if (!string.IsNullOrEmpty(acc) && Economy.PantryCount(S.Profile, acc) > 0) _choice.accelId = acc;
-            bool keepBar = _game.style.display != DisplayStyle.None;
-            Refresh();
-            UIKit.Show(_game, keepBar);
+            int grade = Cooking.CookGrade(C, S.Profile, r.station, _gameMarker01);
+            var meal = S.Cook(_recipeId, new CookChoice { grade = grade });
+            if (meal == null) { SetMode(Mode.Ready); return; }
+            // the result card
+            _cardPic.Clear();
+            _cardPic.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(r.id), r.emoji, "cook-card__emoji"), "cook-pop__well"));
+            _cardTitle.text = Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + r.name + (meal.grade == 2 ? "!" : "");
+            _cardBuffs.text = GivesText(r, meal.grade);
+            _card.EnableInClassList("cook-card--prime", meal.grade == 2);
+            SetMode(Mode.Done);
+            Juice.Pop(_cardTitle, 1.25f, 0.05f, 0.25f);
+            _doneBtn.Focus();
+        }
+
+        string GivesText(RecipeData r, int grade)
+        {
+            var cls = C.Class(S.Profile.selectedClass);
+            var em = new EatenMeal { recipeId = r.id, potency = 1f, grade = grade, slot = Tray.IsAttackMeal(r) ? TraySlot.Attack : Tray.IsHealthMeal(r) ? TraySlot.Health : TraySlot.Free };
+            string kind = Tray.IsAttackMeal(r) ? "🗡️ " : Tray.IsHealthMeal(r) ? "❤️ " : "✨ ";
+            return kind + UIKit.BuffSummary(Cooking.MealBuffs(C, cls, em));
         }
 
         public override void Refresh()
         {
             var r = C.Recipe(_recipeId);
             var p = S.Profile;
-            _head.Clear(); _lines.Clear(); _accel.Clear(); _odds.Clear(); _preview.Clear();
+            _head.Clear(); _lines.Clear();
             if (r == null) return;
-            var cls = C.Class(p.selectedClass);
 
-            // header
+            // 1 · the dish
             _head.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(r.id), r.emoji, "cook-pop__emoji"), "cook-pop__well"));
-            var ht = UIKit.E("cook-pop__head-text");
-            ht.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★ Tier 2" : ""), "overlay__title", "cook-pop__title"));
-            ht.Add(UIKit.L(r.station + " · " + (r.description ?? ""), "small", "muted"));
-            _head.Add(ht);
+            _head.Add(UIKit.L(r.name, "overlay__title", "cook-pop__title"));
 
-            // ingredients: what it needs and what you have
-            if (r.ingredients.Count == 0) _lines.Add(UIKit.L("No ingredients needed.", "small", "muted"));
+            // 2 · you put in this
             foreach (var ic in r.ingredients)
             {
-                var ing = C.Ingredient(ic.ingredientId);
                 int have = Economy.PantryCount(p, ic.ingredientId);
-                var row = UIKit.E("cook-line");
                 bool known = Routes.IngredientKnown(C, p, ic.ingredientId);   // ticket 24
-                row.Add(UIKit.L(known ? UIKit.IngEmoji(C, ic.ingredientId) + " " + ic.count + "× " + UIKit.IngName(C, ic.ingredientId) + (ing != null && ing.deep ? "  ✨ found deep" : "")
-                                      : "❓ " + ic.count + "× ? — not found yet" + (ing != null && ing.deep ? " (somewhere deep)" : ""), "cook-line__name"));
-                var haveL = UIKit.L("have " + have, "small", have >= ic.count ? "muted" : "cook-line__short");
-                row.Add(haveL);
+                var row = UIKit.E("cook-line");
+                row.Add(UIKit.L(known ? UIKit.IngEmoji(C, ic.ingredientId) + " " + UIKit.IngName(C, ic.ingredientId) : "❓ not found yet", "cook-line__name"));
+                row.Add(UIKit.L(ic.count + " needed · have " + have, have >= ic.count ? "cook-line__have" : "cook-line__short"));
                 _lines.Add(row);
             }
 
-            // element slot: none, or any element ingredient you have at least one of
-            var accRow = UIKit.E("cook-line", "cook-line--wrap");
-            var none = UIKit.B("None", () => { _choice.accelId = null; Refresh(); }, "filter-chip");
-            none.EnableInClassList("filter-chip--on", string.IsNullOrEmpty(_choice.accelId));
-            accRow.Add(none);
-            int shown = 0;
-            foreach (var a in Cooking.Accelerators(C))
-            {
-                int have = Economy.PantryCount(p, a.id);
-                if (have <= 0) continue;
-                shown++;
-                var acc = a;
-                var b = UIKit.B(a.emoji + " " + a.name + " · " + Cooking.SlotText(a) + "  (" + have + ")", () => { _choice.accelId = acc.id; Refresh(); }, "filter-chip");
-                b.EnableInClassList("filter-chip--on", _choice.accelId == a.id);
-                b.tooltip = a.infuse != Element.None ? "Infuse: your attacks that have no element of their own become " + Elements.Name(a.infuse) + " for the run. One infused meal per tray."
-                          : a.guard != Element.None ? "Guard: " + Elements.Name(a.guard) + " attacks hit you for half for the run."
-                          : Cooking.SlotText(a);
-                accRow.Add(b);
-            }
-            if (shown == 0) accRow.Add(UIKit.L("No element ingredients in the larder yet (chili, fire honey, frostberry, nettle, salt, fish, glowcap, mint, ginger, garlic, herbs, wheat).", "small", "muted"));
-            _accel.Add(accRow);
+            // 3 · you get this
+            _gives.text = "You get: " + GivesText(r, 0);
 
-            // quality odds
-            float[] odds = Cooking.Odds(C, p, r, _choice);   // includes the station level's bonus
-            for (int g = 0; g < Cooking.Grades; g++)
-            {
-                var cell = UIKit.E("cook-odds", "cook-odds--" + g);
-                cell.style.flexGrow = Mathf.Max(0.0001f, odds[g]);
-                cell.Add(UIKit.L(Cooking.GradeGem(g) + " " + Cooking.GradeName(g) + " " + Mathf.RoundToInt(odds[g] * 100f) + "%", "cook-odds__text"));
-                UIKit.Show(cell, odds[g] > 0.0005f);
-                _odds.Add(cell);
-            }
-
-            // what each quality would give this class
-            for (int g = 0; g < Cooking.Grades; g++)
-            {
-                if (odds[g] <= 0.0005f) continue;
-                var em = new EatenMeal { recipeId = r.id, potency = 1f, grade = g, accelId = _choice.accelId };
-                _preview.Add(UIKit.L(Cooking.GradeGem(g) + " " + Cooking.GradeName(g) + " (×" + UIKit.Num(Cooking.GradeMult(C.tuning, g)) + "): "
-                    + UIKit.BuffSummary(Cooking.MealBuffs(C, cls, em)), "small", "cook-pop__line"));
-            }
-            _preview.Add(UIKit.L("🧂 Want Fire in your attacks, or a guard? Season the meal at the spice rack, next to the stove.", "small", "muted"));
-            var slotIng = string.IsNullOrEmpty(_choice.accelId) ? null : C.Ingredient(_choice.accelId);
-            if (slotIng != null) _preview.Add(UIKit.L(Cooking.SlotText(slotIng) + " for the whole run", "small", "cook-pop__line"));
-            var t2 = C.recipes.Find(x => x.upgradeOf == r.id);
-            if (t2 != null) _preview.Add(UIKit.L("★ Tier 2: " + t2.name + " needs " + DeepNames(t2) + " from deep in the dungeons — much stronger.", "small", "muted"));
-            _preview.Add(UIKit.L("🔨 " + r.station + " level " + Kitchen.Level(C, p, r.station) + " raises the chance of a better meal", "small", "muted"));
-            var perfect = Cooking.Odds(C.tuning, Mathf.Max(0f, Kitchen.Jackpot(C, p, r.station) - C.tuning.jackpotChance), 1f);
-            _preview.Add(UIKit.L("🔥 Perfect timing on the tap: Fine " + Mathf.RoundToInt(perfect[1] * 100f) + "% · Prime " + Mathf.RoundToInt(perfect[2] * 100f) + "%  (Quick cook skips it)", "small", "muted"));
-
+            // 4 · Cook
             string why;
-            bool can = S.CanCook(_recipeId, _choice, out why);
-            _cookBtn.SetEnabled(can || _gameOn);
-            _quickBtn.SetEnabled(can && !_gameOn);
-            _why.text = can ? "Uses the ingredients now · meal pantry " + p.mealPantry.Count + "/" + Kitchen.PantrySlots(C, p) : why;
-            _result.text = _lastResult ?? "";
-            UIKit.Show(_result, !string.IsNullOrEmpty(_lastResult));
-        }
-
-        string DeepNames(RecipeData r)
-        {
-            var names = new List<string>();
-            foreach (var ic in r.ingredients) { var i = C.Ingredient(ic.ingredientId); if (i != null && i.deep) names.Add(i.emoji + " " + i.name); }
-            return string.Join(", ", names.ToArray());
+            bool can = S.CanCook(_recipeId, new CookChoice(), out why);
+            _cookBtn.SetEnabled(can || _mode == Mode.Cooking);
+            _why.text = can ? "" : why;
+            UIKit.Show(_why, !can);
         }
 
         public override bool HandleKey(KeyCode key)
         {
-            if (key == KeyCode.Escape) { if (_gameOn) EndGame(); else Ui.CloseCook(); }
-            else if ((key == KeyCode.Return || key == KeyCode.KeypadEnter || key == KeyCode.Space) && _cookBtn.enabledSelf) CookPressed();
-            else if (key == KeyCode.Q && !_gameOn && _quickBtn.enabledSelf) DoCook(0f, null);
+            bool go = key == KeyCode.Return || key == KeyCode.KeypadEnter || key == KeyCode.Space;
+            if (key == KeyCode.Escape) { if (_mode == Mode.Cooking) SetMode(Mode.Ready); else Close(); }
+            else if (go && _mode == Mode.Done) Close();
+            else if (go && _cookBtn.enabledSelf) CookPressed();
             return true;   // modal
         }
     }

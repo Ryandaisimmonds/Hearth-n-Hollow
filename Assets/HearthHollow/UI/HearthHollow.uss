@@ -1752,3 +1752,12 @@ Label { white-space: normal; color: var(--hh-text); }
 /* ticket 44: typed tray slots */
 .expedition__slot-type { font-size: 20px; width: 30px; -unity-text-align: middle-center; margin-right: 4px; }
 .expedition__tray-stats { margin-top: 6px; font-size: 16px; color: var(--hh-cream); -unity-font-style: bold; }
+
+/* ticket 45: simple cooking */
+.cook-pop__gives { margin: 10px 0 6px 0; font-size: 18px; color: var(--hh-cream); -unity-font-style: bold; white-space: normal; }
+.cook-line__have { color: rgb(150, 220, 120); -unity-font-style: bold; }
+.cook-card { align-items: center; padding: 18px 12px 8px 12px; }
+.cook-card__title { font-size: 28px; color: var(--hh-cream); -unity-font-style: bold; margin-top: 12px; -unity-text-align: middle-center; }
+.cook-card--prime .cook-card__title { color: var(--hh-gold); }
+.cook-card__buffs { font-size: 20px; margin: 8px 0 18px 0; color: var(--hh-cream); }
+.cook-card__done { min-width: 260px; }
