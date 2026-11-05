@@ -28,6 +28,15 @@ namespace HearthHollow.Core
     {
         const float EliteHpMult = 1.5f, EliteAtkMult = 1.25f;
 
+        /// Ticket 49: how far up the opening ramp this room is. In the fall's dungeon rooms 1–2 are the tutorial (no ramp);
+        /// elsewhere (an old save's first Meadow dive) it starts at once.
+        public static int FirstDiveRamp(RunState run)
+        {
+            if (run == null) return 0;
+            int start = run.routeId == GameSession.FallRoute ? 3 : 1;
+            return Math.Max(0, run.fightRooms - start);
+        }
+
         /// Route base + one per floor below the first + one when Dangerous / stormy.
         public static int Difficulty(GameContent c, RunState run)
         {
@@ -47,7 +56,7 @@ namespace HearthHollow.Core
             if (elite || boss) { hp *= EliteHpMult; atk *= EliteAtkMult; }
             if (run.firstDive)   // ticket 25/42: the opening fall: every room you fight through is tougher than the last, so it ends in a fall
             {
-                int k = Math.Max(0, run.fightRooms - 1);
+                int k = FirstDiveRamp(run);
                 hp *= t.firstDiveHpMult + k * t.firstDiveHpPerRoom;
                 atk *= t.firstDiveAtkMult + k * t.firstDiveAtkPerRoom;
             }

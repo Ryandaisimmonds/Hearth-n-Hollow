@@ -265,6 +265,7 @@ namespace HearthHollow.UI
                 _campEventOpen = true;
                 _routesOpen = false; _pantryOpen = false;
             }
+            if (p == Phase.RunEnd && _lastPhase != Phase.RunEnd && Session.FallEnding) FadeOutOfTheFall();   // ticket 49
             _lastPhase = p;
             ApplyLayout();
         }
@@ -283,7 +284,7 @@ namespace HearthHollow.UI
             _routes.SetVisible(p == Phase.Hearth && !_classSelectOpen && _routesOpen);
             _hollow.SetVisible(inRun || (p == Phase.RunEnd && outro));
             _dungeon.SetVisible(dungeon);
-            _summary.SetVisible(p == Phase.RunEnd && !outro);
+            _summary.SetVisible(p == Phase.RunEnd && !outro && !Session.FallEnding);   // ticket 49: the fall has no summary
             _rest.SetVisible(p == Phase.Rest);
             _gather.SetVisible(p == Phase.Gather);
             _fight.SetVisible(p == Phase.Fight || outro);
@@ -348,6 +349,33 @@ namespace HearthHollow.UI
                     if (!string.IsNullOrEmpty(e.text)) Juice.Toast(e.text, null);
                     break;
             }
+        }
+
+        // ───────── ticket 49: the fall ends in a fade, then you wake in town ─────────
+        VisualElement _fade;
+        void FadeOutOfTheFall()
+        {
+            if (_fade == null)
+            {
+                _fade = UIKit.E("fall-fade");
+                _fade.Add(UIKit.L("…the fog closes in", "fall-fade__text"));
+                Root.Add(_fade);
+            }
+            _fade.BringToFront();
+            _fade.style.display = DisplayStyle.Flex;
+            _fade.RemoveFromClassList("fall-fade--out");
+            _fade.style.opacity = 0f;
+            float start = UIKit.Now;
+            bool woke = false;
+            _fade.schedule.Execute(() =>
+            {
+                float t = UIKit.Now - start;
+                if (t < 1.2f) _fade.style.opacity = t / 1.2f;                       // to black
+                else if (!woke && t >= 3.2f) { woke = true; Session.ReturnToHearth(); }   // …and wake up in town
+                else if (woke) _fade.style.opacity = Mathf.Clamp01(1f - (t - 3.2f) / 1.4f);
+                else _fade.style.opacity = 1f;
+                if (woke && t >= 4.6f) _fade.style.display = DisplayStyle.None;
+            }).Every(16).Until(() => woke && UIKit.Now - start >= 4.6f);
         }
 
         // ───────── keyboard ─────────

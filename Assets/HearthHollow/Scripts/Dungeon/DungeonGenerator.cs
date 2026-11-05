@@ -17,6 +17,7 @@ namespace HearthHollow.Dungeon
         public Vector2Int cell;
         public RoomKind kind = RoomKind.Combat;
         public int depth;
+        public bool fog;   // ticket 49: the fall's last room: no monsters, the fog pours in
         public readonly bool[] doors = new bool[4];        // indexed by (int)Side
         public bool Has(Side s) { return doors[(int)s]; }
     }
@@ -124,8 +125,8 @@ namespace HearthHollow.Dungeon
             return plan;
         }
 
-        /// Ticket 43: the opening's nameless dungeon: a start room, then a single line of fight rooms (no forage, no
-        /// campfire, no branches). The far end is an exit, a safety net for anyone who somehow survives them all.
+        /// Ticket 43/49: the opening's nameless dungeon: a start room, then a single line of fight rooms (no forage, no
+        /// campfire, no branches). The far end is the fog room: no way out, the fog takes you.
         public static FloorPlan Gauntlet(int seed, int roomCount)
         {
             FloorPlan best = null;
@@ -162,7 +163,7 @@ namespace HearthHollow.Dungeon
                 Link(last, node, pick);
                 last = node;
             }
-            if (last != start) last.kind = RoomKind.Exit;
+            if (last != start) { last.kind = RoomKind.Combat; last.fog = true; }   // ticket 49: it ends in the fog, not an exit
             return plan;
         }
 

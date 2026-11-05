@@ -65,6 +65,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 40) { MealStats40(c); c.contentVersion = 40; }  // flat + % meal stats, quality ×1.5 / ×2 (DefaultContentDesignV2.cs)
             if (c.contentVersion < 41) { Areas41(c); c.contentVersion = 41; }  // shorter areas, Frost Hollow (DefaultContentDesignV2.cs)
             if (c.contentVersion < 42) { FewerDrops42(c); c.contentVersion = 42; }  // ~40% fewer drops (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 43) { FallPolish43(c); c.contentVersion = 43; }  // the fall: 6 rooms ending in fog (DefaultContentDesignV2.cs)
             return true;
         }
 

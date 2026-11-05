@@ -151,7 +151,8 @@ MonoBehaviour:
       firstDiveAtkPerRoom: 0.85
       firstDiveSpeedPerRoom: 0.12
       firstDiveSpeedMax: 2
-      fallRooms: 14
+      fallRooms: 7
+      fallFogBitePct: 0.12
       fishCatchCount: 2
       fishGoodWidth: 0.34
       fishPerfectWidth: 0.12
@@ -5104,7 +5105,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 42
+    contentVersion: 43
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

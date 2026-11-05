@@ -304,15 +304,19 @@ namespace HearthHollow.Dungeon
             var run = S.Run;
             if (run == null) yield break;
             run.fightRooms++;   // ticket 42: the opening fall gets tougher room by room
+            bool fall = run.routeId == GameSession.FallRoute;
+            if (fall && Node.fog) { _spawning = false; Controller.StartFogRoom(this); yield break; }   // ticket 49: the fog room (the doors stay shut)
             var normal = DungeonRules.NormalPool(S.Content, run);
             var elites = DungeonRules.ElitePool(S.Content, run);
+            bool tutorial = fall && run.fightRooms <= 2;   // ticket 49: rooms 1–2 teach you: one slime, then two
+            if (tutorial) { normal = new List<string> { "slime" }; elites = new List<string>(); }
             Vector2 playerAt = Controller.Player != null ? Controller.Player.Feet : Origin + RoomTemplate.Centre;
 
             var spots = Points(SpawnKind.Enemy);
             var eliteSpots = Points(SpawnKind.Elite);
             int count = T.enemiesPerRoomMin + _rng.Next(Mathf.Max(1, T.enemiesPerRoomMax - T.enemiesPerRoomMin + 1)) + DungeonRules.ExtraEnemies(run.floor);
             if (Node.kind == RoomKind.Ladder || Node.kind == RoomKind.Exit) count += 1;
-            if (run.routeId == GameSession.FallRoute) count += (run.fightRooms - 1) / 2;   // ticket 43: more of them as you go
+            if (fall) count = tutorial ? run.fightRooms : count + Mathf.Max(0, run.fightRooms - 2) / 2;   // ticket 43/49: more of them as you go
             var areaRoute = S.Content.Route(run.routeId);
             if (areaRoute != null && areaRoute.enemyMult > 0f && areaRoute.enemyMult < 1f && Node.kind != RoomKind.Boss)
                 count = Mathf.Max(1, Mathf.RoundToInt(count * areaRoute.enemyMult));   // ticket 47: a quiet resource area

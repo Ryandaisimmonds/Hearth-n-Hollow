@@ -1769,3 +1769,9 @@ Label { white-space: normal; color: var(--hh-text); }
 .bag-hint { margin-top: 4px; white-space: normal; max-width: 420px; }
 .loot-tags { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 .loot-tag { position: absolute; width: 60px; -unity-text-align: middle-center; font-size: 15px; color: rgb(255, 240, 200); -unity-font-style: bold; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9); }
+
+/* ticket 49: the opening fall */
+.dungeon__fog { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(70, 30, 110, 0.85); opacity: 0; }
+.dhud__tutorial { position: absolute; left: 0; right: 0; bottom: 140px; -unity-text-align: middle-center; font-size: 26px; color: rgb(255, 244, 214); -unity-font-style: bold; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85); }
+.fall-fade { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgb(0, 0, 0); align-items: center; justify-content: center; }
+.fall-fade__text { font-size: 30px; color: rgb(200, 180, 230); -unity-font-style: italic; }

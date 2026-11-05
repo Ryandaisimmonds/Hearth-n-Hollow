@@ -40,6 +40,8 @@ namespace HearthHollow.UI
         readonly VisualElement _bagPanel, _bagGrid;
         readonly Label _bagTitle;
         readonly VisualElement _holdRow, _holdSlot;   // ticket 48
+        readonly VisualElement _fog;   // ticket 49
+        readonly Label _tutorial;
         readonly Label _holdText, _bagHint;
         int _cursor, _dragFrom = -1;
         VisualElement _tagLayer;   // ticket 48: loot tags pinned over the world
@@ -58,6 +60,10 @@ namespace HearthHollow.UI
 
             _hurt = UIKit.E("dungeon__hurt"); _hurt.pickingMode = PickingMode.Ignore;
             Root.Add(_hurt);
+            _fog = UIKit.E("dungeon__fog"); _fog.pickingMode = PickingMode.Ignore;   // ticket 49: the fall's rising fog
+            Root.Add(_fog);
+            _tutorial = UIKit.L("", "dhud__tutorial"); _tutorial.pickingMode = PickingMode.Ignore;
+            Root.Add(_tutorial);
             _numbers = UIKit.E("dungeon__numbers"); _numbers.pickingMode = PickingMode.Ignore;
             Root.Add(_numbers);
 
@@ -268,6 +274,10 @@ namespace HearthHollow.UI
             UIKit.Show(_bossBox, boss);
             if (boss) { _bossName.text = "👑 " + DungeonHud.BossName; _bossBar.Set(DungeonHud.BossHp01, 1f, ""); }
 
+            _fog.style.opacity = DungeonHud.Fog01;   // ticket 49
+            UIKit.Show(_fog, DungeonHud.Fog01 > 0.01f);
+            _tutorial.text = DungeonHud.Tutorial ?? "";
+            UIKit.Show(_tutorial, !string.IsNullOrEmpty(DungeonHud.Tutorial));
             string prompt = DungeonHud.Prompt;
             _prompt.text = string.IsNullOrEmpty(prompt) ? "" : "E   " + prompt;
             UIKit.Show(_prompt, !string.IsNullOrEmpty(prompt));
@@ -292,7 +302,7 @@ namespace HearthHollow.UI
             var cls = S.Run.classId;
             string ultHint = mu == null ? Progression.NextUnlockHint(C, S.Profile, cls, MoveSlot.Ultimate) : null;
             string skillHint = m2 == null ? Progression.NextUnlockHint(C, S.Profile, cls, MoveSlot.Skill) : null;
-            string key = dashLocked + "|" + ultHint + "|" + skillHint;
+            string key = dashLocked + "|" + ultHint + "|" + skillHint + "|" + S.InFall;
             if (key == _lockKey) return;
             _lockKey = key;
             UIKit.Show(_dashLock, dashLocked);
@@ -308,6 +318,7 @@ namespace HearthHollow.UI
             if (dashLocked) parts.Add("🔒 Dash: boots from the smithy");
             if (mu == null && ultHint != null) parts.Add("🔒 Ultimate: " + ultHint);
             if (m2 == null && skillHint != null) parts.Add("🔒 L skill: " + skillHint);
+            if (DungeonHud.InFall || S.InFall) parts.Clear();   // ticket 49: no "learn this later" clutter in the opening
             _lockHint.text = string.Join("   ", parts.ToArray());
             UIKit.Show(_lockHint, parts.Count > 0);
         }

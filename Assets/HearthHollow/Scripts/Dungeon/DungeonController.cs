@@ -22,6 +22,8 @@ namespace HearthHollow.Dungeon
         public DungeonTheme Theme { get { return _theme; } }
         public RoomInstance CurrentRoom { get { return _current; } }
         FloorLootView _loot;   // ticket 48
+        float _fogTarget;      // ticket 49: the fall's fog veil
+        int _tutSeed = -1; bool _tMoved, _tAttacked, _tSkill, _tFlare;   // ticket 49: what the tutorial has seen you do
         /// False while paused (menus, minigames, bag) or when there is no floor.
         public bool GameplayActive { get; private set; }
 
@@ -362,6 +364,13 @@ namespace HearthHollow.Dungeon
             room.OnEnter();
             RefreshMap();
             _roomMultTarget = room.Node.kind == RoomKind.Boss && !room.Cleared ? Settings.bossRoomLight : 1f;
+            if (Session.InFall)   // ticket 49: the place turns on you: darker and foggier with every room from the second
+            {
+                int d = room.Node.depth;
+                float gloom = Mathf.Clamp01((d - 2) / 3f);
+                _roomMultTarget *= d == 2 ? 0.8f : 1f - 0.5f * gloom;
+                _fogTarget = room.Node.fog ? _fogTarget : gloom * 0.4f;
+            }
             // nothing to fight here: a brief pause, then the room lights up. A fight: back to the dark.
             if (!room.HasEvent || room.Cleared)
             {
@@ -543,6 +552,46 @@ namespace HearthHollow.Dungeon
             _ui.OpenLadderChoice(() => { if (Session.DungeonDescend()) ladder.MarkUsed(); }, () => Session.DungeonExit());
         }
 
+        /// Ticket 49: the fall's last room: no monsters. The fog pours in and drains you until you fall.
+        public void StartFogRoom(RoomInstance room) { StartCoroutine(FogRoom()); }
+
+        System.Collections.IEnumerator FogRoom()
+        {
+            Session.Log("🌫️ The fog pours in…");
+            if (_ui != null) _ui.Juice.Toast("🌫️ The fog pours in…", "toast--warn", 3f);
+            _fogTarget = 1f;
+            yield return new WaitForSeconds(1.2f);
+            while (Session.InDungeon && Session.InFall && Session.Run.hp > 0)
+            {
+                Session.FallFogBite();
+                if (Player != null && Session.InDungeon) DungeonHud.Number(Player.transform.position + Vector3.up * 1.3f, "🌫️", "dnum--hazard");
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+
+        /// Ticket 49: the fall's first two rooms teach you to play, one line at a time.
+        void UpdateTutorial()
+        {
+            DungeonHud.InFall = Session.InFall;
+            if (!Session.InFall || _current == null) { DungeonHud.Tutorial = null; return; }
+            if (_tutSeed != Session.Run.dungeonSeed) { _tutSeed = Session.Run.dungeonSeed; _tMoved = _tAttacked = _tSkill = _tFlare = false; }
+            if (GameplayActive)
+            {
+                if (DungeonInput.Move.sqrMagnitude > 0.1f) _tMoved = true;
+                if (DungeonInput.Attack) _tAttacked = true;
+                if (DungeonInput.Special) _tSkill = true;
+                if (DungeonInput.Flare) _tFlare = true;
+            }
+            bool mouse = DungeonInput.MouseAim;
+            int d = _current.Node.depth;
+            string line = null;
+            if (d <= 1 && !_tMoved) line = "🕹️ WASD to move";
+            else if (d <= 1 && !_tAttacked) line = mouse ? "🗡️ Click to attack" : "🗡️ J to attack";
+            else if (d == 2 && !_tSkill) line = mouse ? "✨ Right-click for your skill" : "✨ K for your skill";
+            else if (d == 2 && !_tFlare) line = "🔆 F for Flare: light up the dark";
+            DungeonHud.Tutorial = line;
+        }
+
         public void Shake(float seconds, float amp) { _shakeT = Mathf.Max(_shakeT, seconds); _shakeAmp = Mathf.Max(_shakeAmp, amp); }
 
         // ───────────────────────── frame ─────────────────────────
@@ -587,6 +636,9 @@ namespace HearthHollow.Dungeon
                 SlowHealing(Time.deltaTime);   // ticket 38
             }
             DungeonHud.FlareCooldown = Mathf.Max(0f, _flareCd);
+            UpdateTutorial();   // ticket 49
+            if (!Session.InFall) _fogTarget = 0f;
+            DungeonHud.Fog01 = Mathf.MoveTowards(DungeonHud.Fog01, _fogTarget, Time.unscaledDeltaTime * (_fogTarget >= 1f ? 0.3f : 0.6f));
 
             // embers drifting through the dark room (atmosphere)
             if (GameplayActive && _current != null)

@@ -557,6 +557,7 @@ namespace HearthHollow.Core
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
             ArcEvent(ArcTrigger.FirstRunEnd);   // opening arc: home from the first dive (fallen or not), Wren feeds you, the kitchen opens
             WrenOnRunEnd();                      // ticket 35: Wren has something to say when you're home
+            FallOnRunEnd();                      // ticket 49: the fall fades straight to town
             Phase = Phase.RunEnd;
             Touch(true);
         }
@@ -566,6 +567,7 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.RunEnd) return;
             Run = null;
+            FallEnding = false;
             RollNewCamp();
             Phase = Phase.Hearth;
             if (Profile.bossesBeaten != null && Profile.bossesBeaten.Count > 0) ArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town

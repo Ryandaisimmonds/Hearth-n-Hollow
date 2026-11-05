@@ -94,8 +94,9 @@ namespace HearthHollow.Core
             if (Run.hp <= 0)
             {
                 Run.hp = 0;
-                Emit(new GameEvent(GameEventType.PlayerDied, 0, true, "You fall…"));
-                Info("You limp home…");
+                bool fall = InFall;   // ticket 49: the opening fall isn't a failure: no "You fall…", no "limp home"
+                Emit(new GameEvent(GameEventType.PlayerDied, 0, true, fall ? "…the fog closes in" : "You fall…"));
+                if (!fall) Info("You limp home…");
                 EndRun(RunOutcome.Died);
                 return dmg;
             }
@@ -187,6 +188,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || e == null) return;
             Run.kills++;
+            if (InFall) { int h = Mods.healOnKill; if (h > 0 && Run.hp > 0 && Run.hp < Stats.maxHp) DungeonHealPlayer(h); Touch(false); return; }   // ticket 49: no loot in the fall
             var f = new FightState { monsterId = e.monsterId, elite = e.elite, difficulty = e.difficulty };
             int coins = Math.Max(1, (int)Math.Round(Combat.KillCoins(Content, Run, Stats, f) * T.dungeonKillCoinMult));
             int xp = Math.Max(1, (int)Math.Round(Combat.KillXp(Content, Run, f) * T.dungeonKillXpMult));

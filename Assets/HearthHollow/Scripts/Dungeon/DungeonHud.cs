@@ -16,6 +16,9 @@ namespace HearthHollow.Dungeon
 
         public static bool Active;            // a dungeon floor exists
         public static bool BagOpen;           // HUD's bag panel is open (pauses the dungeon)
+        public static float Fog01;            // ticket 49: the fall's rising fog (a purple veil over the screen)
+        public static string Tutorial;        // ticket 49: the fall's how-to-play line (null = none)
+        public static bool InFall;            // ticket 49: hide the locked-skill hints
         public static float Skill01 = 1f;     // 1 = ready
         public static bool SkillUnlocked;
         public static float Dash01 = 1f;
@@ -55,7 +58,7 @@ namespace HearthHollow.Dungeon
             Active = false; BagOpen = false; Skill01 = 1f; Dash01 = 1f; Guarding = false;
             BuffText = null; Skill1Move = Skill2Move = DashMove = null; Skill2_01 = 1f;
             Prompt = null; Status = null; Locked = false; BossHp01 = -1f; BossName = null;
-            Map.Clear(); MapVersion++; LootTags.Clear();
+            Map.Clear(); MapVersion++; LootTags.Clear(); Fog01 = 0f; Tutorial = null; InFall = false;
         }
     }
 }

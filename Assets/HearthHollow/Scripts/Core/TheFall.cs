@@ -3,6 +3,8 @@
 // of rooms that are nothing but fights (DungeonGenerator.Gauntlet). Every room's monsters hit harder and move faster
 // than the last (DungeonRules.Enemy, FallEnemySpeed), so it ends in a fall. You wake up in town for the first time,
 // and Old Wren comes over: she found you, and she tells you about food.
+using System;
+
 namespace HearthHollow.Core
 {
     public partial class RunState
@@ -23,9 +25,23 @@ namespace HearthHollow.Core
             get
             {
                 if (Run == null || !Run.firstDive) return 1f;
-                int k = System.Math.Max(0, Run.fightRooms - 1);
+                int k = DungeonRules.FirstDiveRamp(Run);
                 return System.Math.Min(T.firstDiveSpeedMax, 1f + k * T.firstDiveSpeedPerRoom);
             }
+        }
+
+        /// Ticket 49: in the opening fall's nameless dungeon right now.
+        public bool InFall { get { return Run != null && Run.routeId == FallRoute; } }
+
+        /// Ticket 49: the fall has just ended: the UI fades to black and wakes you in town (no run summary).
+        public bool FallEnding { get; private set; }
+        void FallOnRunEnd() { if (Run != null && Run.routeId == FallRoute) FallEnding = true; }
+
+        /// Ticket 49: the fog room. It drains you, a bite at a time, until you fall.
+        public void FallFogBite()
+        {
+            if (!InDungeon || !InFall || Run.hp <= 0) return;
+            DungeonDamagePlayer(Math.Max(2f, Stats.maxHp * T.fallFogBitePct) / Math.Max(0.1f, 1f - Stats.armourPct));   // armour doesn't help against the fog
         }
 
         /// A brand-new game in the slice: nothing done yet, so it opens in the dungeon.

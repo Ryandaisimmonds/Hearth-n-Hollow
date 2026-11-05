@@ -34,6 +34,7 @@ namespace HearthHollow.Dungeon
             var set = room.Controller.Settings;
             var kind = room.Node.kind;
             if (kind == RoomKind.Boss || kind == RoomKind.Start) return;
+            if (room.Controller.Session != null && room.Controller.Session.InFall) return;   // ticket 49: nothing hidden in the fall's dungeon
 
             if (_rng.NextDouble() < set.secretForageChance) MakeForage();
             if (_rng.NextDouble() < set.secretWallChance) MakeWall();

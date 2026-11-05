@@ -55,6 +55,7 @@ namespace HearthHollow.Core
             MealStats40(c);          // DefaultContentDesignV2.cs: flat + % meal stats, quality ×1.5 / ×2
             Areas41(c);              // DefaultContentDesignV2.cs: shorter areas, Frost Hollow
             FewerDrops42(c);         // DefaultContentDesignV2.cs: ~40% fewer drops
+            FallPolish43(c);         // DefaultContentDesignV2.cs: the fall: 6 rooms ending in fog
             return c;
         }
 

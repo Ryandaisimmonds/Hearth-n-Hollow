@@ -61,8 +61,10 @@ namespace HearthHollow.Tests
             s.Run.fightRooms = 1;
             Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f);
             var first = s.DungeonEnemy("wolf", false, false);
+            s.Run.fightRooms = 2;
+            Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f, "ticket 49: rooms 1–2 are the tutorial: no ramp yet");
             s.Run.fightRooms = 6;
-            Assert.Greater(s.FallEnemySpeed, 1.5f, "faster each room");
+            Assert.Greater(s.FallEnemySpeed, 1.3f, "faster each room after that");
             var sixth = s.DungeonEnemy("wolf", false, false);
             Assert.Greater(sixth.damage, first.damage * 4f, "and they hit much harder");
         }
@@ -73,13 +75,33 @@ namespace HearthHollow.Tests
             var plan = DungeonGenerator.Gauntlet(5, 14);
             Assert.AreEqual(14, plan.rooms.Count);
             Assert.AreEqual(RoomKind.Start, plan.start.kind);
-            for (int i = 1; i < plan.rooms.Count - 1; i++) Assert.AreEqual(RoomKind.Combat, plan.rooms[i].kind, "room " + i);
-            Assert.AreEqual(RoomKind.Exit, plan.rooms[plan.rooms.Count - 1].kind);
+            for (int i = 1; i < plan.rooms.Count; i++) Assert.AreEqual(RoomKind.Combat, plan.rooms[i].kind, "room " + i);
+            Assert.IsTrue(plan.rooms[plan.rooms.Count - 1].fog, "ticket 49: it ends in the fog room, no exit");
+            for (int i = 0; i < plan.rooms.Count - 1; i++) Assert.IsFalse(plan.rooms[i].fog);
             foreach (var r in plan.rooms)
             {
                 int doors = 0; for (int d = 0; d < 4; d++) if (r.doors[d]) doors++;
                 Assert.LessOrEqual(doors, 2, "a single line, no branches");
             }
+        }
+
+        [Test]
+        public void TheFall_HasNoLoot_AndEndsInAFade_NotASummary()   // ticket 49
+        {
+            var s = new GameSession(_c, null, 95);
+            Assert.IsTrue(s.BeginTheFall());
+            Assert.AreEqual(7, _c.tuning.fallRooms, "the wake-up room + 6");
+            int coins = s.Run.coinsEarned;
+            s.DungeonEnemyKilled(s.DungeonEnemy("slime", false, false));
+            Assert.AreEqual(coins, s.Run.coinsEarned, "no coins");
+            Assert.AreEqual(0, s.FloorLoot.Count);
+            for (int i = 0; i < s.Run.bag.Count; i++) Assert.IsTrue(Bag.IsEmpty(s.Run.bag[i]), "no loot");
+            for (int i = 0; i < 40 && s.Phase == Phase.Dungeon; i++) s.FallFogBite();   // the fog room
+            Assert.AreEqual(Phase.RunEnd, s.Phase, "the fog always wins");
+            Assert.IsTrue(s.FallEnding, "the UI fades to town instead of showing a summary");
+            s.ReturnToHearth();
+            Assert.IsFalse(s.FallEnding);
+            Assert.AreEqual(WrenStep.AfterDive, s.Wren);
         }
 
         [Test]

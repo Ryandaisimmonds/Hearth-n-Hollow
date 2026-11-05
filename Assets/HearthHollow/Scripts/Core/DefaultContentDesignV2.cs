@@ -378,6 +378,12 @@ namespace HearthHollow.Core
             t.materialDropChance = 0.09f; t.materialDropPerFloor = 0.06f;
         }
 
+        /// Ticket 49: the fall is the wake-up room + 6: two tutorial rooms, three rising ones and the fog.
+        static void FallPolish43(GameContent c)
+        {
+            c.tuning.fallRooms = 7; c.tuning.fallFogBitePct = 0.12f;
+        }
+
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1) { Buffs(c, recipeId, s1, v1, s1, 0f); }
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1, BuffStat s2, float v2)
         {
