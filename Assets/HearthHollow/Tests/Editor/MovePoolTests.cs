@@ -48,24 +48,27 @@ namespace HearthHollow.Tests
         public void BossKill_UnlocksHotPot_AndFloorsOnlyGoUp()
         {
             var p = Fresh();
-            Assert.IsTrue(Progression.RecordFloor(p, "meadow", 5));
+            Assert.IsTrue(Progression.RecordFloor(p, "meadow", 3));
             Assert.IsFalse(Progression.RecordFloor(p, "meadow", 2));
-            Assert.AreEqual(5, Progression.DeepestFloor(p, "meadow"));
-            Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")), "reaching floor 5 isn't beating its boss");
-            Assert.IsTrue(Progression.RecordBoss(p, "meadow", 5));
-            Assert.IsFalse(Progression.RecordBoss(p, "meadow", 5));
-            Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")));
+            Assert.AreEqual(3, Progression.DeepestFloor(p, "meadow"));
+            Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_ult")), "reaching floor 3 isn't beating its boss");
+            Assert.IsTrue(Progression.RecordBoss(p, "meadow", 3));
+            Assert.IsFalse(Progression.RecordBoss(p, "meadow", 3));
+            Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_ult")), "the Sow teaches Grand Feast (ticket 47)");
+            Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")));
+            Progression.RecordFloor(p, "frosthollow", 2);
+            Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")), "Hot Pot from Frost Hollow floor 2");
         }
 
         [Test]
         public void FirstUltimateLearned_GoesInTheSlot_AndTheSecondCanBeChosen()
         {
             var p = Fresh();
-            Progression.RecordFloor(p, "meadow", 4);
+            Progression.RecordBoss(p, "meadow", 3);
             Progression.Learn(_c, p, ClassId.Cook, "c_ult");
             Assert.AreEqual("c_ult", Progression.Ultimate(_c, p, ClassId.Cook).id);
             Assert.IsNotNull(Progression.EquipBlock(_c, p, ClassId.Cook, LoadSlot.Ultimate, _c.Move("c_ult2")), "Five-Alarm Chili still locked");
-            Progression.RecordBoss(p, "chili", 5);
+            Progression.RecordBoss(p, "frosthollow", 3);
             Progression.Learn(_c, p, ClassId.Cook, "c_ult2");
             Assert.IsTrue(Progression.Equip(_c, p, ClassId.Cook, LoadSlot.Ultimate, "c_ult2"));
             Assert.AreEqual("c_ult2", Progression.Ultimate(_c, p, ClassId.Cook).id);

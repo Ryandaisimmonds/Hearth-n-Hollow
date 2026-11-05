@@ -7,25 +7,29 @@ namespace HearthHollow.Core
 {
     public partial class GameSession
     {
-        public const string MeadowRoute = "meadow", RidgeRoute = "chili";
+        public const string MeadowRoute = "meadow", RidgeRoute = "chili", FrostRoute = "frosthollow";
+        public const string WrenFrostFlag = "wren_frost";   // ticket 47: Wren has told you the way to Frost Hollow
 
-        /// Wren has the Fire hint to give: the Meadow floor-5 boss is down and she hasn't told you yet.
+        /// Ticket 47: Meadow Hollow's boss floor (the Bramble Sow, at the bottom).
+        public int MeadowBossFloor { get { return DungeonRules.Floors(Content, MeadowRoute); } }
+
+        /// Wren has the Fire hint to give: the Bramble Sow is down and she hasn't told you yet.
         public bool WrenFireHintDue
         {
             get
             {
                 return Phase == Phase.Hearth && !Routes.HasFlag(Profile, DefaultContent.WrenFireHint)
-                    && Progression.BeatBoss(Profile, MeadowRoute, 5);
+                    && Progression.BeatBoss(Profile, MeadowRoute, MeadowBossFloor);
             }
         }
 
-        /// The floor-10 boss of the Meadow (the Hoarfrost Alpha).
+        /// The Hoarfrost Alpha, at the bottom of Frost Hollow (ticket 47; it used to be the Meadow's floor-10 boss).
         public string MeadowDeepBoss
         {
             get
             {
-                var r = Content.Route(MeadowRoute);
-                return DungeonRules.BossMonster(Content, new RunState { routeId = MeadowRoute, floor = DungeonRules.Floors(Content, MeadowRoute), dungeon = true });
+                string route = Content.Route(FrostRoute) != null ? FrostRoute : MeadowRoute;
+                return DungeonRules.BossMonster(Content, new RunState { routeId = route, floor = DungeonRules.Floors(Content, route), dungeon = true });
             }
         }
 
@@ -38,10 +42,10 @@ namespace HearthHollow.Core
             var chili = Content.Ingredient("chili");
             return new List<string>
             {
-                "Back from the Hollow with bramble in your hair! You beat that old Sow on the fifth floor, didn't you? Good. Then it's time you heard what's waiting further down.",
-                "At the very bottom, on the tenth floor, sleeps the " + bossName + ". Frost through and through: frost won't touch it, but it can't abide fire. 🔥 Hit it with Fire and it'll feel it, half again.",
-                "Fire food's what you want. " + (chili != null ? chili.emoji + " " + chili.name + "s" : "Chilies") + " put Fire in your attacks: cook one into a meal's element slot. They only grow up on " + ridgeName + ", past the east road. I've marked it on your route board. First time up, just have a quick look round the foot of it and bring me back some chilies.",
-                "Off you go to Chili Ridge, then. Come straight back with the chilies and I'll show you what to do with them.",
+                "Back from the Hollow with bramble in your hair! You beat that old Sow at the bottom, didn't you? Good. Then it's time you heard about the cold.",
+                "Past the Hollow there's a colder place, Frost Hollow, and the " + bossName + " prowls at the bottom of it. Frost through and through: frost won't touch it, but it can't abide fire. 🔥 Hit it with Fire and it'll feel it, half again.",
+                "Fire food's what you want. " + (chili != null ? chili.emoji + " " + chili.name + "s" : "Chilies") + " put Fire in your attacks. They grow wild up on " + ridgeName + ", past the east road. It's a quiet place, not much lives up there, so gather what you can. I've marked it on your route board.",
+                "Off you go to Chili Ridge, then. Come back with the chilies and I'll show you what to do with them.",
             };
         }
 

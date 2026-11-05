@@ -19,6 +19,7 @@ namespace HearthHollow.UI
         readonly Button _go;
         string _selected;
         int _startFloor = 1;   // ticket 12: 1, or a shortcut floor past a beaten boss
+        string _startFloorFor;   // ticket 47: the route _startFloor was defaulted for
         float _shownAt;
 
         public RouteScreen(GameUI ui) : base(ui, "routes")
@@ -341,6 +342,7 @@ namespace HearthHollow.UI
                 routeBox.Add(Art.IconText("trophy", "🏆", floors + " floors. " + bosses + ": +" + r.clearReward + " coins for the bottom (heading home early pays a share).", "small", "expedition__note"));
                 // shortcuts: start past a boss you've beaten
                 var starts = S.StartFloors(r.id);
+                if (_startFloorFor != r.id) { _startFloorFor = r.id; _startFloor = starts[starts.Count - 1]; }   // ticket 47: the deepest shortcut by default
                 if (!starts.Contains(_startFloor)) _startFloor = 1;
                 if (starts.Count > 1)
                 {

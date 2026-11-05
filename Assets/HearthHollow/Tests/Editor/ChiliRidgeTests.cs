@@ -13,13 +13,14 @@ namespace HearthHollow.Tests
         [SetUp] public void SetUp() { _c = DefaultContent.Create(); }
 
         [Test]
-        public void Ridge_Is5Floors_WithTheRidgeDrakeOn5()
+        public void Ridge_Is2QuietFloors_RichInChilies_NoBoss()   // ticket 47
         {
             var r = _c.Route("chili");
             Assert.AreEqual("Chili Ridge", r.name);
-            Assert.AreEqual(5, DungeonRules.Floors(_c, "chili"));
-            Assert.IsTrue(DungeonRules.IsBossFloor(_c, "chili", 5));
-            Assert.AreEqual("ridge_drake", DungeonRules.BossMonster(_c, new RunState { routeId = "chili", floor = 5, floorsTotal = 5, dungeon = true }));
+            Assert.AreEqual(2, DungeonRules.Floors(_c, "chili"));
+            Assert.IsTrue(r.noBoss);
+            Assert.Less(r.enemyMult, 1f, "light on monsters");
+            Assert.Greater(r.gatherChance, _c.Route("meadow").gatherChance, "rich in resources");
         }
 
         [Test]

@@ -12,50 +12,48 @@ namespace HearthHollow.Tests
         GameContent _c;
         [SetUp] public void SetUp() { _c = DefaultContent.Create(); }
 
-        RunState Run(int floor) { return new RunState { routeId = "meadow", floor = floor, floorsTotal = 10, dungeon = true }; }
+        RunState Run(int floor, string route = "meadow") { return new RunState { routeId = route, floor = floor, floorsTotal = 3, dungeon = true }; }
 
         [Test]
-        public void Bosses_BrambleSowOn5_HoarfrostAlphaOn10()
+        public void Bosses_BrambleSowAtTheBottom_AlphaInFrostHollow()   // ticket 47
         {
             Assert.AreEqual("Meadow Hollow", _c.Route("meadow").name);
-            Assert.AreEqual("bramble_sow", DungeonRules.BossMonster(_c, Run(5)));
-            Assert.AreEqual("hoarfrost_alpha", DungeonRules.BossMonster(_c, Run(10)));
-            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(10)).Contains("hoarfrost_alpha"), "bosses never turn up as ordinary monsters");
+            Assert.AreEqual("bramble_sow", DungeonRules.BossMonster(_c, Run(3)));
+            Assert.AreEqual("hoarfrost_alpha", DungeonRules.BossMonster(_c, Run(3, "frosthollow")));
+            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(3, "frosthollow")).Contains("hoarfrost_alpha"), "bosses never turn up as ordinary monsters");
         }
 
         [Test]
-        public void Monsters_NatureUpTop_WolvesFromFloor6()
+        public void Monsters_NatureUpTop_BatsFromFloor2()
         {
-            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(5)).Contains("wolf"));
-            Assert.IsTrue(DungeonRules.NormalPool(_c, Run(6)).Contains("wolf"));
-            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(2)).Contains("bat"));
-            Assert.IsTrue(DungeonRules.NormalPool(_c, Run(3)).Contains("bat"));
+            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(1)).Contains("bat"));
+            Assert.IsTrue(DungeonRules.NormalPool(_c, Run(2)).Contains("bat"));
+            Assert.IsFalse(DungeonRules.NormalPool(_c, Run(3)).Contains("wolf"), "wolves live in Frost Hollow now");
         }
 
-        HashSet<string> Drops(int floor)
+        HashSet<string> Drops(int floor, string route = "meadow")
         {
             var set = new HashSet<string>();
-            for (int i = 0; i < 400; i++) set.Add(DungeonRules.PickIngredient(_c, _c.Route("meadow"), floor, i / 400f));
+            for (int i = 0; i < 400; i++) set.Add(DungeonRules.PickIngredient(_c, _c.Route(route), floor, i / 400f));
             return set;
         }
 
         [Test]
-        public void Drops_GingerFrom4_DeepIngredientsFrom6()
+        public void Drops_GingerFrom2_DeepIngredientsInFrostHollow()
         {
-            var f1 = Drops(1); var f4 = Drops(4); var f6 = Drops(6);
-            Assert.IsFalse(f1.Contains("ginger")); Assert.IsTrue(f4.Contains("ginger"));
+            Assert.IsFalse(Drops(1).Contains("ginger")); Assert.IsTrue(Drops(2).Contains("ginger"));
             foreach (var deep in new[] { "starmoss", "wild_honeycomb", "golden_wheat" })
             {
-                Assert.IsFalse(f4.Contains(deep), deep + " not before floor 6");
-                Assert.IsTrue(f6.Contains(deep), deep + " from floor 6");
+                Assert.IsFalse(Drops(3).Contains(deep), deep + " not in the Meadow any more");
+                Assert.IsTrue(Drops(3, "frosthollow").Contains(deep), deep + " in Frost Hollow");
             }
             Assert.Contains("timber", _c.Route("meadow").materialIds);
         }
 
         [Test]
-        public void EveryTier2Dish_HasItsDeepIngredientInTheMeadow()
+        public void EveryTier2Dish_HasItsDeepIngredientInFrostHollow()
         {
-            var drops = Drops(10);
+            var drops = Drops(3, "frosthollow");
             foreach (var r in _c.recipes)
                 if (r.tier >= 2)
                     foreach (var ic in r.ingredients)

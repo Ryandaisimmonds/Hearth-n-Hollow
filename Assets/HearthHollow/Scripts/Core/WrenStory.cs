@@ -1,9 +1,9 @@
 // Hearth & Hollow — Old Wren's guiding thread through the slice (ticket 35). Pure C#.
 // Wren tells you what to do next at every step, and comes over by herself when she has something new to say:
 //   (ticket 42: a new game opens with a fall into Meadow Hollow, so you meet Wren on waking up after it)
-//   Meet → Meadow Hollow (first dive) → [Wren] cook a meal → show it to Wren → beat the floor-5 boss →
-//   [Wren] Chili Ridge (a short, easy first trip) → [Wren] season a meal with chili at the spice rack →
-//   take Fire food down to the Hoarfrost Alpha → done.
+//   the fall → [Wren] cook a meal → show it to Wren → beat the Bramble Sow (bottom of Meadow Hollow, floor 3) →
+//   [Wren] Chili Ridge for chilies → [Wren] season a meal with chili at the spice rack → Frost Hollow opens →
+//   beat the Hoarfrost Alpha at the bottom → done. (Ticket 47 reshaped the areas.)
 using System.Collections.Generic;
 
 namespace HearthHollow.Core
@@ -65,12 +65,12 @@ namespace HearthHollow.Core
                     case WrenStep.AfterDive: return "👵 Talk to Old Wren";
                     case WrenStep.CookMeal: return "🍳 Cook a meal at the cooking area, then show Old Wren";
                     case WrenStep.ShowMeal: return "👵 Show Old Wren the meal you cooked";
-                    case WrenStep.FirstBoss: return "⚔️ Pack your meals at the Route board and beat the beast on Meadow Hollow floor 5";
+                    case WrenStep.FirstBoss: return "⚔️ Pack your meals at the Route board and beat the beast at the bottom of Meadow Hollow";
                     case WrenStep.HearHint: return "👵 Tell Old Wren about the Bramble Sow";
                     case WrenStep.Ridge: return "🌶️ Go to Chili Ridge (Route board, side paths) and bring back chilies";
                     case WrenStep.RidgeBack: return "👵 Show Old Wren the chilies";
                     case WrenStep.SeasonMeal: return "🧂 Season one of your meals with a chili at the spice rack";
-                    case WrenStep.Alpha: return "❄️ Take your Fire meal down to the Hoarfrost Alpha, Meadow Hollow floor 10";
+                    case WrenStep.Alpha: return "❄️ Take your Fire meal to Frost Hollow and beat the Hoarfrost Alpha at the bottom";
                 }
                 return "🔥 The Hollow's yours: cook, explore, build up the town";
             }
@@ -103,13 +103,13 @@ namespace HearthHollow.Core
                 case WrenStep.ShowMeal:
                     pages.Add("Now that smells like a proper meal! You'll make a cook of yourself yet.");
                     pages.Add("When you set out, pack your meals on the 🧺 tray at the Route board. You eat them at the gate, and they keep you going the whole trip. Better food, deeper floors.");
-                    pages.Add("With that in you, go deeper. Something big and bristly snores on the fifth floor of Meadow Hollow. Beat it and the Hollow will start to give a little. And mind: there's no easy way back up once you're down there.");
+                    pages.Add("With that in you, go deeper. Something big and bristly snores at the bottom of Meadow Hollow, three floors down. Beat it and the Hollow will start to give a little. And mind: there's no way back up but the bottom.");
                     SetWren(WrenStep.FirstBoss);
                     break;
                 case WrenStep.RidgeBack:
                     pages.Add("Chilies! Look at the colour on them. Good work.");
                     pages.Add("Now, don't just eat them raw. Take one to the 🧂 spice rack by the stove and season one of your meals with it. Every hit you land will carry 🔥 Fire, for the whole trip.");
-                    pages.Add("That Hoarfrost Alpha at the bottom of the Hollow can't abide fire. Season a meal, pack it, and go and show it who's boss. You can start from floor 6 now you've beaten the Sow.");
+                    pages.Add("That Hoarfrost Alpha can't abide fire. Season a meal, and I'll tell you the way to Frost Hollow."); 
                     SetWren(WrenStep.SeasonMeal);
                     break;
                 default:
@@ -126,10 +126,10 @@ namespace HearthHollow.Core
             {
                 case WrenStep.FirstDive: return "The Route board's by the gate, love. Meadow Hollow. Get as far as you can, then come back to me.";
                 case WrenStep.CookMeal: return "Cook something at the cooking area first, then bring it to show me.";
-                case WrenStep.FirstBoss: return "The beast on floor 5 won't beat itself. Pack your meals at the Route board as you set out.";
+                case WrenStep.FirstBoss: return "The beast at the bottom of the Hollow won't beat itself. Pack your meals at the Route board as you set out.";
                 case WrenStep.Ridge: return "Chili Ridge is on the Route board, under side paths. Bring me back some chilies.";
                 case WrenStep.SeasonMeal: return "The spice rack's right by the stove. Season a meal with a chili.";
-                case WrenStep.Alpha: return "That's a meal with some fire in it! Pack it at the Route board and take it down to floor 10. Start from floor 6 to save your legs.";
+                case WrenStep.Alpha: return "That's a meal with some fire in it! The cold up in Frost Hollow can't abide fire. It's on your Route board now: pack your meal and go and beat the Alpha at the bottom.";
                 case WrenStep.Done: return "The Alpha's beaten and the Hearth's warming up. Look at you. Keep cooking, keep exploring, and help me build this town back up.";
             }
             return WrenObjective;
@@ -139,17 +139,51 @@ namespace HearthHollow.Core
         void WrenOnRunEnd()
         {
             if (Wren == WrenStep.FirstDive) SetWren(WrenStep.AfterDive);
-            if (Run != null && Run.firstRidge && Wren <= WrenStep.Ridge && Wren >= WrenStep.FirstBoss) SetWren(WrenStep.RidgeBack);
+            if (Run != null && Run.routeId == RidgeRoute && Wren == WrenStep.Ridge) SetWren(WrenStep.RidgeBack);   // ticket 47: any trip to the Ridge
         }
         void WrenOnCooked() { if (Wren == WrenStep.CookMeal) SetWren(WrenStep.ShowMeal); }
         void WrenOnBoss(string routeId, int floor)
         {
-            if (routeId == MeadowRoute && floor == 5 && Wren < WrenStep.HearHint) SetWren(WrenStep.HearHint);
-            if (routeId == MeadowRoute && floor >= DungeonRules.Floors(Content, MeadowRoute)) SetWren(WrenStep.Done);
+            if (routeId == MeadowRoute && floor >= MeadowBossFloor && Wren < WrenStep.HearHint) SetWren(WrenStep.HearHint);   // the Bramble Sow
+            if (routeId == FrostRoute && floor >= DungeonRules.Floors(Content, FrostRoute)) SetWren(WrenStep.Done);          // the Hoarfrost Alpha
         }
         void WrenOnSeasoned(CookedMeal m)
         {
-            if (Wren == WrenStep.SeasonMeal && m != null && Cooking.InfusionOf(Content, m.accelId) == Element.Fire) SetWren(WrenStep.Alpha);
+            if (Wren == WrenStep.SeasonMeal && m != null && Cooking.InfusionOf(Content, m.accelId) == Element.Fire)
+            {
+                SetWren(WrenStep.Alpha);
+                OpenFrostHollow();
+            }
+        }
+
+        /// Ticket 47: Wren tells you the way: Frost Hollow appears on the Route board.
+        void OpenFrostHollow()
+        {
+            if (Routes.HasFlag(Profile, WrenFrostFlag)) return;
+            Routes.SetFlag(Profile, WrenFrostFlag);
+            var r = Content.Route(FrostRoute);
+            Info("🗺️ " + (r != null ? r.emoji + " " + r.name : "Frost Hollow") + " is on the route board. The Hoarfrost Alpha waits at the bottom.");
+        }
+
+        /// saveVersion 15 (ticket 47): the areas got shorter. Meadow's floor-5 boss is now its floor-3 boss, and the
+        /// old floor-10 Alpha lives at the bottom of Frost Hollow.
+        void UpgradeAreas()
+        {
+            if (Profile.saveVersion >= 15) return;
+            var p = Profile;
+            if (p.bossesBeaten == null) p.bossesBeaten = new List<string>();
+            int meadowBoss = MeadowBossFloor, frostBoss = DungeonRules.Floors(Content, FrostRoute);
+            var mapped = new List<string>();
+            foreach (var key in p.bossesBeaten)
+            {
+                if (key == MeadowRoute + ":5") mapped.Add(MeadowRoute + ":" + meadowBoss);
+                else if (key == MeadowRoute + ":10") mapped.Add(FrostRoute + ":" + frostBoss);
+                else mapped.Add(key);
+            }
+            p.bossesBeaten.Clear();
+            foreach (var k in mapped) if (!p.bossesBeaten.Contains(k)) p.bossesBeaten.Add(k);
+            if (Wren >= WrenStep.Alpha) Routes.SetFlag(p, WrenFrostFlag);
+            p.saveVersion = 15;
         }
 
         /// saveVersion 14: work out where an older save is on the thread.
@@ -158,10 +192,10 @@ namespace HearthHollow.Core
             if (Profile.saveVersion >= 14) return;
             var p = Profile;
             WrenStep s;
-            if (Progression.BeatBoss(p, MeadowRoute, DungeonRules.Floors(Content, MeadowRoute))) s = WrenStep.Done;
+            if (Progression.BeatBoss(p, MeadowRoute, 10) || Progression.BeatBoss(p, FrostRoute, DungeonRules.Floors(Content, FrostRoute))) s = WrenStep.Done;
             else if (Progression.DeepestFloor(p, RidgeRoute) > 0) s = WrenStep.SeasonMeal;
             else if (Routes.HasFlag(p, DefaultContent.WrenFireHint)) s = WrenStep.Ridge;
-            else if (Progression.BeatBoss(p, MeadowRoute, 5)) s = WrenStep.HearHint;
+            else if (Progression.BeatBoss(p, MeadowRoute, 5) || Progression.BeatBoss(p, MeadowRoute, MeadowBossFloor)) s = WrenStep.HearHint;
             else if (p.arcStage >= 1) s = WrenStep.FirstBoss;
             else s = p.metWren ? WrenStep.FirstDive : WrenStep.Meet;
             p.wrenStep = (int)s;

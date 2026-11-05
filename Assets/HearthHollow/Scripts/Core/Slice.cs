@@ -12,7 +12,7 @@ namespace HearthHollow.Core
         public static bool On = true;
 
         /// Dungeons in the slice. Placeholders until tickets 12–14 build Meadow Hollow and Chili Ridge.
-        public static readonly string[] RouteIds = { "meadow", "chili" };
+        public static readonly string[] RouteIds = { "meadow", "chili", "frosthollow" };   // ticket 47: Frost Hollow, the Alpha's lair
         public static readonly ClassId[] Classes = { ClassId.Cook };
 
         public static bool ShowsRoute(string routeId) { return routeId != GameSession.FallRoute && (!On || Array.IndexOf(RouteIds, routeId) >= 0); }   // the fall's dungeon never shows (ticket 43)

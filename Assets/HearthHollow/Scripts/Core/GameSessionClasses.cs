@@ -43,6 +43,7 @@ namespace HearthHollow.Core
             foreach (var cd in Content.classes)
             {
                 if (before.Contains(cd.id) || !ClassJoined(cd.id)) continue;
+                if (!Slice.HasClass(cd.id)) continue;   // ticket 47: no news of classes that aren't in this build
                 Emit(new GameEvent(GameEventType.LevelUp, 0, true, cd.emoji + " The " + cd.name + " joins your camp!" +
                                    (string.IsNullOrEmpty(cd.joinText) ? "" : " " + cd.joinText)));
             }

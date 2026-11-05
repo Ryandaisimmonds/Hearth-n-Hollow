@@ -53,6 +53,7 @@ namespace HearthHollow.Core
             TheFall38(c);            // DefaultContentDesignV2.cs: the opening fall ramps up room by room
             Nowhere39(c);            // DefaultContentDesignV2.cs: the nameless opening dungeon "???"
             MealStats40(c);          // DefaultContentDesignV2.cs: flat + % meal stats, quality ×1.5 / ×2
+            Areas41(c);              // DefaultContentDesignV2.cs: shorter areas, Frost Hollow
             return c;
         }
 

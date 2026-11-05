@@ -35,7 +35,9 @@ namespace HearthHollow.Core
         /// This floor offers the way home (an exit, and the ladder asks deeper-or-home); between those floors the ladder just goes down.
         public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || Run.firstRidge || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
         /// A way-home portal is on this floor (not a boss's exit). Ticket 26.
-        public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
+        public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.LongArea(Content, Run.routeId) && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
+        /// Ticket 47: the bottom of a boss-free area: its far room is the exit home.
+        public bool DungeonEndExit { get { return Run != null && DungeonRules.EndsInExit(Content, Run.routeId, Run.floor); } }
         /// The first dive has no ladder: its far room is the way home (ticket 25).
         public bool DungeonNoLadder { get { return Run != null && (Run.firstDive || Run.firstRidge); } }
         /// This floor's boss would be your first ever: its room has only the way home (ticket 32).

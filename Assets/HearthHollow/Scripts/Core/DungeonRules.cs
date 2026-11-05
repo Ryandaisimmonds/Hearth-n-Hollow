@@ -124,8 +124,9 @@ namespace HearthHollow.Core
         /// A boss every <c>bossEvery</c> floors, and always on the last floor.
         public static bool IsBossFloor(GameContent c, string routeId, int floor)
         {
-            if (floor >= Floors(c, routeId)) return true;
             RouteData r = c.Route(routeId);
+            if (r != null && r.noBoss) return false;   // ticket 47: a resource area
+            if (floor >= Floors(c, routeId)) return true;
             int every = r != null ? r.bossEvery : 0;
             return every > 0 && floor > 0 && floor % every == 0;
         }
@@ -134,7 +135,18 @@ namespace HearthHollow.Core
         /// (never floor 1; seeded by the run and floor, so it doesn't change on reload). Elsewhere the ladder just goes down.
         public static bool HomeChoiceOn(GameContent c, string routeId, int floor, int seed)
         {
-            return IsBossFloor(c, routeId, floor) || PortalFloor(c, floor, seed);
+            return IsBossFloor(c, routeId, floor) || EndsInExit(c, routeId, floor) || (LongArea(c, routeId) && PortalFloor(c, floor, seed));
+        }
+
+        /// Ticket 47: a long area (5+ floors) has way-home portals and floor shortcuts; a short one's only way home is its bottom.
+        public const int LongAreaFloors = 5;
+        public static bool LongArea(GameContent c, string routeId) { return Floors(c, routeId) >= LongAreaFloors; }
+
+        /// Ticket 47: the last floor of a boss-free area ends in an exit home.
+        public static bool EndsInExit(GameContent c, string routeId, int floor)
+        {
+            RouteData r = c.Route(routeId);
+            return r != null && r.noBoss && floor >= Floors(c, routeId);
         }
 
         public static bool PortalFloor(GameContent c, int floor, int seed)
@@ -148,6 +160,7 @@ namespace HearthHollow.Core
         public static List<int> StartFloors(GameContent c, Profile p, string routeId)
         {
             var list = new List<int> { 1 };
+            if (!LongArea(c, routeId)) return list;   // ticket 47: shortcuts only in long areas
             int n = Floors(c, routeId);
             for (int f = 1; f < n; f++)
                 if (IsBossFloor(c, routeId, f) && Progression.BeatBoss(p, routeId, f) && !list.Contains(f + 1)) list.Add(f + 1);

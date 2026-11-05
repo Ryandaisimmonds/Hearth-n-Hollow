@@ -12,20 +12,20 @@ namespace HearthHollow.Tests
         GameSession Fresh() { var s = new GameSession(_c, null, 11); s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1; return s; }   // past the first dive
 
         [Test]
-        public void NotDue_UntilTheFloor5BossIsBeaten()
+        public void NotDue_UntilTheSowIsBeaten()
         {
             var s = Fresh();
             Assert.IsFalse(s.WrenFireHintDue);
             Assert.IsFalse(s.GiveWrenFireHint());
-            Progression.RecordFloor(s.Profile, "meadow", 5);
-            Assert.IsFalse(s.WrenFireHintDue, "reaching floor 5 isn't beating its boss");
+            Progression.RecordFloor(s.Profile, "meadow", 3);
+            Assert.IsFalse(s.WrenFireHintDue, "reaching floor 3 isn't beating its boss");
         }
 
         [Test]
         public void Hint_TeachesTheFireWeakness_AndRevealsTheRidge_Once()
         {
             var s = Fresh();
-            Progression.RecordBoss(s.Profile, "meadow", 5);
+            Progression.RecordBoss(s.Profile, "meadow", 3);
             Assert.IsTrue(s.WrenFireHintDue);
             Assert.AreEqual("hoarfrost_alpha", s.MeadowDeepBoss);
             Assert.IsFalse(s.KnowsElement("hoarfrost_alpha", Element.Fire));
@@ -44,7 +44,7 @@ namespace HearthHollow.Tests
         public void Hint_IsSaved()
         {
             var s = Fresh();
-            Progression.RecordBoss(s.Profile, "meadow", 5);
+            Progression.RecordBoss(s.Profile, "meadow", 3);
             s.GiveWrenFireHint();
             var json = UnityEngine.JsonUtility.ToJson(s.Profile);
             var back = UnityEngine.JsonUtility.FromJson<Profile>(json);
@@ -59,8 +59,8 @@ namespace HearthHollow.Tests
         {
             var s = Fresh();
             Assert.IsTrue(s.StartRun("meadow"));
-            for (int i = 0; i < 4; i++) s.DungeonDescend();
-            Assert.AreEqual(5, s.Run.floor);
+            for (int i = 0; i < 2; i++) s.DungeonDescend();
+            Assert.AreEqual(3, s.Run.floor);
             s.DungeonEnemyKilled(s.DungeonEnemy("bramble_sow", true, true));
             Assert.IsFalse(s.WrenFireHintDue, "not while still in the dungeon");
             s.DungeonExit();

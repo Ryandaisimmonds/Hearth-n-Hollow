@@ -313,6 +313,9 @@ namespace HearthHollow.Dungeon
             int count = T.enemiesPerRoomMin + _rng.Next(Mathf.Max(1, T.enemiesPerRoomMax - T.enemiesPerRoomMin + 1)) + DungeonRules.ExtraEnemies(run.floor);
             if (Node.kind == RoomKind.Ladder || Node.kind == RoomKind.Exit) count += 1;
             if (run.routeId == GameSession.FallRoute) count += (run.fightRooms - 1) / 2;   // ticket 43: more of them as you go
+            var areaRoute = S.Content.Route(run.routeId);
+            if (areaRoute != null && areaRoute.enemyMult > 0f && areaRoute.enemyMult < 1f && Node.kind != RoomKind.Boss)
+                count = Mathf.Max(1, Mathf.RoundToInt(count * areaRoute.enemyMult));   // ticket 47: a quiet resource area
             count = Mathf.RoundToInt(count * S.MutatorEnemyCount);   // Swarm
 
             if (Node.kind == RoomKind.Boss)

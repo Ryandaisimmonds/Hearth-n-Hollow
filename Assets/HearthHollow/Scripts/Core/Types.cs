@@ -249,6 +249,9 @@ namespace HearthHollow.Core
         // Design v2 deep dungeons (ticket 12): floors (0 = tuning.dungeonFloors), a boss every bossEvery floors
         // (0 = only on the last), and optionally which monster is each boss (boss 1, boss 2, …; empty = the route's toughest).
         public int floors, bossEvery;
+        // ticket 47: areas vary. A resource area can have no boss (its last floor ends in an exit) and fewer monsters.
+        public bool noBoss;
+        public float enemyMult = 1f;
         public List<string> bossIds = new List<string>();
         // ticket 13: deeper floors add monsters and drops (each from its minFloor down)
         public List<FloorMonster> floorMonsters = new List<FloorMonster>();

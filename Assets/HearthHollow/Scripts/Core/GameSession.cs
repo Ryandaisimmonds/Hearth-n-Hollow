@@ -44,6 +44,7 @@ namespace HearthHollow.Core
             if (Profile.seenIngredients == null) Profile.seenIngredients = new System.Collections.Generic.List<string>();
             Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13, ticket 24)
             UpgradeWren();                                    // Old Wren's guiding thread (saveVersion 14, ticket 35)
+            UpgradeAreas();                                   // shorter areas, Frost Hollow (saveVersion 15, ticket 47)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
@@ -337,7 +338,7 @@ namespace HearthHollow.Core
             Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
             ClearRunLog();   // a fresh log each run (ticket 20)
             Run.firstDive = UseDungeon && !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
-            Run.firstRidge = UseDungeon && routeId == RidgeRoute && Progression.DeepestFloor(Profile, RidgeRoute) == 0;   // ticket 35: a short, easy first trip
+            Run.firstRidge = false;   // ticket 47: Chili Ridge is the gentle area now (no special first trip)
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.infusions = Cooking.Infusions(Content, Run.eaten);   // ticket 46: every meal's infusion; attacks without their own element carry them all
             Run.element = Run.infusions.Count > 0 ? Run.infusions[0] : Element.None;
@@ -362,7 +363,7 @@ namespace HearthHollow.Core
                 if (_falling) Log(FallIntro);   // the UI shows it as a banner once the dungeon is on screen (ticket 42)
                 else Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
             }
-            if (Run.firstRidge) Info("🌶️ A quick look round the foot of the Ridge: grab some chilies and head back to Wren.");
+
             Touch(true);
             return true;
         }

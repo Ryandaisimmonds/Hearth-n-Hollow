@@ -36,9 +36,9 @@ namespace HearthHollow.Tests
             s.WrenTalk();
             Assert.AreEqual(WrenStep.FirstBoss, s.Wren);
 
-            // floor-5 boss → the fire hint → Chili Ridge
+            // the Sow at the bottom of the Meadow (floor 3) → the fire hint → Chili Ridge
             s.StartRun("meadow");
-            for (int i = 0; i < 4; i++) s.DungeonDescend();
+            for (int i = 0; i < 2; i++) s.DungeonDescend();
             s.DungeonEnemyKilled(s.DungeonEnemy("bramble_sow", true, true));
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(WrenStep.HearHint, s.Wren);
@@ -46,21 +46,17 @@ namespace HearthHollow.Tests
             s.GiveWrenFireHint();
             Assert.AreEqual(WrenStep.Ridge, s.Wren);
 
-            // the first Ridge trip: one short, easy floor full of chilies
+            // Chili Ridge: two quiet floors with an exit at the top (ticket 47)
             Assert.IsTrue(s.StartRun("chili"));
-            Assert.IsTrue(s.Run.firstRidge);
-            Assert.IsTrue(s.DungeonNoLadder);
-            Assert.IsFalse(s.DungeonDescend());
-            var easy = s.DungeonEnemy("bat", false, false);
+            Assert.IsFalse(s.Run.firstRidge, "no special first trip any more");
+            Assert.IsTrue(s.DungeonDescend());
+            Assert.IsTrue(s.DungeonEndExit);
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(WrenStep.RidgeBack, s.Wren);
             Assert.IsTrue(s.WrenTalkDue);
             s.WrenTalk();
             Assert.AreEqual(WrenStep.SeasonMeal, s.Wren);
-            Assert.IsTrue(s.StartRun("chili"));
-            Assert.IsFalse(s.Run.firstRidge, "only the first trip is the short one");
-            Assert.Greater(s.DungeonEnemy("bat", false, false).maxHp, easy.maxHp);
-            s.DungeonExit(); s.ReturnToHearth();
+            Assert.IsFalse(s.IsRouteUnlocked("frosthollow"), "Frost Hollow waits for a Fire meal");
 
             // season a meal with chili → take it to the Alpha
             Economy.AddToPantry(s.Profile, "chili", 1);
@@ -69,6 +65,14 @@ namespace HearthHollow.Tests
             Assert.IsTrue(s.SeasonMeal(s.Profile.mealPantry[s.Profile.mealPantry.Count - 1], "chili", out why), why);
             Assert.AreEqual(WrenStep.Alpha, s.Wren);
             StringAssert.Contains("Hoarfrost Alpha", s.WrenObjective);
+            Assert.IsTrue(s.IsRouteUnlocked("frosthollow"), "Wren tells you the way");
+
+            // the Alpha at the bottom of Frost Hollow → done
+            Assert.IsTrue(s.StartRun("frosthollow"));
+            for (int i = 0; i < 2; i++) s.DungeonDescend();
+            s.DungeonEnemyKilled(s.DungeonEnemy("hoarfrost_alpha", true, true));
+            s.DungeonExit(); s.ReturnToHearth();
+            Assert.AreEqual(WrenStep.Done, s.Wren);
         }
 
         [Test]

@@ -98,7 +98,9 @@ namespace HearthHollow.Dungeon
             int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
             bool fall = run.routeId == GameSession.FallRoute;   // ticket 43: the nameless opening dungeon
             _plan = fall ? DungeonGenerator.Gauntlet(seed, T.fallRooms)
-                         : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice, Session.DungeonNoLadder, run.floor, route != null ? route.gatherChance : 0.2f);
+                         : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice,
+                                                     Session.DungeonNoLadder || Session.DungeonEndExit,   // ticket 47: a boss-free area's last floor ends in an exit
+                                                     run.floor, route != null ? route.gatherChance : 0.2f);
             _theme = Settings.ThemeFor(fall ? "heart" : run.routeId);   // it borrows the Hollow Heart's purple gloom
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);

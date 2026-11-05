@@ -160,9 +160,19 @@ namespace HearthHollow.Core
                 var u = Unlock(c, m.id);
                 if (u == null) continue;
                 if (RequirementMet(p, u)) return "Learn " + m.name + " at " + LearnAtText(u);
-                if (best == null || (u.kind == UnlockKind.ReachFloor && bu.kind != UnlockKind.ReachFloor) || (u.kind == bu.kind && u.floor < bu.floor)) { best = m; bu = u; }
+                if (best == null || Sooner(u, bu)) { best = m; bu = u; }
             }
             return best != null ? best.name + ": " + RequirementText(c, bu) : null;
+        }
+
+        /// Ticket 47: which unlock comes sooner: an earlier area first (Slice order), then reaching a floor before a boss, then the lower floor.
+        static bool Sooner(MoveUnlock a, MoveUnlock b)
+        {
+            int ra = Array.IndexOf(Slice.RouteIds, a.routeId), rb = Array.IndexOf(Slice.RouteIds, b.routeId);
+            if (ra < 0) ra = 99; if (rb < 0) rb = 99;
+            if (ra != rb) return ra < rb;
+            if (a.kind != b.kind) return a.kind == UnlockKind.ReachFloor;
+            return a.floor < b.floor;
         }
 
         public static string LearnAtText(MoveUnlock u)

@@ -122,6 +122,7 @@ MonoBehaviour:
       cookGamePerfect: 0.1
       cookGameGood: 0.3
       cookGameGoodNudge: 0.5
+      cookGameZonePerLevel: 0.025
       guardMult: 0.5
       jackpotChance: 0.05
       mealPantrySlots: 6
@@ -1291,7 +1292,7 @@ MonoBehaviour:
       name: Meadow Hollow
       emoji: "\U0001F33C"
       kind: 0
-      description: Sunlit grass and sleepy slimes up top. It goes down a long way, and gets colder the deeper you go.
+      description: Sunlit grass and sleepy slimes. Three floors down, the Bramble Sow snores.
       baseDifficulty: 0
       gatherChance: 0.3
       coinMult: 1
@@ -1301,29 +1302,19 @@ MonoBehaviour:
       monsterIds:
       - slime
       - boar
-      floors: 10
-      bossEvery: 5
+      floors: 3
+      bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds:
       - bramble_sow
-      - hoarfrost_alpha
       floorMonsters:
       - monsterId: bat
-        minFloor: 3
-      - monsterId: wolf
-        minFloor: 6
+        minFloor: 2
       floorDrops:
       - ingredientId: ginger
-        minFloor: 4
-        weight: 0.6
-      - ingredientId: starmoss
-        minFloor: 6
-        weight: 0.35
-      - ingredientId: wild_honeycomb
-        minFloor: 6
-        weight: 0.35
-      - ingredientId: golden_wheat
-        minFloor: 6
-        weight: 0.35
+        minFloor: 2
+        weight: 1
       requiredFlag: 
       lockHint: 
       gatherIngredientIds:
@@ -1341,7 +1332,7 @@ MonoBehaviour:
       hazard: 0
       hazardPct: 0
       mutators: 
-      storyIntro: "The meadow dips into a hollow, and the hollow goes down \u2014 ten floors of it. Something bristly snores on the fifth. Something colder waits at the bottom."
+      storyIntro: Sunlit grass and sleepy slimes. Three floors down, something big and bristly snores.
       storyOutro: Your bag smells of fresh herbs. From the hill you can see the bramble woods. The Ember Path runs right through them.
     - id: berry
       name: Berry Hunt
@@ -1360,6 +1351,8 @@ MonoBehaviour:
       - wolf
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1399,6 +1392,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1438,6 +1433,8 @@ MonoBehaviour:
       - dragon
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1465,9 +1462,9 @@ MonoBehaviour:
       name: Chili Ridge
       emoji: "\U0001F336\uFE0F"
       kind: 0
-      description: Red hills where chilies grow wild. Hot-tempered things nest up here.
-      baseDifficulty: 3
-      gatherChance: 0.27
+      description: 'Red hills where chilies grow wild. Quiet: a good place to gather.'
+      baseDifficulty: 1
+      gatherChance: 0.45
       coinMult: 1.1
       clearReward: 40
       clearXp: 45
@@ -1475,13 +1472,12 @@ MonoBehaviour:
       monsterIds:
       - bat
       - boar
-      floors: 5
-      bossEvery: 5
-      bossIds:
-      - ridge_drake
-      floorMonsters:
-      - monsterId: shaman
-        minFloor: 3
+      floors: 2
+      bossEvery: 0
+      noBoss: 1
+      enemyMult: 0.6
+      bossIds: []
+      floorMonsters: []
       floorDrops:
       - ingredientId: mint
         minFloor: 2
@@ -1502,7 +1498,7 @@ MonoBehaviour:
       hazard: 0
       hazardPct: 0
       mutators: 
-      storyIntro: Old Wren's directions bring you up into the red hills. Chilies grow wild here, and so do tempers. Something hot-blooded nests at the top.
+      storyIntro: 'Red hills where chilies grow wild. Not much lives up here: a good place to gather. Two floors, and an exit at the top.'
       storyOutro: 'The ridge ends at a gate of black iron: the Ember Gate, locked tight. Wren remembers that the Wardens of the Old Watchtower kept its key.'
     - id: ember
       name: Ember Hunt
@@ -1522,6 +1518,8 @@ MonoBehaviour:
       - dragon
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1561,6 +1559,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1601,6 +1601,8 @@ MonoBehaviour:
       - dragon
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1640,6 +1642,8 @@ MonoBehaviour:
       - slime
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1678,6 +1682,8 @@ MonoBehaviour:
       - slime
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1717,6 +1723,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1756,6 +1764,8 @@ MonoBehaviour:
       - slime
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1795,6 +1805,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1835,6 +1847,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1874,6 +1888,8 @@ MonoBehaviour:
       - wolf
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1913,6 +1929,8 @@ MonoBehaviour:
       - crab
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1952,6 +1970,8 @@ MonoBehaviour:
       - shaman
       floors: 0
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -1976,31 +1996,43 @@ MonoBehaviour:
       storyOutro: You found the Everflame Recipe! The way into the Hollow Heart is open.
     - id: frosthollow
       name: Frost Hollow
-      emoji: "\U0001F9CA"
+      emoji: "\u2744\uFE0F"
       kind: 1
-      description: 'An ice cave off the pass. Bitter cold, rich rewards: frostberries grow nowhere else.'
-      baseDifficulty: 7
-      gatherChance: 0.2
-      coinMult: 1.9
-      clearReward: 150
+      description: Past the Hollow, where the cold never lifts. The Hoarfrost Alpha prowls at the bottom.
+      baseDifficulty: 3
+      gatherChance: 0.25
+      coinMult: 1.3
+      clearReward: 60
       clearXp: 90
-      unlockedByRouteId: frost
+      unlockedByRouteId: 
       monsterIds:
-      - crab
       - wolf
-      - shaman
-      - dragon
-      floors: 0
+      - crab
+      - bat
+      floors: 3
       bossEvery: 0
-      bossIds: []
-      floorMonsters: []
-      floorDrops: []
-      requiredFlag: 
-      lockHint: 
+      noBoss: 0
+      enemyMult: 1
+      bossIds:
+      - hoarfrost_alpha
+      floorMonsters:
+      - monsterId: shaman
+        minFloor: 2
+      floorDrops:
+      - ingredientId: starmoss
+        minFloor: 1
+        weight: 1
+      - ingredientId: wild_honeycomb
+        minFloor: 2
+        weight: 1
+      - ingredientId: golden_wheat
+        minFloor: 2
+        weight: 1
+      requiredFlag: wren_frost
+      lockHint: Old Wren knows the way
       gatherIngredientIds:
       - frost_berry
       - ginger
-      - fish
       materialIds:
       - ember_coal
       - iron_scrap
@@ -2011,8 +2043,8 @@ MonoBehaviour:
       requiredClass: 0
       hazard: 2
       hazardPct: 0.016
-      mutators: 05000000i
-      storyIntro: Not on the Ember Path. Just very cold, very dangerous, and full of frostberries. Pack something warming.
+      mutators: 
+      storyIntro: Bitter cold, three floors deep. The Hoarfrost Alpha prowls at the bottom, and it can't abide fire.
       storyOutro: You made it out of Frost Hollow with frostberries to spare. Try them in a crumble.
     - id: nowhere
       name: ???
@@ -2033,6 +2065,8 @@ MonoBehaviour:
       - shaman
       floors: 1
       bossEvery: 0
+      noBoss: 0
+      enemyMult: 1
       bossIds: []
       floorMonsters: []
       floorDrops: []
@@ -3475,24 +3509,24 @@ MonoBehaviour:
       floor: 3
       learnAt: kitchen
     - moveId: c_ult
-      kind: 1
-      routeId: meadow
-      floor: 4
-      learnAt: yard
-    - moveId: c_hotpot
       kind: 2
       routeId: meadow
-      floor: 5
+      floor: 3
+      learnAt: yard
+    - moveId: c_hotpot
+      kind: 1
+      routeId: frosthollow
+      floor: 2
       learnAt: kitchen
     - moveId: c_picnic
       kind: 1
       routeId: chili
-      floor: 3
+      floor: 2
       learnAt: kitchen
     - moveId: c_ult2
       kind: 2
-      routeId: chili
-      floor: 5
+      routeId: frosthollow
+      floor: 3
       learnAt: yard
     skillNodes:
     - id: w_whetstone
@@ -5070,7 +5104,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 40
+    contentVersion: 41
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

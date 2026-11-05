@@ -318,6 +318,58 @@ namespace HearthHollow.Core
             Buffs(c, "frostberry_toast", BuffStat.CoinPct, 0.4f);
         }
 
+        /// Ticket 47: areas, not dungeons. Meadow Hollow 3 floors (the Sow at the bottom); Chili Ridge 2 floors, rich and
+        /// quiet, no boss; Frost Hollow 3 floors with the Hoarfrost Alpha at the bottom and the tier-2 ingredients.
+        static void Areas41(GameContent c)
+        {
+            var meadow = c.Route("meadow");
+            if (meadow != null)
+            {
+                meadow.floors = 3; meadow.bossEvery = 0; meadow.noBoss = false; meadow.enemyMult = 1f;
+                meadow.bossIds = new List<string> { "bramble_sow" };
+                meadow.floorMonsters = new List<FloorMonster> { new FloorMonster { monsterId = "bat", minFloor = 2 } };
+                meadow.floorDrops = new List<FloorDrop> { new FloorDrop { ingredientId = "ginger", minFloor = 2, weight = 1f } };
+                meadow.storyIntro = "Sunlit grass and sleepy slimes. Three floors down, something big and bristly snores.";
+                meadow.description = "Sunlit grass and sleepy slimes. Three floors down, the Bramble Sow snores.";
+            }
+            var chili = c.Route("chili");
+            if (chili != null)
+            {
+                chili.floors = 2; chili.bossEvery = 0; chili.noBoss = true; chili.enemyMult = 0.6f;
+                chili.bossIds = new List<string>();
+                chili.baseDifficulty = 1; chili.gatherChance = 0.45f;
+                chili.floorMonsters = new List<FloorMonster>();
+                chili.storyIntro = "Red hills where chilies grow wild. Not much lives up here: a good place to gather. Two floors, and an exit at the top.";
+                chili.description = "Red hills where chilies grow wild. Quiet: a good place to gather.";
+            }
+            var frost = c.Route("frosthollow");
+            if (frost != null)
+            {
+                frost.name = "Frost Hollow"; frost.emoji = "❄️"; frost.chapter = 0;
+                frost.floors = 3; frost.bossEvery = 0; frost.noBoss = false; frost.enemyMult = 1f;
+                frost.bossIds = new List<string> { "hoarfrost_alpha" };
+                frost.baseDifficulty = 3; frost.coinMult = 1.3f; frost.clearReward = 60; frost.gatherChance = 0.25f;
+                frost.unlockedByRouteId = ""; frost.requiredFlag = GameSession.WrenFrostFlag; frost.lockHint = "Old Wren knows the way";
+                frost.monsterIds = new List<string> { "wolf", "crab", "bat" };
+                frost.floorMonsters = new List<FloorMonster> { new FloorMonster { monsterId = "shaman", minFloor = 2 } };
+                frost.gatherIngredientIds = new List<string> { "frost_berry", "ginger" };
+                frost.floorDrops = new List<FloorDrop>   // the tier-2 ingredients (Hearty Herb Stew, Honey-Glazed Skewer, Golden Herb Butty)
+                {
+                    new FloorDrop { ingredientId = "starmoss", minFloor = 1, weight = 1f },
+                    new FloorDrop { ingredientId = "wild_honeycomb", minFloor = 2, weight = 1f },
+                    new FloorDrop { ingredientId = "golden_wheat", minFloor = 2, weight = 1f },
+                };
+                frost.description = "Past the Hollow, where the cold never lifts. The Hoarfrost Alpha prowls at the bottom.";
+                if (frost.mutators != null) frost.mutators.Clear();   // the slice has no mutators; don't show a Giants badge
+                frost.storyIntro = "Bitter cold, three floors deep. The Hoarfrost Alpha prowls at the bottom, and it can't abide fire.";
+            }
+            // skill unlocks that pointed at floors that no longer exist
+            Pool(c, "c_ult", UnlockKind.BeatBoss, "meadow", 3, "yard");
+            Pool(c, "c_hotpot", UnlockKind.ReachFloor, "frosthollow", 2, "kitchen");
+            Pool(c, "c_picnic", UnlockKind.ReachFloor, "chili", 2, "kitchen");
+            Pool(c, "c_ult2", UnlockKind.BeatBoss, "frosthollow", 3, "yard");
+        }
+
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1) { Buffs(c, recipeId, s1, v1, s1, 0f); }
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1, BuffStat s2, float v2)
         {

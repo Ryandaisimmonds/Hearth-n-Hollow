@@ -63,6 +63,7 @@ namespace HearthHollow.Core
             if (c.contentVersion < 38) { TheFall38(c); c.contentVersion = 38; }  // the opening fall ramps up room by room (DefaultContentDesignV2.cs)
             if (c.contentVersion < 39) { Nowhere39(c); c.contentVersion = 39; }  // the nameless opening dungeon "???" (DefaultContentDesignV2.cs)
             if (c.contentVersion < 40) { MealStats40(c); c.contentVersion = 40; }  // flat + % meal stats, quality ×1.5 / ×2 (DefaultContentDesignV2.cs)
+            if (c.contentVersion < 41) { Areas41(c); c.contentVersion = 41; }  // shorter areas, Frost Hollow (DefaultContentDesignV2.cs)
             return true;
         }
 
