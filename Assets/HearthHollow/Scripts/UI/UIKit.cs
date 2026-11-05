@@ -79,8 +79,10 @@ namespace HearthHollow.UI
             float v = m.value * mult;
             switch (m.stat)
             {
-                case BuffStat.DamagePct: return "+" + Pct(v) + " dmg";
-                case BuffStat.MaxHp: return "+" + Num(v) + " max HP";
+                case BuffStat.Attack: return "+" + Num(Mathf.Round(v * 10f) / 10f) + " attack";
+                case BuffStat.DamagePct: return "+" + Pct(v) + " attack";
+                case BuffStat.MaxHp: return "+" + Num(Mathf.Round(v)) + " HP";
+                case BuffStat.MaxHpPct: return "+" + Pct(v) + " HP";
                 case BuffStat.Heal: return "heal " + Num(v);
                 case BuffStat.Armour: return "+" + Num(v) + " armour";
                 case BuffStat.CritPct: return "+" + Pct(v) + " crit";
@@ -116,8 +118,8 @@ namespace HearthHollow.UI
         {
             switch (s)
             {
-                case BuffStat.DamagePct: return "damage";
-                case BuffStat.MaxHp: return "health";
+                case BuffStat.DamagePct: case BuffStat.Attack: return "attack";
+                case BuffStat.MaxHp: case BuffStat.MaxHpPct: return "health";
                 case BuffStat.Armour: return "armour";
                 case BuffStat.CritPct: return "crit";
                 case BuffStat.GatherZonePct: return "gathering";

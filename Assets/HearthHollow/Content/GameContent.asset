@@ -110,8 +110,9 @@ MonoBehaviour:
       trinketBossDrop: 0.15
       trinketEliteDrop: 0.03
       merchantTrinketChance: 0.4
-      gradeMultUncommon: 1.1
-      gradeMultRare: 1.2
+      gradeMultUncommon: 1.5
+      gradeMultRare: 2
+      breadAttack: 1
       qualityFineChance: 0.2
       qualityPrimeChance: 0.05
       qualityNudgeFine: 0.15
@@ -577,9 +578,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 18
-      - stat: 10
-        value: 2
+        value: 8
       tags:
       - stone
       - veg
@@ -603,9 +602,9 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 31.5
+        value: 14
       - stat: 10
-        value: 3
+        value: 2
       tags:
       - stone
       - veg
@@ -626,12 +625,8 @@ MonoBehaviour:
       - ingredientId: berries
         count: 2
       buffs:
-      - stat: 1
-        value: 10
-      - stat: 9
-        value: 1
       - stat: 10
-        value: 1
+        value: 2
       tags:
       - sweet
       description: Creamy oats swirled with bramble berries. Every win feels like a second breakfast.
@@ -651,11 +646,7 @@ MonoBehaviour:
       - ingredientId: salt
         count: 1
       buffs:
-      - stat: 1
-        value: 16
       - stat: 3
-        value: 2
-      - stat: 10
         value: 2
       tags:
       - stone
@@ -677,11 +668,7 @@ MonoBehaviour:
       - ingredientId: herbs
         count: 1
       buffs:
-      - stat: 1
-        value: 10
       - stat: 9
-        value: 2
-      - stat: 10
         value: 2
       tags:
       - veg
@@ -704,10 +691,8 @@ MonoBehaviour:
       - ingredientId: wheat
         count: 1
       buffs:
-      - stat: 3
-        value: 3
-      - stat: 1
-        value: 12
+      - stat: 12
+        value: 0.3
       tags:
       - stone
       - veg
@@ -731,9 +716,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 28
-      - stat: 3
-        value: 1
+        value: 12
       tags:
       - stone
       description: Glowing egg ribbons in a ginger broth. Fortifies body and spirit.
@@ -756,11 +739,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 1
-        value: 24
-      - stat: 3
-        value: 2
-      - stat: 9
-        value: 2
+        value: 14
       tags:
       - stone
       - fire
@@ -781,10 +760,8 @@ MonoBehaviour:
       - ingredientId: salt
         count: 1
       buffs:
-      - stat: 0
-        value: 0.2
       - stat: 4
-        value: 0.08
+        value: 0.15
       tags:
       - smoky
       - fish
@@ -805,10 +782,8 @@ MonoBehaviour:
       - ingredientId: herbs
         count: 1
       buffs:
-      - stat: 0
-        value: 0.3
-      - stat: 4
-        value: 0.04
+      - stat: 11
+        value: 2
       tags:
       - smoky
       - veg
@@ -831,10 +806,10 @@ MonoBehaviour:
       - ingredientId: wild_honeycomb
         count: 1
       buffs:
+      - stat: 11
+        value: 3
       - stat: 0
-        value: 0.52500004
-      - stat: 4
-        value: 0.07
+        value: 0.2
       tags:
       - smoky
       - veg
@@ -855,10 +830,8 @@ MonoBehaviour:
       - ingredientId: mushroom
         count: 2
       buffs:
-      - stat: 0
-        value: 0.3
-      - stat: 4
-        value: 0.1
+      - stat: 11
+        value: 3
       tags:
       - smoky
       - veg
@@ -882,9 +855,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 0
-        value: 0.4
-      - stat: 4
-        value: 0.06
+        value: 0.3
       tags:
       - smoky
       - veg
@@ -906,7 +877,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 0
-        value: 0.55
+        value: 0.25
       tags:
       - fire
       - smoky
@@ -927,10 +898,8 @@ MonoBehaviour:
       - ingredientId: fire_honey
         count: 2
       buffs:
-      - stat: 0
-        value: 0.4
-      - stat: 4
-        value: 0.14
+      - stat: 11
+        value: 3
       tags:
       - fire
       - sweet
@@ -953,10 +922,8 @@ MonoBehaviour:
       - ingredientId: chili
         count: 1
       buffs:
-      - stat: 0
-        value: 0.75
-      - stat: 4
-        value: 0.05
+      - stat: 11
+        value: 4
       tags:
       - fire
       description: Seared over drake-coals. Pure, glowing strength.
@@ -972,12 +939,8 @@ MonoBehaviour:
       station: 2
       ingredients: []
       buffs:
-      - stat: 8
-        value: 0.03
-      - stat: 5
-        value: 0.1
-      - stat: 10
-        value: 1
+      - stat: 1
+        value: 3
       tags:
       - plain
       description: "Free \u2014 there's always a loaf by the fire. Simple, light, better than nothing. Always Plain."
@@ -999,8 +962,6 @@ MonoBehaviour:
       buffs:
       - stat: 5
         value: 0.3
-      - stat: 8
-        value: 0.05
       tags:
       - veg
       description: Fresh bread and a fistful of herbs. A forager's favourite.
@@ -1023,9 +984,9 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 5
-        value: 0.52500004
+        value: 0.4
       - stat: 8
-        value: 0.0875
+        value: 0.08
       tags:
       - veg
       description: A herb butty on golden-wheat bread.
@@ -1068,10 +1029,8 @@ MonoBehaviour:
       - ingredientId: salt
         count: 1
       buffs:
-      - stat: 6
-        value: 0.25
       - stat: 8
-        value: 0.05
+        value: 0.1
       tags:
       - fish
       description: Crispy fish in a crusty roll. Proper wanderer's food.
@@ -1094,9 +1053,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 8
-        value: 0.1
-      - stat: 5
-        value: 0.15
+        value: 0.12
       tags:
       - veg
       description: Cool mint and herbs rolled tight. Puts a spring in your step.
@@ -1119,9 +1076,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 5
-        value: 0.2
-      - stat: 6
-        value: 0.3
+        value: 0.4
       tags:
       - stone
       description: Shimmering egg and truffle shavings. Oddly enlightening.
@@ -1143,10 +1098,8 @@ MonoBehaviour:
       - ingredientId: fire_honey
         count: 1
       buffs:
-      - stat: 8
-        value: 0.12
       - stat: 6
-        value: 0.3
+        value: 0.4
       tags:
       - sweet
       description: Frostberries and fire honey on hot toast. You'll be halfway down the trail before it's cold.
@@ -5117,7 +5070,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 39
+    contentVersion: 40
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

@@ -13,10 +13,10 @@ namespace HearthHollow.Tests
         [Test]
         public void PotMeals_AndCampBread_HealOverTime()
         {
-            foreach (var id in new[] { "bread", "herb_stew", "herb_stew_2" })
+            foreach (var id in new[] { "berry_porridge", "herb_stew_2" })   // ticket 44: one healing meal at tier 1, and the tier-2 stew
                 Assert.IsTrue(_c.Recipe(id).buffs.Exists(b => b.stat == BuffStat.Regen && b.value > 0f), id);
             var m = new CombatMods();
-            Cooking.AddMealMods(_c, _c.Class(ClassId.Cook), new List<EatenMeal> { new EatenMeal { recipeId = "herb_stew", potency = 1f } }, m);
+            Cooking.AddMealMods(_c, _c.Class(ClassId.Cook), new List<EatenMeal> { new EatenMeal { recipeId = "berry_porridge", potency = 1f } }, m);
             Assert.AreEqual(2f * 1.1f, m.regen, 0.01f, "the Cook gets every meal ×1.1");
         }
 

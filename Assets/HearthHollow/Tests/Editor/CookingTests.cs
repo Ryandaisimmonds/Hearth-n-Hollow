@@ -25,10 +25,10 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void Quality_IsASmallBump()
+        public void Quality_IsABigDeal()   // ticket 44: Fine ×1.5, Prime ×2
         {
-            Assert.AreEqual(1.1f, Cooking.GradeMult(_c.tuning, 1), 0.0001f);
-            Assert.AreEqual(1.2f, Cooking.GradeMult(_c.tuning, 2), 0.0001f);
+            Assert.AreEqual(1.5f, Cooking.GradeMult(_c.tuning, 1), 0.0001f);
+            Assert.AreEqual(2f, Cooking.GradeMult(_c.tuning, 2), 0.0001f);
         }
 
         [Test]

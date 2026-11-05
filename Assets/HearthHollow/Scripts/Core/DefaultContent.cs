@@ -52,6 +52,7 @@ namespace HearthHollow.Core
             Healing37(c);            // DefaultContentDesignV2.cs: Regen on Pot meals and Camp Bread
             TheFall38(c);            // DefaultContentDesignV2.cs: the opening fall ramps up room by room
             Nowhere39(c);            // DefaultContentDesignV2.cs: the nameless opening dungeon "???"
+            MealStats40(c);          // DefaultContentDesignV2.cs: flat + % meal stats, quality ×1.5 / ×2
             return c;
         }
 

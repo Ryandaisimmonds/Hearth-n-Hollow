@@ -47,7 +47,9 @@ namespace HearthHollow.Core
             {
                 if (!Slice.On || Profile.arcStage == 0 || !TrayShown) return null;
                 int n = Profile.tray.Count, max = Content.tuning.traySize;
-                return n < max ? "Pack " + max + " meals to set out (" + n + "/" + max + ")" : null;
+                if (n < max) return "Pack " + max + " meals to set out (" + n + "/" + max + ")";
+                var missing = Tray.Missing(Content, Profile.tray);   // ticket 44: an old tray of three Health meals, say
+                return missing.Count > 0 ? "Your tray needs " + Tray.Need(missing) : null;
             }
         }
 

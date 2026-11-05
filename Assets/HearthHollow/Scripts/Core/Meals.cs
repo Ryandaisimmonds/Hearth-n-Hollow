@@ -156,10 +156,10 @@ namespace HearthHollow.Core
             for (int i = 0; i < meals.Count; i++)
             {
                 RecipeData r = c.Recipe(meals[i].recipeId);
-                if (r == null || r.buffs == null) continue;
-                float own = Cooking.GradeMult(c.tuning, meals[i].grade);   // a better-quality meal: slightly bigger numbers
-                for (int b = 0; b < r.buffs.Count; b++)
-                    sum[(int)r.buffs[b].stat] += r.buffs[b].value * meals[i].potency * own * StatMult(cls, r.buffs[b].stat) * synMult;
+                if (r == null) continue;
+                float own = Cooking.GradeMult(c.tuning, meals[i].grade);   // quality: Plain ×1, Fine ×1.5, Prime ×2 (ticket 44)
+                foreach (var b in Tray.RawBuffs(c, r, meals[i].slot))      // Camp Bread in the Attack slot: +1 attack
+                    sum[(int)b.stat] += b.value * meals[i].potency * own * StatMult(cls, b.stat) * synMult;
             }
             for (int i = 0; i < active.Count; i++)
             {

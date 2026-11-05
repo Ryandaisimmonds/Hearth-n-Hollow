@@ -111,8 +111,8 @@ namespace HearthHollow.UI
         {
             switch (s)
             {
-                case BuffStat.MaxHp: case BuffStat.Heal: return "hp";
-                case BuffStat.DamagePct: return "damage";
+                case BuffStat.MaxHp: case BuffStat.Heal: case BuffStat.MaxHpPct: return "hp";
+                case BuffStat.DamagePct: case BuffStat.Attack: return "damage";
                 case BuffStat.Armour: return "armour";
                 case BuffStat.CritPct: return "crit";
                 case BuffStat.GatherZonePct: return "gather";
@@ -129,8 +129,8 @@ namespace HearthHollow.UI
         {
             switch (s)
             {
-                case BuffStat.MaxHp: case BuffStat.Heal: return "❤️";
-                case BuffStat.DamagePct: return "🗡️";
+                case BuffStat.MaxHp: case BuffStat.Heal: case BuffStat.MaxHpPct: return "❤️";
+                case BuffStat.DamagePct: case BuffStat.Attack: return "🗡️";
                 case BuffStat.Armour: return "🛡️";
                 case BuffStat.CritPct: return "💥";
                 case BuffStat.GatherZonePct: return "🧺";

@@ -1748,3 +1748,7 @@ Label { white-space: normal; color: var(--hh-text); }
 
 /* ticket 40: the Route board's expedition panel, slimmed for the slice */
 .expedition__route-compact { font-size: 22px; margin-bottom: 2px; }
+
+/* ticket 44: typed tray slots */
+.expedition__slot-type { font-size: 20px; width: 30px; -unity-text-align: middle-center; margin-right: 4px; }
+.expedition__tray-stats { margin-top: 6px; font-size: 16px; color: var(--hh-cream); -unity-font-style: bold; }

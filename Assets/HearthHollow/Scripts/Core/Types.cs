@@ -81,7 +81,9 @@ namespace HearthHollow.Core
         XpPct,         // +% XP earned this run
         MoveSpeedPct,  // +% move speed this run (cooking v9)
         HealOnKill,    // + HP healed per kill this run (cooking v9)
-        Regen          // ticket 38: HP healed every 10 s, all run long (Pot meals, Camp Bread)
+        Regen,         // ticket 38: HP healed every 10 s, all run long (Pot meals, Camp Bread)
+        Attack,        // ticket 44: + flat attack (added to the weapon's base before any %)
+        MaxHpPct       // ticket 44: +% max HP (applied after all flat HP)
     }
 
     public enum GameEventType
@@ -390,7 +392,8 @@ namespace HearthHollow.Core
         public float trinketBossDrop = 0.15f, trinketEliteDrop = 0.03f;   // chance a boss / elite drops a trinket you don't own
         public float merchantTrinketChance = 0.4f;            // chance the travelling merchant has a trinket for sale
         // ── cooking v9: grades (ingredients Plain / Fine / Prime, meals Common / Uncommon / Rare), the rarity roll, accelerators, the meal pantry ──
-        public float gradeMultUncommon = 1.1f, gradeMultRare = 1.2f;   // a meal's stats × its quality (Fine / Prime): small on purpose, tiers are the big jump
+        public float gradeMultUncommon = 1.5f, gradeMultRare = 2f;   // ticket 44: a meal's stats × its quality (Fine / Prime): a Prime meal is twice a Plain one
+        public float breadAttack = 1f;                               // ticket 44: Camp Bread in the 🗡️ Attack slot gives this much attack
         public float qualityFineChance = 0.2f, qualityPrimeChance = 0.05f;   // Design v2: a cook's chance of a Fine / Prime meal (plus the station level's bonus)
         public float qualityNudgeFine = 0.15f, qualityNudgePrime = 0.1f;   // the cooking minigame's best result adds these (ticket 11)
         // Cooking minigame (ticket 11): the heat marker sweeps once across the bar in cookGameSeconds; stop it in the
@@ -539,7 +542,7 @@ namespace HearthHollow.Core
         public string monsterId;        // Monster / Elite tiles
     }
 
-    [Serializable] public class EatenMeal { public string recipeId; public float potency; public int grade; public string accelId; public int accelGrade; } // potency after diminishing returns
+    [Serializable] public class EatenMeal { public string recipeId; public float potency; public int grade; public string accelId; public int accelGrade; public TraySlot slot = TraySlot.Free; } // potency after diminishing returns; slot: ticket 44
 
     [Serializable] public class PlayerStats   // derived, recomputed by StatCalc
     {

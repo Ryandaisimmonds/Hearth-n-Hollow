@@ -242,6 +242,8 @@ namespace HearthHollow.Core
             if (pantryIndex < 0 || pantryIndex >= p.mealPantry.Count) { reason = "No such meal"; return false; }
             if (p.packed.Count >= c.tuning.traySize) { reason = "The tray is full"; return false; }
             var m = p.mealPantry[pantryIndex];
+            reason = Tray.CanAdd(c, p.tray, m.recipeId);   // ticket 44: room left for an 🗡️ Attack and a ❤️ Health meal
+            if (reason != null) return false;
             if (InfusionOf(c, m.accelId) != Element.None)
                 foreach (var q in p.packed)
                     if (InfusionOf(c, q.accelId) != Element.None) { reason = "Only one infused meal per tray"; return false; }
@@ -257,6 +259,8 @@ namespace HearthHollow.Core
             var r = c.Recipe(recipeId);
             if (r == null || !r.always) { reason = "That meal isn't always available"; return false; }
             if (p.packed.Count >= c.tuning.traySize) { reason = "The tray is full"; return false; }
+            reason = Tray.CanAdd(c, p.tray, r.id);
+            if (reason != null) return false;
             p.packed.Add(new CookedMeal { recipeId = r.id, grade = 0 });
             SyncTray(p);
             reason = null; return true;
@@ -295,14 +299,18 @@ namespace HearthHollow.Core
             var list = new List<EatenMeal>();
             if (meals == null) return list;
             var seen = new Dictionary<string, int>();
+            var ids = new List<string>();
             for (int i = 0; i < meals.Count; i++)
             {
                 var m = meals[i];
                 if (m == null || c.Recipe(m.recipeId) == null) continue;
                 int n; seen.TryGetValue(m.recipeId, out n);
                 list.Add(new EatenMeal { recipeId = m.recipeId, potency = Meals.PotencyFor(c.tuning, n), grade = m.grade, accelId = m.accelId, accelGrade = m.accelGrade });
+                ids.Add(m.recipeId);
                 seen[m.recipeId] = n + 1;
             }
+            var slots = Tray.Assign(c, ids);   // ticket 44: which typed slot each meal fills
+            for (int i = 0; i < list.Count; i++) list[i].slot = slots[i];
             return list;
         }
 
@@ -322,7 +330,7 @@ namespace HearthHollow.Core
             var r = c.Recipe(m.recipeId);
             if (r == null) return list;
             float mult = GradeMult(c.tuning, m.grade) * m.potency;
-            if (r.buffs != null) foreach (var b in r.buffs) Add(list, b.stat, b.value * mult * Meals.StatMult(cls, b.stat));
+            foreach (var b in Tray.RawBuffs(c, r, m.slot)) Add(list, b.stat, b.value * mult * Meals.StatMult(cls, b.stat));
             return list;
         }
 

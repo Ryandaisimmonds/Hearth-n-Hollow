@@ -38,11 +38,12 @@ namespace HearthHollow.Core
             for (int i = 0; i < sum.Length && i < trink.Length; i++) sum[i] += trink[i];
 
             var st = new PlayerStats();
-            st.maxHp = Math.Max(1, (int)Math.Round(cls.baseMaxHp + Gear.HeadHp(c, p, classId) + sum[(int)BuffStat.MaxHp]));
+            // ticket 44: every flat bonus first, then all the % bonuses summed and applied once (3 +2 = 5, +50% = 7.5)
+            st.maxHp = Math.Max(1, (int)Math.Round((cls.baseMaxHp + Gear.HeadHp(c, p, classId) + sum[(int)BuffStat.MaxHp]) * (1f + sum[(int)BuffStat.MaxHpPct])));
 
             GearTier w = Economy.CurrentWeapon(c, p, classId);
             float baseDmg = w != null ? w.value : DefaultBaseDamage;
-            st.damage = baseDmg * cls.damageMult * (1f + sum[(int)BuffStat.DamagePct]);
+            st.damage = (baseDmg * cls.damageMult + sum[(int)BuffStat.Attack]) * (1f + sum[(int)BuffStat.DamagePct]);
 
             GearTier a = Economy.CurrentArmour(c, p, classId);
             float points = (a != null ? a.value : 0f) + sum[(int)BuffStat.Armour];

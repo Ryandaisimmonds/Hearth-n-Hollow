@@ -283,6 +283,50 @@ namespace HearthHollow.Core
             });
         }
 
+        /// Ticket 44: one stat per tier-1 meal, two for tier 2, in numbers you can feel against 14 HP and 3 attack.
+        /// Pot = ❤️ Health, BBQ = 🗡️ Attack, Sandwich = utility (✨ Free). Quality ×1 / ×1.5 / ×2.
+        static void MealStats40(GameContent c)
+        {
+            var t = c.tuning;
+            t.gradeMultUncommon = 1.5f; t.gradeMultRare = 2f; t.breadAttack = 1f;
+            // ❤️ Health (Pot)
+            Buffs(c, "herb_stew", BuffStat.MaxHp, 8f);
+            Buffs(c, "herb_stew_2", BuffStat.MaxHp, 14f, BuffStat.Regen, 2f);
+            Buffs(c, "berry_porridge", BuffStat.Regen, 2f);
+            Buffs(c, "marsh_chowder", BuffStat.Armour, 2f);
+            Buffs(c, "nettle_soup", BuffStat.HealOnKill, 2f);
+            Buffs(c, "truffle_risotto", BuffStat.MaxHpPct, 0.3f);
+            Buffs(c, "lantern_soup", BuffStat.MaxHp, 12f);
+            Buffs(c, "drake_hotpot", BuffStat.MaxHp, 14f);
+            // 🗡️ Attack (BBQ)
+            Buffs(c, "mushroom_skewer", BuffStat.Attack, 2f);
+            Buffs(c, "mushroom_skewer_2", BuffStat.Attack, 3f, BuffStat.DamagePct, 0.2f);
+            Buffs(c, "grilled_fish", BuffStat.CritPct, 0.15f);
+            Buffs(c, "firecracker_skewer", BuffStat.DamagePct, 0.25f);
+            Buffs(c, "truffle_caps", BuffStat.Attack, 3f);
+            Buffs(c, "glowcap_kebab", BuffStat.DamagePct, 0.3f);
+            Buffs(c, "honey_ribs", BuffStat.Attack, 3f);
+            Buffs(c, "ember_steak", BuffStat.Attack, 4f);
+            // ✨ utility (Sandwich) and Camp Bread
+            Buffs(c, "bread", BuffStat.MaxHp, 3f);   // and +1 attack in the Attack slot (Tray.RawBuffs)
+            Buffs(c, "herb_butty", BuffStat.GatherZonePct, 0.3f);
+            Buffs(c, "herb_butty_2", BuffStat.GatherZonePct, 0.4f, BuffStat.MoveSpeedPct, 0.08f);
+            Buffs(c, "bramble_jam", BuffStat.CoinPct, 0.3f);
+            Buffs(c, "marsh_butty", BuffStat.MoveSpeedPct, 0.1f);
+            Buffs(c, "trail_wrap", BuffStat.MoveSpeedPct, 0.12f);
+            Buffs(c, "glow_egg_sandwich", BuffStat.GatherZonePct, 0.4f);
+            Buffs(c, "frostberry_toast", BuffStat.CoinPct, 0.4f);
+        }
+
+        static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1) { Buffs(c, recipeId, s1, v1, s1, 0f); }
+        static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1, BuffStat s2, float v2)
+        {
+            var r = c.Recipe(recipeId);
+            if (r == null) return;
+            r.buffs = new List<StatMod> { new StatMod { stat = s1, value = v1 } };
+            if (v2 != 0f) r.buffs.Add(new StatMod { stat = s2, value = v2 });
+        }
+
         static void AddRegen(GameContent c, string recipeId, float v)
         {
             var r = c.Recipe(recipeId);
