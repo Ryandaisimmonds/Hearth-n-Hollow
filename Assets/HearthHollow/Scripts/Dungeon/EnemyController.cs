@@ -619,9 +619,9 @@ namespace HearthHollow.Dungeon
             for (int i = 0; i < (Stats.boss ? 40 : 14); i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, Stats.boss ? 10f : 7f); }
             if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
-            var room = _room; var dc = _dc; var stats = Stats;
+            var room = _room; var dc = _dc; var stats = Stats; Vector2 dropAt = room != null ? room.NearestWalkable(transform.position) : (Vector2)transform.position;
             Destroy(gameObject);
-            if (dc != null) { dc.Session.DungeonEnemyKilled(stats); dc.OnEnemyKilled(); }   // rewards, loot (refreshes the HUD); trinkets (ticket 16)
+            if (dc != null) { dc.Session.SetLootSpot(dropAt.x, dropAt.y); dc.Session.DungeonEnemyKilled(stats); dc.Session.ClearLootSpot(); dc.OnEnemyKilled(); }   // ticket 48: overflow lands where it fell   // rewards, loot (refreshes the HUD); trinkets (ticket 16)
             if (room != null) room.OnEnemyDied(this);
         }
 

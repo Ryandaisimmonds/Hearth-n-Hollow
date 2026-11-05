@@ -38,6 +38,10 @@ namespace HearthHollow.Dungeon
 
         /// Floating text at a world position (set by the HUD screen). text, extra USS class.
         public static Action<Vector3, string, string> ShowNumber;
+        /// Ticket 48: loot on the floor, as tags the HUD pins above each pickup (emoji + count). Rebuilt every frame.
+        public struct LootTag { public Vector3 at; public string text; }
+        public static readonly List<LootTag> LootTags = new List<LootTag>();
+
         /// Screen flash when the player is hurt.
         public static Action PlayerHurt;
 
@@ -51,7 +55,7 @@ namespace HearthHollow.Dungeon
             Active = false; BagOpen = false; Skill01 = 1f; Dash01 = 1f; Guarding = false;
             BuffText = null; Skill1Move = Skill2Move = DashMove = null; Skill2_01 = 1f;
             Prompt = null; Status = null; Locked = false; BossHp01 = -1f; BossName = null;
-            Map.Clear(); MapVersion++;
+            Map.Clear(); MapVersion++; LootTags.Clear();
         }
     }
 }

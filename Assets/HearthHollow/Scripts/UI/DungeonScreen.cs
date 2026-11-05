@@ -39,6 +39,14 @@ namespace HearthHollow.UI
         // bag
         readonly VisualElement _bagPanel, _bagGrid;
         readonly Label _bagTitle;
+        readonly VisualElement _holdRow, _holdSlot;   // ticket 48
+        readonly Label _holdText, _bagHint;
+        int _cursor, _dragFrom = -1;
+        VisualElement _tagLayer;   // ticket 48: loot tags pinned over the world
+        readonly List<Label> _tags = new List<Label>();
+        IVisualElementScheduledItem _tagTick;
+        float _shownAt;
+        bool _dragHeld;
 
         int _mapVersion = -1;
         bool _bagShown;
@@ -153,9 +161,20 @@ namespace HearthHollow.UI
             var box = UIKit.E("overlay__box", "dhud__bag");
             _bagTitle = UIKit.L("Bag", "overlay__title");
             box.Add(_bagTitle);
-            box.Add(UIKit.L("Paused · right-click a stack to drop it", "muted", "small"));
+            // ticket 48: what you picked up with a full bag waits here until you swap it in
+            _holdRow = UIKit.E("bag-hold");
+            _holdSlot = UIKit.E("slot", "bag-slot", "slot--filled", "bag-hold__slot");
+            _holdRow.Add(_holdSlot);
+            _holdText = UIKit.L("", "bag-hold__text");
+            _holdRow.Add(_holdText);
+            _holdSlot.RegisterCallback<PointerDownEvent>(e => { if (e.button == 0) _dragHeld = true; });
+            box.Add(_holdRow);
+            _bagHint = UIKit.L("", "muted", "small", "bag-hint");
+            box.Add(_bagHint);
             _bagGrid = UIKit.E("bag-grid", "dhud__bag-grid");
             box.Add(_bagGrid);
+            // drag a stack out of the bag (let go anywhere but a slot) to drop it
+            _bagPanel.RegisterCallback<PointerUpEvent>(e => { if (_dragFrom >= 0) { S.BagDrop(_dragFrom); _dragFrom = -1; RefreshBag(); } _dragHeld = false; });
             box.Add(UIKit.B("Back to the dungeon  (Tab)", ToggleBag, "btn--primary"));
             _bagPanel.Add(box);
             UIKit.Show(_bagPanel, false);
@@ -171,11 +190,15 @@ namespace HearthHollow.UI
             _mapVersion = -1;
             if (_tick == null) _tick = Root.schedule.Execute(Tick).Every(50);
             else _tick.Resume();
+            if (_tagTick == null) _tagTick = Root.schedule.Execute(DrawLootTags).Every(16);
+            else _tagTick.Resume();
         }
 
         protected override void OnHide()
         {
             if (_tick != null) _tick.Pause();
+            if (_tagTick != null) _tagTick.Pause();
+            foreach (var t in _tags) t.style.display = DisplayStyle.None;
             if (DungeonHud.ShowNumber == ShowNumber) DungeonHud.ShowNumber = null;
             if (DungeonHud.PlayerHurt == FlashHurt) DungeonHud.PlayerHurt = null;
             _numbers.Clear();
@@ -256,7 +279,8 @@ namespace HearthHollow.UI
                 _bagShown = DungeonHud.BagOpen;
                 UIKit.Show(_bagPanel, _bagShown);
                 _bagPanel.pickingMode = _bagShown ? PickingMode.Position : PickingMode.Ignore;
-                if (_bagShown) RefreshBag();
+                if (_bagShown) { _cursor = 0; _shownAt = Time.unscaledTime; RefreshBag(); }
+                else { S.CancelHeld(); _dragFrom = -1; _dragHeld = false; }   // ticket 48: closed without swapping: it stays on the floor
             }
         }
 
@@ -365,13 +389,55 @@ namespace HearthHollow.UI
                     slot.Add(UIKit.L(b.count.ToString(), "slot__count"));
                     bool mat = Kitchen.IsMaterial(C, b.ingredientId);
                     slot.tooltip = UIKit.IngName(C, b.ingredientId) + " ×" + b.count + (mat ? " (building material)" : "");
-                    int idx = i;
-                    slot.RegisterCallback<PointerDownEvent>(e => { if (e.button == 1) S.BagDiscard(idx); });
                 }
+                int idx = i;
+                bool full = filled;
+                slot.EnableInClassList("slot--selected", i == _cursor);
+                slot.RegisterCallback<PointerDownEvent>(e =>
+                {
+                    _cursor = idx;
+                    if (e.button == 1 && full) { S.BagDrop(idx); RefreshBag(); }   // right-click: drop it at your feet
+                    else if (e.button == 0 && S.HeldItem != null) { Swap(idx); }
+                    else if (e.button == 0 && full) { _dragFrom = idx; RefreshBag(); }
+                    e.StopPropagation();
+                });
+                slot.RegisterCallback<PointerUpEvent>(e =>
+                {
+                    if (_dragHeld && S.HeldItem != null) { _dragHeld = false; Swap(idx); }
+                    else if (_dragFrom >= 0 && _dragFrom != idx) { S.BagMove(_dragFrom, idx); _dragFrom = -1; RefreshBag(); }
+                    else _dragFrom = -1;
+                    e.StopPropagation();
+                });
                 foreach (var c in slot.Children()) c.pickingMode = PickingMode.Ignore;
                 _bagGrid.Add(slot);
             }
             _bagTitle.text = "Bag  " + used + "/" + run.bag.Count;
+            var held = S.HeldItem;
+            UIKit.Show(_holdRow, held != null);
+            if (held != null)
+            {
+                _holdSlot.Clear();
+                _holdSlot.Add(Art.Pic(ArtLibrary.GetIngredient(held.ingredientId), UIKit.IngEmoji(C, held.ingredientId), "slot__emoji"));
+                _holdSlot.Add(UIKit.L(held.count.ToString(), "slot__count"));
+                foreach (var c in _holdSlot.Children()) c.pickingMode = PickingMode.Ignore;
+                _holdText.text = "Holding " + UIKit.IngName(C, held.ingredientId) + " ×" + held.count + ". Your bag's full: swap it for something.";
+                _bagHint.text = "Click or drag it onto a slot · WASD + E to swap · Tab / Esc to leave it on the floor";
+            }
+            else _bagHint.text = "Paused · drag a stack to move it · right-click, X or drag it out to drop it on the floor";
+        }
+
+        void Swap(int slot)
+        {
+            if (!S.SwapHeld(slot)) return;
+            DungeonHud.BagOpen = false;   // swapped: back to the dungeon
+            Tick();
+        }
+
+        int BagCols()
+        {
+            float w = _bagGrid.resolvedStyle.width;
+            float sw = _bagGrid.childCount > 0 ? _bagGrid[0].resolvedStyle.width + _bagGrid[0].resolvedStyle.marginLeft + _bagGrid[0].resolvedStyle.marginRight : 0f;
+            return sw > 1f && !float.IsNaN(w) ? Mathf.Max(1, Mathf.FloorToInt((w + 0.5f) / sw)) : 5;
         }
 
         // ───────────────────────── juice ─────────────────────────
@@ -396,6 +462,24 @@ namespace HearthHollow.UI
             }).Every(16).Until(() => l.parent == null);
         }
 
+        void DrawLootTags()
+        {
+            var cam = Camera.main;
+            if (cam == null || Root.panel == null) return;
+            if (_tagLayer == null) { _tagLayer = UIKit.E("loot-tags"); _tagLayer.pickingMode = PickingMode.Ignore; Root.Insert(0, _tagLayer); }
+            var tags = DungeonHud.LootTags;
+            while (_tags.Count < tags.Count) { var l = UIKit.L("", "loot-tag"); l.pickingMode = PickingMode.Ignore; _tags.Add(l); _tagLayer.Add(l); }
+            for (int i = 0; i < _tags.Count; i++)
+            {
+                bool on = i < tags.Count;
+                _tags[i].style.display = on ? DisplayStyle.Flex : DisplayStyle.None;
+                if (!on) continue;
+                Vector2 p = RuntimePanelUtils.CameraTransformWorldToPanel(Root.panel, tags[i].at, cam);
+                _tags[i].text = tags[i].text;
+                _tags[i].style.left = p.x - 30f; _tags[i].style.top = p.y - 14f;
+            }
+        }
+
         void FlashHurt()
         {
             _hurt.AddToClassList("dungeon__hurt--on");
@@ -408,6 +492,26 @@ namespace HearthHollow.UI
                 ShowNumber(DungeonController.Instance.Player.Body + Vector2.up * 1.1f, "+" + Mathf.RoundToInt(e.amount) + " 🪙", "dnum--coins");
         }
 
-        public override bool HandleKey(KeyCode key) { return false; }   // gameplay keys are read by the dungeon
+        public override bool HandleKey(KeyCode key)
+        {
+            if (!DungeonHud.BagOpen || S.Run == null) return false;   // gameplay keys are read by the dungeon
+            int n = S.Run.bag.Count, cols = BagCols();
+            switch (key)
+            {
+                case KeyCode.A: case KeyCode.LeftArrow: _cursor = Mathf.Max(0, _cursor - 1); break;
+                case KeyCode.D: case KeyCode.RightArrow: _cursor = Mathf.Min(n - 1, _cursor + 1); break;
+                case KeyCode.W: case KeyCode.UpArrow: _cursor = Mathf.Max(0, _cursor - cols); break;
+                case KeyCode.S: case KeyCode.DownArrow: _cursor = Mathf.Min(n - 1, _cursor + cols); break;
+                case KeyCode.E: case KeyCode.Return: case KeyCode.KeypadEnter:
+                    if (!_bagShown || Time.unscaledTime - _shownAt < 0.3f) return true;   // the same press that picked it up
+                    if (S.HeldItem != null) Swap(_cursor);
+                    return true;
+                case KeyCode.X: S.BagDrop(_cursor); break;
+                case KeyCode.Escape: DungeonHud.BagOpen = false; Tick(); return true;
+                default: return false;
+            }
+            RefreshBag();
+            return true;
+        }
     }
 }

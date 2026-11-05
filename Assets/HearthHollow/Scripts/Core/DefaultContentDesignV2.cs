@@ -370,6 +370,14 @@ namespace HearthHollow.Core
             Pool(c, "c_ult2", UnlockKind.BeatBoss, "frosthollow", 3, "yard");
         }
 
+        /// Ticket 48: about 40% fewer drops, so a find is worth something and the bag isn't full by floor 2.
+        static void FewerDrops42(GameContent c)
+        {
+            var t = c.tuning;
+            t.monsterDropChance = 0.21f;
+            t.materialDropChance = 0.09f; t.materialDropPerFloor = 0.06f;
+        }
+
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1) { Buffs(c, recipeId, s1, v1, s1, 0f); }
         static void Buffs(GameContent c, string recipeId, BuffStat s1, float v1, BuffStat s2, float v2)
         {

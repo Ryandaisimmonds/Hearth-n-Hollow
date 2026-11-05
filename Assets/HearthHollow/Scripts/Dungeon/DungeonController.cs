@@ -21,6 +21,7 @@ namespace HearthHollow.Dungeon
         public GameObject FloorRoot { get { return _root; } }
         public DungeonTheme Theme { get { return _theme; } }
         public RoomInstance CurrentRoom { get { return _current; } }
+        FloorLootView _loot;   // ticket 48
         /// False while paused (menus, minigames, bag) or when there is no floor.
         public bool GameplayActive { get; private set; }
 
@@ -52,6 +53,7 @@ namespace HearthHollow.Dungeon
         {
             Instance = this;
             Session = session; _ui = ui; Settings = settings;
+            _loot = gameObject.AddComponent<FloorLootView>(); _loot.Init(this);   // ticket 48: loot on the floor
             _cam = Camera.main;
             Session.Changed += OnChanged;
             OnChanged();
@@ -524,6 +526,12 @@ namespace HearthHollow.Dungeon
         {
             if (!GameplayActive) return;
             var it = Nearest(p, 1.4f);
+            float ld = 99f; var floorItem = _loot != null ? _loot.Nearest(p.Feet, 1.2f, out ld) : null;
+            if (floorItem != null && (it == null || ld <= Vector2.Distance(p.Feet, it.transform.position)))
+            {
+                if (Session.DungeonPickUp(floorItem)) DungeonHud.BagOpen = true;   // ticket 48: the bag's full: swap something out
+                return;
+            }
             if (it != null) it.Use(this);
         }
 
@@ -596,7 +604,13 @@ namespace HearthHollow.Dungeon
 
             // prompt + status for the HUD
             var near = GameplayActive ? Nearest(Player, 1.4f) : null;
-            DungeonHud.Prompt = near != null ? near.Prompt(this) : null;
+            float lootD = 99f; var lootNear = GameplayActive && _loot != null ? _loot.Nearest(Player.Feet, 1.2f, out lootD) : null;
+            if (lootNear != null && (near == null || lootD <= Vector2.Distance(Player.Feet, near.transform.position)))
+            {
+                var ing = Session.Content.Ingredient(lootNear.ingredientId);
+                DungeonHud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
+            }
+            else DungeonHud.Prompt = near != null ? near.Prompt(this) : null;
             DungeonHud.Locked = _current != null && _current.EventRunning;
             DungeonHud.Status = StatusText();
             if (_current != null && _current.Boss != null && !_current.Boss.Dead)

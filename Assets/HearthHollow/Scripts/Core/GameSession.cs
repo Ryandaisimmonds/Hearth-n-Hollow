@@ -492,7 +492,8 @@ namespace HearthHollow.Core
             var ing = Content.Ingredient(id);
             string name = ing != null ? ing.emoji + " " + ing.name : id;
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));
-            if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
+            if (left > 0 && Run.dungeon && InDungeon) { DropOnFloor(id, left); Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " dropped on the floor (E to swap)")); }   // ticket 48
+            else if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
         }
 
         public void ResolveGather(float marker01)
@@ -541,6 +542,7 @@ namespace HearthHollow.Core
         public void BagDiscard(int slot)
         {
             if (Run == null || !InRun || slot < 0 || slot >= Run.bag.Count) return;
+            if (InDungeon) { BagDrop(slot); return; }   // ticket 48: in the dungeon it lands on the floor, so nothing's lost by accident
             Bag.Discard(Run, slot);
             Touch(false);
         }

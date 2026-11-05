@@ -298,6 +298,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.firstRidge || Run.mustGoHome) return false;
             Run.floor++;
+            ForgetFloorLoot();   // ticket 48: loot left on the floor above stays there
             ReachedFloor();   // arc steps can unlock moves (ticket 10)
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : DungeonPortalFloor ? " — ✨ a way-home portal shimmers somewhere on this floor" : " — no way home here"));
             Touch(false);

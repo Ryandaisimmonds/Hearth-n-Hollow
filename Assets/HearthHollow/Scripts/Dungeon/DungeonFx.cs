@@ -47,6 +47,17 @@ namespace HearthHollow.Dungeon
             }, new Vector2(0.5f, 0.5f));
         }
 
+        /// Ticket 48: a little burlap pouch for loot lying on the floor.
+        public static Sprite Pouch
+        {
+            get
+            {
+                string[] rows = { "....oooo....", "...obbbbo...", "....oaao....", "...oaaaao...", "..oaaaaaao..", ".oaacaaaaao.", ".oaaacaaaao.", ".oaaaaaaaao.", ".oaaaaaaaao.", "..oaaaaaao..", "...oooooo...", "............" };
+                var ink = new Color32(40, 26, 14, 255); var a = new Color32(176, 124, 70, 255); var b = new Color32(226, 186, 92, 255); var c = new Color32(214, 168, 106, 255);
+                return Make("pouch", 12, 12, (x, y) => { char ch = rows[11 - y][x]; return ch == 'o' ? (Color)ink : ch == 'a' ? (Color)a : ch == 'b' ? (Color)b : ch == 'c' ? (Color)c : Color.clear; }, new Vector2(0.5f, 0.1f));
+            }
+        }
+
         public static Sprite Pixel { get { return Make("pixel", 1, 1, (x, y) => Color.white, new Vector2(0.5f, 0.5f)); } }
         /// 1×1 white with a left pivot — for bars that fill from the left.
         public static Sprite BarPixel { get { return Make("barpixel", 1, 1, (x, y) => Color.white, new Vector2(0f, 0.5f)); } }

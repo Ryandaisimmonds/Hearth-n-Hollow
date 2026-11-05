@@ -1761,3 +1761,11 @@ Label { white-space: normal; color: var(--hh-text); }
 .cook-card--prime .cook-card__title { color: var(--hh-gold); }
 .cook-card__buffs { font-size: 20px; margin: 8px 0 18px 0; color: var(--hh-cream); }
 .cook-card__done { min-width: 260px; }
+
+/* ticket 48: the bag's holding box (an item picked up with a full bag) */
+.bag-hold { flex-direction: row; align-items: center; margin: 8px 0 2px 0; padding: 6px 10px; border-radius: 10px; border-width: 2px; border-color: var(--hh-gold); background-color: rgba(90, 64, 24, 0.6); }
+.bag-hold__slot { margin-right: 10px; }
+.bag-hold__text { white-space: normal; max-width: 300px; color: var(--hh-cream); -unity-font-style: bold; }
+.bag-hint { margin-top: 4px; white-space: normal; max-width: 420px; }
+.loot-tags { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.loot-tag { position: absolute; width: 60px; -unity-text-align: middle-center; font-size: 15px; color: rgb(255, 240, 200); -unity-font-style: bold; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9); }

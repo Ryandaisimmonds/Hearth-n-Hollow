@@ -37,7 +37,7 @@ MonoBehaviour:
       killXpBase: 8
       killXpPerDiff: 2
       eliteRewardMult: 2
-      monsterDropChance: 0.35
+      monsterDropChance: 0.21
       strikeHit: 0.6
       strikeHitAfterMiss: 0.8
       guardHeal: 5
@@ -139,8 +139,8 @@ MonoBehaviour:
       guardDropChance: 0.25
       deathKeepFraction: 0.25
       stationJackpotPerLevel: 0.03
-      materialDropChance: 0.15
-      materialDropPerFloor: 0.1
+      materialDropChance: 0.09
+      materialDropPerFloor: 0.06
       eliteMaterials: 1
       bossMaterials: 3
       fishIngredient: fish
@@ -5104,7 +5104,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 41
+    contentVersion: 42
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern
