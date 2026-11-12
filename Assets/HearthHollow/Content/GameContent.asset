@@ -113,6 +113,14 @@ MonoBehaviour:
       gradeMultUncommon: 1.5
       gradeMultRare: 2
       breadAttack: 1
+      baseBbqAttack: 2
+      baseBbqHp: 3
+      basePotAttack: 1
+      basePotHp: 6
+      baseSandwichAttack: 1
+      baseSandwichHp: 4
+      baseTier2Mult: 1.5
+      baseAlwaysMult: 0.5
       qualityFineChance: 0.2
       qualityPrimeChance: 0.05
       qualityNudgeFine: 0.15
@@ -151,6 +159,7 @@ MonoBehaviour:
       firstDiveAtkPerRoom: 0.85
       firstDiveSpeedPerRoom: 0.12
       firstDiveSpeedMax: 2
+      buriedBonusChance: 0.25
       fallRooms: 7
       fallFogBitePct: 0.12
       fishCatchCount: 2
@@ -579,8 +588,8 @@ MonoBehaviour:
       - ingredientId: mushroom
         count: 1
       buffs:
-      - stat: 1
-        value: 8
+      - stat: 12
+        value: 0.2
       tags:
       - stone
       - veg
@@ -603,8 +612,8 @@ MonoBehaviour:
       - ingredientId: starmoss
         count: 1
       buffs:
-      - stat: 1
-        value: 14
+      - stat: 12
+        value: 0.25
       - stat: 10
         value: 2
       tags:
@@ -693,8 +702,8 @@ MonoBehaviour:
       - ingredientId: wheat
         count: 1
       buffs:
-      - stat: 12
-        value: 0.3
+      - stat: 3
+        value: 3
       tags:
       - stone
       - veg
@@ -717,8 +726,8 @@ MonoBehaviour:
       - ingredientId: salt
         count: 1
       buffs:
-      - stat: 1
-        value: 12
+      - stat: 12
+        value: 0.3
       tags:
       - stone
       description: Glowing egg ribbons in a ginger broth. Fortifies body and spirit.
@@ -740,8 +749,8 @@ MonoBehaviour:
       - ingredientId: herbs
         count: 1
       buffs:
-      - stat: 1
-        value: 14
+      - stat: 9
+        value: 3
       tags:
       - stone
       - fire
@@ -784,8 +793,8 @@ MonoBehaviour:
       - ingredientId: herbs
         count: 1
       buffs:
-      - stat: 11
-        value: 2
+      - stat: 0
+        value: 0.2
       tags:
       - smoky
       - veg
@@ -808,10 +817,10 @@ MonoBehaviour:
       - ingredientId: wild_honeycomb
         count: 1
       buffs:
-      - stat: 11
-        value: 3
       - stat: 0
-        value: 0.2
+        value: 0.25
+      - stat: 4
+        value: 0.08
       tags:
       - smoky
       - veg
@@ -832,8 +841,8 @@ MonoBehaviour:
       - ingredientId: mushroom
         count: 2
       buffs:
-      - stat: 11
-        value: 3
+      - stat: 4
+        value: 0.12
       tags:
       - smoky
       - veg
@@ -879,7 +888,7 @@ MonoBehaviour:
         count: 1
       buffs:
       - stat: 0
-        value: 0.25
+        value: 0.3
       tags:
       - fire
       - smoky
@@ -900,8 +909,8 @@ MonoBehaviour:
       - ingredientId: fire_honey
         count: 2
       buffs:
-      - stat: 11
-        value: 3
+      - stat: 4
+        value: 0.15
       tags:
       - fire
       - sweet
@@ -924,8 +933,8 @@ MonoBehaviour:
       - ingredientId: chili
         count: 1
       buffs:
-      - stat: 11
-        value: 4
+      - stat: 0
+        value: 0.4
       tags:
       - fire
       description: Seared over drake-coals. Pure, glowing strength.
@@ -940,9 +949,7 @@ MonoBehaviour:
       emoji: "\U0001F35E"
       station: 2
       ingredients: []
-      buffs:
-      - stat: 1
-        value: 3
+      buffs: []
       tags:
       - plain
       description: "Free \u2014 there's always a loaf by the fire. Simple, light, better than nothing. Always Plain."
@@ -5105,7 +5112,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 43
+    contentVersion: 44
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

@@ -12,12 +12,12 @@ namespace HearthHollow.Tests
 
         RecipeData HpMeal()
         {
-            var r = _c.recipes.Find(x => !x.always && x.buffs != null && x.buffs.Exists(b => b.stat == BuffStat.MaxHp));
+            var r = _c.Recipe("berry_porridge");   // ticket 52: (no +% HP special) every meal's HP comes from its station base
             Assert.IsNotNull(r, "some meal gives max HP");
             return r;
         }
 
-        float Hp(RecipeData r) { float v = 0f; foreach (var b in r.buffs) if (b.stat == BuffStat.MaxHp) v += b.value; return v; }
+        float Hp(RecipeData r) { float a, h; Tray.Base(_c, r, out a, out h); return h; }
 
         float MealHp(ClassId id, RecipeData r)
         {

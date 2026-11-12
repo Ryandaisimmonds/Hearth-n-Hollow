@@ -92,7 +92,12 @@ namespace HearthHollow.Tests
             Assert.AreEqual(2, t2.tier);
             Assert.AreEqual("herb_stew", t2.upgradeOf);
             Assert.IsTrue(t2.ingredients.Exists(ic => _c.Ingredient(ic.ingredientId) != null && _c.Ingredient(ic.ingredientId).deep));
-            Assert.Greater(t2.buffs[0].value, _c.Recipe("herb_stew").buffs[0].value * 1.5f);
+            var cls = _c.Class(ClassId.Cook);   // ticket 52: a tier-2 dish gives more of everything
+            float hp2 = 0f, hp1 = 0f;
+            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = "herb_stew_2", potency = 1f })) if (b.stat == BuffStat.MaxHp) hp2 += b.value;
+            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = "herb_stew", potency = 1f })) if (b.stat == BuffStat.MaxHp) hp1 += b.value;
+            Assert.Greater(hp2, hp1);
+            Assert.Greater(t2.buffs.Count, _c.Recipe("herb_stew").buffs.Count, "and a second special");
         }
 
         [Test]

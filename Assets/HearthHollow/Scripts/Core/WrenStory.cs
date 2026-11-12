@@ -37,6 +37,23 @@ namespace HearthHollow.Core
             }
         }
 
+        /// Why you can't set out yet because of Old Wren (null = go ahead). Back from the fall she has things to tell
+        /// you, then a meal to cook and show her, before you go anywhere. Only in the slice; not on the first dive.
+        public string WrenSetOutBlock
+        {
+            get
+            {
+                if (!Slice.On) return null;
+                switch (Wren)
+                {
+                    case WrenStep.Meet: case WrenStep.AfterDive: return "Talk to Old Wren first";
+                    case WrenStep.CookMeal: return "Cook a meal and show Old Wren first";
+                    case WrenStep.ShowMeal: return "Show Old Wren your meal first";
+                }
+                return WrenTalkDue ? "Old Wren wants a word first" : null;
+            }
+        }
+
         /// Ticket 42: the Route board's meal tray stays hidden until Wren has told you about packing meals.
         public bool TrayShown { get { return !Slice.On || Wren >= WrenStep.FirstBoss; } }
 

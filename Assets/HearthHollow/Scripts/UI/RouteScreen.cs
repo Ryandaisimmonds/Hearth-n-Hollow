@@ -424,29 +424,26 @@ namespace HearthHollow.UI
             var mealBox = UIKit.E("expedition__section");
             mealBox.Add(UIKit.L("🧺 Tray  " + p.tray.Count + "/" + C.tuning.traySize + " — eaten as you set out", "subhead"));
             var packed = Cooking.Packed(C, p);
-            // ticket 44: three typed slots, 🗡️ Attack · ❤️ Health · ✨ Free, filled from what's packed (Tray.Assign)
-            foreach (var slotType in Tray.Slots)
+            // ticket 52: any three meals (no typed slots); each shows its station icon and its special first
+            for (int i = 0; i < C.tuning.traySize; i++)
             {
                 var row = UIKit.E("expedition__meal", "expedition__tray-slot");
-                int i = packed.FindIndex(e => e.slot == slotType);
-                var tagL = UIKit.L(Tray.SlotEmoji(slotType), "expedition__slot-type");
-                tagL.tooltip = slotType == TraySlot.Free ? "Free: any meal" : Tray.SlotName(slotType) + ": a meal that gives " + (slotType == TraySlot.Attack ? "attack or crit" : "HP, armour or healing") + " (Camp Bread fits too)";
-                row.Add(tagL);
-                if (i >= 0 && i < p.tray.Count)
+                if (i < packed.Count)
                 {
                     var pm = packed[i];
                     var rec = C.Recipe(pm.recipeId);
                     UIKit.ElementTint(row, Cooking.SlotElement(C, pm.accelId));
+                    row.Add(UIKit.L(Tray.StationEmoji(rec), "expedition__slot-type"));
                     row.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(pm.recipeId), rec != null ? rec.emoji : "🍽️", "expedition__meal-pic"), "item-frame--sm"));
                     string tag = UIKit.SlotLine(C, pm.accelId).Length > 0 ? "  " + UIKit.SlotLine(C, pm.accelId) : "";
                     row.Add(UIKit.L(Cooking.GradeGem(pm.grade) + " " + (rec != null ? rec.name : pm.recipeId) + tag, "expedition__meal-name"));
-                    if (rec != null) row.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, pm)), "expedition__meal-buffs"));
+                    if (rec != null) row.Add(UIKit.L(UIKit.MealSummary(Cooking.MealBuffs(C, cls, pm)), "expedition__meal-buffs"));
                     int slot = i;
                     var x = UIKit.B("×", () => S.DiscardTrayMeal(slot), "slot__x", "expedition__unpack");
                     x.tooltip = "Take it off the tray";
                     row.Add(x);
                 }
-                else row.Add(UIKit.L(Tray.SlotName(slotType) + " · empty — " + (slotType == TraySlot.Free ? "any meal" : slotType == TraySlot.Attack ? "an attack meal" : "a health meal"), "muted", "small", "expedition__meal-name"));
+                else row.Add(UIKit.L((i + 1) + " · empty — pick any meal below", "muted", "small", "expedition__meal-name"));
                 mealBox.Add(row);
             }
             // what the tray does to you: base → with meals
@@ -466,7 +463,7 @@ namespace HearthHollow.UI
                 {
                     var arr = ar;
                     var chip = UIKit.B(ar.emoji + " " + ar.name + " ∞", () => S.PackAlwaysMeal(arr.id), "filter-chip", "expedition__pick-chip");
-                    chip.tooltip = "+" + UIKit.Num(C.tuning.breadAttack) + " attack in the 🗡️ slot, otherwise " + UIKit.BuffSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f }));
+                    chip.tooltip = UIKit.MealSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f }));
                     string whyNot = Tray.CanAdd(C, p.tray, ar.id);
                     if (whyNot != null) { chip.SetEnabled(false); chip.tooltip = whyNot; }
                     pick.Add(chip);
@@ -478,10 +475,10 @@ namespace HearthHollow.UI
                     string tag = UIKit.SlotLine(C, m.accelId);
                     var chip = UIKit.B(Cooking.GradeGem(m.grade) + " " + (rec != null ? rec.emoji + " " + rec.name : m.recipeId) + (tag.Length > 0 ? "  " + tag : ""), () => S.PackMeal(idx), "filter-chip", "expedition__pick-chip");
                     UIKit.ElementTint(chip, Cooking.SlotElement(C, m.accelId));
-                    chip.tooltip = UIKit.BuffSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m)));
-                    string whyNot = Tray.CanAdd(C, p.tray, m.recipeId);   // ticket 44: keep room for the 🗡️ and ❤️ slots
+                    chip.tooltip = UIKit.MealSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m)));
+                    string whyNot = Tray.CanAdd(C, p.tray, m.recipeId);
                     if (whyNot != null) { chip.SetEnabled(false); chip.tooltip = whyNot; }
-                    else chip.text = (Tray.IsAttackMeal(rec) ? "🗡️ " : Tray.IsHealthMeal(rec) ? "❤️ " : "✨ ") + chip.text;
+                    else chip.text = Tray.StationEmoji(rec) + " " + chip.text;   // ticket 52: the station icon
                     pick.Add(chip);
                 }
                 if (p.mealPantry.Count == 0) pick.Add(UIKit.L("No cooked meals. Cook at the kitchen first (Camp Bread is always free).", "muted", "small"));
@@ -493,14 +490,15 @@ namespace HearthHollow.UI
             if (Slice.On) _expedition.Add(cookBox);   // ticket 40: the tray comes first
 
             bool can = r != null && lockWhy == null && classWhy == null;
-            string trayWhy = S.TrayBlock;   // ticket 40: a full tray before you head out (not on the first dive)
+            string trayWhy = S.WrenSetOutBlock ?? S.TrayBlock;   // Wren first, then a full tray (ticket 40) before you head out
             _go.SetEnabled(can && trayWhy == null);
-            _go.text = r == null ? "Pick a route" : !can ? "🔒 " + r.name : trayWhy != null ? "🧺 " + trayWhy : "Enter " + r.name + " ➜";
+            _go.text = r == null ? "Pick a route" : !can ? "🔒 " + r.name : trayWhy != null ? (S.WrenSetOutBlock != null ? "👵 " : "🧺 ") + trayWhy : "Enter " + r.name + " ➜";
         }
 
         void Go()
         {
-            if (S.TrayBlock != null) { Ui.Toast("🧺 " + S.TrayBlock); return; }
+            string block = S.WrenSetOutBlock ?? S.TrayBlock;
+            if (block != null) { Ui.Toast((S.WrenSetOutBlock != null ? "👵 " : "🧺 ") + block); return; }
             if (_selected != null && Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) == null) S.StartRun(_selected, _startFloor);
         }
 

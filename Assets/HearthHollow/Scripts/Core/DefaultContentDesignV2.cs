@@ -370,6 +370,36 @@ namespace HearthHollow.Core
             Pool(c, "c_ult2", UnlockKind.BeatBoss, "frosthollow", 3, "yard");
         }
 
+        /// Ticket 52: every meal gives a base of 🗡️ and ❤️ (Tray.Base, by station and tier); its buffs are now just the
+        /// special on top. Pot = healing / defence, BBQ = fighting, Sandwich = utility. One special at tier 1, two at tier 2.
+        static void MealSpecials44(GameContent c)
+        {
+            var t = c.tuning;
+            t.baseBbqAttack = 2f; t.baseBbqHp = 3f; t.basePotAttack = 1f; t.basePotHp = 6f; t.baseSandwichAttack = 1f; t.baseSandwichHp = 4f;
+            t.baseTier2Mult = 1.5f; t.baseAlwaysMult = 0.5f;
+            // 🍲 Pot: healing and defence
+            Buffs(c, "herb_stew", BuffStat.MaxHpPct, 0.2f);
+            Buffs(c, "herb_stew_2", BuffStat.MaxHpPct, 0.25f, BuffStat.Regen, 2f);
+            Buffs(c, "berry_porridge", BuffStat.Regen, 2f);
+            Buffs(c, "marsh_chowder", BuffStat.Armour, 2f);
+            Buffs(c, "nettle_soup", BuffStat.HealOnKill, 2f);
+            Buffs(c, "truffle_risotto", BuffStat.Armour, 3f);
+            Buffs(c, "lantern_soup", BuffStat.MaxHpPct, 0.3f);
+            Buffs(c, "drake_hotpot", BuffStat.HealOnKill, 3f);
+            // 🔥 BBQ: fighting
+            Buffs(c, "mushroom_skewer", BuffStat.DamagePct, 0.2f);
+            Buffs(c, "mushroom_skewer_2", BuffStat.DamagePct, 0.25f, BuffStat.CritPct, 0.08f);
+            Buffs(c, "grilled_fish", BuffStat.CritPct, 0.15f);
+            Buffs(c, "firecracker_skewer", BuffStat.DamagePct, 0.3f);
+            Buffs(c, "truffle_caps", BuffStat.CritPct, 0.12f);
+            Buffs(c, "glowcap_kebab", BuffStat.DamagePct, 0.3f);
+            Buffs(c, "honey_ribs", BuffStat.CritPct, 0.15f);
+            Buffs(c, "ember_steak", BuffStat.DamagePct, 0.4f);
+            // 🍞 Camp Bread: half a sandwich's base, no special
+            var bread = c.Recipe("bread"); if (bread != null) bread.buffs = new List<StatMod>();
+            // 🥪 Sandwiches keep their utility specials (ticket 44)
+        }
+
         /// Ticket 48: about 40% fewer drops, so a find is worth something and the bag isn't full by floor 2.
         static void FewerDrops42(GameContent c)
         {

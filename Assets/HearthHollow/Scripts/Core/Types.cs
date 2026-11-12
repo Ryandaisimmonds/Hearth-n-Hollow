@@ -396,7 +396,10 @@ namespace HearthHollow.Core
         public float merchantTrinketChance = 0.4f;            // chance the travelling merchant has a trinket for sale
         // ── cooking v9: grades (ingredients Plain / Fine / Prime, meals Common / Uncommon / Rare), the rarity roll, accelerators, the meal pantry ──
         public float gradeMultUncommon = 1.5f, gradeMultRare = 2f;   // ticket 44: a meal's stats × its quality (Fine / Prime): a Prime meal is twice a Plain one
-        public float breadAttack = 1f;                               // ticket 44: Camp Bread in the 🗡️ Attack slot gives this much attack
+        public float breadAttack = 1f;                               // (ticket 44's typed slots; unused since ticket 52)
+        // ticket 52: every meal's base (tier 1, Plain): attack and HP, tilted by station; × tier 2, × Camp Bread's half
+        public float baseBbqAttack = 2f, baseBbqHp = 3f, basePotAttack = 1f, basePotHp = 6f, baseSandwichAttack = 1f, baseSandwichHp = 4f;
+        public float baseTier2Mult = 1.5f, baseAlwaysMult = 0.5f;
         public float qualityFineChance = 0.2f, qualityPrimeChance = 0.05f;   // Design v2: a cook's chance of a Fine / Prime meal (plus the station level's bonus)
         public float qualityNudgeFine = 0.15f, qualityNudgePrime = 0.1f;   // the cooking minigame's best result adds these (ticket 11)
         // Cooking minigame (ticket 11): the heat marker sweeps once across the bar in cookGameSeconds; stop it in the

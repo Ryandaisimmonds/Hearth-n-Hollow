@@ -144,6 +144,23 @@ namespace HearthHollow.UI
             return string.Join(" · ", parts.ToArray());
         }
 
+        /// Ticket 52: a meal's line: its special first, in bold, then the base ("<b>+20% attack</b> · 🗡️ +2 ❤️ +3").
+        public static string MealSummary(List<StatMod> buffs)
+        {
+            if (buffs == null || buffs.Count == 0) return "no buffs";
+            var special = new List<string>();
+            float atk = 0f, hp = 0f;
+            foreach (var b in buffs)
+            {
+                if (b.stat == BuffStat.Attack) atk += b.value;
+                else if (b.stat == BuffStat.MaxHp) hp += b.value;
+                else special.Add(BuffText(b));
+            }
+            string baseLine = (atk > 0f ? "🗡️ +" + Num(Mathf.Round(atk * 10f) / 10f) : "") + (atk > 0f && hp > 0f ? "  " : "") + (hp > 0f ? "❤️ +" + Num(Mathf.Round(hp)) : "");
+            if (special.Count == 0) return baseLine;
+            return "<b>" + string.Join(" · ", special.ToArray()) + "</b>" + (baseLine.Length > 0 ? "  ·  " + baseLine : "");
+        }
+
         public static string BuffSummary(List<StatMod> buffs, float mult = 1f)
         {
             if (buffs == null || buffs.Count == 0) return "no buffs";

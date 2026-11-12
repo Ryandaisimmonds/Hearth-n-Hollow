@@ -134,7 +134,7 @@ namespace HearthHollow.Town
 
         void Use(TownSpot s)
         {
-            if (s.action == TownAction.Gate && Slice.On && Session.Wren == WrenStep.Meet) { _ui.Toast("👵 Old Wren's waving you over. Talk to her first."); return; }   // ticket 33
+            if (s.action == TownAction.Gate && Session.WrenSetOutBlock != null) { _ui.Toast("👵 " + Session.WrenSetOutBlock + "."); return; }   // ticket 33: no adventures until Wren's had her say
             string area = AreaOf(s.action);
             if (area != null && !Session.AreaOpen(area))   // opening arc (ticket 18)
             {

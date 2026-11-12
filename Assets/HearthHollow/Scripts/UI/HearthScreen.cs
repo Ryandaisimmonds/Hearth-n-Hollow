@@ -38,8 +38,9 @@ namespace HearthHollow.UI
         readonly Label _mealShelfTitle;
         readonly VisualElement _kitchen;         // kitchen upgrades: station levels + pantry shelves (contentVersion 13)
         // cooking filters (kept while the game runs)
-        static readonly BuffStat[] FilterStats = { BuffStat.MaxHp, BuffStat.Attack, BuffStat.DamagePct, BuffStat.Armour, BuffStat.CritPct, BuffStat.GatherZonePct, BuffStat.CoinPct, BuffStat.MoveSpeedPct, BuffStat.Regen };
-        static readonly string[] FilterStatNames = { "HP", "Attack", "Attack %", "Armour", "Crit", "Gather", "Coins", "Speed", "Healing" };   // one per FilterStats entry
+        // ticket 52: filter by special (every meal gives some 🗡️ and ❤️)
+        static readonly BuffStat[] FilterStats = { BuffStat.MaxHpPct, BuffStat.Regen, BuffStat.Armour, BuffStat.HealOnKill, BuffStat.DamagePct, BuffStat.CritPct, BuffStat.GatherZonePct, BuffStat.CoinPct, BuffStat.MoveSpeedPct };
+        static readonly string[] FilterStatNames = { "HP %", "Healing", "Armour", "Kill heal", "Attack %", "Crit", "Gather", "Coins", "Speed" };   // one per FilterStats entry
         int _fStation = -1;          // -1 = all stations, else index into Stations
         int _fStat = -1;             // -1 = any bonus, else index into FilterStats
         bool _fCanCook;
@@ -336,7 +337,7 @@ namespace HearthHollow.UI
                     if (r != null && pm != null)
                     {
                         var em = Cooking.AsEaten(pm); em.potency = pot;
-                        txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, C.Class(p.selectedClass), em)) + (pot < 0.99f ? " (×" + UIKit.Num(pot) + " repeat)" : ""), "slot__sub"));
+                        txt.Add(UIKit.L(UIKit.MealSummary(Cooking.MealBuffs(C, C.Class(p.selectedClass), em)) + (pot < 0.99f ? " (×" + UIKit.Num(pot) + " repeat)" : ""), "slot__sub"));
                     }
                     slot.Add(txt);
                     int idx = i;
@@ -505,7 +506,7 @@ namespace HearthHollow.UI
                 card.Add(Art.Framed(Art.Pic(ArtLibrary.GetRecipe(ar.id), ar.emoji, "meal-card__emoji"), "meal-card__well"));
                 var at = UIKit.E("meal-card__text");
                 at.Add(UIKit.L(ar.name + "  ∞", "meal-card__name"));
-                at.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f })), "meal-card__buffs"));
+                at.Add(UIKit.L(UIKit.MealSummary(Cooking.MealBuffs(C, cls, new EatenMeal { recipeId = ar.id, potency = 1f })), "meal-card__buffs"));
                 at.Add(UIKit.L("Always available · free", "meal-card__accel"));
                 card.Add(at);
                 card.tooltip = ar.name + " — " + ar.description + "\nAlways available: never runs out and doesn't use a pantry slot. Click or drag onto the tray to pack it.";
@@ -527,7 +528,7 @@ namespace HearthHollow.UI
                 txt.Add(nameRow);
                 string slotLine = acc != null ? UIKit.SlotLine(C, m.accelId) : "";
                 string accTxt = acc != null ? acc.emoji + " " + acc.name + (slotLine.Length > 0 ? " · " + slotLine : "") : "";
-                txt.Add(UIKit.L(UIKit.BuffSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m))), "meal-card__buffs"));
+                txt.Add(UIKit.L(UIKit.MealSummary(Cooking.MealBuffs(C, cls, Cooking.AsEaten(m))), "meal-card__buffs"));
                 if (acc != null) txt.Add(UIKit.L("+ " + accTxt, "meal-card__accel"));
                 card.Add(txt);
                 int idx = i;
@@ -659,7 +660,7 @@ namespace HearthHollow.UI
             var nameRow = UIKit.E("recipe-row__name-row");
             nameRow.Add(UIKit.L(r.name + (r.tier >= 2 ? "  ★2" : "") + (r.counters != Hazard.None ? "  " + Routes.HazardEmoji(r.counters) : ""), "recipe-row__name"));
             mid.Add(nameRow);
-            mid.Add(UIKit.L(UIKit.BuffSummary(ClassBuffs(r)), "recipe-row__buffs"));
+            mid.Add(UIKit.L(UIKit.MealSummary(ClassBuffs(r)), "recipe-row__buffs"));
             row.Add(mid);
 
             var costs = UIKit.E("recipe-row__costs");

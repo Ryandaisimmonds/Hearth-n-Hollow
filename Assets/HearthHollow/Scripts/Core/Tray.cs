@@ -1,8 +1,9 @@
-// Hearth & Hollow — ticket 44: the tray's typed slots. Pure C#.
-// A tray holds traySize (3) meals: one 🗡️ Attack meal, one ❤️ Health meal and one ✨ Free meal (anything).
-// The slots aren't positions: Profile.packed stays a plain list, and Assign works out which meal fills which slot.
-// A meal's kind comes from its stats (attack / crit = Attack; HP, armour, healing = Health; a two-stat meal can be
-// either). Camp Bread (an "always" meal) fits any slot: +1 attack in the Attack slot, its own small buffs elsewhere.
+// Hearth & Hollow — the tray. Pure C#.
+// Ticket 52 (replaces ticket 44's typed slots): any three meals. Every meal gives a base of both 🗡️ attack and ❤️ HP,
+// tilted by its station (BBQ a little more attack, Pot a little more HP, Sandwich even), scaled by its tier; quality
+// multiplies everything. On top sits the recipe's special (its buffs): Pot = healing / defence, BBQ = fighting,
+// Sandwich = utility. Camp Bread (an "always" meal) gives half a Sandwich's base and no special.
+// (The TraySlot enum, Assign / Missing / CanAdd stay so old callers and saves still work: every slot is Free now.)
 using System.Collections.Generic;
 
 namespace HearthHollow.Core
@@ -22,13 +23,12 @@ namespace HearthHollow.Core
         public static bool IsAttackMeal(RecipeData r) { return r != null && r.buffs != null && r.buffs.Exists(b => IsAttackStat(b.stat)); }
         public static bool IsHealthMeal(RecipeData r) { return r != null && r.buffs != null && r.buffs.Exists(b => IsHealthStat(b.stat)); }
 
-        /// Can this recipe sit in this slot?
-        public static bool Fits(RecipeData r, TraySlot s)
-        {
-            if (r == null) return false;
-            if (s == TraySlot.Free || r.always) return true;
-            return s == TraySlot.Attack ? IsAttackMeal(r) : IsHealthMeal(r);
-        }
+        /// Can this recipe sit in this slot? (Ticket 52: any meal goes anywhere.)
+        public static bool Fits(RecipeData r, TraySlot s) { return r != null; }
+
+        /// Ticket 52: the station's icon: what family of special the dish has.
+        public static string StationEmoji(Station st) { return st == Station.Pot ? "🍲" : st == Station.BBQ ? "🔥" : "🥪"; }
+        public static string StationEmoji(RecipeData r) { return r == null ? "🍽️" : r.always ? "🍞" : StationEmoji(r.station); }
 
         public static string SlotEmoji(TraySlot s) { return s == TraySlot.Attack ? "🗡️" : s == TraySlot.Health ? "❤️" : "✨"; }
         public static string SlotName(TraySlot s) { return s == TraySlot.Attack ? "Attack" : s == TraySlot.Health ? "Health" : "Free"; }
@@ -40,6 +40,8 @@ namespace HearthHollow.Core
             int n = recipeIds != null ? recipeIds.Count : 0;
             var best = new TraySlot[n];
             for (int i = 0; i < n; i++) best[i] = TraySlot.Free;
+            return best;   // ticket 52: no typed slots
+#pragma warning disable 0162
             if (n == 0) return best;
             var recs = new RecipeData[n];
             for (int i = 0; i < n; i++) recs[i] = c.Recipe(recipeIds[i]);
@@ -47,6 +49,7 @@ namespace HearthHollow.Core
             var cur = new int[n];
             Search(recs, cur, 0, new bool[Slots.Length], ref bestScore, best);
             return best;
+#pragma warning restore 0162
         }
 
         static void Search(RecipeData[] recs, int[] cur, int i, bool[] used, ref int bestScore, TraySlot[] best)
@@ -76,13 +79,7 @@ namespace HearthHollow.Core
         }
 
         /// The typed slots (Attack / Health) nothing fills yet.
-        public static List<TraySlot> Missing(GameContent c, IList<string> recipeIds)
-        {
-            var got = Assign(c, recipeIds);
-            var missing = new List<TraySlot> { TraySlot.Attack, TraySlot.Health };
-            foreach (var s in got) missing.Remove(s);
-            return missing;
-        }
+        public static List<TraySlot> Missing(GameContent c, IList<string> recipeIds) { return new List<TraySlot>(); }   // ticket 52: nothing is required
 
         /// Would the tray still be completable after adding this recipe? Null if yes, else why not.
         public static string CanAdd(GameContent c, IList<string> recipeIds, string recipeId)
@@ -107,13 +104,32 @@ namespace HearthHollow.Core
             return "an 🗡️ Attack and a ❤️ Health meal";
         }
 
-        /// The buffs a recipe gives in a slot, before quality, helpings and class bonuses. Camp Bread in the Attack slot
-        /// gives +1 attack instead of its own buffs.
+        /// Ticket 52: a meal's base (before quality, helpings and class): both attack and HP, tilted by station, × tier.
+        public static void Base(GameContent c, RecipeData r, out float attack, out float hp)
+        {
+            var t = c.tuning;
+            attack = 0f; hp = 0f;
+            if (r == null) return;
+            if (r.station == Station.BBQ) { attack = t.baseBbqAttack; hp = t.baseBbqHp; }
+            else if (r.station == Station.Pot) { attack = t.basePotAttack; hp = t.basePotHp; }
+            else { attack = t.baseSandwichAttack; hp = t.baseSandwichHp; }
+            float k = r.always ? t.baseAlwaysMult : r.tier >= 2 ? t.baseTier2Mult : 1f;
+            attack *= k; hp *= k;
+        }
+
+        /// What a recipe gives before quality, helpings and class bonuses: the base 🗡️ + ❤️, then its special.
         public static List<StatMod> RawBuffs(GameContent c, RecipeData r, TraySlot slot)
         {
-            if (r == null) return new List<StatMod>();
-            if (r.always && slot == TraySlot.Attack) return new List<StatMod> { new StatMod { stat = BuffStat.Attack, value = c.tuning.breadAttack } };
-            return r.buffs ?? new List<StatMod>();
+            var list = new List<StatMod>();
+            if (r == null) return list;
+            float a, h; Base(c, r, out a, out h);
+            if (a > 0f) list.Add(new StatMod { stat = BuffStat.Attack, value = a });
+            if (h > 0f) list.Add(new StatMod { stat = BuffStat.MaxHp, value = h });
+            if (r.buffs != null) list.AddRange(r.buffs);
+            return list;
         }
+
+        /// The special part only (everything but the base).
+        public static bool IsBaseStat(BuffStat s) { return s == BuffStat.Attack || s == BuffStat.MaxHp; }
     }
 }

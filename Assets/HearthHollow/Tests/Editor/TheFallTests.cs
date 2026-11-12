@@ -105,6 +105,21 @@ namespace HearthHollow.Tests
         }
 
         [Test]
+        public void NoSettingOut_UntilWrenHasHadHerSay()   // ticket 51
+        {
+            var s = new GameSession(_c, null, 96);
+            s.Profile.arcStage = 1;
+            s.Profile.wrenStep = (int)WrenStep.AfterDive;
+            StringAssert.Contains("Talk to Old Wren", s.WrenSetOutBlock);
+            s.Profile.wrenStep = (int)WrenStep.CookMeal;
+            StringAssert.Contains("Cook a meal", s.WrenSetOutBlock);
+            s.Profile.wrenStep = (int)WrenStep.ShowMeal;
+            StringAssert.Contains("Show Old Wren", s.WrenSetOutBlock);
+            s.Profile.wrenStep = (int)WrenStep.FirstBoss;
+            Assert.IsNull(s.WrenSetOutBlock, "she's explained the tray: off you go");
+        }
+
+        [Test]
         public void NoFall_ForAnOngoingGame()
         {
             var s = new GameSession(_c, null, 93);

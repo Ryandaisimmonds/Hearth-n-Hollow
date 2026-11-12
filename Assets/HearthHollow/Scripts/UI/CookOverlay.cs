@@ -1,8 +1,8 @@
 // Hearth & Hollow — the stove. Opened by clicking a recipe on the Cooking tab.
 // Ticket 45: "you put in this, you get this, done". Four things on screen: the dish, its ingredients (have / need),
 // what it gives, and Cook. Cook starts the heat bar, which bounces back and forth at a steady pace until you stop
-// it: gold = Prime, warm = Fine, anywhere else = Plain (kitchen upgrades widen the zones). Then a result card, and
-// you're back in town at the cooking area: one meal per visit.
+// it: gold = Prime, warm = Fine, anywhere else = Plain (kitchen upgrades widen the zones). Then a result card that
+// goes by itself after a couple of seconds (or on a click), back to the cooking area's recipe list.
 using HearthHollow.Core;
 using HearthHollow.Data;
 using UnityEngine;
@@ -16,7 +16,8 @@ namespace HearthHollow.UI
 
         readonly VisualElement _main, _head, _lines, _card, _cardPic;
         readonly Label _gives, _why, _cardTitle, _cardBuffs;
-        readonly Button _cookBtn, _doneBtn;
+        readonly Button _cookBtn;
+        IVisualElementScheduledItem _cardTimer;
         readonly VisualElement _game, _gameTrack, _gameGood, _gamePerfect, _gameMarker;
         readonly Label _gameHint;
         Mode _mode;
@@ -74,8 +75,7 @@ namespace HearthHollow.UI
             _card.Add(_cardTitle);
             _cardBuffs = UIKit.L("", "cook-card__buffs");
             _card.Add(_cardBuffs);
-            _doneBtn = UIKit.B("Back to the kitchen  (Enter)", Close, "btn--primary", "cook-card__done");
-            _card.Add(_doneBtn);
+            _card.RegisterCallback<PointerDownEvent>(e => { if (_mode == Mode.Done) Close(); });   // click to dismiss
             box.Add(_card);
         }
 
@@ -90,10 +90,9 @@ namespace HearthHollow.UI
         void Close()
         {
             StopTick();
-            bool cooked = _mode == Mode.Done;
+            if (_cardTimer != null) _cardTimer.Pause();
             _mode = Mode.Ready;
-            Ui.CloseCook();
-            if (cooked) Ui.CloseTownMenu();   // one meal per visit: back to town, at the cooking area
+            Ui.CloseCook();   // one meal per visit: back to the cooking area (the recipe list)
         }
 
         void SetMode(Mode m)
@@ -156,15 +155,17 @@ namespace HearthHollow.UI
             _card.EnableInClassList("cook-card--prime", meal.grade == 2);
             SetMode(Mode.Done);
             Juice.Pop(_cardTitle, 1.25f, 0.05f, 0.25f);
-            _doneBtn.Focus();
+            // the card goes by itself after a couple of seconds (or on a click / Enter)
+            if (_cardTimer == null) _cardTimer = Root.schedule.Execute(() => { if (_mode == Mode.Done) Close(); }).StartingIn(2200);
+            else { _cardTimer.ExecuteLater(2200); _cardTimer.Resume(); }
         }
 
         string GivesText(RecipeData r, int grade)
         {
             var cls = C.Class(S.Profile.selectedClass);
-            var em = new EatenMeal { recipeId = r.id, potency = 1f, grade = grade, slot = Tray.IsAttackMeal(r) ? TraySlot.Attack : Tray.IsHealthMeal(r) ? TraySlot.Health : TraySlot.Free };
-            string kind = Tray.IsAttackMeal(r) ? "🗡️ " : Tray.IsHealthMeal(r) ? "❤️ " : "✨ ";
-            return kind + UIKit.BuffSummary(Cooking.MealBuffs(C, cls, em));
+            var em = new EatenMeal { recipeId = r.id, potency = 1f, grade = grade };
+            string kind = Tray.StationEmoji(r) + " ";   // ticket 52: the station tells you the special's family
+            return kind + UIKit.MealSummary(Cooking.MealBuffs(C, cls, em));
         }
 
         public override void Refresh()
