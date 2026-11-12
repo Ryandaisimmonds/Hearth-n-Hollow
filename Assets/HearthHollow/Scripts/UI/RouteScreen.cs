@@ -67,7 +67,10 @@ namespace HearthHollow.UI
             side.Add(footer);
             body.Add(side);
             Root.Add(body);
+            Root.Add(_feast.Root);   // ticket 60: the feast at the gate, over everything
         }
+
+        readonly FeastMoment _feast = new FeastMoment();
 
         static VisualElement Panel(string iconId, string emoji, string title, string subtitle, string cls)
         {
@@ -499,11 +502,18 @@ namespace HearthHollow.UI
         {
             string block = S.WrenSetOutBlock ?? S.TrayBlock;
             if (block != null) { Ui.Toast((S.WrenSetOutBlock != null ? "👵 " : "🧺 ") + block); return; }
-            if (_selected != null && Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) == null) S.StartRun(_selected, _startFloor);
+            if (_feast.Playing) { _feast.Skip(); return; }
+            if (_selected == null || Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) != null) return;
+            string route = _selected; int floor = _startFloor;
+            if (S.Profile.packed == null || S.Profile.packed.Count == 0) { S.StartRun(route, floor); return; }
+            _feast.Play(C, S.Profile, () => S.StartRun(route, floor));   // ticket 60: eat, then go
         }
+
+        protected override void OnHide() { _feast.Cancel(); }
 
         public override bool HandleKey(KeyCode key)
         {
+            if (_feast.Playing) { _feast.Skip(); return true; }   // ticket 60: any key skips the feast
             if (key == KeyCode.Escape) { Ui.CloseRoutes(); return true; }
             if (key == KeyCode.Return || key == KeyCode.KeypadEnter) { if (UIKit.Now - _shownAt > 0.5f) Go(); return true; }
             return false;

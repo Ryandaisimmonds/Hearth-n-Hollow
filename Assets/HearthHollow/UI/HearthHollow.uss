@@ -1782,3 +1782,15 @@ Label { white-space: normal; color: var(--hh-text); }
 .boss-card__over { font-size: 15px; color: rgb(255, 196, 140); letter-spacing: 6px; -unity-font-style: bold; }
 .boss-card__name { font-size: 44px; color: rgb(255, 240, 214); -unity-font-style: bold; text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.9); }
 .boss-card__sub { font-size: 17px; color: rgb(230, 200, 170); -unity-font-style: italic; }
+/* ticket 60: the feast at the gate */
+.feast { background-color: rgba(12, 8, 6, 0.82); align-items: center; justify-content: center; }
+.feast__col { align-items: center; }
+.feast__title { font-size: 34px; color: rgb(255, 232, 190); -unity-font-style: bold; margin-bottom: 22px; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8); }
+.feast__table { flex-direction: row; justify-content: center; padding: 18px 28px 14px 28px; border-radius: 14px; background-color: rgba(92, 58, 32, 0.9); border-width: 3px; border-color: rgb(150, 100, 58); }
+.feast__meal { width: 220px; align-items: center; margin: 0 10px 0 10px; }
+.feast__pic { width: 72px; height: 72px; }
+.feast__name { font-size: 18px; color: rgb(255, 240, 214); -unity-font-style: bold; margin-top: 8px; -unity-text-align: middle-center; white-space: normal; }
+.feast__buffs { font-size: 15px; color: rgb(236, 214, 180); -unity-text-align: middle-center; white-space: normal; margin-top: 2px; }
+.feast__stats { flex-direction: row; margin-top: 22px; }
+.feast__stat { font-size: 30px; color: rgb(255, 244, 220); -unity-font-style: bold; margin: 0 26px 0 26px; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8); }
+.feast__hint { margin-top: 18px; color: rgba(255, 240, 220, 0.55); }

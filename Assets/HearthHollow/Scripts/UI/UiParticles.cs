@@ -8,7 +8,7 @@ namespace HearthHollow.UI
 {
     public class UiParticles
     {
-        class P { public VisualElement el; public Vector2 pos, vel, acc; public float life, t, size, grow, alpha; public float spin, rot; }
+        class P { public VisualElement el; public Vector2 pos, vel, acc; public float life, t, size, grow, alpha; public float spin, rot; public bool fly; public Vector2 from, to; }
 
         public readonly VisualElement Layer;
         readonly List<P> _live = new List<P>();
@@ -68,6 +68,14 @@ namespace HearthHollow.UI
             }
         }
 
+        /// A glyph that flies from one point to another in `time` (eased), then vanishes (ticket 60: bonuses into your stats).
+        public void Fly(string g, Vector2 from, Vector2 to, Color c, float size, float time)
+        {
+            Glyph(g, from, Vector2.zero, c, size, time);
+            var p = _live[_live.Count - 1];
+            p.fly = true; p.from = from; p.to = to;
+        }
+
         VisualElement Make(float size)
         {
             var el = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -95,7 +103,7 @@ namespace HearthHollow.UI
             p.el.style.left = p.pos.x - p.size * 0.5f;
             p.el.style.top = p.pos.y - p.size * 0.5f;
             p.el.style.scale = new Scale(new Vector3(s, s, 1f));
-            p.el.style.opacity = p.alpha * (k < 0.15f ? k / 0.15f : 1f - Mathf.Clamp01((k - 0.4f) / 0.6f));
+            p.el.style.opacity = p.alpha * (k < 0.15f ? k / 0.15f : p.fly ? 1f - Mathf.Clamp01((k - 0.85f) / 0.15f) : 1f - Mathf.Clamp01((k - 0.4f) / 0.6f));
             if (p.spin != 0f) p.el.style.rotate = new Rotate(p.rot);
         }
 
@@ -108,9 +116,13 @@ namespace HearthHollow.UI
                 p.t += dt;
                 float k = p.t / p.life;
                 if (k >= 1f) { Kill(i); continue; }
-                p.vel += p.acc * dt;
-                p.vel *= 1f - Mathf.Clamp01(dt * 1.5f);
-                p.pos += p.vel * dt;
+                if (p.fly) { float e = k * k * (3f - 2f * k); p.pos = Vector2.Lerp(p.from, p.to, e) + new Vector2(0f, -60f * Mathf.Sin(k * Mathf.PI)); }   // an arc
+                else
+                {
+                    p.vel += p.acc * dt;
+                    p.vel *= 1f - Mathf.Clamp01(dt * 1.5f);
+                    p.pos += p.vel * dt;
+                }
                 p.rot += p.spin * dt;
                 Place(p, k);
             }
