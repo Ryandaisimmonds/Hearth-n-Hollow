@@ -492,10 +492,10 @@ namespace HearthHollow.Dungeon
             RefreshMap();
         }
 
-        public EnemyController SpawnEnemy(RoomInstance room, string monsterId, bool elite, bool boss, Vector2 at)
+        public EnemyController SpawnEnemy(RoomInstance room, string monsterId, bool elite, bool boss, Vector2 at, EnemyStats given = null)
         {
             if (string.IsNullOrEmpty(monsterId)) return null;
-            var stats = Session.DungeonEnemy(monsterId, elite, boss);
+            var stats = given ?? Session.DungeonEnemy(monsterId, elite, boss);   // ticket 64: split slimes bring their own
             var profile = Settings.ProfileFor(monsterId);
             var go = new GameObject((boss ? "BOSS " : elite ? "Elite " : "") + monsterId);
             go.transform.SetParent(room.transform, false);
@@ -506,7 +506,7 @@ namespace HearthHollow.Dungeon
             var art = boss ? (ArtLibrary.GetBoss(artId) ?? ArtLibrary.GetMonster(artId)) : ArtLibrary.GetMonster(artId);   // bosses get their own big sprite
             e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.FallEnemySpeed);   // the fall: faster each room (ticket 43)
             // shadow creatures: more the deeper you go, more in caves; never bosses or elites
-            if (!boss && !elite && Settings.shadowChance != null && Settings.shadowChance.Length > 0)
+            if (!boss && !elite && given == null && Settings.shadowChance != null && Settings.shadowChance.Length > 0)
             {
                 int fl = Session.Run != null ? Mathf.Max(1, Session.Run.floor) : 1;
                 float ch = Settings.shadowChance[Mathf.Min(fl - 1, Settings.shadowChance.Length - 1)];

@@ -60,7 +60,8 @@ namespace HearthHollow.Dungeon
             Hp = stats.maxHp;
             var md = dc.Session.Content.Monster(stats.monsterId);
             DisplayName = md != null ? md.name : stats.monsterId;
-            float size = profile.scale * (stats.boss ? 1.7f : stats.elite ? 1.3f : 1f);
+            float size = profile.scale * (stats.boss ? 1.7f : stats.elite ? 1.3f : 1f) * (stats.sizeMult > 0f ? stats.sizeMult : 1f);
+            if (stats.split) { DisplayName = "Little " + DisplayName; _stT0 = 0.25f; }   // ticket 64: a split-off pops in quick
 
             _rb = gameObject.AddComponent<Rigidbody2D>();
             _rb.gravityScale = 0f; _rb.freezeRotation = true;
@@ -86,9 +87,11 @@ namespace HearthHollow.Dungeon
             gameObject.AddComponent<EnemyGlow>().Setup(this, _anim, profile, stats, size, dc.Settings);   // silhouette, rim, eyes, carried lights
             MakeHpBar();
             SetupElements(profile);
-            _stT = 0.7f;                 // spawn telegraph
+            _stT = _stT0 > 0f ? _stT0 : 0.7f;   // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
+            _orbitDir = Random.value < 0.5f ? 1f : -1f;   // ticket 64: pack members circle both ways
+            if (MonsterHabits.Circles(stats.monsterId)) _cd += Random.Range(0.4f, 1.6f);   // …and take turns to dart in
             SetAlpha(0f);
         }
 
@@ -229,6 +232,9 @@ namespace HearthHollow.Dungeon
         /// Ticket 63: a boss always telegraphs at least this long (seconds) — the one timing change here.
         public const float BossTelegraphMin = 0.6f;
         Telegraph _tele;
+        float _stT0;            // ticket 64: a shorter spawn-in (split slimes)
+        float _orbitDir = 1f;   // ticket 64: which way a wolf circles
+        float _swoopSide = 1f;  // ticket 64: which side a bat swoops round
 
         /// How far a charge carries (speed × time), for the lane marker.
         float ChargeReach()
@@ -273,6 +279,7 @@ namespace HearthHollow.Dungeon
                     break;
                 case EnemyArchetype.Flyer:
                     _lockDir = dir; _chargeHit = false; _st = St.Charging; _stT = 0.22f;
+                    _swoopSide = Random.value < 0.5f ? -1f : 1f;
                     break;
                 case EnemyArchetype.Caster:
                     Shoot(dir, 0f);
@@ -335,6 +342,14 @@ namespace HearthHollow.Dungeon
                             v = dir * speed * 0.6f;
                             break;
                         default:
+                            if (MonsterHabits.Circles(Stats.monsterId) && _cd > 0.15f && dist < 5.5f)
+                            {   // ticket 64: a wolf circles while it waits its turn, each pack member at its own spot round you
+                                float ang = Mathf.Atan2(-to.y, -to.x) + _orbitDir * 1.6f * Time.fixedDeltaTime;
+                                Vector2 spot = Player.Feet + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * 2.6f;
+                                Vector2 go = spot - (Vector2)transform.position;
+                                v = go.sqrMagnitude > 0.0004f ? go.normalized * speed * Mathf.Clamp01(go.magnitude * 2f) : Vector2.zero;
+                                break;
+                            }
                             v = dist > Profile.attackRange * 0.8f ? dir * speed : Vector2.zero;
                             break;
                     }
@@ -347,6 +362,11 @@ namespace HearthHollow.Dungeon
                 case St.Charging:
                     float cs = Profile.archetype == EnemyArchetype.Flyer ? 9f : Profile.archetype == EnemyArchetype.Brute ? 8f : 10f;
                     v = _lockDir * cs * Mathf.Max(0.8f, _speedMult);
+                    if (Profile.archetype == EnemyArchetype.Flyer && MonsterHabits.Swoops(Stats.monsterId))
+                    {   // ticket 64: a bat swoops in an arc (it bows out and back, ending on the same line)
+                        float k = 1f - Mathf.Clamp01(_stT / 0.22f);
+                        v += new Vector2(-_lockDir.y, _lockDir.x) * _swoopSide * Mathf.Cos(k * Mathf.PI) * cs * 0.9f;
+                    }
                     if (HitsWall(_lockDir, 0.45f)) { _st = St.Stagger; _stT = 0.5f; v = Vector2.zero; _dc.Shake(0.08f, 0.08f); }
                     break;
                 case St.Stagger: v = _rb.linearVelocity * 0.85f; break;
@@ -730,6 +750,16 @@ namespace HearthHollow.Dungeon
             if (Stats.boss) for (int i = 0; i < 30; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, 10f); }
             if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
+            if (MonsterHabits.Splits(Stats) && _dc != null && _room != null)   // ticket 64: a slime splits in two little ones
+            {
+                for (int i = 0; i < MonsterHabits.SplitCount; i++)
+                {
+                    Vector2 off = new Vector2(i == 0 ? -0.45f : 0.45f, Random.Range(-0.2f, 0.2f));
+                    Vector2 at = _room.NearestWalkable((Vector2)transform.position + off);
+                    var kid = _dc.SpawnEnemy(_room, Stats.monsterId, false, false, at, MonsterHabits.Split(Stats));
+                    if (kid != null) _room.Adopt(kid);
+                }
+            }
             var room = _room; var dc = _dc; var stats = Stats; Vector2 dropAt = room != null ? room.NearestWalkable(transform.position) : (Vector2)transform.position;
             Destroy(gameObject);
             if (dc != null) { dc.Session.SetLootSpot(dropAt.x, dropAt.y); dc.Session.DungeonEnemyKilled(stats); dc.Session.ClearLootSpot(); dc.OnEnemyKilled(); }   // ticket 48: overflow lands where it fell   // rewards, loot (refreshes the HUD); trinkets (ticket 16)

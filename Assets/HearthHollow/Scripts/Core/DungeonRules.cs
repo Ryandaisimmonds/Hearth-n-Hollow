@@ -22,6 +22,30 @@ namespace HearthHollow.Core
     {
         public string monsterId; public bool elite; public bool boss;
         public int difficulty; public int maxHp; public float damage;
+        public bool split;           // ticket 64: a little slime split off another: no coins, xp or loot of its own
+        public float sizeMult = 1f;  // ticket 64: drawn smaller (split slimes)
+    }
+
+    /// Ticket 64: monster behaviours — wolves circle in packs, bats swoop, slimes split.
+    public static class MonsterHabits
+    {
+        public const float SplitHpPct = 0.35f, SplitDamagePct = 0.5f, SplitSize = 0.62f;
+        public const int SplitCount = 2;
+
+        public static bool Circles(string monsterId) { return !string.IsNullOrEmpty(monsterId) && monsterId.Contains("wolf"); }
+        public static bool Swoops(string monsterId) { return !string.IsNullOrEmpty(monsterId) && monsterId.Contains("bat"); }
+        public static bool Splits(EnemyStats e) { return e != null && !e.boss && !e.split && !string.IsNullOrEmpty(e.monsterId) && e.monsterId.Contains("slime"); }
+
+        /// The little slimes a slime splits into: weaker, smaller, and worth nothing.
+        public static EnemyStats Split(EnemyStats parent)
+        {
+            return new EnemyStats
+            {
+                monsterId = parent.monsterId, elite = false, boss = false, difficulty = parent.difficulty,
+                maxHp = Math.Max(1, (int)Math.Round(parent.maxHp * SplitHpPct)), damage = parent.damage * SplitDamagePct,
+                split = true, sizeMult = SplitSize,
+            };
+        }
     }
 
     public static class DungeonRules

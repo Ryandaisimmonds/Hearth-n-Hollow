@@ -388,6 +388,9 @@ namespace HearthHollow.Dungeon
             return RandomFloorPoint(playerAt, 4f);
         }
 
+        /// Ticket 64: a monster born mid-fight (a slime's split) joins the room, so it has to be beaten too.
+        public void Adopt(EnemyController e) { if (e != null && !_enemies.Contains(e)) _enemies.Add(e); }
+
         public void OnEnemyDied(EnemyController e)
         {
             _enemies.Remove(e);

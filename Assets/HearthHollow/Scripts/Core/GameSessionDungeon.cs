@@ -188,6 +188,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || e == null) return;
             Run.kills++;
+            if (e.split) { Touch(false); return; }   // ticket 64: a split-off little slime gives nothing extra
             if (InFall) { int h = Mods.healOnKill; if (h > 0 && Run.hp > 0 && Run.hp < Stats.maxHp) DungeonHealPlayer(h); Touch(false); return; }   // ticket 49: no loot in the fall
             var f = new FightState { monsterId = e.monsterId, elite = e.elite, difficulty = e.difficulty };
             int coins = Math.Max(1, (int)Math.Round(Combat.KillCoins(Content, Run, Stats, f) * T.dungeonKillCoinMult));
