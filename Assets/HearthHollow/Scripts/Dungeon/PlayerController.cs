@@ -372,6 +372,7 @@ namespace HearthHollow.Dungeon
 
         void AttackHit()
         {
+            HearthHollow.Runtime.GameAudio.Play("swing");   // ticket 62
             var m = _atk; Vector2 dir = Aim;
             float mult = AttackMult(m);
             int blv = 0;
@@ -1502,6 +1503,7 @@ namespace HearthHollow.Dungeon
             DungeonFx.Sparks(Body, away, new Color(1f, 0.35f, 0.3f), 7);
             DungeonFx.Ghost(_anim.Renderer, new Color(1f, 0.25f, 0.2f, 0.9f), 0.14f, true, true);
             if (DungeonHud.PlayerHurt != null) DungeonHud.PlayerHurt();
+            HearthHollow.Runtime.GameAudio.Play("hurt");
             Vector3 numAt = Body + Vector2.up * 0.6f;
             int dmg = S.DungeonDamagePlayer(raw);   // may end the run (the floor is torn down)
             DungeonHud.Number(numAt, "-" + dmg, "dnum--hurt");

@@ -194,6 +194,7 @@ namespace HearthHollow.Dungeon
             if (_taken || dc == null) return;
             _taken = true;
             dc.Session.DungeonHiddenForage();
+            HearthHollow.Runtime.GameAudio.Play("dig"); HearthHollow.Runtime.GameAudio.Play("chest");   // ticket 62
             DungeonFx.Puff(transform.position + new Vector3(0, 0.2f), new Color(0.55f, 0.4f, 0.25f), 10, 0.5f);
             DungeonFx.Embers(transform.position, new Color(1f, 0.85f, 0.45f), 12, 0.35f);
             DungeonHud.Number((Vector2)transform.position + new Vector2(0, 0.9f), "📦 Buried chest!", "dnum--info");

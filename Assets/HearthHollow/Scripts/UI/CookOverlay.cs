@@ -88,7 +88,7 @@ namespace HearthHollow.UI
             SetMode(Mode.Ready);
         }
 
-        protected override void OnHide() { StopTick(); _mode = Mode.Ready; _fx.Clear(); }
+        protected override void OnHide() { StopTick(); _mode = Mode.Ready; _fx.Clear(); HearthHollow.Runtime.GameAudio.StopLoop(); }
 
         void Close()
         {
@@ -131,6 +131,7 @@ namespace HearthHollow.UI
             _gameMarker01 = 0f;
             _gameMarker.style.left = Length.Percent(0f);
             SetMode(Mode.Cooking);
+            HearthHollow.Runtime.GameAudio.Loop("sizzle");   // ticket 62
             if (_tick == null) _tick = Root.schedule.Execute(Tick).Every(16); else _tick.Resume();
         }
 
@@ -175,6 +176,7 @@ namespace HearthHollow.UI
             if (_mode != Mode.Cooking) return;
             if (UIKit.Now - _gameStart < 0.12f) return;   // the same press that started it (focused button + key)
             StopTick();
+            HearthHollow.Runtime.GameAudio.StopLoop();
             var r = C.Recipe(_recipeId);
             int grade = Cooking.CookGrade(C, S.Profile, r.station, _gameMarker01);
             var meal = S.Cook(_recipeId, new CookChoice { grade = grade });
@@ -186,6 +188,7 @@ namespace HearthHollow.UI
             _cardBuffs.text = GivesText(r, meal.grade);
             _card.EnableInClassList("cook-card--prime", meal.grade == 2);
             SetMode(Mode.Done);
+            HearthHollow.Runtime.GameAudio.Play(meal.grade == 2 ? "cook_prime" : meal.grade == 1 ? "cook_fine" : "cook_plain");   // ticket 62
             Juice.Pop(_cardTitle, 1.25f, 0.05f, 0.25f);
             // ticket 59: a gold burst for Prime, a warm puff for Fine
             var pic = _cardPic;

@@ -488,6 +488,7 @@ namespace HearthHollow.Dungeon
             if (room == _current) _lightUpAt = Time.time + Settings.lightUpDelay;   // cleared: the room lights up too
             if (room.Lights != null) room.Lights.IgniteWave(room.LastKill != Vector2.zero ? room.LastKill : (Vector2)(room.Origin + RoomTemplate.Centre));   // braziers flare on from the last kill
             DungeonFx.RingAt(Player != null ? (Vector3)Player.Body : (Vector3)(room.Origin + RoomTemplate.Centre), new Color(1f, 0.95f, 0.7f, 0.7f), 3f, 0.6f);
+            HearthHollow.Runtime.GameAudio.Play("room_clear");   // ticket 62
             RefreshMap();
         }
 
@@ -731,6 +732,7 @@ namespace HearthHollow.Dungeon
             if (room != null && room.Lights != null) room.Lights.IgniteWave(at);   // its braziers roar up from the boss outward
             Shake(0.35f, 0.4f);
             GameLook.Punch(0.8f);
+            HearthHollow.Runtime.GameAudio.Play("boss");   // ticket 62
             GameFeel.SlowMo(0.4f, 1.2f);                                           // a beat to take it in
         }
 

@@ -333,6 +333,14 @@ namespace HearthHollow.UI
 
         void Toasts(GameEvent e)
         {
+            switch (e.type)   // ticket 62: the sound of it
+            {
+                case GameEventType.Loot: HearthHollow.Runtime.GameAudio.Play("pickup"); break;
+                case GameEventType.Coins: HearthHollow.Runtime.GameAudio.Play("coin"); break;
+                case GameEventType.LevelUp: HearthHollow.Runtime.GameAudio.Play("level_up"); break;
+                case GameEventType.RunCleared: HearthHollow.Runtime.GameAudio.Play("run_cleared"); break;
+                case GameEventType.PlayerDied: HearthHollow.Runtime.GameAudio.Play("died"); break;
+            }
             switch (e.type)
             {
                 case GameEventType.Loot: Juice.Toast("🎒 " + e.text, "toast--loot"); break;

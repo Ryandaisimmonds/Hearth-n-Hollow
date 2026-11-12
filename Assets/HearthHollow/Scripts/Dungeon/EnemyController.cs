@@ -368,6 +368,7 @@ namespace HearthHollow.Dungeon
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
+            HearthHollow.Runtime.GameAudio.Play(crit ? "crit" : "hit");   // ticket 62
             bool learned = false;   // a first discovery shows its own "found" message instead
             if (multi) { int n = 0; foreach (var e in infused) if (ElementContact(e, n)) { learned = true; n++; } }   // each carried element teaches you its result, one line each
             else learned = ElementContact(element);
@@ -398,6 +399,7 @@ namespace HearthHollow.Dungeon
         /// only). Frost: a blue chill and a slight slow. Nature: a burst of leaves. Water: a splash.
         void ElementMark(Element e, Vector2 dir)
         {
+            if (e != Element.None) HearthHollow.Runtime.GameAudio.Play(e == Element.Fire ? "fire" : e == Element.Frost ? "frost" : e == Element.Nature ? "nature" : e == Element.Water ? "water" : "hit", 0.8f, 0.1f);
             switch (e)
             {
                 case Element.Fire:
@@ -675,6 +677,7 @@ namespace HearthHollow.Dungeon
             Dead = true;
             CancelInvoke();
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
+            HearthHollow.Runtime.GameAudio.Play(Stats.boss ? "boss_kill" : "kill");   // ticket 62
             // ticket 56: it bursts in its own colour and element (fire embers, frost shards, nature leaves…)
             Element el = Profile != null ? Profile.element : Element.None;
             Color bodyCol = DungeonFx.AverageColour(_anim != null && _anim.Renderer != null ? _anim.Renderer.sprite : null, new Color(0.85f, 0.85f, 0.85f));

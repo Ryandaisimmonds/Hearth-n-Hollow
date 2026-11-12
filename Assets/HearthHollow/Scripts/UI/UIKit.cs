@@ -33,7 +33,7 @@ namespace HearthHollow.UI
         /// Button that never takes keyboard focus (so the root keeps receiving KeyDownEvents).
         public static Button B(string text, Action onClick, params string[] classes)
         {
-            var b = new Button(onClick) { text = text };
+            var b = new Button(() => { HearthHollow.Runtime.GameAudio.Play("click"); if (onClick != null) onClick(); }) { text = text };   // ticket 62: every button clicks
             b.focusable = false;
             b.AddToClassList("btn");
             for (int i = 0; i < classes.Length; i++) b.AddToClassList(classes[i]);

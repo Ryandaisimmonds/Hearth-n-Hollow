@@ -101,6 +101,7 @@ namespace HearthHollow.UI
                 var card = _cards[_popped];
                 card.style.opacity = 1f;
                 Juice.Pop(card, 1.2f, 0.06f, 0.22f);
+                HearthHollow.Runtime.GameAudio.Play("coin", 1f, 0f);   // ticket 62
                 if (card.worldBound.width > 1f) _fx.Burst(_fx.At(card, new Vector2(0.5f, 0.35f)), new Color(1f, 0.82f, 0.35f), 14, 240f);
                 _popped++;
             }
@@ -109,6 +110,7 @@ namespace HearthHollow.UI
             if (!_flown && t >= flyAt)
             {
                 _flown = true;
+                HearthHollow.Runtime.GameAudio.Play("feast");
                 foreach (var card in _cards)
                 {
                     if (!(card.worldBound.width > 1f) || !(_atk.worldBound.width > 1f)) continue;

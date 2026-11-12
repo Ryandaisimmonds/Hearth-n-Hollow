@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffb445de06714348b47eeba9bb72013, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::HearthHollow.Data.AudioLibrary
+  sounds:
+  - id: swing
+    clips:
+    - {fileID: 8300000, guid: 186f526a9b8064de9b1c28e0489170c4, type: 3}
+    - {fileID: 8300000, guid: c2c5ab61ba4b5418997d673b0319dd59, type: 3}
+    - {fileID: 8300000, guid: 38da9a688471a44caae0b6cb67f02361, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: hit
+    clips:
+    - {fileID: 8300000, guid: c95c3c4a9bca44ebb8b26635328b83ea, type: 3}
+    - {fileID: 8300000, guid: f13bca37f93544196b8085d5b6b175ec, type: 3}
+    - {fileID: 8300000, guid: 46947b80a6d0046108a2b57f284ec9e5, type: 3}
+    - {fileID: 8300000, guid: 558337ea68297436487767bdc3ffcb49, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: crit
+    clips:
+    - {fileID: 8300000, guid: 7b4cdb6e3038145e4b6fde7cb16d6a68, type: 3}
+    - {fileID: 8300000, guid: 6b7fdc952e2a4461097b5a2765ff627b, type: 3}
+    volume: 0.7
+    pitchJitter: 0.05
+  - id: kill
+    clips:
+    - {fileID: 8300000, guid: 0d82447fca87248ab840cd4bf193dd38, type: 3}
+    - {fileID: 8300000, guid: 38c27c2820e414de2bb1ea76f5dd8a45, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: boss_kill
+    clips:
+    - {fileID: 8300000, guid: 4517fb5081df64ac9ada8de7c54defe6, type: 3}
+    volume: 0.85
+    pitchJitter: 0.05
+  - id: hurt
+    clips:
+    - {fileID: 8300000, guid: 177f0fdaf925946dabde258d88d1d58d, type: 3}
+    - {fileID: 8300000, guid: 5d21d9020a7d54617a418247bff78364, type: 3}
+    volume: 0.7
+    pitchJitter: 0.05
+  - id: pickup
+    clips:
+    - {fileID: 8300000, guid: a1544610466044e44a30a4d18dff5258, type: 3}
+    - {fileID: 8300000, guid: f8cf9f620bdeb40f7abc2d42c4782087, type: 3}
+    volume: 0.5
+    pitchJitter: 0.05
+  - id: coin
+    clips:
+    - {fileID: 8300000, guid: ebbe995f69b86453c9c3564c16fe365f, type: 3}
+    - {fileID: 8300000, guid: 5c833719e9e264d37bb6ea81a64cd414, type: 3}
+    - {fileID: 8300000, guid: 7b49d960b7b314c9aab0f8ae79d46f48, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: dig
+    clips:
+    - {fileID: 8300000, guid: fc844dca5b4e340c888ab47e05399a17, type: 3}
+    - {fileID: 8300000, guid: f2e07d435b4374e6192f93356f82f68c, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: chest
+    clips:
+    - {fileID: 8300000, guid: 55d95980362b34d0c827360fe14fa5d6, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: click
+    clips:
+    - {fileID: 8300000, guid: 3e717e23a956f4b9e926a61df4646864, type: 3}
+    - {fileID: 8300000, guid: 1d9a0d1ced31c47e99b867d4f2f46232, type: 3}
+    volume: 0.35
+    pitchJitter: 0.05
+  - id: back
+    clips:
+    - {fileID: 8300000, guid: 995c64e582d0047f58fb7a33abd26328, type: 3}
+    volume: 0.35
+    pitchJitter: 0.05
+  - id: sizzle
+    clips:
+    - {fileID: 8300000, guid: 6d6f5c1cb859148c1aac4833d5de9952, type: 3}
+    - {fileID: 8300000, guid: a9be83b8a392a44fb8f115a7b9ebdc82, type: 3}
+    volume: 0.4
+    pitchJitter: 0.05
+  - id: cook_fine
+    clips:
+    - {fileID: 8300000, guid: 094fb597cf0ac4430924c1b56d9b4a9a, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: cook_prime
+    clips:
+    - {fileID: 8300000, guid: 47d238d1d14594faa933db70b7c650d9, type: 3}
+    volume: 0.75
+    pitchJitter: 0.05
+  - id: cook_plain
+    clips:
+    - {fileID: 8300000, guid: f4f89c120507c43c6ad76423912f0765, type: 3}
+    volume: 0.5
+    pitchJitter: 0.05
+  - id: feast
+    clips:
+    - {fileID: 8300000, guid: 63f600930a5c5454c9faa74fb4f86575, type: 3}
+    volume: 0.6
+    pitchJitter: 0.05
+  - id: boss
+    clips:
+    - {fileID: 8300000, guid: 926ca3a1006674f7ebe90c88ea37c4d2, type: 3}
+    volume: 0.8
+    pitchJitter: 0.05
+  - id: room_clear
+    clips:
+    - {fileID: 8300000, guid: b9953322975a34803af5f1f421fb0d16, type: 3}
+    volume: 0.55
+    pitchJitter: 0.05
+  - id: fire
+    clips:
+    - {fileID: 8300000, guid: 6c6026d460172494898fe991c33b082e, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: frost
+    clips:
+    - {fileID: 8300000, guid: 786f42dc059c94b359b52fd1aa50cb83, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: nature
+    clips:
+    - {fileID: 8300000, guid: 3ddf344c5c54c45128891670a6dda5df, type: 3}
+    - {fileID: 8300000, guid: f891c4d45cc234ee195d59eeca1cadae, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: water
+    clips:
+    - {fileID: 8300000, guid: eabbf3ac1a6a7422396d28b8ff0c3e70, type: 3}
+    - {fileID: 8300000, guid: 0a7568c748b344b079d99f6b86bba9c9, type: 3}
+    volume: 0.45
+    pitchJitter: 0.05
+  - id: level_up
+    clips:
+    - {fileID: 8300000, guid: 1f3bcbd574cca4c18b144c9098609d01, type: 3}
+    volume: 0.7
+    pitchJitter: 0.05
+  - id: run_cleared
+    clips:
+    - {fileID: 8300000, guid: 582c9f20657484884a9f55f6213fbd4d, type: 3}
+    volume: 0.7
+    pitchJitter: 0.05
+  - id: died
+    clips:
+    - {fileID: 8300000, guid: 611af9ab0d91347b1b245d8b1a7f592d, type: 3}
+    volume: 0.7
+    pitchJitter: 0.05
+  music:
+  - id: town
+    clips:
+    - {fileID: 8300000, guid: a3d9699d20dc7453e953df2ee8ca504d, type: 3}
+    volume: 0.45
+    pitchJitter: 0
+  - id: meadow
+    clips:
+    - {fileID: 8300000, guid: a6ec0638aeae747fd869659acacd0f34, type: 3}
+    volume: 0.4
+    pitchJitter: 0
+  - id: chili
+    clips:
+    - {fileID: 8300000, guid: 5cce51d727c2141b3a2427e3777b8085, type: 3}
+    volume: 0.4
+    pitchJitter: 0
+  - id: frosthollow
+    clips:
+    - {fileID: 8300000, guid: cda11806c7b9d4497b2e18b86a0feef3, type: 3}
+    volume: 0.4
+    pitchJitter: 0
+  - id: fall
+    clips:
+    - {fileID: 8300000, guid: 5e3d42094ff76471f823633d0fdb1063, type: 3}
+    volume: 0.4
+    pitchJitter: 0
+  - id: dungeon
+    clips:
+    - {fileID: 8300000, guid: 4c5d717095f5d4cf3a384af4c54bfc67, type: 3}
+    volume: 0.4
+    pitchJitter: 0
+  - id: boss
+    clips:
+    - {fileID: 8300000, guid: c0f5294c5d0e546bfad3fdc79691f170, type: 3}
+    volume: 0.45
+    pitchJitter: 0
+  - id: wind
+    clips:
+    - {fileID: 8300000, guid: 9b865cfbb496a42e0b3a8b6333f16f77, type: 3}
+    volume: 0.35
+    pitchJitter: 0
+  - id: rain
+    clips:
+    - {fileID: 8300000, guid: 55c7c6e272118439f9104a2d46ccf155, type: 3}
+    volume: 0.35
+    pitchJitter: 0

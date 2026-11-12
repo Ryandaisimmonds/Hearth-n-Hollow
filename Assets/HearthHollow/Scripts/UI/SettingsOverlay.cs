@@ -9,6 +9,23 @@ namespace HearthHollow.UI
     {
         /// Dev tools are hidden in release builds.
         Button _sliceBtn;
+        Button[] _music, _effects;   // ticket 62
+
+        Button[] VolumeRow(VisualElement parent, string label, System.Action<int> set)
+        {
+            var row = UIKit.E("settings__row");
+            row.Add(UIKit.L(label, "small", "settings__label"));
+            var lv = HearthHollow.Runtime.GameAudio.Levels;
+            var bs = new Button[lv.Length];
+            for (int i = 0; i < lv.Length; i++)
+            {
+                int v = lv[i];
+                bs[i] = UIKit.B(v == 0 ? "Off" : v + "%", () => { set(v); Refresh(); }, "filter-chip");
+                row.Add(bs[i]);
+            }
+            parent.Add(row);
+            return bs;
+        }
         public static bool DevModeEnabled { get { return Application.isEditor || Debug.isDebugBuild; } }
 
         public const int DevCoins = 9999;
@@ -71,6 +88,12 @@ namespace HearthHollow.UI
             }
             display.Add(ts);
             body.Add(display);
+            // ticket 62: sound
+            var sound = UIKit.E("settings__section");
+            sound.Add(UIKit.L("Sound", "subhead"));
+            _music = VolumeRow(sound, "Music", v => HearthHollow.Runtime.GameAudio.SetMusic(v));
+            _effects = VolumeRow(sound, "Effects", v => HearthHollow.Runtime.GameAudio.SetSfx(v));
+            body.Add(sound);
             // ── Game ──
             var game = UIKit.E("settings__section");
             game.Add(UIKit.L("Game", "subhead"));
@@ -177,6 +200,9 @@ namespace HearthHollow.UI
             UIKit.Show(_runSection, S.Run != null && p != HearthHollow.Core.Phase.Hearth && p != HearthHollow.Core.Phase.RunEnd);
             UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null && !HearthHollow.Core.Slice.On);   // the slice has no camp screen to go back to
             for (int i = 0; _textSize != null && i < _textSize.Length; i++) _textSize[i].EnableInClassList("filter-chip--on", i == HearthHollow.Runtime.GameBootstrap.TextSize);
+            var lv = HearthHollow.Runtime.GameAudio.Levels;   // ticket 62
+            for (int i = 0; _music != null && i < _music.Length; i++) _music[i].EnableInClassList("filter-chip--on", Mathf.RoundToInt(HearthHollow.Runtime.GameAudio.MusicVolume * 100f) == lv[i]);
+            for (int i = 0; _effects != null && i < _effects.Length; i++) _effects[i].EnableInClassList("filter-chip--on", Mathf.RoundToInt(HearthHollow.Runtime.GameAudio.SfxVolume * 100f) == lv[i]);
             if (_sliceBtn != null) _sliceBtn.text = HearthHollow.Core.Slice.On ? "🧪 Vertical slice: ON (Cook, Meadow, Chili Ridge)" : "🧪 Vertical slice: OFF (everything visible)";
             _townBtn.text = Ui.TownOpen ? "🏕️ Back to the camp screen" : "🏘️ Visit Hearth's Hollow";
             _townHint.text = Ui.TownOpen ? "Leave the town preview and go back to the usual camp screen." : "A walkable town that will replace the camp screen once it's finished. Uses your real save.";
