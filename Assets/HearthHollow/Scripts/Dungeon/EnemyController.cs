@@ -186,6 +186,7 @@ namespace HearthHollow.Dungeon
             _facing = CharacterAnimator.FacingFrom(look, _facing);
             _anim.Dir = _facing;
             _anim.SetMoving(_st == St.Moving || _st == St.Charging);
+            if (_tele != null && _st != St.Windup) { _tele.Stop(); _tele = null; }   // ticket 63: interrupted — the marker goes
             UpdateTint();
             UpdateHpBar();
         }
@@ -217,13 +218,52 @@ namespace HearthHollow.Dungeon
 
         void BeginWindup(Vector2 dir, float seconds)
         {
+            if (Stats.boss) seconds = Mathf.Max(seconds, BossTelegraphMin);   // ticket 63: a boss's markers stay up long enough to read
             _st = St.Windup; _stT = seconds; _lockDir = dir;
             _hitsLeft = Mathf.Max(1, Profile.hits);
             _anim.PlayAttack(seconds + 0.2f);
+            if (Profile.archetype == EnemyArchetype.Brute) _breathNext = !_breathNext;   // decided now, so the marker shows the right attack
+            if (Stats.boss) ShowTelegraph(dir, seconds);
+        }
+
+        /// Ticket 63: a boss always telegraphs at least this long (seconds) — the one timing change here.
+        public const float BossTelegraphMin = 0.6f;
+        Telegraph _tele;
+
+        /// How far a charge carries (speed × time), for the lane marker.
+        float ChargeReach()
+        {
+            float cs = Profile.archetype == EnemyArchetype.Flyer ? 9f : Profile.archetype == EnemyArchetype.Brute ? 8f : 10f;
+            float time = Profile.archetype == EnemyArchetype.Flyer ? 0.22f : Profile.archetype == EnemyArchetype.Brute ? 0.7f : 0.55f;
+            return cs * Mathf.Max(0.8f, _speedMult) * time;
+        }
+
+        void ShowTelegraph(Vector2 dir, float seconds)
+        {
+            Vector2 from = (Vector2)transform.position + new Vector2(0, 0.22f);
+            float w = 0.9f * Mathf.Max(1f, Profile.scale);
+            switch (Profile.archetype)
+            {
+                case EnemyArchetype.Brute:
+                    if (_breathNext) Telegraph.Fan(from, dir, 6.5f, 14f, 2, seconds);   // the five-shot breath
+                    else _tele = Telegraph.Lane(from, dir, ChargeReach() + 0.6f, w, seconds);
+                    break;
+                case EnemyArchetype.Charger:
+                case EnemyArchetype.Flyer:
+                    _tele = Telegraph.Lane(from, dir, ChargeReach() + 0.6f, w, seconds);
+                    break;
+                case EnemyArchetype.Caster:
+                    _tele = Telegraph.Lane(from, dir, 8f, 0.4f, seconds);
+                    break;
+                default:   // a chaser's bite: everything in reach
+                    _tele = Telegraph.Ring(from, Profile.attackRange + 0.35f + 0.3f * Profile.scale, seconds);
+                    break;
+            }
         }
 
         void Release(float dist, Vector2 dir)
         {
+            if (Stats.boss) dir = _lockDir;   // ticket 63: a boss does what its marker showed (aimed when it wound up)
             _cd = T.monsterAttackCooldown * Profile.cooldownMult * Random.Range(0.85f, 1.2f);
             if (Profile.lightReaction == LightReaction.Shy && Lit01 < 0.15f) _cd /= Mathf.Max(1f, _dc.Settings.shyBoldness);   // bolder in the dark
             switch (Profile.archetype)
@@ -239,7 +279,6 @@ namespace HearthHollow.Dungeon
                     _st = St.Striking; _stT = 0.2f;
                     break;
                 case EnemyArchetype.Brute:
-                    _breathNext = !_breathNext;
                     if (_breathNext) { for (int i = -2; i <= 2; i++) Shoot(dir, i * 14f); _st = St.Striking; _stT = 0.4f; }
                     else { _lockDir = dir; _chargeHit = false; _st = St.Charging; _stT = 0.7f; }
                     break;
@@ -675,6 +714,7 @@ namespace HearthHollow.Dungeon
         void Die()
         {
             Dead = true;
+            if (_tele != null) { _tele.Stop(); _tele = null; }
             CancelInvoke();
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
             HearthHollow.Runtime.GameAudio.Play(Stats.boss ? "boss_kill" : "kill");   // ticket 62
