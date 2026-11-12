@@ -5112,7 +5112,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 44
+    contentVersion: 45
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

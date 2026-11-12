@@ -69,13 +69,15 @@ namespace HearthHollow.Tests
         }
 
         [Test]
-        public void OldContent_UpgradesToTheLens()
+        public void OldContent_IsResetToTheCurrentDesign()
         {
             var c = DefaultContent.Create();
+            var old = c.Class(ClassId.Warden);
+            old.baseMaxHp = 16; old.damageMult = 1.15f; old.mealStatMults.Clear();
+            c.contentVersion = 27;   // from before refactor 03's baseline: too old to patch
+            Assert.IsTrue(DefaultContent.Upgrade(c));
+            Assert.AreEqual(DefaultContent.LatestContentVersion, c.contentVersion);
             var w = c.Class(ClassId.Warden);
-            w.baseMaxHp = 16; w.damageMult = 1.15f; w.mealStatMults.Clear();
-            c.contentVersion = 27;
-            DefaultContent.Upgrade(c);
             Assert.AreEqual(DefaultContent.MinimalBaseHp, w.baseMaxHp);
             Assert.AreEqual(1.25f, Meals.StatMult(w, BuffStat.Armour), 0.0001f);
         }
