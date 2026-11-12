@@ -99,6 +99,124 @@ namespace HearthHollow.Dungeon
             }
         }
 
+        static Sprite Rows(string key, string[] rows, Color32 a, Color32 b, Color32 o)
+        {
+            int h = rows.Length, w = rows[0].Length;
+            return Make(key, w, h, (x, y) =>
+            {
+                char ch = rows[h - 1 - y][x];
+                return ch == 'a' ? (Color)a : ch == 'b' ? (Color)b : ch == 'o' ? (Color)o : Color.clear;
+            }, new Vector2(0.5f, 0.5f));
+        }
+
+        /// Ticket 56: an ice shard (frost deaths), a leaf (nature deaths), a droplet (water) and a twinkle (light). White-ish, tinted by the caller.
+        public static Sprite Shard { get { return Rows("shard", new[] { "..o..", ".oao.", ".oao.", "oabao", "oabao", ".oao.", "..o.." }, new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(170, 200, 230, 255)); } }
+        public static Sprite Leaf { get { return Rows("leaf", new[] { "....oo", "..oaao", ".oabao", "oabao.", "obao..", "oo...." }, new Color32(255, 255, 255, 255), new Color32(200, 230, 170, 255), new Color32(120, 150, 100, 255)); } }
+        public static Sprite Drop { get { return Rows("drop", new[] { "..o..", ".oao.", "oaaao", "oabao", ".ooo." }, new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(150, 180, 220, 255)); } }
+        public static Sprite Twinkle { get { return Rows("twinkle", new[] { "..a..", "..a..", "aabaa", "..a..", "..a.." }, new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255)); } }
+
+        static readonly Dictionary<Sprite, Color> _avg = new Dictionary<Sprite, Color>();
+
+        /// Ticket 56: a sprite's average visible colour (read back once from the GPU and cached), brightened a little.
+        public static Color AverageColour(Sprite s, Color fallback)
+        {
+            if (s == null || s.texture == null) return fallback;
+            Color c;
+            if (_avg.TryGetValue(s, out c)) return c;
+            c = fallback;
+            try
+            {
+                var r = s.textureRect;
+                int w = Mathf.Max(1, (int)r.width), h = Mathf.Max(1, (int)r.height);
+                Color[] px;
+                if (s.texture.isReadable) px = s.texture.GetPixels((int)r.x, (int)r.y, w, h);
+                else
+                {
+                    var rt = RenderTexture.GetTemporary(s.texture.width, s.texture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+                    var prev = RenderTexture.active;
+                    Graphics.Blit(s.texture, rt);
+                    RenderTexture.active = rt;
+                    var tmp = new Texture2D(w, h, TextureFormat.RGBA32, false);
+                    tmp.ReadPixels(new Rect(r.x, r.y, w, h), 0, 0); tmp.Apply();
+                    RenderTexture.active = prev; RenderTexture.ReleaseTemporary(rt);
+                    px = tmp.GetPixels();
+                    Object.Destroy(tmp);
+                }
+                float R = 0, G = 0, B = 0, n = 0;
+                foreach (var p in px) { if (p.a < 0.5f) continue; float lum = p.r * 0.3f + p.g * 0.59f + p.b * 0.11f; if (lum < 0.12f) continue; R += p.r; G += p.g; B += p.b; n++; }   // skip outlines and see-through
+                if (n > 0) { c = new Color(R / n, G / n, B / n); float m = Mathf.Max(c.r, Mathf.Max(c.g, c.b)); if (m > 0.01f) c = Color.Lerp(c, c / m, 0.6f); c.a = 1f; }
+            }
+            catch (System.Exception) { c = fallback; }
+            _avg[s] = c;
+            return c;
+        }
+
+        /// Ticket 56: a monster's death, in its own colour and element. Fire leaves rising embers, frost shatters into ice,
+        /// nature scatters leaves, water splashes, light twinkles; everything also throws chunks of the monster's own colour.
+        public static void DeathBurst(Vector3 pos, Element e, Color body, bool boss, bool elite)
+        {
+            float big = boss ? 2.6f : elite ? 1.5f : 1f;
+            Color ec = e == Element.None ? body : HearthHollow.Dungeon.EnemyController.ElementColour(e);
+            // the monster comes apart: chunks of its own colour, then a soft puff
+            for (int i = 0; i < Mathf.RoundToInt(12 * big); i++)
+            {
+                Vector2 o = Random.insideUnitCircle.normalized;
+                var fx = Spawn(Pixel, pos + (Vector3)(o * 0.1f), Color.Lerp(body, Color.white, Random.Range(0f, 0.3f)), Random.Range(0.55f, 0.9f), Random.Range(6f, 10f), 3f, 0f, 20600, false);
+                fx.velocity = o * Random.Range(3f, 7f) + Vector2.up * 1.5f; fx.drag = 3.2f; fx.accel = new Vector2(0f, -7f); fx.spin = Random.Range(-360f, 360f);
+            }
+            for (int i = 0; i < Mathf.RoundToInt(6 * big); i++)
+            {
+                var fx = Spawn(Circle, pos + (Vector3)(Random.insideUnitCircle * 0.2f), new Color(body.r, body.g, body.b, 0.55f), Random.Range(0.35f, 0.6f), Random.Range(0.35f, 0.6f) * big, 0.1f);
+                fx.velocity = Random.insideUnitCircle.normalized * Random.Range(0.6f, 1.6f) * big;
+            }
+            switch (e)
+            {
+                case Element.Fire:
+                    Embers(pos, new Color(1f, 0.55f, 0.15f), Mathf.RoundToInt(22 * big), 0.5f * big);
+                    for (int i = 0; i < Mathf.RoundToInt(5 * big); i++)
+                    {
+                        var fx = Spawn(Flame, pos + (Vector3)(Random.insideUnitCircle * 0.35f * big), new Color(1f, Random.Range(0.45f, 0.7f), 0.2f, 0.9f), Random.Range(0.5f, 0.8f), Random.Range(0.5f, 0.8f), 0.1f, 0f, 20600, true);
+                        fx.velocity = new Vector2(Random.Range(-0.3f, 0.3f), Random.Range(1.2f, 2.2f));
+                    }
+                    break;
+                case Element.Frost:
+                    for (int i = 0; i < Mathf.RoundToInt(14 * big); i++)
+                    {
+                        Vector2 o = Random.insideUnitCircle.normalized;
+                        var fx = Spawn(Shard, pos + (Vector3)(o * 0.15f), Color.Lerp(ec, Color.white, Random.Range(0.3f, 0.8f)), Random.Range(0.7f, 1.1f), Random.Range(1.6f, 2.4f), 1.2f, Random.Range(0f, 360f), 20600, false);
+                        fx.velocity = o * Random.Range(3f, 6.5f) + Vector2.up * 2f; fx.drag = 2.5f; fx.accel = new Vector2(0f, -9f); fx.spin = Random.Range(-540f, 540f);
+                    }
+                    RingAt(pos, new Color(0.75f, 0.92f, 1f, 0.8f), 0.9f * big, 0.3f);
+                    break;
+                case Element.Nature:
+                    for (int i = 0; i < Mathf.RoundToInt(12 * big); i++)
+                    {
+                        Vector2 o = Random.insideUnitCircle.normalized;
+                        Color leaf = Color.Lerp(ec, new Color(0.85f, 0.75f, 0.25f), Random.Range(0f, 0.35f));
+                        var fx = Spawn(Leaf, pos + (Vector3)(o * 0.15f), leaf, Random.Range(1.4f, 2.2f), Random.Range(1.8f, 2.4f), 1.5f, Random.Range(0f, 360f), 20600, false);
+                        fx.velocity = o * Random.Range(1.5f, 3.5f) + Vector2.up * 2.5f; fx.drag = 3.5f; fx.accel = new Vector2(0f, -1.2f);
+                        fx.spin = Random.Range(-200f, 200f); fx.sway = Random.Range(0.6f, 1.2f) * (Random.value < 0.5f ? -1f : 1f);
+                    }
+                    break;
+                case Element.Water:
+                    for (int i = 0; i < Mathf.RoundToInt(14 * big); i++)
+                    {
+                        Vector2 o = Quaternion.Euler(0, 0, Random.Range(-70f, 70f)) * Vector2.up;
+                        var fx = Spawn(Drop, pos, Color.Lerp(ec, Color.white, Random.Range(0.1f, 0.5f)), Random.Range(0.6f, 0.9f), Random.Range(1.5f, 2f), 1f, 0f, 20600, false);
+                        fx.velocity = o * Random.Range(3f, 6f); fx.drag = 1.5f; fx.accel = new Vector2(0f, -12f);
+                    }
+                    RingAt(pos, new Color(0.5f, 0.75f, 1f, 0.7f), 0.8f * big, 0.35f);
+                    break;
+                case Element.Light:
+                    for (int i = 0; i < Mathf.RoundToInt(10 * big); i++)
+                    {
+                        var fx = Spawn(Twinkle, pos + (Vector3)(Random.insideUnitCircle * 0.8f * big), new Color(1f, 0.95f, 0.6f), Random.Range(0.5f, 0.9f), Random.Range(1.5f, 2.5f), 0.2f, 0f, 20600, true);
+                        fx.velocity = Vector2.up * Random.Range(0.3f, 1f); fx.spin = Random.Range(-90f, 90f);
+                    }
+                    break;
+            }
+        }
+
         public static Sprite Orb
         {
             get
@@ -350,6 +468,8 @@ namespace HearthHollow.Dungeon
         public Vector2 velocity;
         public Vector2 accel;
         public float drag = 6f;
+        public float spin;    // ticket 56: degrees a second (shards, leaves)
+        public float sway;    // ticket 56: side-to-side flutter (leaves falling)
         float _life, _t, _s0, _s1; Color _c; SpriteRenderer _sr; bool _keep;
 
         public void Init(float life, float s0, float s1, Color c)
@@ -373,6 +493,8 @@ namespace HearthHollow.Dungeon
             if (!_keep) transform.localScale = Vector3.one * Mathf.Lerp(_s0, _s1, k);
             velocity += accel * Time.deltaTime;
             transform.position += (Vector3)(velocity * Time.deltaTime);
+            if (spin != 0f) transform.Rotate(0f, 0f, spin * Time.deltaTime);
+            if (sway != 0f) transform.position += new Vector3(Mathf.Sin(_t * 6f) * sway * Time.deltaTime, 0f, 0f);
             velocity *= 1f - Mathf.Clamp01(Time.deltaTime * drag);
             if (_sr != null) _sr.color = new Color(_c.r, _c.g, _c.b, _c.a * (1f - k));
             if (_t >= _life) Destroy(gameObject);

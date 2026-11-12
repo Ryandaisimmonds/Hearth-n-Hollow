@@ -609,14 +609,17 @@ namespace HearthHollow.Dungeon
         {
             Dead = true;
             CancelInvoke();
-            DungeonFx.Puff(Body, Stats.boss ? new Color(1f, 0.6f, 0.3f) : new Color(0.85f, 0.85f, 0.85f), Stats.boss ? 18 : 8, Stats.boss ? 1.4f : 0.7f);
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
-            // death: a burst of light and embers; a boss going down slows time for a moment
-            Color deathCol = Stats.boss ? new Color(1f, 0.6f, 0.3f) : new Color(1f, 0.88f, 0.7f);
+            // ticket 56: it bursts in its own colour and element (fire embers, frost shards, nature leaves…)
+            Element el = Profile != null ? Profile.element : Element.None;
+            Color bodyCol = DungeonFx.AverageColour(_anim != null && _anim.Renderer != null ? _anim.Renderer.sprite : null, new Color(0.85f, 0.85f, 0.85f));
+            Color deathCol = el != Element.None ? Color.Lerp(ElementColour(el), bodyCol, 0.35f) : Color.Lerp(bodyCol, new Color(1f, 0.88f, 0.7f), 0.4f);
+            if (Stats.boss) deathCol = Color.Lerp(deathCol, new Color(1f, 0.6f, 0.3f), 0.4f);
+            DungeonFx.DeathBurst(Body, el, bodyCol, Stats.boss, Stats.elite);
+            // and a burst of light; a boss going down slows time for a moment
             DungeonFx.Flash(Body, deathCol, Stats.boss ? 10f : 4.5f, Stats.boss ? 3f : 2f, Stats.boss ? 1.4f : 0.5f);
-            DungeonFx.Embers(Body, deathCol, Stats.boss ? 60 : (Stats.elite ? 26 : 14), Stats.boss ? 1f : 0.4f);
-            DungeonFx.Sparks(Body, Vector2.up, deathCol, Stats.boss ? 30 : 12);
-            for (int i = 0; i < (Stats.boss ? 40 : 14); i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, Stats.boss ? 10f : 7f); }
+            DungeonFx.Sparks(Body, Vector2.up, deathCol, Stats.boss ? 30 : 10);
+            if (Stats.boss) for (int i = 0; i < 30; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, 10f); }
             if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
             var room = _room; var dc = _dc; var stats = Stats; Vector2 dropAt = room != null ? room.NearestWalkable(transform.position) : (Vector2)transform.position;
