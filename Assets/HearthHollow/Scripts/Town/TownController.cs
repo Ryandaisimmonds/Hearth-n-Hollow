@@ -153,10 +153,9 @@ namespace HearthHollow.Town
                 case TownAction.BackToCamp: _ui.CloseTown(); break;
                 case TownAction.Hearth:
                 {
-                    int done = 0, total = 0;
-                    foreach (var r in Session.Content.routes) if (r.chapter > 0) { total++; if (Session.Profile.clearedRouteIds.Contains(r.id)) done++; }
+                    int done = TownClock.Cleared(Session.Content, Session.Profile), total = TownClock.ProgressRoutes(Session.Content).Count;
                     string mood = done >= total ? "blazes blue-white — the Everflame is home" : done * 2 >= total ? "burns bright and golden" : done > 0 ? "is growing stronger" : "burns low";
-                    _ui.Toast("🔥 The Hearth " + mood + ". " + done + " of " + total + " chapters of the Ember Path cleared.");
+                    _ui.Toast("🔥 The Hearth " + mood + ". " + done + " of " + total + (Slice.On ? " areas cleared." : " chapters of the Ember Path cleared."));
                     break;
                 }
                 case TownAction.Bed: _ui.Toast("🛏️ Your hammock. You'll wake up here after each expedition."); break;
@@ -476,11 +475,27 @@ namespace HearthHollow.Town
         }
 
         // ───────────────────────── weather & visitors ─────────────────────────
+        /// Ticket 58: the time of day this town was built for.
+        public DayTime DayPart { get; private set; }
+        readonly List<Light2D> _lanterns = new List<Light2D>();
+        readonly List<SpriteRenderer> _lanternFlames = new List<SpriteRenderer>();
+
         void ApplyWeather(Light2D light, DungeonTheme theme, CampEvent ev)
         {
             Weather = ev == CampEvent.Storm ? TownWeather.Kind.Rain : ev == CampEvent.HarvestMoon ? TownWeather.Kind.Night : TownWeather.Kind.Calm;
             if (Weather == TownWeather.Kind.Rain) { light.color = new Color(0.7f, 0.76f, 0.92f); light.intensity = 0.5f; }
             if (Weather == TownWeather.Kind.Night) { light.color = new Color(0.5f, 0.58f, 0.95f); light.intensity = 0.28f; }
+            // ticket 58: on a calm day the light follows the time of day; the lanterns come on towards evening
+            DayPart = TownClock.For(Session.Profile.day);
+            if (Weather == TownWeather.Kind.Calm)
+            {
+                Color tint = DayPart == DayTime.Morning ? new Color(0.93f, 0.96f, 1f) : DayPart == DayTime.Afternoon ? new Color(1f, 0.9f, 0.74f) : new Color(1f, 0.6f, 0.45f);
+                float k = DayPart == DayTime.Morning ? 1f : DayPart == DayTime.Afternoon ? 0.92f : 0.45f;
+                light.color = light.color * tint; light.intensity *= k;
+            }
+            float lit = Weather == TownWeather.Kind.Night ? 1f : Weather == TownWeather.Kind.Rain ? 0.7f : TownClock.LanternGlow(DayPart);
+            foreach (var l in _lanterns) if (l != null) { l.intensity = 0.95f * lit; l.enabled = lit > 0.01f; }
+            foreach (var f in _lanternFlames) if (f != null) f.enabled = lit > 0.01f;
             var wgo = new GameObject("Weather");
             wgo.transform.SetParent(_root.transform, false);
             wgo.AddComponent<TownWeather>().Setup(Weather, _cam != null ? _cam : Camera.main);
@@ -507,9 +522,7 @@ namespace HearthHollow.Town
         {
             get
             {
-                int done = 0, total = 0;
-                foreach (var r in Session.Content.routes) if (r.chapter > 0) { total++; if (Session.Profile.clearedRouteIds.Contains(r.id)) done++; }
-                return total > 0 ? done / (float)total : 0f;
+                return TownClock.Progress(Session.Content, Session.Profile);   // ticket 58: the slice's areas count in the slice
             }
         }
 
@@ -582,7 +595,7 @@ namespace HearthHollow.Town
             if (_fireLight != null)
             {
                 _fireLight.color = col;
-                _fireLight.intensity = Mathf.Lerp(0.6f, 1.2f, t) * flicker;
+                _fireLight.intensity = Mathf.Lerp(0.6f, 1.2f, t) * flicker * (DayPart == DayTime.Evening || Weather == TownWeather.Kind.Night ? 1.35f : 1f);   // the Hearth stands out at dusk
                 _fireLight.pointLightOuterRadius = Mathf.Lerp(2.5f, 5.5f, t);
                 _fireLight.pointLightInnerRadius = Mathf.Lerp(0.3f, 1f, t);
                 if (_fireWall != null) { _fireWall.color = col; _fireWall.intensity = _fireLight.intensity * 0.6f; _fireWall.pointLightOuterRadius = _fireLight.pointLightOuterRadius * 1.6f; }

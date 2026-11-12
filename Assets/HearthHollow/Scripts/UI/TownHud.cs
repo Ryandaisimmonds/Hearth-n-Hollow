@@ -62,7 +62,8 @@ namespace HearthHollow.UI
         public override void Refresh()
         {
             var p = S.Profile;
-            _day.text = "☀️ Day " + p.day;
+            var dt = TownClock.For(p.day);   // ticket 58
+            _day.text = TownClock.Emoji(dt) + " Day " + p.day + " · " + TownClock.Name(dt);
             _coins.text = "🪙 " + p.coins;
             var ev = S.Hearth != null ? S.Hearth.campEvent : CampEvent.None;
             _weather.text = ev == CampEvent.Storm ? "🌧️ Stormy" : ev == CampEvent.HarvestMoon ? "🌕 Harvest moon" : ev == CampEvent.Merchant ? "🛒 Market day" : ev == CampEvent.Armourer ? "🛡️ Armourer in town" : ev == CampEvent.Forager ? "🧺 Forager's basket" : "☀️ Calm";

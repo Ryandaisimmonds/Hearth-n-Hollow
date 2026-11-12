@@ -19,7 +19,7 @@ namespace HearthHollow.Town
         {
             var p = Session.Profile;
             return Kitchen.Level(Session.Content, p, Station.Pot) + "/" + Kitchen.Level(Session.Content, p, Station.BBQ) + "/" +
-                   Kitchen.Level(Session.Content, p, Station.Sandwich) + "/" + p.pantryTier + "/" + ChaptersCleared + "/" + p.lampMakerStage;
+                   Kitchen.Level(Session.Content, p, Station.Sandwich) + "/" + p.pantryTier + "/" + ChaptersCleared + "/" + p.lampMakerStage + "/" + TownClock.Cleared(Session.Content, p);
         }
 
         int ChaptersCleared
@@ -151,9 +151,43 @@ namespace HearthHollow.Town
             new Vector4(17f, 27.6f, 33f, 27.6f), new Vector4(9.5f, 9.7f, 21.5f, 9.7f), new Vector4(17f, 12.6f, 33f, 12.6f), new Vector4(35f, 23.7f, 47f, 23.7f),
         };
 
+        /// How many lanterns line the streets: 4 to start, 4 more for each area cleared (the full game: 2 a chapter from chapter 2).
+        int LanternCount
+        {
+            get
+            {
+                int n = Slice.On ? 4 + 4 * TownClock.Cleared(Session.Content, Session.Profile) : 2 * (ChaptersCleared - 1);
+                return Mathf.Clamp(n, 0, LanternSpots.Length);
+            }
+        }
+
+        void BuildLanterns()
+        {
+            int lanterns = LanternCount;
+            if (lanterns <= 0) return;
+            var root = new GameObject("Lanterns · " + lanterns).transform;
+            root.SetParent(_root.transform, false);
+            for (int i = 0; i < lanterns; i++)
+            {
+                var p = LanternSpots[i];
+                int o = DungeonController.SortOrder(p.y);
+                Vector2 top = p + new Vector2(0, Art != null ? 0.85f : 1.15f);
+                if (Art != null) Prop("Stone Lantern 01", p, root, 1f, true);
+                else
+                {
+                    Box(root, p + new Vector2(0, 0.55f), new Vector2(0.08f, 1.1f), Iron, o);
+                    Box(root, top, new Vector2(0.26f, 0.3f), new Color(0.55f, 0.5f, 0.42f), o + 1);
+                }
+                _lanterns.Add(Glow(root, top, new Color(1f, 0.8f, 0.45f), 2.2f, 0.7f));
+                _lanternFlames.Add(Dot(root, top, 0.14f, new Color(1f, 0.85f, 0.45f), o + 2));   // the flame you see when it's lit
+            }
+        }
+
         void BuildDecor()
         {
             int ch = ChaptersCleared;
+            _lanterns.Clear(); _lanternFlames.Clear();
+            BuildLanterns();   // ticket 58: lanterns from the start, more as you clear areas; lit by the time of day
             if (ch <= 0) return;
             var root = new GameObject("Decorations · " + ch + " chapters").transform;
             root.SetParent(_root.transform, false);
@@ -180,22 +214,6 @@ namespace HearthHollow.Town
                 made++;
             }
 
-            // lanterns: 2 a chapter from chapter 2
-            int lanterns = Mathf.Min(LanternSpots.Length, Mathf.Max(0, 2 * (ch - 1)));
-            for (int i = 0; i < lanterns; i++)
-            {
-                var p = LanternSpots[i];
-                int o = DungeonController.SortOrder(p.y);
-                if (Art != null)
-                {
-                    Prop("Stone Lantern 01", p, root, 1f, true);
-                    Glow(root, p + new Vector2(0, 0.85f), new Color(1f, 0.8f, 0.45f), 2f, 0.7f);
-                    continue;
-                }
-                Box(root, p + new Vector2(0, 0.55f), new Vector2(0.08f, 1.1f), Iron, o);
-                Box(root, p + new Vector2(0, 1.15f), new Vector2(0.26f, 0.3f), new Color(1f, 0.85f, 0.45f), o + 1);
-                Glow(root, p + new Vector2(0, 1.15f), new Color(1f, 0.8f, 0.45f), 2f, 0.7f);
-            }
 
             // bunting: one more run a chapter from chapter 3
             int runs = Mathf.Min(BuntingRuns.Length, Mathf.Max(0, ch - 2));
