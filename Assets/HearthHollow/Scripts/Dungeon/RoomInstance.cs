@@ -349,7 +349,7 @@ namespace HearthHollow.Dungeon
                 foreach (var sp in eliteSpots) { float d = Vector2.Distance(sp, playerAt); if (d > best) { best = d; at = sp; } }
                 if (best < 4f) at = RandomFloorPoint(playerAt, 5f);
                 Boss = Controller.SpawnEnemy(this, bossId, true, true, at);
-                if (Boss != null) _enemies.Add(Boss);
+                if (Boss != null) { _enemies.Add(Boss); Controller.BossEntrance(this, Boss); }   // ticket 57
                 count = 2 + Mathf.Min(2, Mathf.Max(0, run.floor - 2) / 3);   // a few minions, not a horde, on deep boss floors
             }
             else

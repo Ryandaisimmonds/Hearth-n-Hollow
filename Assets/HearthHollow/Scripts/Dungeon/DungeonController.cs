@@ -704,11 +704,58 @@ namespace HearthHollow.Dungeon
             return null;
         }
 
+        // ── ticket 57: a boss's entrance — title card, the camera pushing in on it, the room's lights flaring ──
+        EnemyController _introBoss; float _introPush, _introBaseSize; bool _wasPushing;
+
+        /// How far in the camera is pushed (0 = normal, 1 = full) at `t` seconds into the entrance.
+        public static float IntroPush(float t)
+        {
+            if (t < 0f || t >= DungeonHud.IntroLength) return 0f;
+            float inK = Mathf.Clamp01(t / 0.6f), outK = Mathf.Clamp01((DungeonHud.IntroLength - t) / 0.8f);
+            return Mathf.SmoothStep(0f, 1f, Mathf.Min(inK, outK));
+        }
+
+        public void BossEntrance(RoomInstance room, EnemyController boss)
+        {
+            if (boss == null) return;
+            var route = Session.Content.Route(Session.Run != null ? Session.Run.routeId : null);
+            DungeonHud.IntroName = boss.DisplayName;
+            DungeonHud.IntroSub = route != null && !string.IsNullOrEmpty(route.name) ? "Guardian of " + route.name : "It has been waiting for you";
+            DungeonHud.IntroT = 0f;
+            _introBoss = boss;
+            if (!_wasPushing && _cam != null) _introBaseSize = _cam.orthographicSize;   // push in from whatever the camera is now
+            Vector3 at = boss.Body;
+            Color col = Color.Lerp(EnemyController.ElementColour(boss.Profile != null ? boss.Profile.element : Element.None), new Color(1f, 0.45f, 0.2f), 0.5f);
+            DungeonFx.Flash(at, col, 10f, 2.4f, 1.6f);                            // the room flares
+            DungeonFx.RingAt(at, new Color(col.r, col.g, col.b, 0.9f), 2.6f, 0.7f);
+            if (room != null && room.Lights != null) room.Lights.IgniteWave(at);   // its braziers roar up from the boss outward
+            Shake(0.35f, 0.4f);
+            GameLook.Punch(0.8f);
+            GameFeel.SlowMo(0.4f, 1.2f);                                           // a beat to take it in
+        }
+
+        void UpdateBossIntro(float dt)
+        {
+            if (DungeonHud.IntroT < 0f) { _introPush = 0f; return; }
+            DungeonHud.IntroT += dt;
+            _introPush = IntroPush(DungeonHud.IntroT);
+            if (DungeonHud.IntroT >= DungeonHud.IntroLength) { DungeonHud.IntroT = -1f; _introBoss = null; _introPush = 0f; }
+        }
+
         void LateUpdate()
         {
             if (_cam == null || _root == null) return;
             float dt = Time.unscaledDeltaTime;
-            Vector3 pos = Vector3.Lerp(_cam.transform.position, _camTarget, 1f - Mathf.Exp(-dt * 14f));
+            UpdateBossIntro(dt);
+            Vector3 aim = _camTarget;
+            if (_introPush > 0f && _introBoss != null && !_introBoss.Dead)
+            {
+                Vector3 b = _introBoss.Body; b.z = _camTarget.z;
+                aim = Vector3.Lerp(_camTarget, b, 0.55f * _introPush);   // lean towards the boss
+            }
+            if (_introPush > 0f || _wasPushing) _cam.orthographicSize = _introBaseSize * (1f - 0.22f * _introPush);   // and push in
+            _wasPushing = _introPush > 0f;
+            Vector3 pos = Vector3.Lerp(_cam.transform.position, aim, 1f - Mathf.Exp(-dt * 14f));
             pos.z = _camTarget.z;
             if (_shakeT > 0f && GameplayActive)
             {

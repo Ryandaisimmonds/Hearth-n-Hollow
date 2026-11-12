@@ -36,6 +36,9 @@ namespace HearthHollow.Dungeon
         public static bool Locked;            // doors shut
         public static float BossHp01 = -1f;   // < 0 = no boss bar
         public static string BossName;
+        public static string IntroName, IntroSub;   // ticket 57: the boss's title card
+        public static float IntroT = -1f;            // seconds into the card (< 0 = none)
+        public const float IntroLength = 2.8f;
         public static readonly List<MapRoom> Map = new List<MapRoom>();
         public static int MapVersion;
 
@@ -58,7 +61,7 @@ namespace HearthHollow.Dungeon
             Active = false; BagOpen = false; Skill01 = 1f; Dash01 = 1f; Guarding = false;
             BuffText = null; Skill1Move = Skill2Move = DashMove = null; Skill2_01 = 1f;
             Prompt = null; Status = null; Locked = false; BossHp01 = -1f; BossName = null;
-            Map.Clear(); MapVersion++; LootTags.Clear(); Fog01 = 0f; Tutorial = null; InFall = false;
+            Map.Clear(); MapVersion++; LootTags.Clear(); Fog01 = 0f; Tutorial = null; InFall = false; IntroT = -1f;
         }
     }
 }

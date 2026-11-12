@@ -41,6 +41,7 @@ namespace HearthHollow.UI
         readonly Label _bagTitle;
         readonly VisualElement _holdRow, _holdSlot;   // ticket 48
         readonly VisualElement _fog;   // ticket 49
+        readonly VisualElement _bossCard; readonly Label _bossCardName, _bossCardSub;   // ticket 57
         readonly Label _tutorial;
         readonly Label _holdText, _bagHint;
         int _cursor, _dragFrom = -1;
@@ -62,6 +63,13 @@ namespace HearthHollow.UI
             Root.Add(_hurt);
             _fog = UIKit.E("dungeon__fog"); _fog.pickingMode = PickingMode.Ignore;   // ticket 49: the fall's rising fog
             Root.Add(_fog);
+            _bossCard = UIKit.E("boss-card"); _bossCard.pickingMode = PickingMode.Ignore;   // ticket 57: the boss's title card
+            var band = UIKit.E("boss-card__band"); band.pickingMode = PickingMode.Ignore; _bossCard.Add(band);
+            band.Add(UIKit.L("— GUARDIAN —", "boss-card__over"));
+            _bossCardName = UIKit.L("", "boss-card__name"); band.Add(_bossCardName);
+            _bossCardSub = UIKit.L("", "boss-card__sub"); band.Add(_bossCardSub);
+            UIKit.Show(_bossCard, false);
+            Root.Add(_bossCard);
             _tutorial = UIKit.L("", "dhud__tutorial"); _tutorial.pickingMode = PickingMode.Ignore;
             Root.Add(_tutorial);
             _numbers = UIKit.E("dungeon__numbers"); _numbers.pickingMode = PickingMode.Ignore;
@@ -276,6 +284,18 @@ namespace HearthHollow.UI
 
             _fog.style.opacity = DungeonHud.Fog01 * 0.6f;   // ticket 49; lighter since ticket 55 (the fog now rolls through the world too)
             UIKit.Show(_fog, DungeonHud.Fog01 > 0.01f);
+            float it = DungeonHud.IntroT;   // ticket 57: in, hold, out
+            bool card = it >= 0f && it < DungeonHud.IntroLength;
+            UIKit.Show(_bossCard, card);
+            if (card)
+            {
+                _bossCardName.text = DungeonHud.IntroName ?? ""; _bossCardSub.text = DungeonHud.IntroSub ?? "";
+                float a = Mathf.Clamp01(it / 0.35f) * Mathf.Clamp01((DungeonHud.IntroLength - it) / 0.5f);
+                _bossCard.style.opacity = a;
+                float slide = (1f - Mathf.Clamp01(it / 0.35f)) * 40f;
+                _bossCard.style.translate = new Translate(slide, 0f);
+                _bossCard.style.scale = new Scale(Vector3.one * (1f + 0.04f * Mathf.Clamp01(it / DungeonHud.IntroLength)));
+            }
             _tutorial.text = DungeonHud.Tutorial ?? "";
             UIKit.Show(_tutorial, !string.IsNullOrEmpty(DungeonHud.Tutorial));
             string prompt = DungeonHud.Prompt;
