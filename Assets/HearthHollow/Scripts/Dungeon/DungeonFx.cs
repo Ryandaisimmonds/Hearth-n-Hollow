@@ -85,6 +85,20 @@ namespace HearthHollow.Dungeon
             }
         }
 
+        /// Ticket 55: a big soft blob (fog banks, breath, heat shimmer): white in the middle, fading to nothing at the edge.
+        public static Sprite Soft
+        {
+            get
+            {
+                return Make("soft", 32, 32, (x, y) =>
+                {
+                    float d = Vector2.Distance(new Vector2(x + 0.5f, y + 0.5f), new Vector2(16, 16)) / 16f;
+                    float a = Mathf.Clamp01(1f - d); a = a * a * (3f - 2f * a);
+                    return new Color(1, 1, 1, a);
+                }, new Vector2(0.5f, 0.5f));
+            }
+        }
+
         public static Sprite Orb
         {
             get

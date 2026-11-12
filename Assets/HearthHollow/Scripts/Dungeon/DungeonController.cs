@@ -54,6 +54,7 @@ namespace HearthHollow.Dungeon
         public void Init(GameSession session, GameUI ui, DungeonSettings settings)
         {
             Instance = this;
+            if (GetComponent<AreaAtmosphere>() == null) gameObject.AddComponent<AreaAtmosphere>();   // ticket 55: each area's air
             Session = session; _ui = ui; Settings = settings;
             _loot = gameObject.AddComponent<FloorLootView>(); _loot.Init(this);   // ticket 48: loot on the floor
             _cam = Camera.main;

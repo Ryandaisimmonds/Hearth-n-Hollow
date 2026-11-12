@@ -274,7 +274,7 @@ namespace HearthHollow.UI
             UIKit.Show(_bossBox, boss);
             if (boss) { _bossName.text = "👑 " + DungeonHud.BossName; _bossBar.Set(DungeonHud.BossHp01, 1f, ""); }
 
-            _fog.style.opacity = DungeonHud.Fog01;   // ticket 49
+            _fog.style.opacity = DungeonHud.Fog01 * 0.6f;   // ticket 49; lighter since ticket 55 (the fog now rolls through the world too)
             UIKit.Show(_fog, DungeonHud.Fog01 > 0.01f);
             _tutorial.text = DungeonHud.Tutorial ?? "";
             UIKit.Show(_tutorial, !string.IsNullOrEmpty(DungeonHud.Tutorial));

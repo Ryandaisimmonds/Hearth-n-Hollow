@@ -67,6 +67,8 @@ namespace HearthHollow.Dungeon
         bool _dashTail;       // one last sweep on the frame a dash ends (a short dash can finish between two frames)
 
         public Vector2 Feet { get { return transform.position; } }
+        /// Ticket 55: the way the cook faces, as a unit vector.
+        public Vector2 FacingDir { get { return _facing == Facing.Left ? Vector2.left : _facing == Facing.Right ? Vector2.right : _facing == Facing.Up ? Vector2.up : Vector2.down; } }
         public Vector2 Body { get { return (Vector2)transform.position + new Vector2(0, _anim != null ? _anim.FigureHeight * 0.45f : 0.4f); } }
         /// Hip height: projectiles fly on this plane so they hit short and tall monsters alike.
         Vector2 Hip { get { return (Vector2)transform.position + new Vector2(0, 0.45f); } }
