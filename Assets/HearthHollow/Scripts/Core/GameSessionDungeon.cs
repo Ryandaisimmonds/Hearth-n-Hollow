@@ -78,12 +78,13 @@ namespace HearthHollow.Core
 
         // ───────────── player ─────────────
         /// A monster hit the player for <paramref name="raw"/>. Returns damage taken; ends the run at 0 HP.
-        public int DungeonDamagePlayer(float raw)
+        public int DungeonDamagePlayer(float raw, string source = null)
         {
             if (!InDungeon) return 0;
             if (DungeonHas(Mutator.GlassHearts)) raw *= T.glassMult;
             int dmg = DungeonRules.IncomingDamage(raw, Stats, DungeonGuardMult);
             Run.hp -= dmg;
+            DeathRecap.Note(Run, source, dmg);   // ticket 65
             Emit(new GameEvent(GameEventType.MonsterHit, dmg, true, "-" + dmg));
             if (Run.hp <= 0 && !Run.secondWindUsed && Gear.Perk(Content, Profile, TrinketPerk.SecondWind) > 0f)
             {
@@ -142,6 +143,7 @@ namespace HearthHollow.Core
             int dmg = Math.Max(1, (int)Math.Round(Stats.maxHp * pct));
             dmg = Math.Min(dmg, Run.hp - 1);
             Run.hp -= dmg;
+            DeathRecap.Note(Run, Routes.HazardEmoji(h) + " The " + Routes.HazardName(h).ToLowerInvariant(), dmg);   // ticket 65
             Touch(false);
             return dmg;
         }

@@ -1794,3 +1794,7 @@ Label { white-space: normal; color: var(--hh-text); }
 .feast__stats { flex-direction: row; margin-top: 22px; }
 .feast__stat { font-size: 30px; color: rgb(255, 244, 220); -unity-font-style: bold; margin: 0 26px 0 26px; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8); }
 .feast__hint { margin-top: 18px; color: rgba(255, 240, 220, 0.55); }
+/* ticket 65: what got you */
+.summary__recap { flex-shrink: 0; padding: 8px 14px 8px 14px; border-radius: 8px; background-color: rgba(80, 20, 20, 0.35); border-width: 1px; border-color: rgba(200, 90, 80, 0.5); margin-top: 8px; }
+.summary__recap-line { flex-shrink: 0; margin-top: 0; color: rgb(236, 214, 200); }
+.summary__recap-line--last { color: rgb(255, 150, 130); -unity-font-style: bold; }

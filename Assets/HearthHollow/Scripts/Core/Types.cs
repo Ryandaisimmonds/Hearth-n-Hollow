@@ -616,6 +616,7 @@ namespace HearthHollow.Core
         public string storyText;                // the route's story outro on a first clear
         public List<string> trinketsFound = new List<string>();   // trinkets found this run (drops + first-clear reward)
         public List<ItemStack> lost = new List<ItemStack>();       // bag contents lost in a fall (contentVersion 14)
+        public List<HitNote> lastHits = new List<HitNote>();     // ticket 65: the last few hits before you fell
     }
 
     [Serializable] public class GameEvent

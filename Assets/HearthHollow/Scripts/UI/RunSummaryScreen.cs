@@ -61,6 +61,24 @@ namespace HearthHollow.UI
             stats.Add(Big("coin", "🪙", "+" + s.totalCoins, "coins"));
             _body.Add(stats);
 
+            // ticket 65: what got you — the last few hits before you fell, the killing blow last
+            if (s.outcome == RunOutcome.Died && s.lastHits != null && s.lastHits.Count > 0)
+            {
+                var rec = UIKit.E("summary__section", "summary__recap");
+                rec.Add(UIKit.L("💀 What got you", "subhead"));
+                for (int i = 0; i < s.lastHits.Count; i++)
+                {
+                    var h = s.lastHits[i];
+                    bool last = i == s.lastHits.Count - 1;
+                    var line = UIKit.L((last ? "▶ " : "· ") + h.who + "  hit for " + h.dmg + (last ? "  — the last blow" : "  (❤️ " + h.hpAfter + " left)"), "small", "summary__recap-line");
+                    if (last) line.AddToClassList("summary__recap-line--last");
+                    rec.Add(line);
+                }
+                int worst; string who = DeathRecap.Worst(s.lastHits, out worst);
+                if (who != null && s.lastHits.Count > 1) rec.Add(UIKit.L("Most of it came from " + who + " (" + worst + " damage).", "small", "muted"));
+                _body.Add(rec);
+            }
+
             // story: key item found + the chapter's closing text (first clear only), then what's next
             if (!string.IsNullOrEmpty(s.keyItemFound) || !string.IsNullOrEmpty(s.storyText))
             {

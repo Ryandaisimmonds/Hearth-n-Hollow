@@ -11,6 +11,7 @@ namespace HearthHollow.Dungeon
         bool _fromPlayer;
         float _mult;        // player: damage multiplier (rolled on hit, with crits)
         float _raw;         // monster: raw damage
+        public string Source;   // ticket 65: who threw it (for the death recap)
         bool _pierce;
         float _life = 2.5f;
         Vector2 _vel;
@@ -156,7 +157,7 @@ namespace HearthHollow.Dungeon
                 if (pl != null)
                 {
                     if (!pl.CanBeHit) return;   // dashing through it
-                    pl.TakeHit(_raw, transform.position, _type);
+                    pl.TakeHit(_raw, transform.position, _type, Source);
                     Die();
                     return;
                 }

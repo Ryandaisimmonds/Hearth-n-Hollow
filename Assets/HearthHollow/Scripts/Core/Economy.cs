@@ -277,6 +277,7 @@ namespace HearthHollow.Core
                 roomsCleared = run.roomsCleared, kills = run.kills,
                 floorReached = run.dungeon ? run.floor : 0, floorsTotal = run.dungeon ? run.floorsTotal : 0
             };
+            if (run.outcome == RunOutcome.Died && run.lastHits != null) s.lastHits.AddRange(run.lastHits);   // ticket 65
 
             s.coinsFromKills = run.coinsEarned;
             if (run.outcome == RunOutcome.Cleared)

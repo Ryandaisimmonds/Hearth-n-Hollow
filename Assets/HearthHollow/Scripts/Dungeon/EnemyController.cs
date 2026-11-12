@@ -169,7 +169,7 @@ namespace HearthHollow.Dungeon
                     break;
                 case St.Charging:
                     if (!_chargeHit && Player.CanBeHit && Vector2.Distance(Player.Body, Body) < 0.75f * Mathf.Max(1f, Profile.scale))
-                    { _chargeHit = true; Player.TakeHit(Stats.damage, transform.position, OwnElement); }
+                    { _chargeHit = true; Player.TakeHit(Stats.damage, transform.position, OwnElement, HitName); }
                     if (_stT <= 0f) { _st = St.Recover; _stT = 0.5f; }
                     break;
                 case St.Recover:
@@ -297,11 +297,22 @@ namespace HearthHollow.Dungeon
             }
         }
 
+        /// Ticket 65: how this monster shows up in the death recap ("👑 Bramble Sow", "⭐ Fog Wolf", "🐺 Fog Wolf").
+        public string HitName
+        {
+            get
+            {
+                var md = _dc != null ? _dc.Session.Content.Monster(Stats.monsterId) : null;
+                string em = Stats.boss ? "👑" : Stats.elite ? "⭐" : md != null && !string.IsNullOrEmpty(md.emoji) ? md.emoji : "👾";
+                return em + " " + (Stats.elite && !Stats.boss ? "Elite " : "") + DisplayName;
+            }
+        }
+
         void Bite()
         {
             if (Dead || Player == null || _dc == null || !_dc.GameplayActive || _stunT > 0f) return;
             float reach = Profile.attackRange + 0.35f;
-            if (Vector2.Distance(Player.Body, Body + _lockDir * 0.3f) <= reach) Player.TakeHit(Stats.damage, transform.position, OwnElement);
+            if (Vector2.Distance(Player.Body, Body + _lockDir * 0.3f) <= reach) Player.TakeHit(Stats.damage, transform.position, OwnElement, HitName);
             DungeonFx.SlashAt(Body + _lockDir * 0.3f, _lockDir, new Color(1f, 0.5f, 0.45f, 0.75f), 0.8f);
         }
 
@@ -311,7 +322,7 @@ namespace HearthHollow.Dungeon
             Color c = Profile.archetype == EnemyArchetype.Brute ? new Color(1f, 0.55f, 0.2f) : new Color(0.75f, 0.45f, 1f);
             // hip height (same plane as player arrows), so a tall monster's level shots don't sail over the player
             var shot = Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Profile.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
-            if (shot != null) shot.SetHit(OwnElement);   // the monster's element: a guard meal halves it
+            if (shot != null) { shot.SetHit(OwnElement); shot.Source = HitName; }   // ticket 65   // the monster's element: a guard meal halves it
         }
 
         void FixedUpdate()

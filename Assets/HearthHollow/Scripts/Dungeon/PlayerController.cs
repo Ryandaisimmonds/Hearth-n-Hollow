@@ -1486,7 +1486,7 @@ namespace HearthHollow.Dungeon
         // ───────────────────────── getting hit ─────────────────────────
         public bool CanBeHit { get { return !Dashing && Time.time >= _invulnUntil; } }
 
-        public void TakeHit(float raw, Vector2 from, Element element = Element.None)
+        public void TakeHit(float raw, Vector2 from, Element element = Element.None, string source = null)
         {
             if (!CanBeHit || _dc == null || !_dc.GameplayActive) return;
             bool guarded = element != Element.None && S.RunGuards.Contains(element);
@@ -1505,7 +1505,7 @@ namespace HearthHollow.Dungeon
             if (DungeonHud.PlayerHurt != null) DungeonHud.PlayerHurt();
             HearthHollow.Runtime.GameAudio.Play("hurt");
             Vector3 numAt = Body + Vector2.up * 0.6f;
-            int dmg = S.DungeonDamagePlayer(raw);   // may end the run (the floor is torn down)
+            int dmg = S.DungeonDamagePlayer(raw, source);   // may end the run (the floor is torn down); ticket 65: who did it
             DungeonHud.Number(numAt, "-" + dmg, "dnum--hurt");
             if (guarded) { DungeonHud.Number(numAt + Vector3.up * 0.35f, Elements.Emoji(element) + " Guarded", "dnum--info"); S.Log(Elements.Emoji(element) + " Your meal guarded a " + Elements.Name(element) + " hit"); }
         }

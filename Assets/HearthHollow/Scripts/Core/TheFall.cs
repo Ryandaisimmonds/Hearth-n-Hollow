@@ -41,7 +41,7 @@ namespace HearthHollow.Core
         public void FallFogBite()
         {
             if (!InDungeon || !InFall || Run.hp <= 0) return;
-            DungeonDamagePlayer(Math.Max(2f, Stats.maxHp * T.fallFogBitePct) / Math.Max(0.1f, 1f - Stats.armourPct));   // armour doesn't help against the fog
+            DungeonDamagePlayer(Math.Max(2f, Stats.maxHp * T.fallFogBitePct) / Math.Max(0.1f, 1f - Stats.armourPct), "🌫️ The fog");   // armour doesn't help against the fog
         }
 
         /// A brand-new game in the slice: nothing done yet, so it opens in the dungeon.
