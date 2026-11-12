@@ -275,7 +275,7 @@ namespace HearthHollow.Core
             {
                 outcome = run.outcome, routeId = run.routeId, classId = run.classId,
                 roomsCleared = run.roomsCleared, kills = run.kills,
-                floorReached = run.dungeon ? run.floor : 0, floorsTotal = run.dungeon ? run.floorsTotal : 0
+                floorReached = run.floor, floorsTotal = run.floorsTotal
             };
             if (run.outcome == RunOutcome.Died && run.lastHits != null) s.lastHits.AddRange(run.lastHits);   // ticket 65
 

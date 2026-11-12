@@ -31,8 +31,6 @@ namespace HearthHollow.UI
         readonly HearthScreen _hearth;
         readonly RouteScreen _routes;
         readonly DungeonScreen _dungeon;
-        readonly HollowScreen _hollow;
-        readonly FightOverlay _fight;
         readonly GatherOverlay _gather;
         readonly RestOverlay _rest;
         readonly RunSummaryScreen _summary;
@@ -87,13 +85,11 @@ namespace HearthHollow.UI
             _hearth = new HearthScreen(this);
             _routes = new RouteScreen(this);
             _dungeon = new DungeonScreen(this);
-            _hollow = new HollowScreen(this);
             _summary = new RunSummaryScreen(this);
             _rest = new RestOverlay(this);
             _gather = new GatherOverlay(this);
-            _fight = new FightOverlay(this);
             _townHud = new TownHud(this);
-            _all = new UIScreen[] { _townHud, _classSelect, _hearth, _routes, _dungeon, _hollow, _summary, _rest, _gather, _fight };
+            _all = new UIScreen[] { _townHud, _classSelect, _hearth, _routes, _dungeon, _summary, _rest, _gather };
             for (int i = 0; i < _all.Length; i++) Stage.Add(_all[i].Root);
 
             // Settings: a modal overlay above the stage (not shaken) plus the gear button that opens it.
@@ -229,7 +225,7 @@ namespace HearthHollow.UI
         /// Full wipe from the settings menu: new profile, back to camp, pick a class like a first launch.
         public void ResetGame()
         {
-            _lastPhase = Phase.Hearth;   // so wiping mid-fight doesn't play a fight outro
+            _lastPhase = Phase.Hearth;
             _settingsOpen = false;
             _campEventOpen = false;
             _routesOpen = false;
@@ -251,11 +247,6 @@ namespace HearthHollow.UI
             Phase p = Session.Phase;
             if (p == Phase.Rest && _lastPhase != Phase.Rest) LastRestHeal = _pendingHeal;
             _pendingHeal = 0;
-            if (_lastPhase == Phase.Fight && p != Phase.Fight && _fight.Visible)
-            {
-                RunOutcome ended = (p == Phase.RunEnd && Session.LastSummary != null) ? Session.LastSummary.outcome : RunOutcome.None;
-                _fight.PlayOutro(ended, ApplyLayout);
-            }
             if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Slice.On) { _townOpen = true; _townMenuOpen = false; }   // ticket 17: home is the town
             if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _seasonOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
@@ -275,19 +266,15 @@ namespace HearthHollow.UI
             Phase p = Session.Phase;
             bool dungeon = InDungeonView;
             bool world = dungeon || TownWorldVisible || TownStationOpen;   // the camera draws the world (dungeon or town) behind a transparent UI (town stations open over it)
-            bool inRun = !dungeon && (p == Phase.Explore || p == Phase.Fight || p == Phase.Gather || p == Phase.Rest);
-            bool outro = _fight.InOutro;
 
             _classSelect.SetVisible(p == Phase.Hearth && _classSelectOpen);
             _hearth.SetVisible(p == Phase.Hearth && !_classSelectOpen && !_routesOpen && (!_townOpen || _townMenuOpen));
             _townHud.SetVisible(TownWorldVisible);
             _routes.SetVisible(p == Phase.Hearth && !_classSelectOpen && _routesOpen);
-            _hollow.SetVisible(inRun || (p == Phase.RunEnd && outro));
             _dungeon.SetVisible(dungeon);
-            _summary.SetVisible(p == Phase.RunEnd && !outro && !Session.FallEnding);   // ticket 49: the fall has no summary
+            _summary.SetVisible(p == Phase.RunEnd && !Session.FallEnding);   // ticket 49: the fall has no summary
             _rest.SetVisible(p == Phase.Rest);
             _gather.SetVisible(p == Phase.Gather);
-            _fight.SetVisible(p == Phase.Fight || outro);
             _campEvent.SetVisible(_campEventOpen && p == Phase.Hearth && !_classSelectOpen);
             _pantry.SetVisible(_pantryOpen && !_campEventOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
             _cook.SetVisible(_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
@@ -299,10 +286,8 @@ namespace HearthHollow.UI
             _settings.SetVisible(_settingsOpen);
             _gear.EnableInClassList("hh-gear--open", _settingsOpen);
 
-            bool hollowTheme = inRun || (p == Phase.RunEnd && outro);
             Root.EnableInClassList("theme-dungeon", world);   // transparent: the dungeon / town is drawn by the camera
-            Root.EnableInClassList("theme-hollow", hollowTheme && !world);
-            Root.EnableInClassList("theme-hearth", !hollowTheme && !world);
+            Root.EnableInClassList("theme-hearth", !world);
             // Inline override: the root's colour transition never settles on fully transparent, so force it here.
             if (world)
             {
@@ -321,8 +306,8 @@ namespace HearthHollow.UI
         void OnEvent(GameEvent e)
         {
             if (e == null) return;
-            // Heals emitted during a move that lands on a rest tile are shown by the rest overlay.
-            if (e.type == GameEventType.PlayerHeal && e.onPlayer && Session.Phase == Phase.Explore)
+            // Heals emitted as you sit down at a campfire are shown by the rest overlay.
+            if (e.type == GameEventType.PlayerHeal && e.onPlayer && Session.Phase == Phase.Dungeon)
                 _pendingHeal += Mathf.RoundToInt(e.amount);
 
             // Forward to visible screens for juice (fight numbers, hollow HUD floats, …).
@@ -408,13 +393,13 @@ namespace HearthHollow.UI
             if (k == KeyCode.Escape && _townOpen && _townMenuOpen && _hearth.Visible) { CloseTownMenu(); return true; }   // town: back to walking
             if (k == KeyCode.Escape && !_classSelect.Visible && !_routes.Visible) { OpenSettings(); return true; }
             // Top-most first.
-            UIScreen[] order = { _fight, _gather, _rest, _summary, _dungeon, _hollow, _classSelect, _routes, _hearth };
+            UIScreen[] order = { _gather, _rest, _summary, _dungeon, _classSelect, _routes, _hearth };
             for (int i = 0; i < order.Length; i++)
             {
                 if (!order[i].Visible) continue;
                 if (order[i].HandleKey(k)) return true;
                 // Overlays swallow keys meant for screens underneath (no walking during a fight).
-                if (order[i] == _fight || order[i] == _gather || order[i] == _rest) return false;
+                if (order[i] == _gather || order[i] == _rest) return false;
             }
             return false;
         }

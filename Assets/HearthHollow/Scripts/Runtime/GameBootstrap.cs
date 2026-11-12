@@ -88,8 +88,7 @@ namespace HearthHollow.Runtime
             }
             else
             {
-                Session.UseDungeon = false;   // no dungeon kit yet: fall back to the fog-grid runs
-                Debug.LogWarning("[Hearth & Hollow] No Dungeon Settings on GameBootstrap — run Hearth & Hollow > Build Dungeon Kit.");
+                Debug.LogError("[Hearth & Hollow] No Dungeon Settings on GameBootstrap — run Hearth & Hollow > Build Dungeon Kit.");
             }
         }
 

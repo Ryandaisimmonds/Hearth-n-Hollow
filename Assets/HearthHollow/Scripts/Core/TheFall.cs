@@ -47,7 +47,7 @@ namespace HearthHollow.Core
         /// A brand-new game in the slice: nothing done yet, so it opens in the dungeon.
         public bool FallDue
         {
-            get { return Slice.On && UseDungeon && Phase == Phase.Hearth && Wren == WrenStep.Meet && Profile.runsStarted == 0 && Profile.arcStage == 0; }
+            get { return Slice.On && Phase == Phase.Hearth && Wren == WrenStep.Meet && Profile.runsStarted == 0 && Profile.arcStage == 0; }
         }
 
         /// Start the opening fall into Meadow Hollow (no town, no Wren, no meals yet). False if it isn't due.

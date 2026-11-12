@@ -1,5 +1,5 @@
 // Hearth & Hollow — GameSession: the single facade the UI talks to.
-// Orchestrates Economy / Meals / Bag / StatCalc / Explore / Combat. Pure C#.
+// Orchestrates Economy / Meals / Bag / StatCalc / RunRules / the dungeon. Pure C#.
 using System;
 using System.Collections.Generic;
 
@@ -335,9 +335,9 @@ namespace HearthHollow.Core
             if (offer == null) offer = new RouteOffer { routeId = routeId, mod = RouteMod.None };
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
-            Run = Explore.CreateRun(Content, Profile, offer, storm, _rng);
+            Run = RunRules.CreateRun(Content, Profile, offer, storm);
             ClearRunLog();   // a fresh log each run (ticket 20)
-            Run.firstDive = UseDungeon && !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
+            Run.firstDive = !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
             Run.firstRidge = false;   // ticket 47: Chili Ridge is the gentle area now (no special first trip)
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.infusions = Cooking.Infusions(Content, Run.eaten);   // ticket 46: every meal's infusion; attacks without their own element carry them all
@@ -348,13 +348,12 @@ namespace HearthHollow.Core
             Run.storm = storm;
             Run.harvestMoon = Hearth.campEvent == CampEvent.HarvestMoon;
             Emit(Meals.PackForRun(Content, Run));   // the tray is eaten at camp: buffs last the whole run
-            Run.skillCooldown = 0;
             // Profile.tray is kept until the run ends, so quitting mid-run doesn't lose packed meals.
             Profile.runsStarted++;
             Recompute();
             Run.hp = Stats.maxHp;
             if (!DungeonRules.StartFloors(Content, Profile, routeId).Contains(startFloor)) startFloor = 1;
-            if (UseDungeon) BeginDungeon(startFloor); else Phase = Phase.Explore;
+            BeginDungeon(startFloor);
             LastSummary = null;
             var r = Content.Route(routeId);
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
@@ -368,94 +367,12 @@ namespace HearthHollow.Core
             return true;
         }
 
-        // ───────────────────────── Hollow ─────────────────────────
-        public bool CanMoveTo(int x, int y) { return Phase == Phase.Explore && Run != null && Explore.CanMoveTo(Run, x, y); }
-
-        public bool MoveTo(int x, int y)
+        private void DropLoot(bool elite)
         {
-            if (!CanMoveTo(x, y)) return false;
-            Emit(Explore.MoveTo(Run, x, y));
-            var tile = Run.TileAt(x, y);
-            if (!tile.resolved)
-            {
-                switch (tile.type)
-                {
-                    case TileType.Monster:
-                    case TileType.Elite:
-                        Run.fight = Combat.StartFight(Content, tile, Run, Run.skillCooldown);
-                        Phase = Phase.Fight;
-                        var m = Content.Monster(tile.monsterId);
-                        Info((tile.type == TileType.Elite ? "👑 " : "") + (m != null ? m.emoji + " " + m.name : "A monster") + " blocks the way!");
-                        break;
-                    case TileType.Gather:
-                        Run.gather = Explore.StartGather(Content, Run, Stats, _rng);
-                        Phase = Phase.Gather;
-                        break;
-                    case TileType.Rest:
-                        int healed = Explore.ApplyRest(Content, Run, Stats);
-                        tile.resolved = true; Run.roomsCleared++;
-                        Emit(new GameEvent(GameEventType.PlayerHeal, healed, true, "Rested by the fire"));
-                        Phase = Phase.Rest;
-                        break;
-                    case TileType.Exit:
-                        tile.resolved = true;
-                        Emit(new GameEvent(GameEventType.RunCleared, 0, true, "Through the portal!"));
-                        EndRun(RunOutcome.Cleared);
-                        return true;
-                    default:
-                        tile.resolved = true;
-                        break;
-                }
-            }
-            else if (tile.type == TileType.Exit)
-            {
-                EndRun(RunOutcome.Cleared);
-                return true;
-            }
-            Touch(false);
-            return true;
-        }
-
-        public bool CanUseSkill() { return Phase == Phase.Fight && Run != null && Run.fight != null && Combat.CanUseSkill(Content, Profile, Run); }
-
-        public void Fight(FightAction action)
-        {
-            if (Phase != Phase.Fight || Run == null || Run.fight == null) return;
-            if (action == FightAction.Skill && !CanUseSkill()) { Info("Skill isn't ready"); return; }
-            var f = Run.fight;
-            Emit(Combat.PlayerTurn(Content, Profile, Run, Stats, action, _rng));
-            if (!f.over) { Touch(false); return; }
-
-            Run.skillCooldown = f.skillCooldown;
-            if (f.playerWon)
-            {
-                var tile = Run.TileAt(Run.px, Run.py);
-                tile.resolved = true;
-                Run.kills++; Run.roomsCleared++;
-                int coins = Combat.KillCoins(Content, Run, Stats, f);
-                int xp = Combat.KillXp(Content, Run, f);
-                Run.coinsEarned += coins; Run.killXp += xp;
-                Emit(new GameEvent(GameEventType.Coins, coins, true, "+" + coins + " coins"));
-                Emit(new GameEvent(GameEventType.Xp, xp, true, "+" + xp + " XP"));
-                DropLoot(f);
-                Run.fight = null;
-                Phase = Phase.Explore;
-                Touch(false);
-            }
-            else
-            {
-                Run.fight = null;
-                Info("You limp home…");
-                EndRun(RunOutcome.Died);
-            }
-        }
-
-        private void DropLoot(FightState f)
-        {
-            DropMaterial(f.elite, false);   // building materials for kitchen upgrades
+            DropMaterial(elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
             if (route == null) return;
-            if (!f.elite && !Run.firstRidge && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16); the first Ridge trip always drops
+            if (!elite && !Run.firstRidge && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16); the first Ridge trip always drops
             string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops (ticket 13)
             if (id == null) return;
             // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)
@@ -464,8 +381,8 @@ namespace HearthHollow.Core
                 var guards = Routes.CounterAccelerators(Content, route.hazard);
                 if (guards.Count > 0) id = _rng.Pick(guards).id;
             }
-            int count = (f.elite ? 2 : 1) * (Run.mod == RouteMod.Lucky ? 2 : 1);
-            AddLoot(id, count, f.elite);
+            int count = (elite ? 2 : 1) * (Run.mod == RouteMod.Lucky ? 2 : 1);
+            AddLoot(id, count, elite);
         }
 
         /// Building materials (kitchen upgrades): a chance from normal monsters, a few from elites and bosses.
@@ -473,7 +390,7 @@ namespace HearthHollow.Core
         {
             var route = Content.Route(Run.routeId);
             if (route == null || route.materialIds == null || route.materialIds.Count == 0) return;
-            int floor = Run.dungeon ? Run.floor : 1;
+            int floor = Run.floor;
             int n = boss ? T.bossMaterials : elite ? T.eliteMaterials + (floor >= 3 ? 1 : 0)
                   : (_rng.Chance(T.materialDropChance + T.materialDropPerFloor * Math.Max(0, floor - 1)) ? 1 : 0);
             // deeper floors lean to the route's own (better) material — the first in its list
@@ -492,7 +409,7 @@ namespace HearthHollow.Core
             var ing = Content.Ingredient(id);
             string name = ing != null ? ing.emoji + " " + ing.name : id;
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));
-            if (left > 0 && Run.dungeon && InDungeon) { DropOnFloor(id, left); Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " dropped on the floor (E to swap)")); }   // ticket 48
+            if (left > 0 && InDungeon) { DropOnFloor(id, left); Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " dropped on the floor (E to swap)")); }   // ticket 48
             else if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
         }
 
@@ -500,33 +417,28 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.Gather || Run == null || Run.gather == null) return;
             var g = Run.gather;
-            var grade = Explore.EvaluateGather(g, marker01);
-            int yield = Explore.GatherYield(T, grade, Run.mod);
+            var grade = RunRules.EvaluateGather(g, marker01);
+            int yield = RunRules.GatherYield(T, grade, Run.mod);
             if (yield > 0 && Run.harvestMoon) yield += T.harvestMoonGatherBonus;
-            if (!Run.dungeon)
-            {
-                var tile = Run.TileAt(Run.px, Run.py);
-                tile.resolved = true; Run.roomsCleared++;
-            }
             if (yield > 0) AddLoot(g.ingredientId, yield, false, false, grade == GatherGrade.Perfect);   // a perfect pick is more likely to be Prime
             Emit(new GameEvent(GameEventType.Info, yield, true,
                 grade == GatherGrade.Perfect ? "Perfect pick! ✨" : grade == GatherGrade.Safe ? "Nice pick" : "It slipped away…"));
             Run.gather = null;
-            Phase = Run.dungeon ? Phase.Dungeon : Phase.Explore;
+            Phase = Phase.Dungeon;
             Touch(false);
         }
 
         public void LeaveRest()
         {
             if (Phase != Phase.Rest) return;
-            Phase = Run != null && Run.dungeon ? Phase.Dungeon : Phase.Explore;
+            Phase = Phase.Dungeon;
             Touch(false);
         }
 
         public void FleeHome()
         {
             if (!InRun) return;
-            Run.fight = null; Run.gather = null;
+            Run.gather = null;
             Emit(new GameEvent(GameEventType.RunFled, 0, true, "You slip back to the hearth"));
             EndRun(RunOutcome.Fled);
         }

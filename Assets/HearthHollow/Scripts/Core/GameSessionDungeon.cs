@@ -7,9 +7,6 @@ namespace HearthHollow.Core
 {
     public partial class GameSession
     {
-        /// Real-time dungeon runs (default). Set false to play the old fog grid (the headless sim does).
-        public bool UseDungeon = true;
-
         public bool InDungeon { get { return Phase == Phase.Dungeon && Run != null && Run.dungeon; } }
 
         /// Damage multiplier on incoming hits while the Cook's Hearty Snack guard is up (set by the Unity side).
@@ -22,7 +19,6 @@ namespace HearthHollow.Core
             Run.floor = Math.Max(1, Math.Min(Run.floorsTotal, startFloor));   // a shortcut starts deeper (ticket 12)
             ReachedFloor();
             Run.dungeonSeed = _rng.Range(1, int.MaxValue - 1);
-            Run.tiles.Clear();          // no fog grid in the dungeon
             DungeonGuardMult = 1f;
             Phase = Phase.Dungeon;
         }
@@ -192,14 +188,13 @@ namespace HearthHollow.Core
             Run.kills++;
             if (e.split) { Touch(false); return; }   // ticket 64: a split-off little slime gives nothing extra
             if (InFall) { int h = Mods.healOnKill; if (h > 0 && Run.hp > 0 && Run.hp < Stats.maxHp) DungeonHealPlayer(h); Touch(false); return; }   // ticket 49: no loot in the fall
-            var f = new FightState { monsterId = e.monsterId, elite = e.elite, difficulty = e.difficulty };
-            int coins = Math.Max(1, (int)Math.Round(Combat.KillCoins(Content, Run, Stats, f) * T.dungeonKillCoinMult));
-            int xp = Math.Max(1, (int)Math.Round(Combat.KillXp(Content, Run, f) * T.dungeonKillXpMult));
+            int coins = Math.Max(1, (int)Math.Round(RunRules.KillCoins(Content, Run, Stats, e.elite, e.difficulty) * T.dungeonKillCoinMult));
+            int xp = Math.Max(1, (int)Math.Round(RunRules.KillXp(Content, Run, e.elite, e.difficulty) * T.dungeonKillXpMult));
             if (e.boss) { coins = (int)Math.Round(coins * T.bossRewardMult); xp = (int)Math.Round(xp * T.bossRewardMult); }
             Run.coinsEarned += coins; Run.killXp += xp;
             Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
             Emit(new GameEvent(GameEventType.Xp, xp, false, "+" + xp + " XP"));
-            DropLoot(f);
+            DropLoot(e.elite);
             if (e.boss)
             {
                 bool first = Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0;
@@ -223,7 +218,7 @@ namespace HearthHollow.Core
         private string PickRouteIngredient()
         {
             if (Run.firstRidge && _rng.Chance(0.7f) && Content.Ingredient("chili") != null) return "chili";   // ticket 35: the first Ridge trip is all about chilies
-            return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.dungeon ? Run.floor : 1, _rng.Value());   // deeper floors add their drops (ticket 13)
+            return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.floor, _rng.Value());   // deeper floors add their drops (ticket 13)
         }
 
         /// An event room's enemies are all down (its doors open again).
@@ -265,7 +260,7 @@ namespace HearthHollow.Core
             tier = Math.Max(1, tier);
             var pool = DungeonRules.NormalPool(Content, Run);
             int baseCoins = 10;
-            if (pool.Count > 0) baseCoins = Combat.KillCoins(Content, Run, Stats, new FightState { monsterId = pool[0], elite = true, difficulty = DungeonDifficulty });
+            if (pool.Count > 0) baseCoins = RunRules.KillCoins(Content, Run, Stats, true, DungeonDifficulty);
             int coins = Math.Max(5, (int)Math.Round(baseCoins * T.dungeonKillCoinMult * (1.5f + tier) * (Run.mod == RouteMod.Lucky ? 1.5f : 1f)));
             Run.coinsEarned += coins;
             Emit(new GameEvent(GameEventType.Coins, coins, false, "+" + coins));
@@ -289,7 +284,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon) return false;
             if (T.forageHeal > 0 && Run.hp < Stats.maxHp) { int h = DungeonHealPlayer(T.forageHeal); if (h > 0) Info("🫐 You snack while you forage: +" + h + " HP"); }   // ticket 38
-            Run.gather = Explore.StartGather(Content, Run, Stats, _rng);
+            Run.gather = RunRules.StartGather(Content, Run, Stats, _rng);
             Phase = Phase.Gather;
             Touch(false);
             return true;
@@ -299,7 +294,7 @@ namespace HearthHollow.Core
         public bool DungeonRest()
         {
             if (!InDungeon) return false;
-            int healed = Explore.ApplyRest(Content, Run, Stats);
+            int healed = RunRules.ApplyRest(Content, Run, Stats);
             Emit(new GameEvent(GameEventType.PlayerHeal, healed, true, "Rested by the fire"));
             Phase = Phase.Rest;
             Touch(false);

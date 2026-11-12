@@ -238,7 +238,7 @@ namespace HearthHollow.Core
         /// Damage the player actually takes from a raw monster hit (armour, then an optional guard).
         public static int IncomingDamage(float raw, PlayerStats s, float extraMult)
         {
-            float v = Combat.ApplyArmour(raw, s != null ? s.armourPct : 0f) * extraMult;
+            float v = RunRules.ApplyArmour(raw, s != null ? s.armourPct : 0f) * extraMult;
             int d = (int)Math.Round(v, MidpointRounding.AwayFromZero);
             return d < 1 ? 1 : d;
         }

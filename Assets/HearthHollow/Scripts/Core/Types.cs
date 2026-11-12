@@ -12,8 +12,6 @@ namespace HearthHollow.Core
     // ───────────────────────── Enums ─────────────────────────
     public enum ClassId { Warden, Ranger, Cook, Lamplighter, Emberfist }
     public enum Station { Pot, BBQ, Sandwich }
-    public enum TileType { Empty, Start, Exit, Monster, Elite, Gather, Rest }
-    public enum FightAction { Strike, Guard, Lucky, Skill }
     public enum MonsterBehaviour { None, DoubleHit, Heal, WindUp }
     public enum RouteKind { Trail, Hunt }
     /// A dungeon-wide hazard. Poison/Cold/Heat drain HP (never below 1); Cold also slows you, Heat bites harder while you
@@ -24,7 +22,7 @@ namespace HearthHollow.Core
     public enum Mutator { None, Swift, Frantic, BigBangs, GlassHearts, Giants, Swarm }
     public enum RouteMod { None, Double, Rich, Dangerous, Lucky }
     public enum CampEvent { None, Merchant, Storm, Armourer, Forager, HarvestMoon }
-    public enum Phase { Hearth, Explore, Fight, Gather, Rest, RunEnd, Dungeon }   // Dungeon = real-time rooms (Explore/Fight = old fog grid)
+    public enum Phase { Hearth = 0, Gather = 3, Rest = 4, RunEnd = 5, Dungeon = 6 }   // numbers kept from before the fog grid was removed (refactor 02)
     public enum RunOutcome { None, Cleared, Fled, Died, Returned }   // Returned = took an exit before the final floor
     public enum GatherGrade { Miss, Safe, Perfect }
     public enum SkillKind { Cleave, Volley, HeartySnack }
@@ -544,30 +542,12 @@ namespace HearthHollow.Core
     }
 
     // ───────────────────────── Run ─────────────────────────
-    [Serializable] public class Tile
-    {
-        public TileType type; public bool revealed; public bool resolved;
-        public int difficulty;          // final difficulty (route base + req offset [+ mod])
-        public string monsterId;        // Monster / Elite tiles
-    }
-
     [Serializable] public class EatenMeal { public string recipeId; public float potency; public int grade; public string accelId; public int accelGrade; public TraySlot slot = TraySlot.Free; } // potency after diminishing returns; slot: ticket 44
 
     [Serializable] public class PlayerStats   // derived, recomputed by StatCalc
     {
         public int maxHp; public float damage; public float armourPct;
         public float critChance; public float gatherZoneMult; public float coinMult; public float xpMult;
-    }
-
-    [Serializable] public partial class FightState
-    {
-        public string monsterId; public bool elite; public int difficulty;
-        public int monsterHp, monsterMaxHp; public float monsterAtk;
-        public bool lastStrikeMissed;     // next Strike uses strikeHitAfterMiss
-        public bool monsterWindingUp;     // dragon: next attack ×windUpMult
-        public int skillCooldown;         // turns until skill usable (0 = ready)
-        public int turn;
-        public bool over; public bool playerWon;
     }
 
     [Serializable] public partial class GatherState
@@ -585,9 +565,6 @@ namespace HearthHollow.Core
         public Element element;   // the run's first infused element (from a meal, ticket 08); attacks without their own element use it
         public List<Element> infusions = new List<Element>();   // ticket 46: every infused element (up to one per meal); those attacks carry all of them
         public List<Element> guards = new List<Element>();   // elements the run's meals guard against: those attacks hit you for half
-        public int width, height;
-        public List<Tile> tiles = new List<Tile>();   // index = y*width + x
-        public int px, py;                              // player position
         public int hp;
         public List<string> tray = new List<string>();  // unused during a run: the tray is turned into buffs at set-out
         public List<EatenMeal> eaten = new List<EatenMeal>(); // meals eaten at camp before setting out (their buffs last the whole run)
@@ -595,10 +572,8 @@ namespace HearthHollow.Core
         public List<BagSlot> bag = new List<BagSlot>();
         public int roomsCleared, kills;
         public int coinsEarned, killXp;   // accumulated during run (not yet banked)
-        public FightState fight;          // non-null while Phase == Fight
         public GatherState gather;        // non-null while Phase == Gather
         public RunOutcome outcome;
-        public int skillCooldown;         // carried between fights
         public List<string> trinketsDropped = new List<string>();   // trinkets dropped this run (already added to the profile)
         public int torches = -1;          // (unused since torches went unlimited on a cooldown — kept so saves load)
     }
@@ -653,7 +628,5 @@ namespace HearthHollow.Core
             if (cp == null) { cp = new ClassProgress { classId = id }; p.classes.Add(cp); }
             return cp;
         }
-        public static Tile TileAt(this RunState r, int x, int y) => r.tiles[y * r.width + x];
-        public static bool InBounds(this RunState r, int x, int y) => x >= 0 && y >= 0 && x < r.width && y < r.height;
     }
 }

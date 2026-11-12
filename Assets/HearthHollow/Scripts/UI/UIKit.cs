@@ -219,17 +219,6 @@ namespace HearthHollow.UI
             return "";
         }
 
-        public static string BehaviourHint(MonsterBehaviour b)
-        {
-            switch (b)
-            {
-                case MonsterBehaviour.DoubleHit: return "Attacks twice each turn";
-                case MonsterBehaviour.Heal: return "Heals itself when hurt";
-                case MonsterBehaviour.WindUp: return "Winds up crushing blows — Guard them!";
-            }
-            return "A plain old brawler";
-        }
-
         public static string OutcomeTitle(RunOutcome o)
         {
             switch (o)

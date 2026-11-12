@@ -19,7 +19,7 @@ namespace HearthHollow.Core
         {
             if (Run == null || string.IsNullOrEmpty(text)) return;
             if (_runLog.Count > 0 && _runLog[_runLog.Count - 1].text == text && _runLog[_runLog.Count - 1].floor == Run.floor) return;   // no spam from repeats
-            _runLog.Add(new RunLogLine { floor = Run.dungeon ? Run.floor : 0, text = text });
+            _runLog.Add(new RunLogLine { floor = Run.floor, text = text });
             if (_runLog.Count > RunLogMax) _runLog.RemoveAt(0);
         }
 

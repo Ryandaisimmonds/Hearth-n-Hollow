@@ -102,7 +102,7 @@ namespace HearthHollow.Tests
         {
             foreach (var armour in new[] { 0f, 0.25f, 0.5f, 0.9f, 1f })
             {
-                float dmg = Combat.ApplyArmour(10f, armour);
+                float dmg = RunRules.ApplyArmour(10f, armour);
                 Assert.That(dmg, Is.InRange(0f, 10f), "armour " + armour);
             }
         }

@@ -81,7 +81,7 @@ namespace HearthHollow.UI
         void Tick()
         {
             if (_g == null || _stopped) return;
-            _marker01 = Explore.MarkerAt(_g, UIKit.Now - _startTime);
+            _marker01 = RunRules.MarkerAt(_g, UIKit.Now - _startTime);
             _marker.style.left = Length.Percent(_marker01 * 100f);
         }
 
@@ -91,8 +91,8 @@ namespace HearthHollow.UI
             _stopped = true;
             _pick.SetEnabled(false);
             // grade locally only to show the result briefly before handing over to the session
-            GatherGrade grade = Explore.EvaluateGather(_g, _marker01);
-            int yield = Explore.GatherYield(C.tuning, grade, S.Run.mod);
+            GatherGrade grade = RunRules.EvaluateGather(_g, _marker01);
+            int yield = RunRules.GatherYield(C.tuning, grade, S.Run.mod);
             var ing = C.Ingredient(_g.ingredientId);
             string name = ing != null ? ing.emoji + " " + ing.name : "";
             if (grade == GatherGrade.Perfect) _result.text = "✨ Perfect! +" + yield + " " + name;
