@@ -1,5 +1,5 @@
 // Hearth & Hollow — everything the real-time dungeon needs: themes, the shared room pool,
-// marker tiles and how each monster moves and fights. Built by "Hearth & Hollow > Build Dungeon Kit".
+// marker tiles and how each monster looks (how it moves and fights is on the content's MonsterData). Built by "Hearth & Hollow > Build Dungeon Kit".
 // Damage / HP / rewards come from the content asset's tuning (difficulty-scaled), not from here.
 using System;
 using System.Collections.Generic;
@@ -9,34 +9,12 @@ using UnityEngine.Tilemaps;
 
 namespace HearthHollow.Dungeon
 {
-    public enum EnemyArchetype
-    {
-        Chaser,   // walks at you and swings when close
-        Charger,  // winds up, then rushes in a straight line
-        Flyer,    // weaves around, darts in to sting
-        Caster,   // keeps its distance and throws orbs; may heal allies
-        Brute     // big and slow: breath fan + charge (bosses / drakes)
-    }
-
-    public enum LightReaction { None, Shy, Drawn }
-
+    /// How a monster LOOKS in the dungeon (size, eyes, rim, a carried light). How it moves and fights lives on the
+    /// content's MonsterData (refactor 04).
     [Serializable] public class EnemyProfile
     {
         public string monsterId;
-        public EnemyArchetype archetype = EnemyArchetype.Chaser;
-        [Tooltip("Tiles per second.")] public float moveSpeed = 2.2f;
-        [Tooltip("Starts an attack inside this distance.")] public float attackRange = 1.0f;
-        [Tooltip("Seconds of telegraph before a hit lands.")] public float windup = 0.4f;
-        [Tooltip("Multiplier on the tuning's monster attack cooldown.")] public float cooldownMult = 1f;
-        [Tooltip("Projectile speed for casters / breath.")] public float projectileSpeed = 6f;
-        [Tooltip("Hits per attack (wolves bite twice).")] public int hits = 1;
-        [Tooltip("Heals the weakest ally now and then (Bog Shaman).")] public bool healsAllies;
         [Tooltip("Visual size multiplier.")] public float scale = 1f;
-
-        [Header("Elements (Design v2)")]
-        [Tooltip("The monster's own element. With no lists below, it's weak to what beats it in the loop (Fire > Frost > Nature > Water > Fire) and resists itself.")] public Element element;
-        [Tooltip("Weak to these (×1.5 damage). Leave empty to use the element's default.")] public List<Element> weakTo = new List<Element>();
-        [Tooltip("Resists these (×0.5 damage). Leave empty to use the element's default.")] public List<Element> resists = new List<Element>();
 
         [Header("In the dark (light plan step 2)")]
         [Tooltip("Where the glowing eyes sit, as a fraction of the figure's height.")] [Range(0f, 1f)] public float eyeHeight = 0.62f;
@@ -44,8 +22,6 @@ namespace HearthHollow.Dungeon
         public Color eyeColor = new Color(1f, 0.35f, 0.2f);
         [Tooltip("Rim on the silhouette when it's in the dark.")] public Color rimColor = new Color(0.55f, 0.72f, 1f);
         [Tooltip("A light this monster always carries (alpha 0 = none).")] public Color carryLight = new Color(0, 0, 0, 0);
-        [Tooltip("Shy: keeps out of torch / brazier / Flare light and is bolder in the dark. Drawn: goes to the nearest bright light (a lure).")]
-        public LightReaction lightReaction = LightReaction.None;
         public float carryLightRadius = 3f;
     }
 

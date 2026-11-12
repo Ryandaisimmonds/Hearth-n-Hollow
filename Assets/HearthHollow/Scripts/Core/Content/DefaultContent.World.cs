@@ -7,16 +7,76 @@ namespace HearthHollow.Core
 {
     public static partial class DefaultContent
     {
-        /// The monsters, every area and story chapter, and the story's key items.
+        /// The monsters (with how each one fights), every area and story chapter, and the story's key items.
         static void AddWorld(GameContent c)
         {
             // ── monsters (10) ──
-            c.monsters.Add(new MonsterData { id = "slime", name = "Moss Slime", emoji = "🟢" });
-            c.monsters.Add(new MonsterData { id = "boar", name = "Bramble Boar", emoji = "🐗" });
-            c.monsters.Add(new MonsterData { id = "bat", name = "Lantern Bee", emoji = "🐝" });
-            c.monsters.Add(new MonsterData { id = "crab", name = "Marsh Viper", emoji = "🐍" });
-            c.monsters.Add(new MonsterData { id = "wolf", name = "Fog Wolf", emoji = "🐺", behaviour = MonsterBehaviour.DoubleHit });
-            c.monsters.Add(new MonsterData { id = "shaman", name = "Bog Shaman", emoji = "🧙", behaviour = MonsterBehaviour.Heal });
+            c.monsters.Add(new MonsterData
+            {
+                id = "slime",
+                name = "Moss Slime",
+                emoji = "🟢",
+                moveSpeed = 1.8f,
+                attackRange = 0.9f,
+                windup = 0.45f,
+                cooldownMult = 1.1f,
+                lightReaction = LightReaction.Drawn,
+                element = Element.Nature,
+                splits = true,
+            });
+            c.monsters.Add(new MonsterData
+            {
+                id = "boar",
+                name = "Bramble Boar",
+                emoji = "🐗",
+                archetype = EnemyArchetype.Charger,
+                windup = 0.6f,
+                cooldownMult = 1.3f,
+                element = Element.Nature,
+            });
+            c.monsters.Add(new MonsterData
+            {
+                id = "bat",
+                name = "Lantern Bee",
+                emoji = "🐝",
+                archetype = EnemyArchetype.Flyer,
+                moveSpeed = 3.2f,
+                attackRange = 2.4f,
+                windup = 0.3f,
+                cooldownMult = 0.9f,
+                lightReaction = LightReaction.Shy,
+                element = Element.Fire,
+                swoops = true,
+            });
+            c.monsters.Add(new MonsterData { id = "crab", name = "Marsh Viper", emoji = "🐍", moveSpeed = 2.9f, windup = 0.3f, element = Element.Water });
+            c.monsters.Add(new MonsterData
+            {
+                id = "wolf",
+                name = "Fog Wolf",
+                emoji = "🐺",
+                behaviour = MonsterBehaviour.DoubleHit,
+                moveSpeed = 3.3f,
+                windup = 0.35f,
+                cooldownMult = 1.3f,
+                hits = 2,
+                lightReaction = LightReaction.Shy,
+                element = Element.Frost,
+                circles = true,
+            });
+            c.monsters.Add(new MonsterData
+            {
+                id = "shaman",
+                name = "Bog Shaman",
+                emoji = "🧙",
+                behaviour = MonsterBehaviour.Heal,
+                archetype = EnemyArchetype.Caster,
+                moveSpeed = 2f,
+                attackRange = 6f,
+                windup = 0.6f,
+                cooldownMult = 1.5f,
+                healsAllies = true,
+                element = Element.Water,
+            });
             c.monsters.Add(new MonsterData
             {
                 id = "dragon",
@@ -25,8 +85,27 @@ namespace HearthHollow.Core
                 behaviour = MonsterBehaviour.WindUp,
                 hpMult = 1.5f,
                 eliteOnly = true,
+                archetype = EnemyArchetype.Brute,
+                moveSpeed = 1.7f,
+                attackRange = 1.4f,
+                windup = 0.7f,
+                cooldownMult = 1.2f,
+                projectileSpeed = 7f,
+                element = Element.Fire,
             });
-            c.monsters.Add(new MonsterData { id = "bramble_sow", name = "Bramble Sow", emoji = "🐗", hpMult = 1.3f, eliteOnly = true, artId = "boar" });
+            c.monsters.Add(new MonsterData
+            {
+                id = "bramble_sow",
+                name = "Bramble Sow",
+                emoji = "🐗",
+                hpMult = 1.3f,
+                eliteOnly = true,
+                artId = "boar",
+                archetype = EnemyArchetype.Charger,
+                windup = 0.6f,
+                cooldownMult = 1.3f,
+                element = Element.Nature,
+            });
             c.monsters.Add(new MonsterData
             {
                 id = "hoarfrost_alpha",
@@ -36,6 +115,14 @@ namespace HearthHollow.Core
                 hpMult = 1.5f,
                 eliteOnly = true,
                 artId = "wolf",
+                moveSpeed = 3.3f,
+                windup = 0.35f,
+                cooldownMult = 1.3f,
+                hits = 2,
+                lightReaction = LightReaction.Shy,
+                element = Element.Frost,
+                weakTo = new List<Element> { Element.Fire },
+                resists = new List<Element> { Element.Frost },
             });
             c.monsters.Add(new MonsterData
             {
@@ -46,6 +133,13 @@ namespace HearthHollow.Core
                 hpMult = 1.3f,
                 eliteOnly = true,
                 artId = "dragon",
+                archetype = EnemyArchetype.Brute,
+                moveSpeed = 1.7f,
+                attackRange = 1.4f,
+                windup = 0.7f,
+                cooldownMult = 1.2f,
+                projectileSpeed = 7f,
+                element = Element.Fire,
             });
             // ── routes (19) ──
             c.routes.Add(new RouteData

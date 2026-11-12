@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using HearthHollow.Core;
 using HearthHollow.Dungeon;
 using HearthHollow.Runtime;
 using UnityEditor;
@@ -698,13 +699,13 @@ namespace HearthHollow.EditorTools
         // ───────────────────────── monsters ─────────────────────────
         static IEnumerable<EnemyProfile> DefaultEnemies()
         {
-            yield return new EnemyProfile { monsterId = "slime", archetype = EnemyArchetype.Chaser, moveSpeed = 1.8f, attackRange = 0.9f, windup = 0.45f, cooldownMult = 1.1f };
-            yield return new EnemyProfile { monsterId = "boar", archetype = EnemyArchetype.Charger, moveSpeed = 2.2f, attackRange = 1.0f, windup = 0.6f, cooldownMult = 1.3f };
-            yield return new EnemyProfile { monsterId = "bat", archetype = EnemyArchetype.Flyer, moveSpeed = 3.2f, attackRange = 2.4f, windup = 0.3f, cooldownMult = 0.9f, scale = 1.5f };
-            yield return new EnemyProfile { monsterId = "crab", archetype = EnemyArchetype.Chaser, moveSpeed = 2.9f, attackRange = 1.0f, windup = 0.3f, cooldownMult = 1.0f };
-            yield return new EnemyProfile { monsterId = "wolf", archetype = EnemyArchetype.Chaser, moveSpeed = 3.3f, attackRange = 1.0f, windup = 0.35f, cooldownMult = 1.3f, hits = 2 };
-            yield return new EnemyProfile { monsterId = "shaman", archetype = EnemyArchetype.Caster, moveSpeed = 2.0f, attackRange = 6f, windup = 0.6f, cooldownMult = 1.5f, projectileSpeed = 6f, healsAllies = true };
-            yield return new EnemyProfile { monsterId = "dragon", archetype = EnemyArchetype.Brute, moveSpeed = 1.7f, attackRange = 1.4f, windup = 0.7f, cooldownMult = 1.2f, projectileSpeed = 7f, scale = 1.2f };
+            yield return new EnemyProfile { monsterId = "slime" };
+            yield return new EnemyProfile { monsterId = "boar" };
+            yield return new EnemyProfile { monsterId = "bat", scale = 1.5f };
+            yield return new EnemyProfile { monsterId = "crab" };
+            yield return new EnemyProfile { monsterId = "wolf" };
+            yield return new EnemyProfile { monsterId = "shaman" };
+            yield return new EnemyProfile { monsterId = "dragon", scale = 1.2f };
         }
 
         // ───────────────────────── scene ─────────────────────────

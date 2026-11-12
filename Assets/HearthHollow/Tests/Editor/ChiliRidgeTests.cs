@@ -54,8 +54,7 @@ namespace HearthHollow.Tests
         [Test]
         public void RidgeDrake_IsAFireBoss()
         {
-            var ds = AssetDatabase.LoadAssetAtPath<DungeonSettings>("Assets/HearthHollow/Dungeon/DungeonSettings.asset");
-            Assert.AreEqual(Element.Fire, ds.ProfileFor("ridge_drake").element);
+            Assert.AreEqual(Element.Fire, DefaultContent.Create().Monster("ridge_drake").element);
         }
     }
 }

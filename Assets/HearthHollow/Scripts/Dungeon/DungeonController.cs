@@ -726,7 +726,7 @@ namespace HearthHollow.Dungeon
             _introBoss = boss;
             if (!_wasPushing && _cam != null) _introBaseSize = _cam.orthographicSize;   // push in from whatever the camera is now
             Vector3 at = boss.Body;
-            Color col = Color.Lerp(EnemyController.ElementColour(boss.Profile != null ? boss.Profile.element : Element.None), new Color(1f, 0.45f, 0.2f), 0.5f);
+            Color col = Color.Lerp(EnemyController.ElementColour(boss.Data != null ? boss.Data.element : Element.None), new Color(1f, 0.45f, 0.2f), 0.5f);
             DungeonFx.Flash(at, col, 10f, 2.4f, 1.6f);                            // the room flares
             DungeonFx.RingAt(at, new Color(col.r, col.g, col.b, 0.9f), 2.6f, 0.7f);
             if (room != null && room.Lights != null) room.Lights.IgniteWave(at);   // its braziers roar up from the boss outward

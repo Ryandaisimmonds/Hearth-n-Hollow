@@ -66,9 +66,8 @@ namespace HearthHollow.Tests
         [Test]
         public void BossElements_SowIsNature_AlphaIsFrostWeakToFire()
         {
-            var ds = AssetDatabase.LoadAssetAtPath<DungeonSettings>("Assets/HearthHollow/Dungeon/DungeonSettings.asset");
-            Assert.IsNotNull(ds);
-            var sow = ds.ProfileFor("bramble_sow"); var alpha = ds.ProfileFor("hoarfrost_alpha");
+            var c = DefaultContent.Create();
+            var sow = c.Monster("bramble_sow"); var alpha = c.Monster("hoarfrost_alpha");
             Assert.AreEqual(Element.Nature, sow.element);
             Assert.AreEqual(Element.Frost, alpha.element);
             Assert.Contains(Element.Fire, alpha.weakTo);

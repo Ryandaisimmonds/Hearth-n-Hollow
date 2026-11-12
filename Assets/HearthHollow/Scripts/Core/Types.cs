@@ -226,12 +226,43 @@ namespace HearthHollow.Core
         public string requires;       // node id that needs ≥1 rank first (empty = root)
     }
 
+    // How a monster fights in the real-time dungeon (refactor 04: moved here from the Dungeon Settings asset).
+    public enum EnemyArchetype
+    {
+        Chaser,   // walks at you and swings when close
+        Charger,  // winds up, then rushes in a straight line
+        Flyer,    // weaves around, darts in to sting
+        Caster,   // keeps its distance and throws orbs; may heal allies
+        Brute     // big and slow: breath fan + charge (bosses / drakes)
+    }
+
+    public enum LightReaction { None, Shy, Drawn }
+
     [Serializable] public class MonsterData
     {
         public string id; public string name; public string emoji;
         public MonsterBehaviour behaviour; public float hpMult = 1f;  // dragon 1.5
         public bool eliteOnly;
         public string artId;   // ticket 13: draw with another monster's sprites (a named boss on a base monster's art); empty = id
+
+        // ── how it moves and fights (refactor 04; damage / HP come from tuning × difficulty) ──
+        public EnemyArchetype archetype = EnemyArchetype.Chaser;
+        public float moveSpeed = 2.2f;       // tiles per second
+        public float attackRange = 1.0f;     // starts an attack inside this distance
+        public float windup = 0.4f;          // seconds of telegraph before a hit lands
+        public float cooldownMult = 1f;      // × the tuning's monster attack cooldown
+        public float projectileSpeed = 6f;   // casters / breath
+        public int hits = 1;                 // hits per attack (wolves bite twice)
+        public bool healsAllies;             // heals the weakest ally now and then (Bog Shaman)
+        public LightReaction lightReaction = LightReaction.None;   // Shy: keeps out of light, bolder in the dark · Drawn: goes to bright light
+        // ── its element (Design v2): with no lists, weak to what beats it in the loop and resists itself ──
+        public Element element;
+        public List<Element> weakTo = new List<Element>();
+        public List<Element> resists = new List<Element>();
+        // ── habits (ticket 64) ──
+        public bool circles;   // circles you with its pack, taking turns to dart in (wolves)
+        public bool swoops;    // swoops in an arc instead of a straight dart (bats)
+        public bool splits;    // splits into two little ones worth nothing when it dies (slimes)
     }
 
     [Serializable] public class RouteData

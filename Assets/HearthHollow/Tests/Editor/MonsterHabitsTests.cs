@@ -9,24 +9,27 @@ namespace HearthHollow.Tests
         [Test]
         public void ASlime_SplitsIntoTwoLittleOnes_WorthNothing()
         {
+            var c = DefaultContent.Create();
             var slime = new EnemyStats { monsterId = "slime", maxHp = 10, damage = 2f, difficulty = 3 };
-            Assert.IsTrue(MonsterHabits.Splits(slime));
+            Assert.IsTrue(MonsterHabits.Splits(c.Monster("slime"), slime));
             var kid = MonsterHabits.Split(slime);
             Assert.IsTrue(kid.split);
             Assert.Less(kid.maxHp, slime.maxHp);
             Assert.Less(kid.damage, slime.damage);
             Assert.Less(kid.sizeMult, 1f);
-            Assert.IsFalse(MonsterHabits.Splits(kid), "little ones don't split again");
-            Assert.IsFalse(MonsterHabits.Splits(new EnemyStats { monsterId = "slime", boss = true }), "a slime boss doesn't split");
-            Assert.IsFalse(MonsterHabits.Splits(new EnemyStats { monsterId = "wolf" }));
+            Assert.IsFalse(MonsterHabits.Splits(c.Monster("slime"), kid), "little ones don't split again");
+            Assert.IsFalse(MonsterHabits.Splits(c.Monster("slime"), new EnemyStats { monsterId = "slime", boss = true }), "a slime boss doesn't split");
+            Assert.IsFalse(MonsterHabits.Splits(c.Monster("wolf"), new EnemyStats { monsterId = "wolf" }));
         }
 
         [Test]
         public void WolvesCircle_BatsSwoop()
         {
-            Assert.IsTrue(MonsterHabits.Circles("wolf"));
-            Assert.IsFalse(MonsterHabits.Circles("bat"));
-            Assert.IsTrue(MonsterHabits.Swoops("bat"));
+            var c = DefaultContent.Create();
+            Assert.IsTrue(c.Monster("wolf").circles);
+            Assert.IsFalse(c.Monster("bat").circles);
+            Assert.IsTrue(c.Monster("bat").swoops);
+            Assert.IsTrue(c.Monster("slime").splits);
         }
 
         [Test]

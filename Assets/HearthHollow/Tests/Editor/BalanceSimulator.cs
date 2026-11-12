@@ -133,7 +133,7 @@ namespace HearthHollow.Tests
                         for (int i = 0; i < hpLeft.Count && spread > 0f; i++)
                         {
                             if (hpLeft[i] <= 0f) continue;
-                            var prof = ds.ProfileFor(foes[i].monsterId);
+                            var prof = c.Monster(foes[i].monsterId);
                             var weak = new List<Element>(); var res = new List<Element>();
                             if (prof != null) { if (prof.weakTo != null) weak.AddRange(prof.weakTo); if (prof.resists != null) res.AddRange(prof.resists); if (weak.Count == 0 && res.Count == 0) Elements.Defaults(prof.element, weak, res); }
                             bool cancel; float em = Elements.Multiplier(infusions, weak, res, out cancel);
@@ -152,7 +152,7 @@ namespace HearthHollow.Tests
                 {
                     if (hpLeft[i] <= 0f) continue;
                     if (attackers++ >= MaxAttackers) continue;
-                    var prof = ds.ProfileFor(foes[i].monsterId);
+                    var prof = c.Monster(foes[i].monsterId);
                     atkT[i] -= dt;
                     if (atkT[i] > 0f) continue;
                     atkT[i] = c.tuning.monsterAttackCooldown * (prof != null ? prof.cooldownMult : 1f) * (0.85f + (float)rng.NextDouble() * 0.35f) + (prof != null ? prof.windup : 0.4f);

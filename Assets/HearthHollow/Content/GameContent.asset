@@ -1232,6 +1232,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 0
+      moveSpeed: 1.8
+      attackRange: 0.9
+      windup: 0.45
+      cooldownMult: 1.1
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 0
+      lightReaction: 2
+      element: 3
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 1
     - id: boar
       name: Bramble Boar
       emoji: "\U0001F417"
@@ -1239,6 +1254,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 1
+      moveSpeed: 2.2
+      attackRange: 1
+      windup: 0.6
+      cooldownMult: 1.3
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 0
+      lightReaction: 0
+      element: 3
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: bat
       name: Lantern Bee
       emoji: "\U0001F41D"
@@ -1246,6 +1276,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 2
+      moveSpeed: 3.2
+      attackRange: 2.4
+      windup: 0.3
+      cooldownMult: 0.9
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 0
+      lightReaction: 1
+      element: 1
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 1
+      splits: 0
     - id: crab
       name: Marsh Viper
       emoji: "\U0001F40D"
@@ -1253,6 +1298,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 0
+      moveSpeed: 2.9
+      attackRange: 1
+      windup: 0.3
+      cooldownMult: 1
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 0
+      lightReaction: 0
+      element: 4
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: wolf
       name: Fog Wolf
       emoji: "\U0001F43A"
@@ -1260,6 +1320,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 0
+      moveSpeed: 3.3
+      attackRange: 1
+      windup: 0.35
+      cooldownMult: 1.3
+      projectileSpeed: 6
+      hits: 2
+      healsAllies: 0
+      lightReaction: 1
+      element: 2
+      weakTo: 
+      resists: 
+      circles: 1
+      swoops: 0
+      splits: 0
     - id: shaman
       name: Bog Shaman
       emoji: "\U0001F9D9"
@@ -1267,6 +1342,21 @@ MonoBehaviour:
       hpMult: 1
       eliteOnly: 0
       artId: 
+      archetype: 3
+      moveSpeed: 2
+      attackRange: 6
+      windup: 0.6
+      cooldownMult: 1.5
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 1
+      lightReaction: 0
+      element: 4
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: dragon
       name: Ember Drake
       emoji: "\U0001F409"
@@ -1274,6 +1364,21 @@ MonoBehaviour:
       hpMult: 1.5
       eliteOnly: 1
       artId: 
+      archetype: 4
+      moveSpeed: 1.7
+      attackRange: 1.4
+      windup: 0.7
+      cooldownMult: 1.2
+      projectileSpeed: 7
+      hits: 1
+      healsAllies: 0
+      lightReaction: 0
+      element: 1
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: bramble_sow
       name: Bramble Sow
       emoji: "\U0001F417"
@@ -1281,6 +1386,21 @@ MonoBehaviour:
       hpMult: 1.3
       eliteOnly: 1
       artId: boar
+      archetype: 1
+      moveSpeed: 2.2
+      attackRange: 1
+      windup: 0.6
+      cooldownMult: 1.3
+      projectileSpeed: 6
+      hits: 1
+      healsAllies: 0
+      lightReaction: 0
+      element: 3
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: hoarfrost_alpha
       name: Hoarfrost Alpha
       emoji: "\U0001F43A"
@@ -1288,6 +1408,21 @@ MonoBehaviour:
       hpMult: 1.5
       eliteOnly: 1
       artId: wolf
+      archetype: 0
+      moveSpeed: 3.3
+      attackRange: 1
+      windup: 0.35
+      cooldownMult: 1.3
+      projectileSpeed: 6
+      hits: 2
+      healsAllies: 0
+      lightReaction: 1
+      element: 2
+      weakTo: 01000000i
+      resists: 02000000i
+      circles: 0
+      swoops: 0
+      splits: 0
     - id: ridge_drake
       name: Ridge Drake
       emoji: "\U0001F409"
@@ -1295,6 +1430,21 @@ MonoBehaviour:
       hpMult: 1.3
       eliteOnly: 1
       artId: dragon
+      archetype: 4
+      moveSpeed: 1.7
+      attackRange: 1.4
+      windup: 0.7
+      cooldownMult: 1.2
+      projectileSpeed: 7
+      hits: 1
+      healsAllies: 0
+      lightReaction: 0
+      element: 1
+      weakTo: 
+      resists: 
+      circles: 0
+      swoops: 0
+      splits: 0
     routes:
     - id: meadow
       name: Meadow Hollow
@@ -5112,7 +5262,7 @@ MonoBehaviour:
       maxRank: 1
       cost: 1
       requires: e_bellows
-    contentVersion: 45
+    contentVersion: 46
     keyItems:
     - id: glow_lantern
       name: Firefly Lantern

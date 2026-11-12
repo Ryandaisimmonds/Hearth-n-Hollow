@@ -3,6 +3,7 @@
 // Used to fill GameContent.asset ("Reset To Defaults"), by the tests, and as the fallback at runtime.
 // Refactor 03 (Nov 2026) replaced 44 numbered upgrade steps with this; the result was checked identical, field by
 // field, to both the old Create() and the live GameContent.asset. Pure C#, no UnityEngine.
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace HearthHollow.Core
@@ -11,7 +12,7 @@ namespace HearthHollow.Core
     {
         /// The content version Create() builds. 45 = the collapsed baseline. A later design change adds a step to
         /// Upgrade() below and bumps this, so an edited GameContent.asset keeps its edits and gains the change.
-        public const int LatestContentVersion = 45;
+        public const int LatestContentVersion = 46;
         const int Baseline = 45;
 
         /// Every class starts on the same small base HP; meals carry a run (Design v2).
@@ -37,9 +38,24 @@ namespace HearthHollow.Core
         {
             if (c == null || c.contentVersion >= LatestContentVersion) return false;
             if (c.contentVersion < Baseline) { CopyInto(Create(), c); return true; }
-            // Future design changes go here, one step each:
-            // if (c.contentVersion < 46) { SomeChange46(c); c.contentVersion = 46; }
+            if (c.contentVersion < 46) { MonsterFighting46(c); c.contentVersion = 46; }
+            // Future design changes go here, one step each: if (c.contentVersion < 47) { SomeChange47(c); c.contentVersion = 47; }
             return true;
+        }
+
+        /// 46 (refactor 04): how each monster moves and fights moved from the Dungeon Settings asset into the content.
+        static void MonsterFighting46(GameContent c)
+        {
+            var d = Create();
+            foreach (var m in c.monsters)
+            {
+                var src = d.monsters.Find(x => x.id == m.id);
+                if (src == null) continue;
+                m.archetype = src.archetype; m.moveSpeed = src.moveSpeed; m.attackRange = src.attackRange; m.windup = src.windup;
+                m.cooldownMult = src.cooldownMult; m.projectileSpeed = src.projectileSpeed; m.hits = src.hits; m.healsAllies = src.healsAllies;
+                m.lightReaction = src.lightReaction; m.element = src.element; m.weakTo = new List<Element>(src.weakTo); m.resists = new List<Element>(src.resists);
+                m.circles = src.circles; m.swoops = src.swoops; m.splits = src.splits;
+            }
         }
 
         /// Overwrites every field of `to` with `from`'s (keeps the object, so anything holding it sees the new data).

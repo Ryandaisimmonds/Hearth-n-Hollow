@@ -13,7 +13,8 @@ namespace HearthHollow.Dungeon
         DungeonController _dc;
         RoomInstance _room;
         public EnemyStats Stats { get; private set; }
-        public EnemyProfile Profile { get; private set; }
+        public EnemyProfile Profile { get; private set; }   // how it looks (Dungeon Settings asset)
+        public MonsterData Data { get; private set; }       // how it moves and fights (the content; refactor 04)
         public int Hp { get; private set; }
         public bool Dead { get; private set; }
         public bool Boss { get { return Stats != null && Stats.boss; } }
@@ -57,6 +58,7 @@ namespace HearthHollow.Dungeon
         public void Setup(DungeonController dc, RoomInstance room, EnemyStats stats, EnemyProfile profile, HearthHollow.Data.ArtLibrary.Anim art, float speedMult)
         {
             _dc = dc; _room = room; Stats = stats; Profile = profile; _speedMult = speedMult;
+            Data = dc.Session.Content.Monster(stats.monsterId) ?? new MonsterData { id = stats.monsterId };
             Hp = stats.maxHp;
             var md = dc.Session.Content.Monster(stats.monsterId);
             DisplayName = md != null ? md.name : stats.monsterId;
@@ -86,12 +88,12 @@ namespace HearthHollow.Dungeon
             if (stats.elite && !stats.boss) _anim.Renderer.color = new Color(1f, 0.88f, 0.6f);
             gameObject.AddComponent<EnemyGlow>().Setup(this, _anim, profile, stats, size, dc.Settings);   // silhouette, rim, eyes, carried lights
             MakeHpBar();
-            SetupElements(profile);
+            SetupElements(Data);
             _stT = _stT0 > 0f ? _stT0 : 0.7f;   // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
             _orbitDir = Random.value < 0.5f ? 1f : -1f;   // ticket 64: pack members circle both ways
-            if (MonsterHabits.Circles(stats.monsterId)) _cd += Random.Range(0.4f, 1.6f);   // …and take turns to dart in
+            if (Data.circles) _cd += Random.Range(0.4f, 1.6f);   // …and take turns to dart in
             SetAlpha(0f);
         }
 
@@ -178,7 +180,7 @@ namespace HearthHollow.Dungeon
                     break;
             }
 
-            if (Profile.healsAllies && _st == St.Moving)
+            if (Data.healsAllies && _st == St.Moving)
             {
                 _healCd -= dt;
                 if (_healCd <= 0f) { _healCd = 6f; _room.HealWeakestAlly(this, T.shamanHealPct); }
@@ -196,25 +198,25 @@ namespace HearthHollow.Dungeon
 
         void Think(float dist, Vector2 dir)
         {
-            if (Profile.lightReaction == LightReaction.Shy)
+            if (Data.lightReaction == LightReaction.Shy)
             {
                 Vector2 src; float s;
                 if (!Brave && DungeonLight.StrongestSource(Body, 0.8f, out src, out s)) return;   // too bright to strike from here (until it loses patience)
             }
-            switch (Profile.archetype)
+            switch (Data.archetype)
             {
                 case EnemyArchetype.Caster:
-                    if (_cd <= 0f && dist < 9f) { BeginWindup(dir, Profile.windup); return; }
+                    if (_cd <= 0f && dist < 9f) { BeginWindup(dir, Data.windup); return; }
                     break;
                 case EnemyArchetype.Charger:
-                    if (_cd <= 0f && dist < 6.5f) { BeginWindup(dir, Profile.windup); return; }
-                    if (_cd <= 0f && dist <= Profile.attackRange) { BeginWindup(dir, Profile.windup); return; }
+                    if (_cd <= 0f && dist < 6.5f) { BeginWindup(dir, Data.windup); return; }
+                    if (_cd <= 0f && dist <= Data.attackRange) { BeginWindup(dir, Data.windup); return; }
                     break;
                 case EnemyArchetype.Brute:
-                    if (_cd <= 0f && dist < 7f) { BeginWindup(dir, Profile.windup); return; }
+                    if (_cd <= 0f && dist < 7f) { BeginWindup(dir, Data.windup); return; }
                     break;
                 default:
-                    if (_cd <= 0f && dist <= Profile.attackRange) { BeginWindup(dir, Profile.windup); return; }
+                    if (_cd <= 0f && dist <= Data.attackRange) { BeginWindup(dir, Data.windup); return; }
                     break;
             }
         }
@@ -223,9 +225,9 @@ namespace HearthHollow.Dungeon
         {
             if (Stats.boss) seconds = Mathf.Max(seconds, BossTelegraphMin);   // ticket 63: a boss's markers stay up long enough to read
             _st = St.Windup; _stT = seconds; _lockDir = dir;
-            _hitsLeft = Mathf.Max(1, Profile.hits);
+            _hitsLeft = Mathf.Max(1, Data.hits);
             _anim.PlayAttack(seconds + 0.2f);
-            if (Profile.archetype == EnemyArchetype.Brute) _breathNext = !_breathNext;   // decided now, so the marker shows the right attack
+            if (Data.archetype == EnemyArchetype.Brute) _breathNext = !_breathNext;   // decided now, so the marker shows the right attack
             if (Stats.boss) ShowTelegraph(dir, seconds);
         }
 
@@ -239,8 +241,8 @@ namespace HearthHollow.Dungeon
         /// How far a charge carries (speed × time), for the lane marker.
         float ChargeReach()
         {
-            float cs = Profile.archetype == EnemyArchetype.Flyer ? 9f : Profile.archetype == EnemyArchetype.Brute ? 8f : 10f;
-            float time = Profile.archetype == EnemyArchetype.Flyer ? 0.22f : Profile.archetype == EnemyArchetype.Brute ? 0.7f : 0.55f;
+            float cs = Data.archetype == EnemyArchetype.Flyer ? 9f : Data.archetype == EnemyArchetype.Brute ? 8f : 10f;
+            float time = Data.archetype == EnemyArchetype.Flyer ? 0.22f : Data.archetype == EnemyArchetype.Brute ? 0.7f : 0.55f;
             return cs * Mathf.Max(0.8f, _speedMult) * time;
         }
 
@@ -248,7 +250,7 @@ namespace HearthHollow.Dungeon
         {
             Vector2 from = (Vector2)transform.position + new Vector2(0, 0.22f);
             float w = 0.9f * Mathf.Max(1f, Profile.scale);
-            switch (Profile.archetype)
+            switch (Data.archetype)
             {
                 case EnemyArchetype.Brute:
                     if (_breathNext) Telegraph.Fan(from, dir, 6.5f, 14f, 2, seconds);   // the five-shot breath
@@ -262,7 +264,7 @@ namespace HearthHollow.Dungeon
                     _tele = Telegraph.Lane(from, dir, 8f, 0.4f, seconds);
                     break;
                 default:   // a chaser's bite: everything in reach
-                    _tele = Telegraph.Ring(from, Profile.attackRange + 0.35f + 0.3f * Profile.scale, seconds);
+                    _tele = Telegraph.Ring(from, Data.attackRange + 0.35f + 0.3f * Profile.scale, seconds);
                     break;
             }
         }
@@ -270,9 +272,9 @@ namespace HearthHollow.Dungeon
         void Release(float dist, Vector2 dir)
         {
             if (Stats.boss) dir = _lockDir;   // ticket 63: a boss does what its marker showed (aimed when it wound up)
-            _cd = T.monsterAttackCooldown * Profile.cooldownMult * Random.Range(0.85f, 1.2f);
-            if (Profile.lightReaction == LightReaction.Shy && Lit01 < 0.15f) _cd /= Mathf.Max(1f, _dc.Settings.shyBoldness);   // bolder in the dark
-            switch (Profile.archetype)
+            _cd = T.monsterAttackCooldown * Data.cooldownMult * Random.Range(0.85f, 1.2f);
+            if (Data.lightReaction == LightReaction.Shy && Lit01 < 0.15f) _cd /= Mathf.Max(1f, _dc.Settings.shyBoldness);   // bolder in the dark
+            switch (Data.archetype)
             {
                 case EnemyArchetype.Charger:
                     _lockDir = dir; _chargeHit = false; _st = St.Charging; _stT = 0.55f;
@@ -292,7 +294,7 @@ namespace HearthHollow.Dungeon
                 default:   // Chaser: a lunge + bite(s)
                     _lockDir = dir; _st = St.Striking; _stT = 0.18f;
                     Bite();
-                    if (Profile.hits > 1) Invoke("Bite", 0.2f);
+                    if (Data.hits > 1) Invoke("Bite", 0.2f);
                     break;
             }
         }
@@ -311,7 +313,7 @@ namespace HearthHollow.Dungeon
         void Bite()
         {
             if (Dead || Player == null || _dc == null || !_dc.GameplayActive || _stunT > 0f) return;
-            float reach = Profile.attackRange + 0.35f;
+            float reach = Data.attackRange + 0.35f;
             if (Vector2.Distance(Player.Body, Body + _lockDir * 0.3f) <= reach) Player.TakeHit(Stats.damage, transform.position, OwnElement, HitName);
             DungeonFx.SlashAt(Body + _lockDir * 0.3f, _lockDir, new Color(1f, 0.5f, 0.45f, 0.75f), 0.8f);
         }
@@ -319,9 +321,9 @@ namespace HearthHollow.Dungeon
         void Shoot(Vector2 dir, float angle)
         {
             Vector2 d = Quaternion.Euler(0, 0, angle) * dir;
-            Color c = Profile.archetype == EnemyArchetype.Brute ? new Color(1f, 0.55f, 0.2f) : new Color(0.75f, 0.45f, 1f);
+            Color c = Data.archetype == EnemyArchetype.Brute ? new Color(1f, 0.55f, 0.2f) : new Color(0.75f, 0.45f, 1f);
             // hip height (same plane as player arrows), so a tall monster's level shots don't sail over the player
-            var shot = Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Profile.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
+            var shot = Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Data.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
             if (shot != null) { shot.SetHit(OwnElement); shot.Source = HitName; }   // ticket 65   // the monster's element: a guard meal halves it
         }
 
@@ -330,7 +332,7 @@ namespace HearthHollow.Dungeon
             if (_rb == null) return;
             if (Dead || _dc == null || !_dc.GameplayActive || Player == null || _st == St.Spawning) { _rb.linearVelocity = Vector2.zero; return; }
             if (_stunT > 0f || (_rootT > 0f && _st != St.Stagger)) { _rb.linearVelocity = _st == St.Stagger ? _rb.linearVelocity * 0.85f : Vector2.zero; return; }
-            float speed = Profile.moveSpeed * _speedMult * _slowMult;
+            float speed = Data.moveSpeed * _speedMult * _slowMult;
             Vector2 to = Player.Feet - (Vector2)transform.position;
             float dist = to.magnitude;
             Vector2 dir = dist > 0.001f ? to / dist : Vector2.zero;
@@ -338,7 +340,7 @@ namespace HearthHollow.Dungeon
             switch (_st)
             {
                 case St.Moving:
-                    switch (Profile.archetype)
+                    switch (Data.archetype)
                     {
                         case EnemyArchetype.Caster:
                             if (dist < 3.5f) v = -dir * speed;
@@ -347,13 +349,13 @@ namespace HearthHollow.Dungeon
                             break;
                         case EnemyArchetype.Flyer:
                             v = (dir + new Vector2(-dir.y, dir.x) * Mathf.Sin(_wobble * 4f) * 0.9f).normalized * speed;
-                            if (dist < Profile.attackRange * 0.7f) v *= 0.3f;
+                            if (dist < Data.attackRange * 0.7f) v *= 0.3f;
                             break;
                         case EnemyArchetype.Charger:
                             v = dir * speed * 0.6f;
                             break;
                         default:
-                            if (MonsterHabits.Circles(Stats.monsterId) && _cd > 0.15f && dist < 5.5f)
+                            if (Data.circles && _cd > 0.15f && dist < 5.5f)
                             {   // ticket 64: a wolf circles while it waits its turn, each pack member at its own spot round you
                                 float ang = Mathf.Atan2(-to.y, -to.x) + _orbitDir * 1.6f * Time.fixedDeltaTime;
                                 Vector2 spot = Player.Feet + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * 2.6f;
@@ -361,7 +363,7 @@ namespace HearthHollow.Dungeon
                                 v = go.sqrMagnitude > 0.0004f ? go.normalized * speed * Mathf.Clamp01(go.magnitude * 2f) : Vector2.zero;
                                 break;
                             }
-                            v = dist > Profile.attackRange * 0.8f ? dir * speed : Vector2.zero;
+                            v = dist > Data.attackRange * 0.8f ? dir * speed : Vector2.zero;
                             break;
                     }
                     var steer = LightSteer(v, speed, dist);
@@ -369,11 +371,11 @@ namespace HearthHollow.Dungeon
                     v = Avoid(v);
                     break;
                 case St.Windup: v = Vector2.zero; break;
-                case St.Striking: v = Profile.archetype == EnemyArchetype.Chaser ? _lockDir * 2.5f : Vector2.zero; break;
+                case St.Striking: v = Data.archetype == EnemyArchetype.Chaser ? _lockDir * 2.5f : Vector2.zero; break;
                 case St.Charging:
-                    float cs = Profile.archetype == EnemyArchetype.Flyer ? 9f : Profile.archetype == EnemyArchetype.Brute ? 8f : 10f;
+                    float cs = Data.archetype == EnemyArchetype.Flyer ? 9f : Data.archetype == EnemyArchetype.Brute ? 8f : 10f;
                     v = _lockDir * cs * Mathf.Max(0.8f, _speedMult);
-                    if (Profile.archetype == EnemyArchetype.Flyer && MonsterHabits.Swoops(Stats.monsterId))
+                    if (Data.archetype == EnemyArchetype.Flyer && Data.swoops)
                     {   // ticket 64: a bat swoops in an arc (it bows out and back, ending on the same line)
                         float k = 1f - Mathf.Clamp01(_stT / 0.22f);
                         v += new Vector2(-_lockDir.y, _lockDir.x) * _swoopSide * Mathf.Cos(k * Mathf.PI) * cs * 0.9f;
@@ -555,7 +557,7 @@ namespace HearthHollow.Dungeon
         /// Light-shy / drawn-to-light steering on top of the normal chase (null = no change).
         Vector2? LightSteer(Vector2 v, float speed, float distToPlayer)
         {
-            var reaction = Profile.lightReaction;
+            var reaction = Data.lightReaction;
             if (reaction == LightReaction.None) return null;
             Vector2 src; float strength;
             bool has = DungeonLight.StrongestSource(Body, 0.5f, out src, out strength);
@@ -591,10 +593,10 @@ namespace HearthHollow.Dungeon
         readonly List<Element> _weak = new List<Element>(), _resist = new List<Element>();
         public IList<Element> WeakTo { get { return _weak; } }
         /// The monster's own element (its attacks carry it).
-        public Element OwnElement { get { return Profile != null ? Profile.element : Element.None; } }
+        public Element OwnElement { get { return Profile != null ? Data.element : Element.None; } }
         public IList<Element> Resists { get { return _resist; } }
 
-        void SetupElements(EnemyProfile p)
+        void SetupElements(MonsterData p)
         {
             _weak.Clear(); _resist.Clear();
             if (p == null) return;
@@ -750,7 +752,7 @@ namespace HearthHollow.Dungeon
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
             HearthHollow.Runtime.GameAudio.Play(Stats.boss ? "boss_kill" : "kill");   // ticket 62
             // ticket 56: it bursts in its own colour and element (fire embers, frost shards, nature leaves…)
-            Element el = Profile != null ? Profile.element : Element.None;
+            Element el = Profile != null ? Data.element : Element.None;
             Color bodyCol = DungeonFx.AverageColour(_anim != null && _anim.Renderer != null ? _anim.Renderer.sprite : null, new Color(0.85f, 0.85f, 0.85f));
             Color deathCol = el != Element.None ? Color.Lerp(ElementColour(el), bodyCol, 0.35f) : Color.Lerp(bodyCol, new Color(1f, 0.88f, 0.7f), 0.4f);
             if (Stats.boss) deathCol = Color.Lerp(deathCol, new Color(1f, 0.6f, 0.3f), 0.4f);
@@ -761,7 +763,7 @@ namespace HearthHollow.Dungeon
             if (Stats.boss) for (int i = 0; i < 30; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, 10f); }
             if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
-            if (MonsterHabits.Splits(Stats) && _dc != null && _room != null)   // ticket 64: a slime splits in two little ones
+            if (MonsterHabits.Splits(Data, Stats) && _dc != null && _room != null)   // ticket 64: a slime splits in two little ones
             {
                 for (int i = 0; i < MonsterHabits.SplitCount; i++)
                 {

@@ -26,15 +26,14 @@ namespace HearthHollow.Core
         public float sizeMult = 1f;  // ticket 64: drawn smaller (split slimes)
     }
 
-    /// Ticket 64: monster behaviours — wolves circle in packs, bats swoop, slimes split.
+    /// Ticket 64: the slime split's numbers. (Which monsters circle, swoop or split is data on MonsterData: refactor 04.)
     public static class MonsterHabits
     {
         public const float SplitHpPct = 0.35f, SplitDamagePct = 0.5f, SplitSize = 0.62f;
         public const int SplitCount = 2;
 
-        public static bool Circles(string monsterId) { return !string.IsNullOrEmpty(monsterId) && monsterId.Contains("wolf"); }
-        public static bool Swoops(string monsterId) { return !string.IsNullOrEmpty(monsterId) && monsterId.Contains("bat"); }
-        public static bool Splits(EnemyStats e) { return e != null && !e.boss && !e.split && !string.IsNullOrEmpty(e.monsterId) && e.monsterId.Contains("slime"); }
+        /// A slime splits when it dies (never a boss, never one that's already a split-off).
+        public static bool Splits(MonsterData m, EnemyStats e) { return m != null && m.splits && e != null && !e.boss && !e.split; }
 
         /// The little slimes a slime splits into: weaker, smaller, and worth nothing.
         public static EnemyStats Split(EnemyStats parent)
