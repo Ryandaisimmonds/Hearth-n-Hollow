@@ -37,6 +37,8 @@ namespace HearthHollow.Dungeon
         Facing _facing = Facing.Down;
         // statuses from player moves
         float _stunT, _rootT, _slowT, _slowMult = 1f, _markT, _markBonus;
+        float _burnT, _frostT, _burnFxT;   // ticket 61: element marks left by hits (fire: a burn flicker; frost: a blue chill)
+        public const float BurnTime = 1.2f, ChillTime = 1.5f, ChillSlow = 0.85f;   // ticket 61: frost slows 15% for 1.5 s (the one gameplay number here)
         public bool Stunned { get { return _stunT > 0f; } }
         public bool Spawning { get { return _st == St.Spawning; } }
         // light plan step 6
@@ -127,6 +129,17 @@ namespace HearthHollow.Dungeon
             if (Player == null) return;
             UpdateLight(dt);
             if (_slowT > 0f) { _slowT -= dt; if (_slowT <= 0f) _slowMult = 1f; }
+            if (_frostT > 0f) _frostT -= dt;
+            if (_burnT > 0f)   // ticket 61: a burning monster sheds little flames
+            {
+                _burnT -= dt; _burnFxT -= dt;
+                if (_burnFxT <= 0f)
+                {
+                    _burnFxT = 0.1f;
+                    var fx = DungeonFx.Spawn(DungeonFx.Flame, (Vector3)Body + (Vector3)(Random.insideUnitCircle * 0.25f), new Color(1f, Random.Range(0.45f, 0.75f), 0.2f, 0.9f), Random.Range(0.35f, 0.55f), Random.Range(0.25f, 0.4f), 0.05f, 0f, DungeonController.SortOrder(transform.position.y) + 3, true);
+                    fx.velocity = new Vector2(Random.Range(-0.2f, 0.2f), Random.Range(0.8f, 1.4f));
+                }
+            }
             if (_rootT > 0f) _rootT -= dt;
             if (_markT > 0f) _markT -= dt;
             if (_stunT > 0f)
@@ -372,11 +385,63 @@ namespace HearthHollow.Dungeon
             DungeonFx.Ghost(_anim.Renderer, new Color(1f, 1f, 1f, 0.8f), 0.1f, true, true);
             GameFeel.HitStop(crit ? 0.075f : 0.035f);
             if (crit) { if (_dc != null) _dc.Shake(0.08f, 0.07f); GameLook.Punch(0.35f); }
+            if (multi) foreach (var e in infused) ElementMark(e, knockDir); else ElementMark(element, knockDir);   // ticket 61
             if (Hp <= 0) { Die(); return; }
             if (!Stats.boss && !Stats.elite && _st != St.Charging)
             {
                 _st = St.Stagger; _stT = 0.16f;
                 if (_rb != null && knock > 0f) _rb.linearVelocity = knockDir.normalized * knock;
+            }
+        }
+
+        /// Ticket 61: what an element leaves on a monster it hits. Fire: a short burn (a flicker and little flames; looks
+        /// only). Frost: a blue chill and a slight slow. Nature: a burst of leaves. Water: a splash.
+        void ElementMark(Element e, Vector2 dir)
+        {
+            switch (e)
+            {
+                case Element.Fire:
+                    _burnT = BurnTime; _burnFxT = 0f;
+                    DungeonFx.Embers(Body, new Color(1f, 0.55f, 0.15f), 6, 0.3f);
+                    break;
+                case Element.Frost:
+                    _frostT = ChillTime;
+                    Slow(ChillSlow, ChillTime);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Vector2 o = Quaternion.Euler(0, 0, Random.Range(-60f, 60f)) * (dir.sqrMagnitude > 0.01f ? dir.normalized : Vector2.up);
+                        var fx = DungeonFx.Spawn(DungeonFx.Shard, (Vector3)Body, new Color(0.8f, 0.95f, 1f), Random.Range(0.4f, 0.6f), 1.4f, 0.8f, Random.Range(0f, 360f), 20600, false);
+                        fx.velocity = o * Random.Range(2.5f, 4.5f); fx.drag = 3f; fx.accel = new Vector2(0f, -6f); fx.spin = Random.Range(-500f, 500f);
+                    }
+                    break;
+                case Element.Nature:
+                    for (int i = 0; i < 6; i++)
+                    {
+                        Vector2 o = Random.insideUnitCircle.normalized;
+                        var fx = DungeonFx.Spawn(DungeonFx.Leaf, (Vector3)Body, Color.Lerp(new Color(0.35f, 0.85f, 0.3f), new Color(0.8f, 0.8f, 0.3f), Random.value * 0.4f), Random.Range(0.8f, 1.2f), 1.6f, 1.2f, Random.Range(0f, 360f), 20600, false);
+                        fx.velocity = o * Random.Range(1.5f, 3f) + Vector2.up * 1.5f; fx.drag = 3.5f; fx.accel = new Vector2(0f, -1.5f);
+                        fx.spin = Random.Range(-220f, 220f); fx.sway = Random.Range(0.6f, 1f) * (Random.value < 0.5f ? -1f : 1f);
+                    }
+                    break;
+                case Element.Water:
+                    for (int i = 0; i < 6; i++)
+                    {
+                        Vector2 o = Quaternion.Euler(0, 0, Random.Range(-60f, 60f)) * Vector2.up;
+                        var fx = DungeonFx.Spawn(DungeonFx.Drop, (Vector3)Body, new Color(0.55f, 0.75f, 1f), Random.Range(0.5f, 0.7f), 1.3f, 0.8f, 0f, 20600, false);
+                        fx.velocity = o * Random.Range(2.5f, 4.5f); fx.drag = 1.5f; fx.accel = new Vector2(0f, -11f);
+                    }
+                    break;
+            }
+        }
+
+        /// Ticket 61: the tint a burning / chilled monster wears this frame (null = none).
+        public Color? ElementTint
+        {
+            get
+            {
+                if (_frostT > 0f) return new Color(0.62f, 0.85f, 1f);
+                if (_burnT > 0f) return Mathf.FloorToInt(Time.time * 14f) % 2 == 0 ? new Color(1f, 0.62f, 0.4f) : new Color(1f, 0.85f, 0.6f);
+                return null;
             }
         }
 
@@ -637,6 +702,7 @@ namespace HearthHollow.Dungeon
             else if (_stunT > 0f) c = new Color(0.75f, 0.8f, 1f);
             else if (_rootT > 0f) c = new Color(0.7f, 1f, 0.7f);
             else if (_markT > 0f && Mathf.FloorToInt(Time.time * 6f) % 2 == 0) c = new Color(1f, 0.6f, 0.55f);
+            else if (ElementTint.HasValue) c = ElementTint.Value;   // ticket 61: burning / chilled
             else if (_slowT > 0f) c = new Color(0.85f, 0.85f, 0.7f);
             else if (_st == St.Windup && Mathf.FloorToInt(Time.time * 16f) % 2 == 0) c = new Color(1f, 0.75f, 0.55f);
             sr.color = c;
