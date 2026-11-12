@@ -24,6 +24,8 @@ namespace HearthHollow.UI
         float _gameStart, _gameMarker01;
         IVisualElementScheduledItem _tick;
         string _recipeId;
+        readonly UiParticles _fx = new UiParticles();   // ticket 59: steam, sizzle, gold sparkles, the Prime burst
+        float _steamT, _sizzleT, _sparkT;
 
         public CookOverlay(GameUI ui) : base(ui, "overlay", "cook-pop")
         {
@@ -77,6 +79,7 @@ namespace HearthHollow.UI
             _card.Add(_cardBuffs);
             _card.RegisterCallback<PointerDownEvent>(e => { if (_mode == Mode.Done) Close(); });   // click to dismiss
             box.Add(_card);
+            box.Add(_fx.Layer);   // on top of everything in the box
         }
 
         public void SetRecipe(string recipeId)
@@ -85,7 +88,7 @@ namespace HearthHollow.UI
             SetMode(Mode.Ready);
         }
 
-        protected override void OnHide() { StopTick(); _mode = Mode.Ready; }
+        protected override void OnHide() { StopTick(); _mode = Mode.Ready; _fx.Clear(); }
 
         void Close()
         {
@@ -136,6 +139,35 @@ namespace HearthHollow.UI
             if (_mode != Mode.Cooking) return;
             _gameMarker01 = Cooking.CookMarkerAt(C.tuning, UIKit.Now - _gameStart);
             _gameMarker.style.left = Length.Percent(_gameMarker01 * 100f);
+            StoveJuice();
+        }
+
+        /// Ticket 59: steam off the pan, sizzle at the heat marker, and sparkles while it's in the gold.
+        void StoveJuice()
+        {
+            float now = UIKit.Now;
+            if (!(_gameTrack.worldBound.width > 1f) || !(_fx.Layer.worldBound.width > 1f)) return;   // not laid out yet
+            var r = C.Recipe(_recipeId);
+            int zone = r != null ? Cooking.CookGrade(C, S.Profile, r.station, _gameMarker01) : 0;   // 2 gold, 1 warm, 0 plain
+            _gameMarker.EnableInClassList("gather-bar__marker--gold", zone == 2);
+            Vector2 mark = _fx.At(_gameMarker, new Vector2(0.5f, 0.2f));
+            if (now >= _steamT)   // steam rises off the whole pan
+            {
+                _steamT = now + 0.09f;
+                Vector2 at = _fx.At(_gameTrack, new Vector2(Random.Range(0.05f, 0.95f), 0f));
+                _fx.Blob(at, new Vector2(Random.Range(-12f, 12f), Random.Range(-60f, -35f)), new Color(1f, 1f, 1f, 0.22f), Random.Range(10f, 18f), Random.Range(0.9f, 1.4f), 2.4f);
+            }
+            if (now >= _sizzleT)   // sizzle: hot spatters jump off the marker, hotter (more, brighter) the closer to gold
+            {
+                _sizzleT = now + (zone == 2 ? 0.03f : zone == 1 ? 0.06f : 0.1f);
+                Color hot = zone == 2 ? new Color(1f, 0.9f, 0.4f, 1f) : new Color(1f, Random.Range(0.45f, 0.7f), 0.2f, 1f);
+                _fx.Blob(mark, new Vector2(Random.Range(-90f, 90f), Random.Range(-160f, -80f)), hot, Random.Range(3f, 5f), Random.Range(0.35f, 0.6f), 0.4f, new Vector2(0f, 420f));
+            }
+            if (zone == 2 && now >= _sparkT)   // in the gold: sparkles
+            {
+                _sparkT = now + 0.05f;
+                _fx.Glyph(Random.value < 0.6f ? "✦" : "✧", mark + Random.insideUnitCircle * 22f, new Vector2(0f, -40f), new Color(1f, 0.88f, 0.35f, 1f), Random.Range(12f, 20f), Random.Range(0.4f, 0.7f), Random.Range(-180f, 180f));
+            }
         }
 
         void StopGame()
@@ -155,6 +187,16 @@ namespace HearthHollow.UI
             _card.EnableInClassList("cook-card--prime", meal.grade == 2);
             SetMode(Mode.Done);
             Juice.Pop(_cardTitle, 1.25f, 0.05f, 0.25f);
+            // ticket 59: a gold burst for Prime, a warm puff for Fine
+            var pic = _cardPic;
+            Root.schedule.Execute(() =>
+            {
+                if (!(pic.worldBound.width > 1f)) return;
+                Vector2 at = _fx.At(pic, new Vector2(0.5f, 0.5f));
+                if (meal.grade == 2) { _fx.Burst(at, new Color(1f, 0.85f, 0.3f), 46, 420f); Juice.Pop(pic, 1.18f, 0.08f, 0.3f); Ui.Juice.Shake(5f, 0.15f); }
+                else if (meal.grade == 1) _fx.Burst(at, new Color(1f, 0.65f, 0.35f), 16, 240f);
+                for (int i = 0; i < 6; i++) _fx.Blob(at + new Vector2(Random.Range(-30f, 30f), -20f), new Vector2(Random.Range(-15f, 15f), Random.Range(-70f, -40f)), new Color(1f, 1f, 1f, 0.3f), Random.Range(14f, 22f), Random.Range(1f, 1.5f), 2.2f);   // and it steams
+            }).StartingIn(30);   // after the card has laid out
             // the card goes by itself after a couple of seconds (or on a click / Enter)
             if (_cardTimer == null) _cardTimer = Root.schedule.Execute(() => { if (_mode == Mode.Done) Close(); }).StartingIn(2200);
             else { _cardTimer.ExecuteLater(2200); _cardTimer.Resume(); }

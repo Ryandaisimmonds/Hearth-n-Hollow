@@ -784,6 +784,7 @@ Label { white-space: normal; color: var(--hh-text); }
     border-radius: 4px;
     border-width: 1px; border-color: #3a2208;
 }
+.gather-bar__marker--gold { background-color: rgb(255, 226, 120); border-color: rgb(255, 250, 220); width: 12px; margin-left: -6px; }   /* ticket 59: in the gold */
 .gather__result {
     min-height: 32px; margin-top: 8px; font-size: 22px; -unity-font-style: bold; color: var(--hh-cream);
     -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
