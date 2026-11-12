@@ -17,7 +17,7 @@ namespace HearthHollow.Tests
             var s = Fresh();
             s.Log("before any run");
             Assert.AreEqual(0, s.RunLog.Count, "nothing is logged outside a run");
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.Greater(s.RunLog.Count, 0, "setting out is logged");
             s.DungeonDescend();
             var lines = new System.Collections.Generic.List<RunLogLine>(s.RunLog);
@@ -27,7 +27,7 @@ namespace HearthHollow.Tests
             Assert.AreEqual("🔥 Fog Wolf is weak to Fire", s.RunLog[s.RunLog.Count - 1].text);
             Assert.AreNotEqual(s.RunLog[s.RunLog.Count - 2].text, s.RunLog[s.RunLog.Count - 1].text, "repeats aren't logged twice");
             s.DungeonExit(); s.ReturnToHearth();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.IsFalse(new System.Collections.Generic.List<RunLogLine>(s.RunLog).Exists(l => l.text.Contains("Fog Wolf")), "a new run starts a new log");
         }
 
@@ -35,7 +35,7 @@ namespace HearthHollow.Tests
         public void Log_IsNotSaved()
         {
             var s = Fresh();
-            s.StartRun("meadow");
+            s.StartRun(Ids.Area.Meadow);
             s.Log("secret");
             Assert.IsFalse(UnityEngine.JsonUtility.ToJson(s.Profile).Contains("secret"));
         }

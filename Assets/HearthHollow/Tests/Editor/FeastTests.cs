@@ -14,7 +14,7 @@ namespace HearthHollow.Tests
             var c = DefaultContent.Create();
             var p = Economy.NewProfile(c);
             p.selectedClass = ClassId.Cook;
-            p.packed = new List<CookedMeal> { new CookedMeal { recipeId = "herb_stew", grade = 1 }, new CookedMeal { recipeId = "mushroom_skewer", grade = 2 } };
+            p.packed = new List<CookedMeal> { new CookedMeal { recipeId = Ids.Recipe.HerbStew, grade = 1 }, new CookedMeal { recipeId = Ids.Recipe.MushroomSkewer, grade = 2 } };
             float a0, a1; int h0, h1;
             FeastMoment.Stats(c, p, Cooking.Packed(c, p), out a0, out a1, out h0, out h1);
             Assert.Greater(a1, a0);

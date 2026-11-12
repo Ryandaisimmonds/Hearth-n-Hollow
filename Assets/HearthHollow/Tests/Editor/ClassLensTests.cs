@@ -12,7 +12,7 @@ namespace HearthHollow.Tests
 
         RecipeData HpMeal()
         {
-            var r = _c.Recipe("berry_porridge");   // ticket 52: (no +% HP special) every meal's HP comes from its station base
+            var r = _c.Recipe(Ids.Recipe.BerryPorridge);   // ticket 52: (no +% HP special) every meal's HP comes from its station base
             Assert.IsNotNull(r, "some meal gives max HP");
             return r;
         }

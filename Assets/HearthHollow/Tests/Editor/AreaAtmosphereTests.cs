@@ -11,9 +11,9 @@ namespace HearthHollow.Tests
         public void EachSliceArea_HasItsOwnAir()
         {
             var c = DefaultContent.Create();
-            Assert.AreEqual(AirKind.Meadow, AreaAtmosphere.KindFor(c, "meadow"));
-            Assert.AreEqual(AirKind.Chili, AreaAtmosphere.KindFor(c, "chili"));
-            Assert.AreEqual(AirKind.Frost, AreaAtmosphere.KindFor(c, "frosthollow"));
+            Assert.AreEqual(AirKind.Meadow, AreaAtmosphere.KindFor(c, Ids.Area.Meadow));
+            Assert.AreEqual(AirKind.Chili, AreaAtmosphere.KindFor(c, Ids.Area.Chili));
+            Assert.AreEqual(AirKind.Frost, AreaAtmosphere.KindFor(c, Ids.Area.FrostHollow));
             Assert.AreEqual(AirKind.Fall, AreaAtmosphere.KindFor(c, GameSession.FallRoute));
             Assert.AreEqual(AirKind.None, AreaAtmosphere.KindFor(c, null));
         }

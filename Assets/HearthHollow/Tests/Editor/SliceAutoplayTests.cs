@@ -40,7 +40,7 @@ namespace HearthHollow.Tests
                     if (did.StartsWith("STUCK")) Assert.Fail(did + "\n" + Tail(log));
                 }
                 Assert.AreEqual(WrenStep.Done, s.Wren, "the slice didn't finish in " + Budget + " actions\n" + Tail(log));
-                Assert.IsTrue(s.Profile.clearedRouteIds.Contains("meadow") && s.Profile.clearedRouteIds.Contains("frosthollow"), "Meadow and Frost Hollow cleared");
+                Assert.IsTrue(s.Profile.clearedRouteIds.Contains(Ids.Area.Meadow) && s.Profile.clearedRouteIds.Contains(Ids.Area.FrostHollow), "Meadow and Frost Hollow cleared");
                 Assert.Less(runs, 40, "the slice took " + runs + " runs");
             }
             finally { Slice.On = was; }
@@ -105,13 +105,13 @@ namespace HearthHollow.Tests
 
             if (s.Wren == WrenStep.SeasonMeal)
             {
-                if (Economy.PantryCount(s.Profile, "chili") > 0)
+                if (Economy.PantryCount(s.Profile, Ids.Ingredient.Chili) > 0)
                 {
                     if (s.Profile.mealPantry.Count == 0) { var r = Cookable(s); if (r != null) s.Cook(r.id, new CookChoice { grade = 1 }); }
                     if (s.Profile.mealPantry.Count > 0)
                     {
                         string why;
-                        if (s.SeasonMeal(s.Profile.mealPantry[0], "chili", out why)) return "seasoned a meal with chili";
+                        if (s.SeasonMeal(s.Profile.mealPantry[0], Ids.Ingredient.Chili, out why)) return "seasoned a meal with chili";
                         // (no luck this time: go and get more, like a player would; the stall check catches a real dead end)
                     }
                 }
@@ -147,16 +147,16 @@ namespace HearthHollow.Tests
             string why;
             // while Wren wants a meal seasoned with chili, don't cook the chili away
             bool keepChili = s.Wren == WrenStep.SeasonMeal;
-            int chili = Economy.PantryCount(s.Profile, "chili");
+            int chili = Economy.PantryCount(s.Profile, Ids.Ingredient.Chili);
             return c.recipes.Find(x => !x.always && x.ingredients.Count > 0 && Kitchen.Unlocked(c, s.Profile, x) && Cooking.CanCook(c, s.Profile, x, new CookChoice(), out why)
-                                      && !(keepChili && x.ingredients.Exists(k => k.ingredientId == "chili" && k.count >= chili)));   // leave one to season with
+                                      && !(keepChili && x.ingredients.Exists(k => k.ingredientId == Ids.Ingredient.Chili && k.count >= chili)));   // leave one to season with
         }
 
         /// The slice area the objective talks about; the season step needs chilies from the ridge.
         static string RouteFor(GameSession s)
         {
             var c = s.Content;
-            if (s.Wren == WrenStep.SeasonMeal && s.IsRouteUnlocked("chili")) return "chili";
+            if (s.Wren == WrenStep.SeasonMeal && s.IsRouteUnlocked(Ids.Area.Chili)) return Ids.Area.Chili;
             string obj = s.WrenObjective ?? "";
             foreach (var id in Slice.RouteIds)
             {

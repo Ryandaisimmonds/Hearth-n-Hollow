@@ -7,8 +7,8 @@ namespace HearthHollow.Core
 {
     public partial class GameSession
     {
-        public const string MeadowRoute = "meadow", RidgeRoute = "chili", FrostRoute = "frosthollow";
-        public const string WrenFrostFlag = "wren_frost";   // ticket 47: Wren has told you the way to Frost Hollow
+        public const string MeadowRoute = Ids.Area.Meadow, RidgeRoute = Ids.Area.Chili, FrostRoute = Ids.Area.FrostHollow;
+        public const string WrenFrostFlag = Ids.Flag.WrenFrost;   // ticket 47: Wren has told you the way to Frost Hollow
 
         /// Ticket 47: Meadow Hollow's boss floor (the Bramble Sow, at the bottom).
         public int MeadowBossFloor { get { return DungeonRules.Floors(Content, MeadowRoute); } }
@@ -39,7 +39,7 @@ namespace HearthHollow.Core
             string bossName = boss != null ? boss.name : "the beast at the bottom";
             var ridge = Content.Route(RidgeRoute);
             string ridgeName = ridge != null ? ridge.name : "Chili Ridge";
-            var chili = Content.Ingredient("chili");
+            var chili = Content.Ingredient(Ids.Ingredient.Chili);
             return new List<string>
             {
                 "Back from the Hollow with bramble in your hair! You beat that old Sow at the bottom, didn't you? Good. Then it's time you heard about the cold.",

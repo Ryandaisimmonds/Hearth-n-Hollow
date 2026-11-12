@@ -98,9 +98,9 @@ namespace HearthHollow.Tests
             var c = DefaultContent.Create();
             var s = new GameSession(c, null, 5);
             s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-            foreach (var ic in c.Recipe("mushroom_skewer").ingredients) Economy.AddToPantry(s.Profile, ic.ingredientId, ic.count * 3);
-            Assert.AreEqual(2, s.Cook("mushroom_skewer", new CookChoice { grade = 2 }).grade);
-            Assert.AreEqual(0, s.Cook("mushroom_skewer", new CookChoice { grade = 0 }).grade);
+            foreach (var ic in c.Recipe(Ids.Recipe.MushroomSkewer).ingredients) Economy.AddToPantry(s.Profile, ic.ingredientId, ic.count * 3);
+            Assert.AreEqual(2, s.Cook(Ids.Recipe.MushroomSkewer, new CookChoice { grade = 2 }).grade);
+            Assert.AreEqual(0, s.Cook(Ids.Recipe.MushroomSkewer, new CookChoice { grade = 0 }).grade);
         }
     }
 }

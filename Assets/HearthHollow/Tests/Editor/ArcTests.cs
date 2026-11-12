@@ -47,12 +47,12 @@ namespace HearthHollow.Tests
             var s = NewSession();
             string herb = _c.starterPantry[0].ingredientId;
             int had = Economy.PantryCount(s.Profile, herb);
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             s.DungeonExit();   // escape (falling works the same)
             Assert.AreEqual(1, s.ArcStage);
             Assert.AreEqual(had + _c.starterPantry[0].count, Economy.PantryCount(s.Profile, herb), "Wren feeds you");
             Assert.IsTrue(s.AreaOpen("kitchen"));
-            Assert.IsTrue(s.AreaOpen("larder"));
+            Assert.IsTrue(s.AreaOpen(Ids.Area.Larder));
             Assert.IsFalse(s.AreaOpen("smithy"));
         }
 
@@ -60,7 +60,7 @@ namespace HearthHollow.Tests
         public void FallingOnTheFirstDive_AlsoReachesStage1()
         {
             var s = NewSession();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             s.DungeonDamagePlayer(100000f);
             Assert.AreEqual(Phase.RunEnd, s.Phase);
             Assert.AreEqual(1, s.ArcStage);
@@ -70,12 +70,12 @@ namespace HearthHollow.Tests
         public void HomeAfterTheFirstBoss_TheCampGrows_AndBootsGiveTheDash()
         {
             var s = NewSession();
-            s.StartRun("meadow"); s.DungeonExit(); s.ReturnToHearth();
+            s.StartRun(Ids.Area.Meadow); s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(1, s.ArcStage);
             int coins = s.Profile.coins;
-            s.StartRun("meadow");
+            s.StartRun(Ids.Area.Meadow);
             for (int i = 0; i < 4; i++) s.DungeonDescend();
-            s.DungeonEnemyKilled(s.DungeonEnemy("bramble_sow", true, true));
+            s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.BrambleSow, true, true));
             Assert.AreEqual(1, s.ArcStage, "the town grows when you're home, not mid-dive");
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(2, s.ArcStage);
@@ -92,20 +92,20 @@ namespace HearthHollow.Tests
         public void FirstDive_HasNoLadder_AndToughMonsters()
         {
             var s = NewSession();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.IsTrue(s.Run.firstDive);
             Assert.IsTrue(s.DungeonNoLadder);
             Assert.IsFalse(s.DungeonDescend(), "no way down on the first dive");
             s.Run.fightRooms = 1;
-            var gentle = s.DungeonEnemy("slime", false, false);
+            var gentle = s.DungeonEnemy(Ids.Monster.Slime, false, false);
             s.Run.fightRooms = 5;   // ticket 42: tougher with every room you fight through
-            var tough = s.DungeonEnemy("slime", false, false);
+            var tough = s.DungeonEnemy(Ids.Monster.Slime, false, false);
             Assert.Greater(tough.maxHp, gentle.maxHp);
             Assert.Greater(tough.damage, gentle.damage * 3f);
             s.DungeonExit(); s.ReturnToHearth();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.IsFalse(s.Run.firstDive);
-            var normal = s.DungeonEnemy("slime", false, false);
+            var normal = s.DungeonEnemy(Ids.Monster.Slime, false, false);
             Assert.Greater(tough.maxHp, normal.maxHp);
             Assert.Greater(tough.damage, normal.damage * 1.5f);
         }
@@ -114,8 +114,8 @@ namespace HearthHollow.Tests
         public void Ladders_NoLongerGiveBoots()
         {
             var s = NewSession();
-            s.StartRun("meadow"); s.DungeonExit(); s.ReturnToHearth();   // the first dive
-            s.StartRun("meadow");
+            s.StartRun(Ids.Area.Meadow); s.DungeonExit(); s.ReturnToHearth();   // the first dive
+            s.StartRun(Ids.Area.Meadow);
             Assert.IsTrue(s.DungeonDescend());
             Assert.IsFalse(s.DashUnlocked);
             Assert.AreEqual(0, s.Profile.bootsTier);

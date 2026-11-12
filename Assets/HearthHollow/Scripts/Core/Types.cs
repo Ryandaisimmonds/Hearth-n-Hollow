@@ -420,7 +420,7 @@ namespace HearthHollow.Core
         public float swarmCount = 2f, swarmHp = 0.55f;        // Swarm: more monsters, each weaker
         // ── trinkets (contentVersion 7) ──
         public int trinketSlots = 2;                          // slots from the start
-        public string trinketSlotRoute = "cavern";            // clearing this route opens one more slot
+        public string trinketSlotRoute = Ids.Area.Cavern;            // clearing this route opens one more slot
         public float trinketBossDrop = 0.15f, trinketEliteDrop = 0.03f;   // chance a boss / elite drops a trinket you don't own
         public float merchantTrinketChance = 0.4f;            // chance the travelling merchant has a trinket for sale
         // ── cooking v9: grades (ingredients Plain / Fine / Prime, meals Common / Uncommon / Rare), the rarity roll, accelerators, the meal pantry ──

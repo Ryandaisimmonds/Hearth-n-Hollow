@@ -81,7 +81,7 @@ namespace HearthHollow.Tests
             s.Profile.selectedClass = ClassId.Cook;
             Gear.Give(_c, s.Profile, "pocket_hearth");
             string why; Assert.IsTrue(Gear.Equip(_c, s.Profile, "pocket_hearth", out why), why);
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             s.DungeonDamagePlayer(100000f);
             Assert.AreEqual(Phase.Dungeon, s.Phase, "saved by the Pocket Hearth");
             Assert.AreEqual(1, s.Run.hp);

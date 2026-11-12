@@ -13,10 +13,10 @@ namespace HearthHollow.Tests
         [Test]
         public void PotMeals_AndCampBread_HealOverTime()
         {
-            foreach (var id in new[] { "berry_porridge", "herb_stew_2" })   // ticket 44: one healing meal at tier 1, and the tier-2 stew
+            foreach (var id in new[] { Ids.Recipe.BerryPorridge, Ids.Recipe.HerbStew2 })   // ticket 44: one healing meal at tier 1, and the tier-2 stew
                 Assert.IsTrue(_c.Recipe(id).buffs.Exists(b => b.stat == BuffStat.Regen && b.value > 0f), id);
             var m = new CombatMods();
-            Cooking.AddMealMods(_c, _c.Class(ClassId.Cook), new List<EatenMeal> { new EatenMeal { recipeId = "berry_porridge", potency = 1f } }, m);
+            Cooking.AddMealMods(_c, _c.Class(ClassId.Cook), new List<EatenMeal> { new EatenMeal { recipeId = Ids.Recipe.BerryPorridge, potency = 1f } }, m);
             Assert.AreEqual(2f * 1.1f, m.regen, 0.01f, "the Cook gets every meal ×1.1");
         }
 
@@ -25,7 +25,7 @@ namespace HearthHollow.Tests
         {
             var s = new GameSession(_c, null, 81);
             s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             s.Run.hp = 3;
             Assert.IsTrue(s.DungeonStartGather());
             Assert.AreEqual(3 + _c.tuning.forageHeal, s.Run.hp);
@@ -36,7 +36,7 @@ namespace HearthHollow.Tests
         {
             var s = new GameSession(_c, null, 82);
             s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             int max = s.Stats.maxHp;
             s.Run.hp = 1;
             s.DungeonRoomCleared();
@@ -57,7 +57,7 @@ namespace HearthHollow.Tests
             s.Profile.wrenStep = (int)WrenStep.FirstBoss;   // ticket 42: the tray shows once Wren has explained it
             Assert.IsNotNull(s.TrayBlock);
             StringAssert.Contains("0/3", s.TrayBlock);
-            for (int i = 0; i < _c.tuning.traySize; i++) Assert.IsTrue(s.PackAlwaysMeal("bread"), "Camp Bread always fills the tray");
+            for (int i = 0; i < _c.tuning.traySize; i++) Assert.IsTrue(s.PackAlwaysMeal(Ids.Recipe.Bread), "Camp Bread always fills the tray");
             Assert.IsNull(s.TrayBlock);
         }
     }

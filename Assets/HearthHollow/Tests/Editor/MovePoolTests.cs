@@ -36,7 +36,7 @@ namespace HearthHollow.Tests
             var p = Fresh();
             Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_pepper")));
             Assert.IsFalse(Progression.Learn(_c, p, ClassId.Cook, "c_pepper"), "can't learn before the arc step");
-            Progression.RecordFloor(p, "meadow", 3);
+            Progression.RecordFloor(p, Ids.Area.Meadow, 3);
             Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_pepper")));
             Assert.IsFalse(Owns(p, "c_pepper"), "unlocked isn't owned until learned");
             Assert.IsTrue(Progression.Learn(_c, p, ClassId.Cook, "c_pepper"));
@@ -48,15 +48,15 @@ namespace HearthHollow.Tests
         public void BossKill_UnlocksHotPot_AndFloorsOnlyGoUp()
         {
             var p = Fresh();
-            Assert.IsTrue(Progression.RecordFloor(p, "meadow", 3));
-            Assert.IsFalse(Progression.RecordFloor(p, "meadow", 2));
-            Assert.AreEqual(3, Progression.DeepestFloor(p, "meadow"));
+            Assert.IsTrue(Progression.RecordFloor(p, Ids.Area.Meadow, 3));
+            Assert.IsFalse(Progression.RecordFloor(p, Ids.Area.Meadow, 2));
+            Assert.AreEqual(3, Progression.DeepestFloor(p, Ids.Area.Meadow));
             Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_ult")), "reaching floor 3 isn't beating its boss");
-            Assert.IsTrue(Progression.RecordBoss(p, "meadow", 3));
-            Assert.IsFalse(Progression.RecordBoss(p, "meadow", 3));
+            Assert.IsTrue(Progression.RecordBoss(p, Ids.Area.Meadow, 3));
+            Assert.IsFalse(Progression.RecordBoss(p, Ids.Area.Meadow, 3));
             Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_ult")), "the Sow teaches Grand Feast (ticket 47)");
             Assert.IsFalse(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")));
-            Progression.RecordFloor(p, "frosthollow", 2);
+            Progression.RecordFloor(p, Ids.Area.FrostHollow, 2);
             Assert.IsTrue(Progression.ReadyToLearn(_c, p, ClassId.Cook, _c.Move("c_hotpot")), "Hot Pot from Frost Hollow floor 2");
         }
 
@@ -64,11 +64,11 @@ namespace HearthHollow.Tests
         public void FirstUltimateLearned_GoesInTheSlot_AndTheSecondCanBeChosen()
         {
             var p = Fresh();
-            Progression.RecordBoss(p, "meadow", 3);
+            Progression.RecordBoss(p, Ids.Area.Meadow, 3);
             Progression.Learn(_c, p, ClassId.Cook, "c_ult");
             Assert.AreEqual("c_ult", Progression.Ultimate(_c, p, ClassId.Cook).id);
             Assert.IsNotNull(Progression.EquipBlock(_c, p, ClassId.Cook, LoadSlot.Ultimate, _c.Move("c_ult2")), "Five-Alarm Chili still locked");
-            Progression.RecordBoss(p, "frosthollow", 3);
+            Progression.RecordBoss(p, Ids.Area.FrostHollow, 3);
             Progression.Learn(_c, p, ClassId.Cook, "c_ult2");
             Assert.IsTrue(Progression.Equip(_c, p, ClassId.Cook, LoadSlot.Ultimate, "c_ult2"));
             Assert.AreEqual("c_ult2", Progression.Ultimate(_c, p, ClassId.Cook).id);
@@ -87,10 +87,10 @@ namespace HearthHollow.Tests
             var s = new GameSession(_c, null, 3);
             s.Profile.arcStage = 1;   // past the first dive (no ladder there)
             s.Profile.selectedClass = ClassId.Cook;
-            Assert.IsTrue(s.StartRun("meadow"));
-            Assert.AreEqual(1, Progression.DeepestFloor(s.Profile, "meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
+            Assert.AreEqual(1, Progression.DeepestFloor(s.Profile, Ids.Area.Meadow));
             s.DungeonDescend();
-            Assert.AreEqual(2, Progression.DeepestFloor(s.Profile, "meadow"));
+            Assert.AreEqual(2, Progression.DeepestFloor(s.Profile, Ids.Area.Meadow));
             Assert.IsTrue(Progression.ReadyToLearn(_c, s.Profile, ClassId.Cook, _c.Move("c_slide")), "Butter Slide unlocks at Meadow floor 2");
         }
     }

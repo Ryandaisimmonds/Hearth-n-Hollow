@@ -21,10 +21,10 @@ namespace HearthHollow.Tests
         public void ThreeStages_PaidWithMeadowAndRidgeMaterials()
         {
             Assert.AreEqual(3, _c.lampMaker.Count);
-            Assert.IsTrue(_c.lampMaker[0].materials.Exists(m => m.ingredientId == "timber"));
-            Assert.IsTrue(_c.lampMaker[1].materials.Exists(m => m.ingredientId == "ember_coal"), "stage 2 needs Chili Ridge's coal");
-            Assert.Contains("timber", _c.Route("meadow").materialIds);
-            Assert.Contains("ember_coal", _c.Route("chili").materialIds);
+            Assert.IsTrue(_c.lampMaker[0].materials.Exists(m => m.ingredientId == Ids.Ingredient.Timber));
+            Assert.IsTrue(_c.lampMaker[1].materials.Exists(m => m.ingredientId == Ids.Ingredient.EmberCoal), "stage 2 needs Chili Ridge's coal");
+            Assert.Contains(Ids.Ingredient.Timber, _c.Route(Ids.Area.Meadow).materialIds);
+            Assert.Contains(Ids.Ingredient.EmberCoal, _c.Route(Ids.Area.Chili).materialIds);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace HearthHollow.Tests
             Assert.IsTrue(s.BuildLampMaker(out why), why);
             Assert.AreEqual(1, s.Profile.lampMakerStage);
             Assert.AreEqual(0, s.Profile.coins);
-            Assert.AreEqual(0, Economy.PantryCount(s.Profile, "timber"));
+            Assert.AreEqual(0, Economy.PantryCount(s.Profile, Ids.Ingredient.Timber));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace HearthHollow.Tests
             var s = Fresh();
             Give(s, _c.lampMaker[0]);
             s.Profile.selectedClass = ClassId.Cook;
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             string why;
             Assert.IsFalse(s.BuildLampMaker(out why));
         }

@@ -36,7 +36,7 @@ namespace HearthHollow.Tests
         {
             var p = Economy.NewProfile(_c);
             p.saveVersion = 9;
-            p.pantry = new List<ItemStack> { new ItemStack { ingredientId = "herbs", count = 2, grade = 0 }, new ItemStack { ingredientId = "herbs", count = 3, grade = 2 } };
+            p.pantry = new List<ItemStack> { new ItemStack { ingredientId = Ids.Ingredient.Herbs, count = 2, grade = 0 }, new ItemStack { ingredientId = Ids.Ingredient.Herbs, count = 3, grade = 2 } };
             Cooking.MergeIngredientGrades(p);
             Assert.AreEqual(1, p.pantry.Count);
             Assert.AreEqual(5, p.pantry[0].count);
@@ -48,12 +48,12 @@ namespace HearthHollow.Tests
         public void Cooking_SpendsTheIngredientsAndTheElementSlot()
         {
             var s = Fresh();
-            Economy.AddToPantry(s.Profile, "herbs", 2); Economy.AddToPantry(s.Profile, "mushroom", 1); Economy.AddToPantry(s.Profile, "ginger", 1);
-            var meal = s.Cook("herb_stew", new CookChoice { accelId = "ginger" });
+            Economy.AddToPantry(s.Profile, Ids.Ingredient.Herbs, 2); Economy.AddToPantry(s.Profile, Ids.Ingredient.Mushroom, 1); Economy.AddToPantry(s.Profile, Ids.Ingredient.Ginger, 1);
+            var meal = s.Cook(Ids.Recipe.HerbStew, new CookChoice { accelId = Ids.Ingredient.Ginger });
             Assert.IsNotNull(meal);
-            Assert.AreEqual("ginger", meal.accelId);
-            Assert.AreEqual(0, Economy.PantryCount(s.Profile, "herbs"));
-            Assert.AreEqual(0, Economy.PantryCount(s.Profile, "ginger"));
+            Assert.AreEqual(Ids.Ingredient.Ginger, meal.accelId);
+            Assert.AreEqual(0, Economy.PantryCount(s.Profile, Ids.Ingredient.Herbs));
+            Assert.AreEqual(0, Economy.PantryCount(s.Profile, Ids.Ingredient.Ginger));
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace HearthHollow.Tests
         {
             var meals = new List<EatenMeal>
             {
-                new EatenMeal { recipeId = "herb_stew", potency = 1f, accelId = "chili" },
-                new EatenMeal { recipeId = "herb_butty", potency = 1f, accelId = "ginger" },
+                new EatenMeal { recipeId = Ids.Recipe.HerbStew, potency = 1f, accelId = Ids.Ingredient.Chili },
+                new EatenMeal { recipeId = Ids.Recipe.HerbButty, potency = 1f, accelId = Ids.Ingredient.Ginger },
             };
             Assert.AreEqual(Element.Fire, Cooking.Infusion(_c, meals));
             CollectionAssert.AreEqual(new[] { Element.Frost }, Cooking.Guards(_c, meals));
@@ -73,9 +73,9 @@ namespace HearthHollow.Tests
         public void SeveralInfusedMeals_PackTogether()   // ticket 46 (was: only one per tray)
         {
             var s = Fresh();
-            s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_stew", accelId = "chili" });
-            s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_butty", accelId = "frost_berry" });
-            s.Profile.mealPantry.Add(new CookedMeal { recipeId = "mushroom_skewer", accelId = "ginger" });
+            s.Profile.mealPantry.Add(new CookedMeal { recipeId = Ids.Recipe.HerbStew, accelId = Ids.Ingredient.Chili });
+            s.Profile.mealPantry.Add(new CookedMeal { recipeId = Ids.Recipe.HerbButty, accelId = Ids.Ingredient.FrostBerry });
+            s.Profile.mealPantry.Add(new CookedMeal { recipeId = Ids.Recipe.MushroomSkewer, accelId = Ids.Ingredient.Ginger });
             Assert.IsTrue(s.PackMeal(0));
             Assert.IsTrue(s.PackMeal(0), "a second infusion is fine now");
             Assert.IsTrue(s.PackMeal(0), "and a guard meal");
@@ -87,17 +87,17 @@ namespace HearthHollow.Tests
         [Test]
         public void TierTwoDishes_NeedADeepIngredient_AndHitHarder()
         {
-            var t2 = _c.Recipe("herb_stew_2");
+            var t2 = _c.Recipe(Ids.Recipe.HerbStew2);
             Assert.IsNotNull(t2);
             Assert.AreEqual(2, t2.tier);
-            Assert.AreEqual("herb_stew", t2.upgradeOf);
+            Assert.AreEqual(Ids.Recipe.HerbStew, t2.upgradeOf);
             Assert.IsTrue(t2.ingredients.Exists(ic => _c.Ingredient(ic.ingredientId) != null && _c.Ingredient(ic.ingredientId).deep));
             var cls = _c.Class(ClassId.Cook);   // ticket 52: a tier-2 dish gives more of everything
             float hp2 = 0f, hp1 = 0f;
-            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = "herb_stew_2", potency = 1f })) if (b.stat == BuffStat.MaxHp) hp2 += b.value;
-            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = "herb_stew", potency = 1f })) if (b.stat == BuffStat.MaxHp) hp1 += b.value;
+            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = Ids.Recipe.HerbStew2, potency = 1f })) if (b.stat == BuffStat.MaxHp) hp2 += b.value;
+            foreach (var b in Cooking.MealBuffs(_c, cls, new EatenMeal { recipeId = Ids.Recipe.HerbStew, potency = 1f })) if (b.stat == BuffStat.MaxHp) hp1 += b.value;
             Assert.Greater(hp2, hp1);
-            Assert.Greater(t2.buffs.Count, _c.Recipe("herb_stew").buffs.Count, "and a second special");
+            Assert.Greater(t2.buffs.Count, _c.Recipe(Ids.Recipe.HerbStew).buffs.Count, "and a second special");
         }
 
         [Test]
@@ -115,10 +115,10 @@ namespace HearthHollow.Tests
         public void StartingARun_TakesTheTraysInfusionAndGuards()
         {
             var s = Fresh();
-            s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_stew", accelId = "chili" });
-            s.Profile.mealPantry.Add(new CookedMeal { recipeId = "herb_butty", accelId = "ginger" });
+            s.Profile.mealPantry.Add(new CookedMeal { recipeId = Ids.Recipe.HerbStew, accelId = Ids.Ingredient.Chili });
+            s.Profile.mealPantry.Add(new CookedMeal { recipeId = Ids.Recipe.HerbButty, accelId = Ids.Ingredient.Ginger });
             s.PackMeal(0); s.PackMeal(0);
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.AreEqual(Element.Fire, s.RunElement);
             CollectionAssert.Contains(s.RunGuards, Element.Frost);
         }

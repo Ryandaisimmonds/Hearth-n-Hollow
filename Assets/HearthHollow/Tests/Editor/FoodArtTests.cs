@@ -25,10 +25,10 @@ namespace HearthHollow.Tests
             {
                 ArtLibrary.Active = null;
                 FoodArt.Install(c);
-                var chili = ArtLibrary.GetIngredient("chili");
+                var chili = ArtLibrary.GetIngredient(Ids.Ingredient.Chili);
                 Assert.IsNotNull(chili);
                 Assert.AreEqual(16, (int)chili.rect.width);
-                Assert.IsNotNull(ArtLibrary.GetRecipe("herb_stew"));
+                Assert.IsNotNull(ArtLibrary.GetRecipe(Ids.Recipe.HerbStew));
                 Assert.IsNull(ArtLibrary.GetIngredient("not_a_thing"));
                 // a dish with no drawing of its own borrows its station's
                 c.recipes.Add(new RecipeData { id = "test_new_soup", station = Station.Pot });

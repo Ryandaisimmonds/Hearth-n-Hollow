@@ -106,7 +106,7 @@ namespace HearthHollow.Dungeon
                          : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice,
                                                      Session.DungeonNoLadder || Session.DungeonEndExit,   // ticket 47: a boss-free area's last floor ends in an exit
                                                      run.floor, route != null ? route.gatherChance : 0.2f);
-            _theme = Settings.ThemeFor(fall ? "heart" : run.routeId);   // it borrows the Hollow Heart's purple gloom
+            _theme = Settings.ThemeFor(fall ? Ids.Area.Heart : run.routeId);   // it borrows the Hollow Heart's purple gloom
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);
             MakeLights();

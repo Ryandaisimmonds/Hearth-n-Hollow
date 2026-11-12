@@ -52,10 +52,10 @@ namespace HearthHollow.Tests
             var c = DefaultContent.Create();
             var s = new GameSession(c, null, 61);
             s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-            s.Profile.packed.Add(new CookedMeal { recipeId = "mushroom_skewer", accelId = "chili" });
-            s.Profile.packed.Add(new CookedMeal { recipeId = "herb_stew", accelId = "frost_berry" });
+            s.Profile.packed.Add(new CookedMeal { recipeId = Ids.Recipe.MushroomSkewer, accelId = Ids.Ingredient.Chili });
+            s.Profile.packed.Add(new CookedMeal { recipeId = Ids.Recipe.HerbStew, accelId = Ids.Ingredient.FrostBerry });
             Cooking.SyncTray(s.Profile);
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.AreEqual(2, s.RunInfusions.Count);
         }
     }

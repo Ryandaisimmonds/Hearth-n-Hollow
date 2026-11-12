@@ -14,14 +14,14 @@ namespace HearthHollow.Tests
         [Test]
         public void Areas_Meadow3_Chili2NoBoss_Frost3()   // ticket 47
         {
-            Assert.AreEqual(3, DungeonRules.Floors(_c, "meadow"));
-            Assert.AreEqual(2, DungeonRules.Floors(_c, "chili"));
-            Assert.AreEqual(3, DungeonRules.Floors(_c, "frosthollow"));
-            for (int f = 1; f <= 3; f++) Assert.AreEqual(f == 3, DungeonRules.IsBossFloor(_c, "meadow", f), "meadow floor " + f);
-            Assert.IsFalse(DungeonRules.IsBossFloor(_c, "chili", 2), "Chili Ridge has no boss");
-            Assert.IsTrue(DungeonRules.EndsInExit(_c, "chili", 2));
-            Assert.IsFalse(DungeonRules.EndsInExit(_c, "chili", 1));
-            Assert.IsTrue(DungeonRules.IsBossFloor(_c, "frosthollow", 3));
+            Assert.AreEqual(3, DungeonRules.Floors(_c, Ids.Area.Meadow));
+            Assert.AreEqual(2, DungeonRules.Floors(_c, Ids.Area.Chili));
+            Assert.AreEqual(3, DungeonRules.Floors(_c, Ids.Area.FrostHollow));
+            for (int f = 1; f <= 3; f++) Assert.AreEqual(f == 3, DungeonRules.IsBossFloor(_c, Ids.Area.Meadow, f), "meadow floor " + f);
+            Assert.IsFalse(DungeonRules.IsBossFloor(_c, Ids.Area.Chili, 2), "Chili Ridge has no boss");
+            Assert.IsTrue(DungeonRules.EndsInExit(_c, Ids.Area.Chili, 2));
+            Assert.IsFalse(DungeonRules.EndsInExit(_c, Ids.Area.Chili, 1));
+            Assert.IsTrue(DungeonRules.IsBossFloor(_c, Ids.Area.FrostHollow, 3));
         }
 
         [Test]
@@ -29,11 +29,11 @@ namespace HearthHollow.Tests
         {
             for (int seed = 1; seed <= 200; seed++)
             {
-                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, "meadow", 1, seed));
-                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, "meadow", 2, seed), "no portals in a short area");
-                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, "meadow", 3, seed), "the boss at the bottom");
-                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, "chili", 1, seed));
-                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, "chili", 2, seed), "the exit at the top of the Ridge");
+                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, Ids.Area.Meadow, 1, seed));
+                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, Ids.Area.Meadow, 2, seed), "no portals in a short area");
+                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, Ids.Area.Meadow, 3, seed), "the boss at the bottom");
+                Assert.IsFalse(DungeonRules.HomeChoiceOn(_c, Ids.Area.Chili, 1, seed));
+                Assert.IsTrue(DungeonRules.HomeChoiceOn(_c, Ids.Area.Chili, 2, seed), "the exit at the top of the Ridge");
             }
             Assert.AreEqual(DungeonRules.PortalFloor(_c, 4, 77), DungeonRules.PortalFloor(_c, 4, 77), "the same run and floor always agree");
         }
@@ -41,21 +41,21 @@ namespace HearthHollow.Tests
         [Test]
         public void LongAreas_StillHavePortalsAndShortcuts()
         {
-            var r = _c.Route("meadow"); r.floors = 10; r.bossEvery = 5;   // a long area, made up for the test
+            var r = _c.Route(Ids.Area.Meadow); r.floors = 10; r.bossEvery = 5;   // a long area, made up for the test
             int portals = 0, floors = 0;
             for (int seed = 1; seed <= 400; seed++)
-                foreach (int f in new[] { 2, 3, 4, 6, 7, 8, 9 }) { floors++; if (DungeonRules.HomeChoiceOn(_c, "meadow", f, seed)) portals++; }
+                foreach (int f in new[] { 2, 3, 4, 6, 7, 8, 9 }) { floors++; if (DungeonRules.HomeChoiceOn(_c, Ids.Area.Meadow, f, seed)) portals++; }
             Assert.That(portals / (float)floors, Is.InRange(0.14f, 0.26f), "about 1 floor in 5 has a portal");
             var s = Cook();
-            Progression.RecordBoss(s.Profile, "meadow", 5);
-            CollectionAssert.AreEqual(new[] { 1, 6 }, s.StartFloors("meadow"));
+            Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 5);
+            CollectionAssert.AreEqual(new[] { 1, 6 }, s.StartFloors(Ids.Area.Meadow));
         }
 
         [Test]
         public void Run_GoesThreeFloorsDeep()
         {
             var s = Cook();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             Assert.AreEqual(3, s.Run.floorsTotal);
             for (int i = 0; i < 2; i++) Assert.IsTrue(s.DungeonDescend());
             Assert.IsTrue(s.DungeonBossFloor && s.DungeonOnLastFloor);
@@ -66,9 +66,9 @@ namespace HearthHollow.Tests
         public void ShortAreas_HaveNoShortcuts()
         {
             var s = Cook();
-            Progression.RecordBoss(s.Profile, "meadow", 3);
-            CollectionAssert.AreEqual(new[] { 1 }, s.StartFloors("meadow"));
-            Assert.IsTrue(s.StartRun("meadow", 2));
+            Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 3);
+            CollectionAssert.AreEqual(new[] { 1 }, s.StartFloors(Ids.Area.Meadow));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow, 2));
             Assert.AreEqual(1, s.Run.floor);
         }
 
@@ -93,8 +93,8 @@ namespace HearthHollow.Tests
             p.saveVersion = 14; p.wrenStep = (int)WrenStep.Alpha;
             p.bossesBeaten = new System.Collections.Generic.List<string> { "meadow:5", "meadow:10" };
             var s = new GameSession(_c, p, 9);
-            Assert.IsTrue(Progression.BeatBoss(s.Profile, "meadow", 3));
-            Assert.IsTrue(Progression.BeatBoss(s.Profile, "frosthollow", 3));
+            Assert.IsTrue(Progression.BeatBoss(s.Profile, Ids.Area.Meadow, 3));
+            Assert.IsTrue(Progression.BeatBoss(s.Profile, Ids.Area.FrostHollow, 3));
             Assert.IsTrue(Routes.HasFlag(s.Profile, GameSession.WrenFrostFlag), "Frost Hollow is open for a save that was hunting the Alpha");
         }
     }

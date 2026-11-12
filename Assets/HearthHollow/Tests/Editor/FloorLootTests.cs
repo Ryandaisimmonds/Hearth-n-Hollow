@@ -13,7 +13,7 @@ namespace HearthHollow.Tests
         {
             var s = new GameSession(_c, null, 48);
             s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             return s;
         }
 
@@ -33,7 +33,7 @@ namespace HearthHollow.Tests
         public void FullBag_LootLandsOnTheFloor()
         {
             var s = InRun();
-            Fill(s, "wheat");
+            Fill(s, Ids.Ingredient.Wheat);
             s.DungeonSecretChest(1);
             Assert.GreaterOrEqual(s.FloorLoot.Count, 1, "it didn't vanish (a chest can give an ingredient and a material)");
             Assert.Greater(s.FloorLoot[0].count, 0);
@@ -43,30 +43,30 @@ namespace HearthHollow.Tests
         public void PickUp_WithRoom_GoesInTheBag()
         {
             var s = InRun();
-            s.Run.bag[0] = new BagSlot { ingredientId = "herbs", count = 2 };
+            s.Run.bag[0] = new BagSlot { ingredientId = Ids.Ingredient.Herbs, count = 2 };
             Assert.IsTrue(s.BagDrop(0));
             Assert.AreEqual(1, s.FloorLoot.Count);
             Assert.IsTrue(Bag.IsEmpty(s.Run.bag[0]));
             Assert.IsFalse(s.DungeonPickUp(s.FloorLoot[0]), "it fits: no swap needed");
             Assert.AreEqual(0, s.FloorLoot.Count);
-            Assert.AreEqual("herbs", s.Run.bag[0].ingredientId);
+            Assert.AreEqual(Ids.Ingredient.Herbs, s.Run.bag[0].ingredientId);
         }
 
         [Test]
         public void PickUp_WithAFullBag_HoldsIt_ThenSwaps()
         {
             var s = InRun();
-            s.Run.bag[0] = new BagSlot { ingredientId = "berries", count = 3 };
+            s.Run.bag[0] = new BagSlot { ingredientId = Ids.Ingredient.Berries, count = 3 };
             s.BagDrop(0);
             var item = s.FloorLoot[0]; item.placed = true; item.x = 4f; item.y = 5f;
-            Fill(s, "wheat");
+            Fill(s, Ids.Ingredient.Wheat);
             Assert.IsTrue(s.DungeonPickUp(item), "bag full: hold it");
             Assert.AreSame(item, s.HeldItem);
             Assert.IsTrue(s.SwapHeld(2));
-            Assert.AreEqual("berries", s.Run.bag[2].ingredientId);
+            Assert.AreEqual(Ids.Ingredient.Berries, s.Run.bag[2].ingredientId);
             Assert.IsNull(s.HeldItem);
             Assert.AreEqual(1, s.FloorLoot.Count);
-            Assert.AreEqual("wheat", s.FloorLoot[0].ingredientId, "the swapped-out stack lies where the berries were");
+            Assert.AreEqual(Ids.Ingredient.Wheat, s.FloorLoot[0].ingredientId, "the swapped-out stack lies where the berries were");
             Assert.AreEqual(4f, s.FloorLoot[0].x);
         }
 
@@ -74,9 +74,9 @@ namespace HearthHollow.Tests
         public void ClosingWithoutSwapping_LeavesItOnTheFloor()
         {
             var s = InRun();
-            s.Run.bag[0] = new BagSlot { ingredientId = "berries", count = 3 };
+            s.Run.bag[0] = new BagSlot { ingredientId = Ids.Ingredient.Berries, count = 3 };
             s.BagDrop(0);
-            Fill(s, "wheat");
+            Fill(s, Ids.Ingredient.Wheat);
             var item = s.FloorLoot[0];
             Assert.IsTrue(s.DungeonPickUp(item));
             s.CancelHeld();
@@ -89,7 +89,7 @@ namespace HearthHollow.Tests
         public void LeavingTheFloor_LeavesItsLoot()
         {
             var s = InRun();
-            s.Run.bag[0] = new BagSlot { ingredientId = "herbs", count = 1 };
+            s.Run.bag[0] = new BagSlot { ingredientId = Ids.Ingredient.Herbs, count = 1 };
             s.BagDrop(0);
             Assert.IsTrue(s.DungeonDescend());
             Assert.AreEqual(0, s.FloorLoot.Count);

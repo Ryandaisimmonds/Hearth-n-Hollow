@@ -15,14 +15,14 @@ namespace HearthHollow.Tests
         public void FirstBossEver_SendsYouHome()
         {
             var s = Cook();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             for (int i = 0; i < 2; i++) s.DungeonDescend();
             Assert.IsTrue(s.DungeonFirstBossFloor, "the boss room has only the way home");
-            s.DungeonEnemyKilled(s.DungeonEnemy("bramble_sow", true, true));
+            s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.BrambleSow, true, true));
             Assert.IsTrue(s.Run.mustGoHome);
             Assert.IsFalse(s.DungeonDescend(), "no going deeper after your first boss");
             s.DungeonExit(); s.ReturnToHearth();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             for (int i = 0; i < 2; i++) s.DungeonDescend();
             Assert.AreEqual(3, s.Run.floor);
             Assert.IsFalse(s.DungeonFirstBossFloor, "later bosses don't send you home");
@@ -34,7 +34,7 @@ namespace HearthHollow.Tests
             var p = Economy.NewProfile(_c);
             string ult = Progression.NextUnlockHint(_c, p, ClassId.Cook, MoveSlot.Ultimate);
             Assert.That(ult, Does.Contain("Grand Feast").And.Contain("Meadow Hollow"));
-            Progression.RecordBoss(p, "meadow", 3);
+            Progression.RecordBoss(p, Ids.Area.Meadow, 3);
             Assert.That(Progression.NextUnlockHint(_c, p, ClassId.Cook, MoveSlot.Ultimate), Does.StartWith("Learn Grand Feast"));
             Assert.That(Progression.NextUnlockHint(_c, p, ClassId.Cook, MoveSlot.Skill), Does.Contain("Flambé"));
         }

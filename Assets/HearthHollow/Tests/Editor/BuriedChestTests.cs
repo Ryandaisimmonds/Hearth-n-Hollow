@@ -16,7 +16,7 @@ namespace HearthHollow.Tests
             {
                 var s = new GameSession(c, null, seed);
                 s.Profile.selectedClass = ClassId.Cook; s.Profile.arcStage = 1;
-                Assert.IsTrue(s.StartRun("meadow"));
+                Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
                 int coins = s.Run.coinsEarned;
                 s.DungeonHiddenForage();
                 int items = 0, kinds = 0;

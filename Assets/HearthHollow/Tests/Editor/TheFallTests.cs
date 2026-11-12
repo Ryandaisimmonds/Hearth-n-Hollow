@@ -60,12 +60,12 @@ namespace HearthHollow.Tests
             Assert.IsFalse(Slice.ShowsRoute(GameSession.FallRoute), "never on the Route board");
             s.Run.fightRooms = 1;
             Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f);
-            var first = s.DungeonEnemy("wolf", false, false);
+            var first = s.DungeonEnemy(Ids.Monster.Wolf, false, false);
             s.Run.fightRooms = 2;
             Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f, "ticket 49: rooms 1–2 are the tutorial: no ramp yet");
             s.Run.fightRooms = 6;
             Assert.Greater(s.FallEnemySpeed, 1.3f, "faster each room after that");
-            var sixth = s.DungeonEnemy("wolf", false, false);
+            var sixth = s.DungeonEnemy(Ids.Monster.Wolf, false, false);
             Assert.Greater(sixth.damage, first.damage * 4f, "and they hit much harder");
         }
 
@@ -92,7 +92,7 @@ namespace HearthHollow.Tests
             Assert.IsTrue(s.BeginTheFall());
             Assert.AreEqual(7, _c.tuning.fallRooms, "the wake-up room + 6");
             int coins = s.Run.coinsEarned;
-            s.DungeonEnemyKilled(s.DungeonEnemy("slime", false, false));
+            s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.Slime, false, false));
             Assert.AreEqual(coins, s.Run.coinsEarned, "no coins");
             Assert.AreEqual(0, s.FloorLoot.Count);
             for (int i = 0; i < s.Run.bag.Count; i++) Assert.IsTrue(Bag.IsEmpty(s.Run.bag[i]), "no loot");

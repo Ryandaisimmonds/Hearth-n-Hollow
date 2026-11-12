@@ -328,7 +328,7 @@ namespace HearthHollow.Dungeon
             var normal = DungeonRules.NormalPool(S.Content, run);
             var elites = DungeonRules.ElitePool(S.Content, run);
             bool tutorial = fall && run.fightRooms <= 2;   // ticket 49: rooms 1–2 teach you: one slime, then two
-            if (tutorial) { normal = new List<string> { "slime" }; elites = new List<string>(); }
+            if (tutorial) { normal = new List<string> { Ids.Monster.Slime }; elites = new List<string>(); }
             Vector2 playerAt = Controller.Player != null ? Controller.Player.Feet : Origin + RoomTemplate.Centre;
 
             var spots = Points(SpawnKind.Enemy);

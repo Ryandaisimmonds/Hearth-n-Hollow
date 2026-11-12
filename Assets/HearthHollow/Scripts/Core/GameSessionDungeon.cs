@@ -217,7 +217,7 @@ namespace HearthHollow.Core
 
         private string PickRouteIngredient()
         {
-            if (Run.firstRidge && _rng.Chance(0.7f) && Content.Ingredient("chili") != null) return "chili";   // ticket 35: the first Ridge trip is all about chilies
+            if (Run.firstRidge && _rng.Chance(0.7f) && Content.Ingredient(Ids.Ingredient.Chili) != null) return Ids.Ingredient.Chili;   // ticket 35: the first Ridge trip is all about chilies
             return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.floor, _rng.Value());   // deeper floors add their drops (ticket 13)
         }
 

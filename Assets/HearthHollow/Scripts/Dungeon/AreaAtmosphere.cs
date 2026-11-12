@@ -32,9 +32,9 @@ namespace HearthHollow.Dungeon
         {
             if (routeId == GameSession.FallRoute) return AirKind.Fall;
             var r = c != null && !string.IsNullOrEmpty(routeId) ? c.routes.Find(x => x.id == routeId) : null;
-            if (routeId == "frosthollow" || (r != null && r.hazard == Hazard.Cold)) return AirKind.Frost;
-            if (routeId == "chili" || routeId == "ember" || (r != null && r.hazard == Hazard.Heat)) return AirKind.Chili;
-            if (routeId == "meadow" || routeId == "berry") return AirKind.Meadow;
+            if (routeId == Ids.Area.FrostHollow || (r != null && r.hazard == Hazard.Cold)) return AirKind.Frost;
+            if (routeId == Ids.Area.Chili || routeId == Ids.Area.Ember || (r != null && r.hazard == Hazard.Heat)) return AirKind.Chili;
+            if (routeId == Ids.Area.Meadow || routeId == Ids.Area.Berry) return AirKind.Meadow;
             return AirKind.None;
         }
 

@@ -24,7 +24,7 @@ namespace HearthHollow.Tests
             var c = DefaultContent.Create();
             var s = new GameSession(c, null, 5);
             s.Profile.selectedClass = ClassId.Cook;
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             if (!s.InDungeon) Assert.Ignore("this build's runs aren't dungeon runs");
             int guard = 0;
             while (s.InDungeon && guard++ < 200) s.DungeonDamagePlayer(5f, "🐺 Fog Wolf");

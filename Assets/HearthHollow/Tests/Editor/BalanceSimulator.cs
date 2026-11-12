@@ -34,9 +34,9 @@ namespace HearthHollow.Tests
         public static List<Tray> Trays()
         {
             Func<int, string, Tray> t = (g, n) => new Tray { name = n, meals = {
-                new CookedMeal { recipeId = "herb_stew", grade = g }, new CookedMeal { recipeId = "mushroom_skewer", grade = g }, new CookedMeal { recipeId = "herb_butty", grade = g } } };
-            var fire = t(1, "Fine + 🔥 Fire"); fire.meals[1].accelId = "chili";
-            var warm = t(1, "Fine + 🔥 Fire + 🫚 Ginger"); warm.meals[1].accelId = "chili"; warm.meals[0].accelId = "ginger";
+                new CookedMeal { recipeId = Ids.Recipe.HerbStew, grade = g }, new CookedMeal { recipeId = Ids.Recipe.MushroomSkewer, grade = g }, new CookedMeal { recipeId = Ids.Recipe.HerbButty, grade = g } } };
+            var fire = t(1, "Fine + 🔥 Fire"); fire.meals[1].accelId = Ids.Ingredient.Chili;
+            var warm = t(1, "Fine + 🔥 Fire + 🫚 Ginger"); warm.meals[1].accelId = Ids.Ingredient.Chili; warm.meals[0].accelId = Ids.Ingredient.Ginger;
             return new List<Tray> { new Tray { name = "Hungry" }, t(0, "Plain"), t(1, "Fine"), t(2, "Prime"), fire, warm };
         }
 
@@ -105,7 +105,7 @@ namespace HearthHollow.Tests
             return res;
         }
 
-        static string Pick(List<string> pool, Random rng) { return pool.Count > 0 ? pool[rng.Next(pool.Count)] : "slime"; }
+        static string Pick(List<string> pool, Random rng) { return pool.Count > 0 ? pool[rng.Next(pool.Count)] : Ids.Monster.Slime; }
 
         /// One room: you whittle them down one at a time; up to MaxAttackers hit back. True if you fall.
         static bool Fight(GameContent c, DungeonSettings ds, PlayerStats st, CombatMods mods, List<Element> infusions, List<Element> guards,
@@ -232,8 +232,8 @@ namespace HearthHollow.Tests
             File.WriteAllText(path, md);
             UnityEngine.Debug.Log("[Balance] report written to " + path);
             // sanity: food matters
-            var hungry = BalanceSim.Run(c, ds, "meadow", BalanceSim.Trays()[0], 7);
-            var prime = BalanceSim.Run(c, ds, "meadow", BalanceSim.Trays()[3], 7);
+            var hungry = BalanceSim.Run(c, ds, Ids.Area.Meadow, BalanceSim.Trays()[0], 7);
+            var prime = BalanceSim.Run(c, ds, Ids.Area.Meadow, BalanceSim.Trays()[3], 7);
             Assert.GreaterOrEqual(hungry.deathRate, prime.deathRate, "a Prime tray never does worse than going hungry");
         }
     }

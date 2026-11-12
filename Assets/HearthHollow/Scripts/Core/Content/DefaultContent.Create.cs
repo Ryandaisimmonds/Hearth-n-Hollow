@@ -18,7 +18,7 @@ namespace HearthHollow.Core
         /// Every class starts on the same small base HP; meals carry a run (Design v2).
         public const int MinimalBaseHp = 14;
         /// Story flag: Old Wren has told you the Hoarfrost Alpha is weak to Fire (reveals Chili Ridge).
-        public const string WrenFireHint = "wren_fire_hint";
+        public const string WrenFireHint = Ids.Flag.WrenFireHint;
 
         public static GameContent Create()
         {

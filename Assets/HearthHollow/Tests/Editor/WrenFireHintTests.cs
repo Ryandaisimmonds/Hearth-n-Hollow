@@ -17,7 +17,7 @@ namespace HearthHollow.Tests
             var s = Fresh();
             Assert.IsFalse(s.WrenFireHintDue);
             Assert.IsFalse(s.GiveWrenFireHint());
-            Progression.RecordFloor(s.Profile, "meadow", 3);
+            Progression.RecordFloor(s.Profile, Ids.Area.Meadow, 3);
             Assert.IsFalse(s.WrenFireHintDue, "reaching floor 3 isn't beating its boss");
         }
 
@@ -25,17 +25,17 @@ namespace HearthHollow.Tests
         public void Hint_TeachesTheFireWeakness_AndRevealsTheRidge_Once()
         {
             var s = Fresh();
-            Progression.RecordBoss(s.Profile, "meadow", 3);
+            Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 3);
             Assert.IsTrue(s.WrenFireHintDue);
-            Assert.AreEqual("hoarfrost_alpha", s.MeadowDeepBoss);
-            Assert.IsFalse(s.KnowsElement("hoarfrost_alpha", Element.Fire));
-            Assert.IsFalse(s.IsRouteUnlocked("chili"));
+            Assert.AreEqual(Ids.Monster.HoarfrostAlpha, s.MeadowDeepBoss);
+            Assert.IsFalse(s.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
+            Assert.IsFalse(s.IsRouteUnlocked(Ids.Area.Chili));
 
             var pages = s.WrenFireHintPages();
             Assert.That(string.Join(" ", pages.ToArray()), Does.Contain("Hoarfrost Alpha").And.Contain("Chili Ridge"));
             Assert.IsTrue(s.GiveWrenFireHint());
-            Assert.IsTrue(s.KnowsElement("hoarfrost_alpha", Element.Fire));
-            Assert.IsTrue(s.IsRouteUnlocked("chili"));
+            Assert.IsTrue(s.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
+            Assert.IsTrue(s.IsRouteUnlocked(Ids.Area.Chili));
             Assert.IsFalse(s.WrenFireHintDue, "plays once");
             Assert.IsFalse(s.GiveWrenFireHint());
         }
@@ -44,24 +44,24 @@ namespace HearthHollow.Tests
         public void Hint_IsSaved()
         {
             var s = Fresh();
-            Progression.RecordBoss(s.Profile, "meadow", 3);
+            Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 3);
             s.GiveWrenFireHint();
             var json = UnityEngine.JsonUtility.ToJson(s.Profile);
             var back = UnityEngine.JsonUtility.FromJson<Profile>(json);
             var s2 = new GameSession(_c, back, 12);
             Assert.IsFalse(s2.WrenFireHintDue);
-            Assert.IsTrue(s2.IsRouteUnlocked("chili"));
-            Assert.IsTrue(s2.KnowsElement("hoarfrost_alpha", Element.Fire));
+            Assert.IsTrue(s2.IsRouteUnlocked(Ids.Area.Chili));
+            Assert.IsTrue(s2.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
         }
 
         [Test]
         public void TheBossKill_InARun_MakesTheHintDueOnceHome()
         {
             var s = Fresh();
-            Assert.IsTrue(s.StartRun("meadow"));
+            Assert.IsTrue(s.StartRun(Ids.Area.Meadow));
             for (int i = 0; i < 2; i++) s.DungeonDescend();
             Assert.AreEqual(3, s.Run.floor);
-            s.DungeonEnemyKilled(s.DungeonEnemy("bramble_sow", true, true));
+            s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.BrambleSow, true, true));
             Assert.IsFalse(s.WrenFireHintDue, "not while still in the dungeon");
             s.DungeonExit();
             s.ReturnToHearth();

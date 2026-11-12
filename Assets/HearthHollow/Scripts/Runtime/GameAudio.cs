@@ -90,7 +90,7 @@ namespace HearthHollow.Runtime
             if (s.InDungeon && s.Run != null)
             {
                 if (bossFight) return "boss";
-                return s.Run.routeId == GameSession.FallRoute ? "fall" : s.Run.routeId == "meadow" || s.Run.routeId == "chili" || s.Run.routeId == "frosthollow" ? s.Run.routeId : "dungeon";
+                return s.Run.routeId == GameSession.FallRoute ? "fall" : s.Run.routeId == Ids.Area.Meadow || s.Run.routeId == Ids.Area.Chili || s.Run.routeId == Ids.Area.FrostHollow ? s.Run.routeId : "dungeon";
             }
             return "town";
         }

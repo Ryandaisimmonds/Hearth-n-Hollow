@@ -29,9 +29,9 @@ namespace HearthHollow.Tests
                 var p = Economy.NewProfile(c);
                 p.clearedRouteIds.Clear();
                 Assert.AreEqual(0f, TownClock.Progress(c, p));
-                p.clearedRouteIds.Add("meadow");
+                p.clearedRouteIds.Add(Ids.Area.Meadow);
                 Assert.AreEqual(1f / 3f, TownClock.Progress(c, p), 1e-4);
-                p.clearedRouteIds.Add("chili"); p.clearedRouteIds.Add("frosthollow");
+                p.clearedRouteIds.Add(Ids.Area.Chili); p.clearedRouteIds.Add(Ids.Area.FrostHollow);
                 Assert.AreEqual(1f, TownClock.Progress(c, p), 1e-4);
             }
             finally { Slice.On = was; }

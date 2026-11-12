@@ -38,9 +38,9 @@ namespace HearthHollow.Tests
         {
             var s = new GameSession(_c, null, 1);
             s.DevGiveKeyItems();
-            Assert.IsFalse(s.StartRun("cavern"));
-            Assert.IsTrue(Slice.ShowsRoute("meadow"));
-            Assert.IsFalse(Slice.ShowsRoute("cavern"));
+            Assert.IsFalse(s.StartRun(Ids.Area.Cavern));
+            Assert.IsTrue(Slice.ShowsRoute(Ids.Area.Meadow));
+            Assert.IsFalse(Slice.ShowsRoute(Ids.Area.Cavern));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace HearthHollow.Tests
             s.DevMaxEverything();
             s.SelectClass(ClassId.Warden);
             Assert.AreEqual(ClassId.Warden, s.Profile.selectedClass);
-            Assert.IsTrue(Slice.ShowsRoute("cavern"));
+            Assert.IsTrue(Slice.ShowsRoute(Ids.Area.Cavern));
         }
     }
 }

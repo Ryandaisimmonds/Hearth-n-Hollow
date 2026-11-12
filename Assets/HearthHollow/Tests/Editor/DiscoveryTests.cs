@@ -14,7 +14,7 @@ namespace HearthHollow.Tests
         public void ANewGameKnowsNothing()
         {
             var s = new GameSession(_c, null, 1);
-            Assert.IsFalse(s.KnowsElement("wolf", Element.Fire));
+            Assert.IsFalse(s.KnowsElement(Ids.Monster.Wolf, Element.Fire));
             Assert.IsNotNull(s.Profile.knownElements);
             Assert.GreaterOrEqual(s.Profile.saveVersion, 9);
         }
@@ -23,20 +23,20 @@ namespace HearthHollow.Tests
         public void Learning_IsPerMonsterKindAndElement_AndOnlyNewOnce()
         {
             var s = new GameSession(_c, null, 1);
-            Assert.IsTrue(s.DiscoverElement("wolf", Element.Fire));
-            Assert.IsFalse(s.DiscoverElement("wolf", Element.Fire), "already known");
-            Assert.IsTrue(s.KnowsElement("wolf", Element.Fire));
-            Assert.IsFalse(s.KnowsElement("wolf", Element.Frost), "other elements stay hidden");
-            Assert.IsFalse(s.KnowsElement("slime", Element.Fire), "other kinds stay hidden");
-            Assert.IsFalse(s.DiscoverElement("wolf", Element.None), "no element, nothing to learn");
+            Assert.IsTrue(s.DiscoverElement(Ids.Monster.Wolf, Element.Fire));
+            Assert.IsFalse(s.DiscoverElement(Ids.Monster.Wolf, Element.Fire), "already known");
+            Assert.IsTrue(s.KnowsElement(Ids.Monster.Wolf, Element.Fire));
+            Assert.IsFalse(s.KnowsElement(Ids.Monster.Wolf, Element.Frost), "other elements stay hidden");
+            Assert.IsFalse(s.KnowsElement(Ids.Monster.Slime, Element.Fire), "other kinds stay hidden");
+            Assert.IsFalse(s.DiscoverElement(Ids.Monster.Wolf, Element.None), "no element, nothing to learn");
         }
 
         [Test]
         public void KnownOf_FiltersToWhatYouKnow()
         {
             var p = Economy.NewProfile(_c);
-            Discovery.Learn(p, "crab", Element.Nature);
-            CollectionAssert.AreEqual(new[] { Element.Nature }, Discovery.KnownOf(p, "crab", new[] { Element.Fire, Element.Nature }));
+            Discovery.Learn(p, Ids.Monster.Crab, Element.Nature);
+            CollectionAssert.AreEqual(new[] { Element.Nature }, Discovery.KnownOf(p, Ids.Monster.Crab, new[] { Element.Fire, Element.Nature }));
         }
 
         [Test]
@@ -48,10 +48,10 @@ namespace HearthHollow.Tests
             try
             {
                 var s = new GameSession(_c, null, 1);
-                s.DiscoverElement("shaman", Element.Nature);
+                s.DiscoverElement(Ids.Monster.Shaman, Element.Nature);
                 Assert.IsTrue(SaveService.Save(s.Profile), "save failed");
                 var back = new GameSession(_c, SaveService.Load(), 2);
-                Assert.IsTrue(back.KnowsElement("shaman", Element.Nature));
+                Assert.IsTrue(back.KnowsElement(Ids.Monster.Shaman, Element.Nature));
             }
             finally { SaveService.DirectoryOverride = null; if (System.IO.Directory.Exists(dir)) System.IO.Directory.Delete(dir, true); }
         }
