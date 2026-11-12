@@ -58,7 +58,7 @@ namespace HearthHollow.Dungeon
                     }
                     Animate(it, tr);
                     var ing = S.Content.Ingredient(it.ingredientId);
-                    DungeonHud.LootTags.Add(new DungeonHud.LootTag { at = tr.position + new Vector3(0f, 0.95f, 0f), text = (ing != null ? ing.emoji : "🎒") + (it.count > 1 ? " ×" + it.count : "") });
+                    DungeonHud.LootTags.Add(new DungeonHud.LootTag { at = tr.position + new Vector3(0f, 0.95f, 0f), text = (ing == null ? "🎒" : ArtLibrary.GetIngredient(it.ingredientId) != null ? ing.name : ing.emoji) + (it.count > 1 ? " ×" + it.count : "") });   // with art the tag names it
                 }
             }
             var dead = new List<int>();

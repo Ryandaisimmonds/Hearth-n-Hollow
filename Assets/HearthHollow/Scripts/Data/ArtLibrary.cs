@@ -88,8 +88,20 @@ namespace HearthHollow.Data
 
         // ── static shortcuts for the UI (null-safe when no library is assigned) ──
         public static Sprite GetIcon(string id) { return Active != null ? Active.IconSprite(id) : null; }
-        public static Sprite GetIngredient(string id) { return Active != null ? Active.Ingredient(id) : null; }
-        public static Sprite GetRecipe(string id) { return Active != null ? Active.Recipe(id) : null; }
+        /// Ticket 54: drawn-in-code art used when a slot here is empty (set by FoodArt.Install).
+        public static Func<string, Sprite> IngredientFallback, RecipeFallback;
+        public static Sprite GetIngredient(string id)
+        {
+            Sprite s = Active != null ? Active.Ingredient(id) : null;
+            if (s == null && IngredientFallback != null) s = IngredientFallback(id);   // (== null also catches a "missing" sprite)
+            return s;
+        }
+        public static Sprite GetRecipe(string id)
+        {
+            Sprite s = Active != null ? Active.Recipe(id) : null;
+            if (s == null && RecipeFallback != null) s = RecipeFallback(id);
+            return s;
+        }
         public static Sprite GetRoute(string id) { return Active != null ? Active.Route(id) : null; }
         public static Sprite GetGear(string id) { return Active != null ? Active.Gear(id) : null; }
         public static Anim GetMonster(string id) { return Active != null ? Active.Monster(id) : null; }

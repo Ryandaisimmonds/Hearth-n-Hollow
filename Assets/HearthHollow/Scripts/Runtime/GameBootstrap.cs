@@ -60,6 +60,7 @@ namespace HearthHollow.Runtime
             ArtLibrary.Active = art;   // the UI reads art through ArtLibrary.Active (emoji fallback when null)
 
             GameContent gc = content != null ? content.GetContentOrDefault() : DefaultContent.Create();
+            HearthHollow.UI.FoodArt.Install(gc);   // ticket 54: pixel art for every ingredient and dish
             Slice.On = PlayerPrefs.GetInt(SlicePref, 1) == 1;   // the vertical slice gate (dev panel can switch it off)
             Profile profile = SaveService.Load();
             bool firstLaunch = profile == null;
