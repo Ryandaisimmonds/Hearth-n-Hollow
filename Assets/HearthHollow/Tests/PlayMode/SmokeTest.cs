@@ -92,11 +92,24 @@ namespace HearthHollow.PlayTests
                 if (used.action == TownAction.Cooking) yield return Shot("2_kitchen");
                 if (used.action == TownAction.Larder) yield return Shot("3_larder");
                 if (used.action == TownAction.SpiceRack) yield return Shot("4_spice");
+                if (used.action == TownAction.Upgrades) yield return Shot("4b_smithy");
+                if (used.action == TownAction.Workshop) yield return Shot("4c_workshop");
+                if (used.action == TownAction.Training) yield return Shot("4d_training");
                 CloseEverything();
                 yield return null;
             }
 
             Step("used " + opened.TrimEnd(' ', ','));
+
+            // the old camp screen (tabs and the who's-going column) still draws
+            UI.CloseTown(); UI.ShowCampTab(CampTab.Cooking);
+            yield return Seconds(0.3f);
+            yield return Shot("4e_camp");
+            UI.ShowCampTab(CampTab.Upgrades);
+            yield return Seconds(0.3f);
+            yield return Shot("4f_camp_gear");
+            UI.OpenTown();
+            yield return Seconds(0.3f);
 
             // ── cook, show Wren, pack ──
             var recipe = S.Content.recipes.Find(r => !r.always && r.ingredients.Count > 0 && Kitchen.Unlocked(S.Content, S.Profile, r) && CanCook(r));
