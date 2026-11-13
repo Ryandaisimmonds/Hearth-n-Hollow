@@ -132,7 +132,8 @@ namespace HearthHollow.Town
             return null;
         }
 
-        void Use(TownSpot s)
+        /// Use a spot, as if you walked up to it and pressed E (also driven by the play-mode smoke test).
+        public void Use(TownSpot s)
         {
             if (s.action == TownAction.Gate && Session.Story.SetOutBlock != null) { _ui.Toast("👵 " + Session.Story.SetOutBlock + "."); return; }   // ticket 33: no adventures until Wren's had her say
             string area = AreaOf(s.action);

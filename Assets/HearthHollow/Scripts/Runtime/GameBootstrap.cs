@@ -26,6 +26,8 @@ namespace HearthHollow.Runtime
 
         public GameSession Session { get; private set; }
         GameUI _ui;
+        /// The UI facade (the play-mode smoke test drives it).
+        public GameUI UI { get { return _ui; } }
         public const string SlicePref = "hh_slice";
 
         // ── text size (ticket 22): one knob that scales the whole UI, text and boxes together ──
