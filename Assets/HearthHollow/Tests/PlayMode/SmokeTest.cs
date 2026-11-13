@@ -58,7 +58,7 @@ namespace HearthHollow.PlayTests
             Assert.AreEqual(_realStamp, now, "the real save was touched");
         }
 
-        [UnityTest, Timeout(180000)]
+        [UnityTest, Timeout(300000)]
         public IEnumerator NewGame_ToTheFirstClearedRoom()
         {
             // ── the fall ──
@@ -217,6 +217,9 @@ namespace HearthHollow.PlayTests
             }
             yield return Fights(dc, bossId, true, "boss");
             Step("monsters fought: " + string.Join(", ", kinds.ToArray()) + ", and the boss");
+
+            // ── every move in the game plays out (all classes' attacks, skills and ultimates, with a target to hit) ──
+            yield return EveryMove(dc);
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
         }
 
@@ -265,6 +268,33 @@ namespace HearthHollow.PlayTests
             esc(); yield return null;
             Assert.IsFalse(UI.SettingsOpen, "Esc closes settings");
             Assert.IsTrue(UI.TownWalking);
+        }
+
+        IEnumerator EveryMove(DungeonController dc)
+        {
+            var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+            var pc = dc.Player; var pt = typeof(PlayerController);
+            var useSkill = pt.GetMethod("UseSkill", bf); var attackHit = pt.GetMethod("AttackHit", bf); var atkField = pt.GetField("_atk", bf);
+            var dashField = pt.GetField("_dash", bf); var startDash = pt.GetMethod("StartDash", bf);
+            var room = dc.CurrentRoom;
+            int used = 0, attacks = 0, dashes = 0; var skipped = new System.Collections.Generic.List<string>();
+            foreach (var m in S.Content.moves)
+            {
+                pc.Teleport(room.PlayerStart);
+                var target = dc.SpawnEnemy(room, Ids.Monster.Slime, false, false, room.NearestWalkable((Vector2)pc.Feet + Vector2.up * 2f));
+                yield return Seconds(0.75f);   // it finishes spawning in
+                if (m.slot == MoveSlot.Dash) { var was = dashField.GetValue(pc); dashField.SetValue(pc, m); startDash.Invoke(pc, null); dashField.SetValue(pc, was); dashes++; }
+                else if (m.slot == MoveSlot.Attack) { var was = atkField.GetValue(pc); atkField.SetValue(pc, m); attackHit.Invoke(pc, null); atkField.SetValue(pc, was); attacks++; }
+                else if ((bool)useSkill.Invoke(pc, new object[] { m })) used++;
+                else skipped.Add(m.name);
+                yield return Seconds(1.2f);   // let its effects and timers play out
+                S.DungeonHealPlayer(9999);
+                if (target != null && !target.Dead) target.TakeHit(99999f, false, Vector2.zero);
+                yield return null;
+            }
+            yield return Seconds(1f);
+            Assert.Greater(used, 0);
+            Step(attacks + " attacks, " + dashes + " dashes and " + used + " skills played out" + (skipped.Count > 0 ? " (not used, nothing to do: " + string.Join(", ", skipped.ToArray()) + ")" : ""));
         }
 
         /// One monster against you: within a few seconds it has to move, wind up an attack and strike (you're kept alive).
