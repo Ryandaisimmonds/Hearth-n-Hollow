@@ -21,7 +21,7 @@ Much of the "Game design" section below describes the build as it stands, which 
 - `Dungeon/`: real-time rooms. `DungeonController`, `PlayerController`, `RoomInstance`, `RoomLights`, `Interactable` (incl. the Pit), `PitCache`, `ShadowSafeLight`, `DungeonSettings` (one settings asset: feel, lights, and `arc`).
 - `Town/`: the walkable town (`TownController`, `TownPlayer`, `TownVisuals`, `TownWorkAreas`). It's opened from Settings → Visit Hearth's Hollow.
 - `UI/`: UI Toolkit screens. The dev panel is in `SettingsOverlay.cs`.
-- `Tests/Editor/`: about 180 EditMode NUnit tests (save, content, rules, story, the autoplay bot). `Tests/PlayMode/SmokeTest.cs` plays the real scene with a temp save (about 15 s). Run both from Window → General → Test Runner.
+- `Tests/Editor/`: about 180 EditMode NUnit tests (save, content, rules, story, the autoplay bot). `Tests/PlayMode/SmokeTest.cs` plays the real scene with a temp save: Quick (~30 s) after changes, Full (~2.5 min, category Full) before commits. Run both from Window → General → Test Runner.
 - `UI/HearthHollow.uss` only imports `UI/Styles/*.uss` (one sheet per screen, in cascade order); add rules to the screen's sheet.
 - Balance: **Hearth & Hollow → Write Balance Report** (`Scripts/Editor/BalanceSimulator.cs`).
 

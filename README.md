@@ -46,8 +46,10 @@ Planning notes, tickets and reports are in `.scratch/` (`vertical-slice/`, `refa
 
 **Window → General → Test Runner**:
 - **EditMode**: about 180 tests, run in under 10 seconds. Run them after any change to the rules or content.
-- **PlayMode**: one smoke test, about 15 seconds. It loads the real scene, so run it after UI, town or dungeon changes.
-  It never touches your real save.
+- **PlayMode**: two smoke tests that load the real scene with a throwaway save (your real save is never touched).
+  **Quick** (about 30 seconds: the fall, the town, cooking, setting out, a first room) after any change;
+  **Full** (about 2.5 minutes, category `Full`: every overlay and station, a boss entrance, every monster and every
+  move) before a commit. Both save screenshots of the key screens to `Temp/ClaudeShots`.
 
 ## Editor menus (Hearth & Hollow →)
 

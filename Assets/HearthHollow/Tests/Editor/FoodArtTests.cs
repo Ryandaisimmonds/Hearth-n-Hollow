@@ -1,4 +1,7 @@
-// Ticket 54: every ingredient and dish has pixel art, and ArtLibrary hands it out when its own slot is empty.
+// Hearth & Hollow — every ingredient and dish has pixel art (drawn in code: UI/FoodArtData.cs, from
+// Tools/FoodArt/food_art.py), and ArtLibrary hands it out when its own slot is empty. The Art Library's ingredient
+// and recipe slots are empty on purpose; they only win when someone drops a hand-made sprite into one. So a new
+// ingredient or meal needs a drawing in food_art.py, not an Art Library slot.
 using HearthHollow.Core;
 using HearthHollow.Data;
 using HearthHollow.UI;

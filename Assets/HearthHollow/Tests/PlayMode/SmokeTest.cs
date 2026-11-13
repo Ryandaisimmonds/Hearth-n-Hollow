@@ -1,6 +1,9 @@
-// Hearth & Hollow — the play-mode smoke test: the real scene, start to first room, with a throwaway save.
-// A brand-new game opens in the fall; the fog drops you, you wake in town and Wren has her say; you walk up to every
-// station and open it, cook a meal, show Wren, pack the tray, set out for Meadow Hollow and clear the first fight room.
+// Hearth & Hollow — the play-mode smoke tests: the real scene, start to first room, with a throwaway save.
+//   Quick (~30 s, run after any change): a brand-new game opens in the fall; the fog drops you, you wake in town and
+//     Wren has her say; you open the cooking area, cook a meal, show Wren, pack the tray, set out for Meadow Hollow
+//     and clear the first fight room.
+//   Full (~2.5 min, run before a commit; category "Full"): the same, plus every town overlay and station, the old
+//     camp screen, effect pooling, a boss's entrance, one monster of every kind, and every move in the game.
 // Any error in the console fails it (the test framework does that), and so does any step that doesn't finish in time.
 // Your real save is never touched: saves go to a temp folder, and the test checks the real file didn't change.
 // It also leaves screenshots of the key screens in Temp/ClaudeShots/smoke_*.png, for before/after checks of UI work.
@@ -58,8 +61,13 @@ namespace HearthHollow.PlayTests
             Assert.AreEqual(_realStamp, now, "the real save was touched");
         }
 
-        [UnityTest, Timeout(300000)]
-        public IEnumerator NewGame_ToTheFirstClearedRoom()
+        [UnityTest, Timeout(120000)]
+        public IEnumerator Quick_FallTownCookAndFirstRoom() { return Play(false); }
+
+        [UnityTest, Timeout(300000), Category("Full")]
+        public IEnumerator Full_EveryScreenMoveAndMonster() { return Play(true); }
+
+        IEnumerator Play(bool full)
         {
             // ── the fall ──
             yield return Until("a new game opens in the fall", () => S.InFall && S.InDungeon && DungeonController.Instance != null, 10f);
@@ -74,8 +82,11 @@ namespace HearthHollow.PlayTests
             yield return Shot("1_town");
 
             // ── every overlay opens and closes; pop-ups stack; Esc closes the top one ──
-            yield return Overlays();
-            Step("every town overlay opened and closed, stacked pop-ups unwound, Esc closed the top");
+            if (full)
+            {
+                yield return Overlays();
+                Step("every town overlay opened and closed, stacked pop-ups unwound, Esc closed the top");
+            }
 
             // ── walk the town and open every station ──
             var town = TownController.Instance;
@@ -83,6 +94,7 @@ namespace HearthHollow.PlayTests
             foreach (var spot in town.Spots.ToArray())
             {
                 if (spot.action == TownAction.Gate || spot.action == TownAction.Wren || spot.action == TownAction.BackToCamp) continue;
+                if (!full && spot.action != TownAction.Cooking) continue;   // quick: just the cooking area
                 town.Player.Teleport(spot.pos + Vector2.down * 0.8f);
                 yield return Until("walk up to " + spot.name, () => town.Near != null, 3f);
                 var used = town.Near;
@@ -102,14 +114,17 @@ namespace HearthHollow.PlayTests
             Step("used " + opened.TrimEnd(' ', ','));
 
             // the old camp screen (tabs and the who's-going column) still draws
-            UI.CloseTown(); UI.ShowCampTab(CampTab.Cooking);
-            yield return Seconds(0.3f);
-            yield return Shot("4e_camp");
-            UI.ShowCampTab(CampTab.Upgrades);
-            yield return Seconds(0.3f);
-            yield return Shot("4f_camp_gear");
-            UI.OpenTown();
-            yield return Seconds(0.3f);
+            if (full)
+            {
+                UI.CloseTown(); UI.ShowCampTab(CampTab.Cooking);
+                yield return Seconds(0.3f);
+                yield return Shot("4e_camp");
+                UI.ShowCampTab(CampTab.Upgrades);
+                yield return Seconds(0.3f);
+                yield return Shot("4f_camp_gear");
+                UI.OpenTown();
+                yield return Seconds(0.3f);
+            }
 
             // ── cook, show Wren, pack ──
             var recipe = S.Content.recipes.Find(r => !r.always && r.ingredients.Count > 0 && Kitchen.Unlocked(S.Content, S.Profile, r) && CanCook(r));
@@ -174,6 +189,9 @@ namespace HearthHollow.PlayTests
             yield return Seconds(0.6f);
             yield return Shot("7_cleared");
 
+            Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
+            if (!full) yield break;
+
             // ── effects come from pools: after one warm-up, a boss dying in a full room makes no new objects ──
             Vector3 at = dc.Player.Body;
             yield return BossDeaths(at);
@@ -220,7 +238,6 @@ namespace HearthHollow.PlayTests
 
             // ── every move in the game plays out (all classes' attacks, skills and ultimates, with a target to hit) ──
             yield return EveryMove(dc);
-            Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
         }
 
         IEnumerator Overlays()
@@ -307,13 +324,15 @@ namespace HearthHollow.PlayTests
             Assert.IsNotNull(e, what + " spawns");
             Vector2 start = e.transform.position;
             var stField = typeof(EnemyController).GetField("_st", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            float moved = 0f; bool woundUp = false, struck = false;
+            float moved = 0f; bool woundUp = false, struck = false, stepped = false;
             float until = Time.unscaledTime + 10f;
             while (Time.unscaledTime < until && !(struck && moved > 0.3f))
             {
                 yield return null;
                 S.DungeonHealPlayer(9999);
                 if (e == null || e.Dead) break;
+                if (!woundUp && !stepped && Time.unscaledTime > until - 6f)   // 4 s and nothing: it's stuck behind a rock, so step up to it
+                { stepped = true; dc.Player.Teleport(room.NearestWalkable((Vector2)e.transform.position + Vector2.down * 1f)); }
                 string st = stField.GetValue(e).ToString();
                 if (st == "Windup") woundUp = true;
                 if (woundUp && (st == "Striking" || st == "Charging")) struck = true;

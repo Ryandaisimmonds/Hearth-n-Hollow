@@ -38,7 +38,7 @@ namespace HearthHollow.UI
         readonly CampEventOverlay _campEvent;
         readonly PantryOverlay _pantry;
         readonly CookOverlay _cook;
-        readonly SeasonOverlay _season;   // ticket 27: the spice rack
+        readonly SeasonOverlay _season;   // the spice rack
         readonly TownHud _townHud;   // Hearth's Hollow (town preview)
         readonly FishingOverlay _fishing;   // town fishing pond
         readonly DialogueOverlay _dialogue;   // town people talking
@@ -84,6 +84,9 @@ namespace HearthHollow.UI
             Root.focusable = true;
             Root.pickingMode = PickingMode.Position;
             host.Add(Root);
+#if UNITY_EDITOR
+            UseRuntimeFont();
+#endif
 
             Stage = UIKit.E("hh-stage");
             DragLayer = UIKit.E("hh-drag-layer");
@@ -150,6 +153,24 @@ namespace HearthHollow.UI
             Session.EventRaised += OnEvent;
             ApplyLayout();
         }
+
+#if UNITY_EDITOR
+        /// Editor only: the text draws from a font built in memory from the same TTF and settings, so pressing Play
+        /// never writes new glyphs into UI/Fonts/Changa SDF.asset (its dynamic atlas used to change on every Play and
+        /// show up in git). Builds use the asset as it is (it clears its dynamic data on build).
+        void UseRuntimeFont()
+        {
+            const string Saved = "Assets/HearthHollow/UI/Fonts/Changa SDF.asset", Ttf = "Assets/HearthHollow/UI/Fonts/Changa-Variable.ttf";
+            var saved = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.TextCore.Text.FontAsset>(Saved);
+            var ttf = UnityEditor.AssetDatabase.LoadAssetAtPath<Font>(Ttf);
+            if (saved == null || ttf == null) return;   // fall back to the stylesheet's font
+            var f = UnityEngine.TextCore.Text.FontAsset.CreateFontAsset(ttf, (int)saved.faceInfo.pointSize, saved.atlasPadding, saved.atlasRenderMode,
+                                                                        saved.atlasWidth, saved.atlasHeight, UnityEngine.TextCore.Text.AtlasPopulationMode.Dynamic, true);
+            if (f == null) return;
+            f.name = saved.name + " (play)";
+            Root.style.unityFontDefinition = FontDefinition.FromSDFFont(f);
+        }
+#endif
 
         public void Dispose()
         {
@@ -329,7 +350,7 @@ namespace HearthHollow.UI
 
         void Toasts(GameEvent e)
         {
-            switch (e.type)   // ticket 62: the sound of it
+            switch (e.type)   // the sound of it
             {
                 case GameEventType.Loot: HearthHollow.Runtime.GameAudio.Play("pickup"); break;
                 case GameEventType.Coins: HearthHollow.Runtime.GameAudio.Play("coin"); break;
@@ -355,7 +376,7 @@ namespace HearthHollow.UI
             }
         }
 
-        // ───────── ticket 49: the fall ends in a fade, then you wake in town ─────────
+        // ───────── the fall ends in a fade, then you wake in town ─────────
         VisualElement _fade;
         void FadeOutOfTheFall()
         {
@@ -427,7 +448,7 @@ namespace HearthHollow.UI
                 else if (g.buttonEast.wasPressedThisFrame) RouteKey(KeyCode.Escape);
                 return;
             }
-            // the stove (ticket 11): A = cook / tap, X = quick cook, B = close
+            // the stove: A = cook / tap, X = quick cook, B = close
             if (_cook.Visible && !_settings.Visible)
             {
                 if (g.buttonSouth.wasPressedThisFrame) RouteKey(KeyCode.Return);
