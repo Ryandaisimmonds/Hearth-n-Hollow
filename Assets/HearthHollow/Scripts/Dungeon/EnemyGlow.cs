@@ -53,7 +53,7 @@ namespace HearthHollow.Dungeon
             }
             if (stats.boss)
                 _boss = DungeonFx.Flash(transform.position + new Vector3(0, h * 0.5f), set.bossLight, 9f, 1.5f, 0f, transform);
-            DungeonController.CastShadows(_carry, 0.7f); DungeonController.CastShadows(_lantern, 0.7f); DungeonController.CastShadows(_boss, 0.8f);
+            LightSetup.CastShadows(_carry, 0.7f); LightSetup.CastShadows(_lantern, 0.7f); LightSetup.CastShadows(_boss, 0.8f);
         }
 
         /// Any other character (town critters, townsfolk): the same silhouette + rim, eyes optional, no carried lights.

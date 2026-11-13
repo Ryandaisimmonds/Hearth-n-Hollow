@@ -35,7 +35,7 @@ namespace HearthHollow.Town
             l.pointLightOuterRadius = src.pointLightOuterRadius * reach;
             l.pointLightInnerRadius = src.pointLightInnerRadius;
             l.falloffIntensity = 0.3f;
-            DungeonController.ApplyToLayers(l, "Walls");
+            LightSetup.ApplyToLayers(l, "Walls");
             return l;
         }
 
@@ -66,8 +66,8 @@ namespace HearthHollow.Town
             l.pointLightOuterRadius = Settings.carriedLightRadius * 0.8f;
             l.pointLightInnerRadius = 0.3f;
             l.falloffIntensity = Settings.carriedLightFalloff;
-            DungeonController.ApplyToAllLayers(l);
-            DungeonController.CastShadows(l);
+            LightSetup.ApplyToAllLayers(l);
+            LightSetup.CastShadows(l);
             lgo.AddComponent<ShadowSafeLight>();   // never goes dark if its centre ends up inside a wall
             var w = WallGlow(l, Settings.wallGlowReach, Settings.wallGlow / Mathf.Max(0.01f, l.intensity));
             if (w != null) w.falloffIntensity = Settings.wallGlowFalloff;
@@ -109,7 +109,7 @@ namespace HearthHollow.Town
             // same layers as the dungeon: walls catch light from further away than the ground (see WallGlow)
             SetLayer(ground.GetComponent<TilemapRenderer>(), "Ground"); SetLayer(decor.GetComponent<TilemapRenderer>(), "Ground");
             SetLayer(walls.GetComponent<TilemapRenderer>(), "Walls");
-            DungeonController.AddWallShadows(walls);
+            LightSetup.AddWallShadows(walls);
             Spots = TownLayout.Spots();   // (so decor keeps clear of them; Build() fills the full list next)
             if (Features.TownIsHome) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);
             var rng = new System.Random(1234);

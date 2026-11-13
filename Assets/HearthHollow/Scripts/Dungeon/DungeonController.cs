@@ -11,7 +11,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace HearthHollow.Dungeon
 {
-    public class DungeonController : MonoBehaviour
+    public partial class DungeonController : MonoBehaviour   // what it tells the HUD: DungeonController.Hud.cs
     {
         public static DungeonController Instance { get; private set; }
 
@@ -31,12 +31,12 @@ namespace HearthHollow.Dungeon
         public DungeonTheme Theme { get { return _theme; } }
         public RoomInstance CurrentRoom { get { return _current; } }
         FloorLootView _loot;   // ticket 48
-        float _fogTarget;      // ticket 49: the fall's fog veil
-        int _tutSeed = -1; bool _tMoved, _tAttacked, _tSkill, _tFlare;   // ticket 49: what the tutorial has seen you do
+        FallGuide _fall;       // the opening fall: its fog and its how-to-play lines
         /// False while paused (menus, minigames, bag) or when there is no floor.
         public bool GameplayActive { get; private set; }
 
         GameUI _ui;
+        public GameUI UI { get { return _ui; } }
         FloorPlan _plan;
         DungeonTheme _theme;
         GameObject _root;
@@ -44,19 +44,12 @@ namespace HearthHollow.Dungeon
         readonly Dictionary<RoomNode, RoomInstance> _rooms = new Dictionary<RoomNode, RoomInstance>();
         RoomInstance _current;
 
-        Camera _cam;
-        bool _camSaved; Vector3 _camHome; float _camHomeSize; Color _camHomeBg;
-        Vector3 _camTarget;
-        float _shakeT, _shakeAmp;
+        readonly DungeonCamera _camera = new DungeonCamera();   // follows the room, shakes, pushes in on a boss
+        BossIntro _intro;                                         // a boss's entrance
         float _ambT;   // ambient embers
-        // room light: dark while there's something to fight, lights up (after a pause) in calm / cleared rooms
-        Light2D _global; float _darkI, _litI, _lightLevel, _lightTarget, _lightUpAt = -1f;
-        float _roomMult = 1f, _roomMultTarget = 1f;   // boss rooms are darker until the boss is down
-        float _lightBaseI, _mealSteady, _flareCd;
-        float _glowAdd, _glowDecay;   // big moves flood the room with light for a moment (class rework)      // your carried light (fed by meals) + Flare
+        RoomLighting _light;   // the room's light and the light you carry
+        float _flareCd;
         float _doorLockUntil;
-        Light2D _playerLight;
-        float _lightBaseR;
 
         public static int SortOrder(float y) { return 10000 - Mathf.RoundToInt(y * 10f); }
 
@@ -66,7 +59,8 @@ namespace HearthHollow.Dungeon
             if (GetComponent<AreaAtmosphere>() == null) gameObject.AddComponent<AreaAtmosphere>();   // ticket 55: each area's air
             Session = session; _ui = ui; Settings = settings;
             _loot = gameObject.AddComponent<FloorLootView>(); _loot.Init(this);   // ticket 48: loot on the floor
-            _cam = Camera.main;
+            _intro = new BossIntro(this, _camera);
+            _fall = new FallGuide(this);
             Session.Changed += OnChanged;
             OnChanged();
         }
@@ -117,7 +111,8 @@ namespace HearthHollow.Dungeon
             _theme = Settings.ThemeFor(fall ? Ids.Area.Heart : run.routeId);   // it borrows the Hollow Heart's purple gloom
 
             _root = new GameObject("Dungeon · " + (route != null ? route.name : run.routeId) + " · floor " + run.floor);
-            MakeLights();
+            _light = new RoomLighting(this);
+            _light.MakeRoomLight(_root.transform, _theme);
 
             _rooms.Clear();
             foreach (var node in _plan.rooms)
@@ -149,16 +144,9 @@ namespace HearthHollow.Dungeon
             Player.Teleport(start.PlayerStart);
             if (_carryCd != null && _carrySeed == run.dungeonSeed) Player.SetCooldowns(_carryCd);
             _carryCd = null;
-            if (_theme != null) MakePlayerLight();   // always: the rooms are dark now
+            if (_theme != null) _light.MakePlayerLight(Player, _theme);   // always: the rooms are dark now
 
-            // camera
-            if (_cam == null) _cam = Camera.main;
-            if (_cam != null)
-            {
-                if (!_camSaved) { _camHome = _cam.transform.position; _camHomeSize = _cam.orthographicSize; _camHomeBg = _cam.backgroundColor; _camSaved = true; }
-                _cam.orthographicSize = Settings.cameraSize;
-                if (_theme != null) _cam.backgroundColor = _theme.background;
-            }
+            _camera.Setup(Settings.cameraSize, _theme);
             EnterRoom(start, true);
             GameLook.ForTheme(_theme);   // this route's colour grade + the tilt-shift
         }
@@ -195,154 +183,10 @@ namespace HearthHollow.Dungeon
 
         static Vector3 RoomOrigin(Vector2Int cell) { return new Vector3(cell.x * (RoomTemplate.Width + 9), cell.y * (RoomTemplate.Height + 9), 0); }
 
-        void MakeLights()
-        {
-            if (_theme == null) return;
-            var lgo = new GameObject("Global Light");
-            lgo.transform.SetParent(_root.transform, false);
-            var light = lgo.AddComponent<Light2D>();
-            light.lightType = Light2D.LightType.Global;
-            light.color = _theme.lightColor;
-            light.intensity = _theme.lightIntensity * Settings.roomLight;   // dark rooms: light comes from you, your moves and the fire
-            // darker the deeper you go (step 5): floor 1 as set, floor 2 dusky, floor 3 properly dark; caves start darker
-            int floorNo = Session.Run != null ? Mathf.Max(1, Session.Run.floor) : 1;
-            var fl = Settings.floorLight;
-            float depth = fl != null && fl.Length > 0 ? fl[Mathf.Min(floorNo - 1, fl.Length - 1)] : 1f;
-            bool cave = _theme.ambient == RoomGlow.Mushrooms || _theme.ambient == RoomGlow.Crystals || _theme.ambient == RoomGlow.LavaCracks;
-            light.intensity *= depth * (cave ? Settings.caveLight : 1f);
-            ApplyToAllLayers(light);
-            _global = light; _darkI = light.intensity;
-            _roomMult = _roomMultTarget = 1f;
-            _litI = _darkI * Settings.litRoomBoost;
-            _lightLevel = 0f; _lightTarget = 0f; _lightUpAt = -1f;
-        }
-
-        void MakePlayerLight()
-        {
-            var lgo = new GameObject("Player Light");
-            lgo.transform.SetParent(Player.transform, false);
-            lgo.transform.localPosition = new Vector3(0, 0.2f, 0);   // the centre of your collision circle: it can't be pushed inside a wall or rock
-            _playerLight = lgo.AddComponent<Light2D>();
-            _playerLight.lightType = Light2D.LightType.Point;
-            _playerLight.color = Color.Lerp(new Color(1f, 0.76f, 0.48f), PlayerController.ClassColour(Player.ClassId), Settings.carriedLightClassTint);   // firelight, tinted by your class colour
-            _playerLight.intensity = Mathf.Max(_theme.playerLight, Settings.carriedLight);
-            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LightReach(Session.Content, Session.Profile));   // the lantern (ticket 16) + the Lamp-maker (ticket 17)
-            // packed meals feed your light (step 5): Sandwich = wider, BBQ = hotter + redder, Pot = steadier; finer meals count more
-            float reach = 0f, heat = 0f, steady = 0f;
-            if (Session.Run != null)
-                foreach (var m in Session.Run.eaten)
-                {
-                    var r = m != null ? Session.Content.Recipe(m.recipeId) : null;
-                    if (r == null) continue;
-                    float g = (m.grade >= 2 ? 1.5f : m.grade == 1 ? 1.25f : 1f) * (m.potency > 0f ? Mathf.Clamp(m.potency, 0.3f, 1.5f) : 1f);
-                    if (r.station == Station.Pot) steady += g; else if (r.station == Station.BBQ) heat += g; else reach += g;
-                }
-            _mealSteady = steady;
-            _playerLight.pointLightOuterRadius *= 1f + Settings.mealReach * reach;
-            _playerLight.intensity *= 1f + Settings.mealHeat * heat;
-            _playerLight.color = Color.Lerp(_playerLight.color, new Color(1f, 0.5f, 0.25f), Mathf.Clamp01(heat * 0.12f));
-            if (reach + heat + steady > 0.01f && Player != null)
-            {
-                var parts = new List<string>();
-                if (reach > 0.01f) parts.Add("wider"); if (heat > 0.01f) parts.Add("hotter"); if (steady > 0.01f) parts.Add("steadier");
-                DungeonHud.Number(Player.Body + Vector2.up * 1f, "🔥 Your meals: light " + string.Join(" · ", parts.ToArray()), "dnum--info");
-                Session.Log("🔥 Your meals make your light " + string.Join(", ", parts.ToArray()));
-            }
-            _playerLight.pointLightInnerRadius = 0.3f;
-            _playerLight.falloffIntensity = Settings.carriedLightFalloff;   // reaches far, fades gradually
-            CastShadows(_playerLight);   // pillars throw shadows away from you
-            lgo.AddComponent<ShadowSafeLight>();   // never goes dark if its centre ends up inside a wall
-            // walls pick the light up from further away than the ground
-            var wgo = new GameObject("Wall Glow");
-            wgo.transform.SetParent(lgo.transform, false);
-            var wl = wgo.AddComponent<Light2D>();
-            wl.shadowsEnabled = false;   // walls glow, they aren't shadowed
-            wl.lightType = Light2D.LightType.Point;
-            wl.color = _playerLight.color;
-            wl.intensity = Settings.wallGlow;
-            wl.pointLightOuterRadius = Settings.carriedLightRadius * Settings.wallGlowReach;
-            wl.pointLightInnerRadius = 0.5f;
-            wl.falloffIntensity = Settings.wallGlowFalloff;
-            ApplyToLayers(wl, "Walls");
-            ApplyToAllLayers(_playerLight);
-            _lightBaseI = _playerLight.intensity;   // the flicker in Update works round this
-            _lightBaseR = _playerLight.pointLightOuterRadius;
-        }
-
-        // ───────── light plan step 3: normal maps + shadows ─────────
-        /// How high lights sit above the ground for normal mapping (higher = flatter, softer shading).
-        public static float LightHeight = 2.4f;
-
-        /// Every light reads the sprites' normal maps (Hearth & Hollow > Generate Normal Maps), so it wraps round shapes.
-        public static void UseNormals(Light2D light)
-        {
-            if (light == null || light.lightType == Light2D.LightType.Global) return;
-            var q = typeof(Light2D).GetField("m_NormalMapQuality", BindingFlags.NonPublic | BindingFlags.Instance);
-            var d = typeof(Light2D).GetField("m_NormalMapDistance", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (q != null) q.SetValue(light, System.Enum.Parse(q.FieldType, "Accurate"));
-            if (d != null) d.SetValue(light, LightHeight);
-        }
-
-        /// This light is blocked by walls and pillars (their ShadowCaster2D). Use on a few big lights, not every spark.
-        public static void CastShadows(Light2D light, float intensity = 0.85f, float softness = 0.35f)
-        {
-            if (light == null) return;
-            light.shadowsEnabled = true;
-            light.shadowIntensity = intensity;
-            light.shadowSoftness = softness;
-            if (light.GetComponent<ShadowSafeLight>() == null) light.gameObject.AddComponent<ShadowSafeLight>();   // stays lit if its centre ends up inside a wall or rock
-        }
-
-        /// Walls and pillars block light: a shadow caster shaped by the walls tilemap's collider. Shadows fall on the
-        /// ground and on characters, not on the walls themselves (they keep their wall glow).
-        public static void AddWallShadows(UnityEngine.Tilemaps.Tilemap walls)
-        {
-            if (walls == null) return;
-            var col = walls.GetComponent<UnityEngine.Tilemaps.TilemapCollider2D>();
-            if (col == null || walls.GetComponent<ShadowCaster2D>() != null) return;
-            var sc = walls.gameObject.AddComponent<ShadowCaster2D>();
-            var bf = BindingFlags.NonPublic | BindingFlags.Instance;
-            var src = typeof(ShadowCaster2D).GetField("m_ShadowCastingSource", bf);
-            var comp = typeof(ShadowCaster2D).GetField("m_ShadowShape2DComponent", bf);
-            if (src != null) src.SetValue(sc, System.Enum.Parse(src.FieldType, "ShapeProvider"));
-            if (comp != null) comp.SetValue(sc, col);
-            sc.castingOption = ShadowCaster2D.ShadowCastingOptions.CastShadow;
-            var layers = typeof(ShadowCaster2D).GetField("m_ApplyToSortingLayers", bf);
-            if (layers != null)
-            {
-                var ids = new List<int>();
-                foreach (var n in new[] { "Ground", "Default" }) { int id = SortingLayer.NameToID(n); if (SortingLayer.IsValid(id)) ids.Add(id); }
-                layers.SetValue(sc, ids.ToArray());
-            }
-            sc.enabled = false; sc.enabled = true;   // rebuild with the new source
-        }
-
-        /// Lights only the named sorting layers (e.g. "Walls" for a glow that reaches walls but not the floor).
-        public static void ApplyToLayers(Light2D light, params string[] names)
-        {
-            UseNormals(light);
-            var f = typeof(Light2D).GetField("m_ApplyToSortingLayers", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (f == null) return;
-            var ids = new List<int>();
-            foreach (var n in names) { int id = SortingLayer.NameToID(n); if (SortingLayer.IsValid(id)) ids.Add(id); }
-            f.SetValue(light, ids.ToArray());
-        }
-
-        public static void ApplyToAllLayers(Light2D light)
-        {
-            UseNormals(light);
-            var f = typeof(Light2D).GetField("m_ApplyToSortingLayers", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (f == null) return;
-            var layers = SortingLayer.layers;
-            var ids = new int[layers.Length];
-            for (int i = 0; i < layers.Length; i++) ids[i] = layers[i].id;
-            f.SetValue(light, ids);
-        }
-
         void DestroyFloor()
         {
             if (_root != null) Destroy(_root);
-            _root = null; Player = null; _current = null; _playerLight = null;
+            _root = null; Player = null; _current = null; _light = null;
             _rooms.Clear();
         }
 
@@ -356,48 +200,37 @@ namespace HearthHollow.Dungeon
             GameLook.Release("dungeon");
             Session.DungeonGuardMult = 1f;
             Hud = new DungeonHudState();
-            if (_cam != null && _camSaved)
-            {
-                _cam.transform.position = _camHome; _cam.orthographicSize = _camHomeSize; _cam.backgroundColor = _camHomeBg;
-                _camSaved = false;
-            }
+            _camera.Restore();
         }
 
         // ───────────────────────── rooms ─────────────────────────
         void EnterRoom(RoomInstance room, bool snap)
         {
             _current = room;
-            _camTarget = (Vector3)(room.Origin + RoomTemplate.Centre) + new Vector3(0, 0.35f, 0);
-            _camTarget.z = _cam != null ? _cam.transform.position.z : -10f;
-            if (snap && _cam != null) _cam.transform.position = _camTarget;
+            _camera.LookAt((Vector3)(room.Origin + RoomTemplate.Centre) + new Vector3(0, 0.35f, 0), snap);
             room.OnEnter();
             RefreshMap();
-            _roomMultTarget = room.Node.kind == RoomKind.Boss && !room.Cleared ? Settings.bossRoomLight : 1f;
-            if (Session.InFall)   // ticket 49: the place turns on you: darker and foggier with every room from the second
-            {
-                int d = room.Node.depth;
-                float gloom = Mathf.Clamp01((d - 2) / 3f);
-                _roomMultTarget *= d == 2 ? 0.8f : 1f - 0.5f * gloom;
-                _fogTarget = room.Node.fog ? _fogTarget : gloom * 0.4f;
-            }
+            float dark = room.Node.kind == RoomKind.Boss && !room.Cleared ? Settings.bossRoomLight : 1f;
+            if (Session.InFall) dark *= _fall.EnterRoom(room);   // the place turns on you: darker and foggier room by room
+            if (_light != null) _light.RoomMultTarget = dark;
             // nothing to fight here: a brief pause, then the room lights up. A fight: back to the dark.
-            if (!room.HasEvent || room.Cleared)
+            bool calm = !room.HasEvent || room.Cleared;
+            if (_light != null) _light.Enter(calm, Settings.lightUpDelay);
+            if (calm)
             {
-                if (_lightTarget < 1f && _lightUpAt < 0f) _lightUpAt = Time.time + Settings.lightUpDelay;
                 // every brazier in a peaceful room lights up as you walk in (after the same short pause), even when the
                 // room light is already up from the room before
                 if (room.Lights != null) room.Lights.IgniteWave(Player != null ? Player.Feet : (Vector2)(room.Origin + RoomTemplate.Centre), Settings.lightUpDelay);
             }
-            else { _lightTarget = 0f; _lightUpAt = -1f; }
         }
+
+        /// A big move floods the room with light for a moment.
+        public void FloodLight(float add, float seconds) { if (_light != null) _light.FloodLight(add, seconds); }
 
         /// Flare: a big burst of warm white light round you for a few seconds (casts shadows, lights nearby braziers).
         /// Later steps hang more on it (stuns shadow creatures, boosts light damage, reveals secrets).
         /// No fight on: the room is calm or cleared (Flare is cheap then).
         bool OutOfFight { get { return _current != null && (!_current.HasEvent || _current.Cleared) && !_current.EventRunning; } }
-
-        /// A big move floods the room with light for a moment (class rework).
-        public void FloodLight(float add, float seconds) { if (add > _glowAdd) { _glowAdd = add; _glowDecay = add / Mathf.Max(0.1f, seconds); } }
 
         // ── ticket 38: meals that heal over time (Regen) ──
         float _calmHealT, _regenAcc, _regenRate = -1f;
@@ -428,11 +261,11 @@ namespace HearthHollow.Dungeon
         void Flare()
         {
             float lampCut = LampMaker.FlareCooldownCut(Session.Content, Session.Profile);   // the Lamp-maker (ticket 17)
-            _flareCd = OutOfFight ? Settings.flareCalmCooldown : Mathf.Max(Settings.flareMinCooldown - lampCut * 0.5f, Settings.flareCooldown - Settings.mealSteady * _mealSteady - lampCut);
+            _flareCd = OutOfFight ? Settings.flareCalmCooldown : Mathf.Max(Settings.flareMinCooldown - lampCut * 0.5f, Settings.flareCooldown - Settings.mealSteady * _light.MealSteady - lampCut);
             float flareR = FlareRadius;
             var col = new Color(1f, 0.92f, 0.75f);
             var l = DungeonFx.Flash(Player.Body, col, flareR, Settings.flareIntensity, Settings.flareSeconds, Player.transform);
-            CastShadows(l, 0.85f, 0.3f);
+            LightSetup.CastShadows(l, 0.85f, 0.3f);
             DungeonFx.RingAt(Player.Body, col, 3.5f, 0.5f);
             DungeonFx.Embers(Player.Body, new Color(1f, 0.75f, 0.4f), 30, 0.8f);
             for (int i = 0; i < 24; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Player.Body, o, col, 1, 4f, 9f); }
@@ -448,30 +281,6 @@ namespace HearthHollow.Dungeon
             if (_current != null)
                 foreach (var e in new List<EnemyController>(_current.Enemies))
                     if (e != null && !e.Dead && Vector2.Distance(e.Body, Player.Body) <= flareR * Settings.flareStunReach) e.ElementContact(Element.Light);
-        }
-
-        /// Ramps the room light towards its target; fires the light-up when the pause is over.
-        void UpdateRoomLight()
-        {
-            if (_global == null) return;
-            if (_lightUpAt >= 0f && Time.time >= _lightUpAt)
-            {
-                _lightUpAt = -1f; _lightTarget = 1f;
-                if (_current != null)
-                {
-                    // a soft whoomph of warm light from the middle of the room, and embers rising
-                    Vector3 c = (Vector3)(_current.Origin + RoomTemplate.Centre);
-                    DungeonFx.Flash(c, new Color(1f, 0.8f, 0.5f), 14f, 1.2f, Settings.lightUpSeconds * 1.2f);
-                    DungeonFx.Embers(c, new Color(1f, 0.65f, 0.3f), 24, 4f);
-                    if (_current.Lights != null) _current.Lights.IgniteWave(c);
-                }
-            }
-            bool up = _lightTarget > _lightLevel;
-            _lightLevel = Mathf.MoveTowards(_lightLevel, _lightTarget, Time.deltaTime / Mathf.Max(0.05f, up ? Settings.lightUpSeconds : 0.35f));
-            _roomMult = Mathf.MoveTowards(_roomMult, _roomMultTarget, Time.deltaTime * 0.8f);
-            _global.intensity = Mathf.Lerp(_darkI, _litI, Mathf.SmoothStep(0f, 1f, _lightLevel)) * _roomMult;
-            _glowAdd = Mathf.MoveTowards(_glowAdd, 0f, _glowDecay * Time.deltaTime);
-            _global.intensity += _glowAdd;
         }
 
         public void GoThrough(RoomInstance room, Side side)
@@ -492,8 +301,7 @@ namespace HearthHollow.Dungeon
             Session.DungeonRoomCleared();   // ticket 39: clearing a room heals a share of your max HP
             int healed = Session.Run != null ? Session.Run.hp - hpBefore : 0;
             if (healed > 0 && Player != null) DungeonHud.Number(Player.Body + Vector2.up * 0.9f, "💗 +" + healed, "dnum--heal");
-            _roomMultTarget = 1f;
-            if (room == _current) _lightUpAt = Time.time + Settings.lightUpDelay;   // cleared: the room lights up too
+            if (_light != null) _light.Cleared(room == _current);   // cleared: the room lights up too
             if (room.Lights != null) room.Lights.IgniteWave(room.LastKill != Vector2.zero ? room.LastKill : (Vector2)(room.Origin + RoomTemplate.Centre));   // braziers flare on from the last kill
             DungeonFx.RingAt(Player != null ? (Vector3)Player.Body : (Vector3)(room.Origin + RoomTemplate.Centre), new Color(1f, 0.95f, 0.7f, 0.7f), 3f, 0.6f);
             HearthHollow.Runtime.GameAudio.Play("room_clear");   // ticket 62
@@ -573,46 +381,9 @@ namespace HearthHollow.Dungeon
         }
 
         /// Ticket 49: the fall's last room: no monsters. The fog pours in and drains you until you fall.
-        public void StartFogRoom(RoomInstance room) { StartCoroutine(FogRoom()); }
+        public void StartFogRoom(RoomInstance room) { StartCoroutine(_fall.FogRoom()); }
 
-        System.Collections.IEnumerator FogRoom()
-        {
-            Session.Log("🌫️ The fog pours in…");
-            if (_ui != null) _ui.Juice.Toast("🌫️ The fog pours in…", "toast--warn", 3f);
-            _fogTarget = 1f;
-            yield return new WaitForSeconds(1.2f);
-            while (Session.InDungeon && Session.InFall && Session.Run.hp > 0)
-            {
-                Session.Story.FallFogBite();
-                if (Player != null && Session.InDungeon) DungeonHud.Number(Player.transform.position + Vector3.up * 1.3f, "🌫️", "dnum--hazard");
-                yield return new WaitForSeconds(0.5f);
-            }
-        }
-
-        /// Ticket 49: the fall's first two rooms teach you to play, one line at a time.
-        void UpdateTutorial()
-        {
-            Hud.InFall = Session.InFall;
-            if (!Session.InFall || _current == null) { Hud.Tutorial = null; return; }
-            if (_tutSeed != Session.Run.dungeonSeed) { _tutSeed = Session.Run.dungeonSeed; _tMoved = _tAttacked = _tSkill = _tFlare = false; }
-            if (GameplayActive)
-            {
-                if (DungeonInput.Move.sqrMagnitude > 0.1f) _tMoved = true;
-                if (DungeonInput.Attack) _tAttacked = true;
-                if (DungeonInput.Special) _tSkill = true;
-                if (DungeonInput.Flare) _tFlare = true;
-            }
-            bool mouse = DungeonInput.MouseAim;
-            int d = _current.Node.depth;
-            string line = null;
-            if (d <= 1 && !_tMoved) line = "🕹️ WASD to move";
-            else if (d <= 1 && !_tAttacked) line = mouse ? "🗡️ Click to attack" : "🗡️ J to attack";
-            else if (d == 2 && !_tSkill) line = mouse ? "✨ Right-click for your skill" : "✨ K for your skill";
-            else if (d == 2 && !_tFlare) line = "🔆 F for Flare: light up the dark";
-            Hud.Tutorial = line;
-        }
-
-        public void Shake(float seconds, float amp) { _shakeT = Mathf.Max(_shakeT, seconds); _shakeAmp = Mathf.Max(_shakeAmp, amp); }
+        public void Shake(float seconds, float amp) { _camera.Shake(seconds, amp); }
 
         // ───────────────────────── frame ─────────────────────────
         void Update()
@@ -639,15 +410,9 @@ namespace HearthHollow.Dungeon
                 }
             }
 
-            if (GameplayActive) UpdateRoomLight();
+            if (GameplayActive && _light != null) _light.Tick(_current);
 
-            // your light flickers like a flame (Pot meals steady it); Flare (F / LT): a burst of light round you
-            if (_playerLight != null && _lightBaseI > 0f)
-            {
-                float amp = 0.08f / (1f + _mealSteady);
-                float tt = Time.time;
-                _playerLight.intensity = _lightBaseI * (1f + amp * (Mathf.Sin(tt * 7.3f) * 0.6f + Mathf.Sin(tt * 17.1f) * 0.4f));
-            }
+            if (_light != null) _light.Flicker();   // your light flickers like a flame; Flare (F / LT): a burst of light round you
             if (GameplayActive)
             {
                 if (_flareCd > Settings.flareCalmCooldown && OutOfFight) _flareCd = Settings.flareCalmCooldown;   // the fight's over: Flare is nearly ready again
@@ -656,9 +421,7 @@ namespace HearthHollow.Dungeon
                 SlowHealing(Time.deltaTime);   // ticket 38
             }
             Hud.FlareCooldown = Mathf.Max(0f, _flareCd);
-            UpdateTutorial();   // ticket 49
-            if (!Session.InFall) _fogTarget = 0f;
-            Hud.Fog01 = Mathf.MoveTowards(Hud.Fog01, _fogTarget, Time.unscaledDeltaTime * (_fogTarget >= 1f ? 0.3f : 0.6f));
+            _fall.Tick();   // the fall's tutorial lines and its fog
 
             // embers drifting through the dark room (atmosphere)
             if (GameplayActive && _current != null)
@@ -674,130 +437,17 @@ namespace HearthHollow.Dungeon
                 }
             }
 
-            // prompt + status for the HUD
-            var near = GameplayActive ? Nearest(Player, 1.4f) : null;
-            float lootD = 99f; var lootNear = GameplayActive && _loot != null ? _loot.Nearest(Player.Feet, 1.2f, out lootD) : null;
-            if (lootNear != null && (near == null || lootD <= Vector2.Distance(Player.Feet, near.transform.position)))
-            {
-                var ing = Session.Content.Ingredient(lootNear.ingredientId);
-                Hud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
-            }
-            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) Hud.Prompt = "⛏️ Dig here";   // ticket 50
-            else Hud.Prompt = near != null ? near.Prompt(this) : null;
-            Hud.Locked = _current != null && _current.EventRunning;
-            Hud.Status = StatusText();
-            if (_current != null && _current.Boss != null && !_current.Boss.Dead)
-            {
-                Hud.BossHp01 = _current.Boss.Hp / (float)Mathf.Max(1, _current.Boss.Stats.maxHp);
-                Hud.BossName = _current.Boss.DisplayName;
-            }
-            else Hud.BossHp01 = -1f;
+            WriteHud();   // the prompt, the room's status and the boss bar (DungeonController.Hud.cs)
         }
 
-        string StatusText()
-        {
-            if (_current == null) return null;
-            if (_current.EventRunning)
-            {
-                int left = 0; foreach (var e in _current.Enemies) if (e != null && !e.Dead) left++;
-                return _current.Node.kind == RoomKind.Boss ? "Defeat the guardian!" : left > 0 ? "Clear the room!  " + left + " left" : "Clear the room!";
-            }
-            switch (_current.Node.kind)
-            {
-                case RoomKind.Ladder: return "A ladder leads deeper";
-                case RoomKind.Exit: return "A way home";
-                case RoomKind.Boss: return "The way out is open";
-                case RoomKind.Gather: return "A quiet grove — forage here";
-                case RoomKind.Rest: return "A campfire crackles";
-            }
-            return null;
-        }
-
-        // ── ticket 57: a boss's entrance — title card, the camera pushing in on it, the room's lights flaring ──
-        EnemyController _introBoss; float _introPush, _introBaseSize; bool _wasPushing;
-
-        /// How far in the camera is pushed (0 = normal, 1 = full) at `t` seconds into the entrance.
-        public static float IntroPush(float t)
-        {
-            if (t < 0f || t >= DungeonHudState.IntroLength) return 0f;
-            float inK = Mathf.Clamp01(t / 0.6f), outK = Mathf.Clamp01((DungeonHudState.IntroLength - t) / 0.8f);
-            return Mathf.SmoothStep(0f, 1f, Mathf.Min(inK, outK));
-        }
-
-        public void BossEntrance(RoomInstance room, EnemyController boss)
-        {
-            if (boss == null) return;
-            var route = Session.Content.Route(Session.Run != null ? Session.Run.routeId : null);
-            Hud.IntroName = boss.DisplayName;
-            Hud.IntroSub = route != null && !string.IsNullOrEmpty(route.name) ? "Guardian of " + route.name : "It has been waiting for you";
-            Hud.IntroT = 0f;
-            _introBoss = boss;
-            if (!_wasPushing && _cam != null) _introBaseSize = _cam.orthographicSize;   // push in from whatever the camera is now
-            Vector3 at = boss.Body;
-            Color col = Color.Lerp(EnemyController.ElementColour(boss.Data != null ? boss.Data.element : Element.None), new Color(1f, 0.45f, 0.2f), 0.5f);
-            DungeonFx.Flash(at, col, 10f, 2.4f, 1.6f);                            // the room flares
-            DungeonFx.RingAt(at, new Color(col.r, col.g, col.b, 0.9f), 2.6f, 0.7f);
-            if (room != null && room.Lights != null) room.Lights.IgniteWave(at);   // its braziers roar up from the boss outward
-            Shake(0.35f, 0.4f);
-            GameLook.Punch(0.8f);
-            HearthHollow.Runtime.GameAudio.Play("boss");   // ticket 62
-            GameFeel.SlowMo(0.4f, 1.2f);                                           // a beat to take it in
-        }
-
-        void UpdateBossIntro(float dt)
-        {
-            if (Hud.IntroT < 0f) { _introPush = 0f; return; }
-            Hud.IntroT += dt;
-            _introPush = IntroPush(Hud.IntroT);
-            if (Hud.IntroT >= DungeonHudState.IntroLength) { Hud.IntroT = -1f; _introBoss = null; _introPush = 0f; }
-        }
+        public void BossEntrance(RoomInstance room, EnemyController boss) { _intro.Begin(room, boss); }
 
         void LateUpdate()
         {
-            if (_cam == null || _root == null) return;
+            if (_root == null) return;
             float dt = Time.unscaledDeltaTime;
-            UpdateBossIntro(dt);
-            Vector3 aim = _camTarget;
-            if (_introPush > 0f && _introBoss != null && !_introBoss.Dead)
-            {
-                Vector3 b = _introBoss.Body; b.z = _camTarget.z;
-                aim = Vector3.Lerp(_camTarget, b, 0.55f * _introPush);   // lean towards the boss
-            }
-            if (_introPush > 0f || _wasPushing) _cam.orthographicSize = _introBaseSize * (1f - 0.22f * _introPush);   // and push in
-            _wasPushing = _introPush > 0f;
-            Vector3 pos = Vector3.Lerp(_cam.transform.position, aim, 1f - Mathf.Exp(-dt * 14f));
-            pos.z = _camTarget.z;
-            if (_shakeT > 0f && GameplayActive)
-            {
-                _shakeT -= dt;
-                pos += (Vector3)(Random.insideUnitCircle * _shakeAmp);
-                if (_shakeT <= 0f) _shakeAmp = 0f;
-            }
-            _cam.transform.position = pos;
-        }
-
-        void RefreshMap()
-        {
-            Hud.Map.Clear();
-            if (_plan == null) return;
-            var known = new HashSet<RoomNode>();
-            foreach (var kv in _rooms)
-            {
-                if (!kv.Value.Visited) continue;
-                known.Add(kv.Key);
-                foreach (Side s in System.Enum.GetValues(typeof(Side))) { var n = _plan.Neighbour(kv.Key, s); if (n != null) known.Add(n); }
-            }
-            foreach (var node in known)
-            {
-                RoomInstance ri; _rooms.TryGetValue(node, out ri);
-                Hud.Map.Add(new DungeonHudState.MapRoom
-                {
-                    cell = node.cell, kind = node.kind,
-                    visited = ri != null && ri.Visited, current = ri == _current, cleared = ri != null && ri.Cleared, known = true,
-                    n = node.Has(Side.North), s = node.Has(Side.South), e = node.Has(Side.East), w = node.Has(Side.West)
-                });
-            }
-            Hud.MapVersion++;
+            _intro.Tick(dt);
+            _camera.Tick(dt, _intro.Push, _intro.Boss, GameplayActive);
         }
     }
 }

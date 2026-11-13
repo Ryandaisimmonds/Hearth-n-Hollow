@@ -377,12 +377,12 @@ namespace HearthHollow.Dungeon
                 var go = new GameObject("fx_light"); Created++;
                 var l = go.AddComponent<Light2D>();
                 l.lightType = Light2D.LightType.Point;
-                DungeonController.ApplyToAllLayers(l);
+                LightSetup.ApplyToAllLayers(l);
                 var w = new GameObject("fx_wallglow"); Created++;   // walls catch it from further away than the floor
                 w.transform.SetParent(go.transform, false);
                 var wl = w.AddComponent<Light2D>();
                 wl.lightType = Light2D.LightType.Point;
-                DungeonController.ApplyToLayers(wl, "Walls");
+                LightSetup.ApplyToLayers(wl, "Walls");
                 fl = go.AddComponent<FxLight>();
                 fl.Setup(l, wl);
             }
@@ -484,7 +484,7 @@ namespace HearthHollow.Dungeon
             var l = go.AddComponent<Light2D>();
             l.lightType = Light2D.LightType.Point;
             Light(l, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);
-            DungeonController.ApplyToAllLayers(l);
+            LightSetup.ApplyToAllLayers(l);
             if (radius >= 1.5f)
             {
                 var w = new GameObject("fx_wallglow");
@@ -492,7 +492,7 @@ namespace HearthHollow.Dungeon
                 var wl = w.AddComponent<Light2D>();
                 wl.lightType = Light2D.LightType.Point;
                 Light(wl, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
-                DungeonController.ApplyToLayers(wl, "Walls");
+                LightSetup.ApplyToLayers(wl, "Walls");
             }
             return l;
         }

@@ -48,8 +48,8 @@ namespace HearthHollow.Dungeon
                 _light.intensity = _lightBase;
                 _light.pointLightOuterRadius = kind == InteractKind.Campfire ? 5f : 3.5f;
                 _light.pointLightInnerRadius = 0.4f;
-                DungeonController.ApplyToAllLayers(_light);
-                DungeonController.CastShadows(_light, 0.75f, 0.45f);   // with ShadowSafeLight: never dark if it sits in a wall
+                LightSetup.ApplyToAllLayers(_light);
+                LightSetup.CastShadows(_light, 0.75f, 0.45f);   // with ShadowSafeLight: never dark if it sits in a wall
             }
             SetAvailable(available);
         }

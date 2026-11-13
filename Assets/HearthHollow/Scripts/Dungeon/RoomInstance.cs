@@ -78,7 +78,7 @@ namespace HearthHollow.Dungeon
             {
                 walls.color = _theme.wallTint;
                 var wr = walls.GetComponent<TilemapRenderer>(); if (wr != null) { wr.sortingOrder = 2; SetLayer(wr, "Walls"); }   // own layer: walls catch light from further away
-                DungeonController.AddWallShadows(walls);   // walls and pillars block light
+                LightSetup.AddWallShadows(walls);   // walls and pillars block light
             }
             if (decor != null)
             {

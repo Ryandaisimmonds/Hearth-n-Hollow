@@ -262,7 +262,7 @@ namespace HearthHollow.Dungeon
             _flame = Flame(new Vector2(0, 0.42f), Fire, o, 1f);
             _core = Flame(new Vector2(0, 0.42f), Color.Lerp(Fire, Color.white, 0.6f), o + 1, 0.55f);
             _light = DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.42f), Fire, 4.8f, 1.35f, 0f, transform);   // at the flame, inside its own cell (0.7 reached into the wall behind)
-            DungeonController.CastShadows(_light, 0.75f, 0.45f);
+            LightSetup.CastShadows(_light, 0.75f, 0.45f);
             // whoomph
             DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.6f), Fire, 6f, 2f, 0.5f);
             DungeonFx.Embers((Vector2)transform.position + new Vector2(0, 0.5f), Fire, 12, 0.2f);
@@ -382,7 +382,7 @@ namespace HearthHollow.Dungeon
             _flame = fl.AddComponent<SpriteRenderer>(); _flame.sprite = DungeonFx.Flame; _flame.color = Fire;
             if (FxMaterials.Glow != null) _flame.sharedMaterial = FxMaterials.Glow;
             _light = DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.4f), Fire, 5.5f, 1.45f, 0f, transform);
-            DungeonController.CastShadows(_light, 0.75f, 0.45f);
+            LightSetup.CastShadows(_light, 0.75f, 0.45f);
         }
 
         void Update()

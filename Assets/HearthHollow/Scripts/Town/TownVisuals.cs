@@ -54,8 +54,8 @@ namespace HearthHollow.Town
             var l = g.AddComponent<Light2D>();
             l.lightType = Light2D.LightType.Point;
             l.color = c; l.intensity = intensity; l.pointLightOuterRadius = radius; l.pointLightInnerRadius = radius * 0.2f;
-            DungeonController.ApplyToAllLayers(l);
-            DungeonController.CastShadows(l, 0.75f, 0.45f);   // as before, plus ShadowSafeLight: lanterns set into a wall get nudged out
+            LightSetup.ApplyToAllLayers(l);
+            LightSetup.CastShadows(l, 0.75f, 0.45f);   // as before, plus ShadowSafeLight: lanterns set into a wall get nudged out
             if (Art != null) WallGlow(l);   // lanterns and stations light the walls further
             return l;
         }

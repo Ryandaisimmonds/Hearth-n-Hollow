@@ -183,6 +183,25 @@ namespace HearthHollow.PlayTests
             Assert.AreEqual(made, DungeonFx.Created, "effects made new objects after warm-up");
             yield return Seconds(3f);
             Step("a second round of boss deaths made no new effect objects (" + made + " pooled)");
+
+            // ── a boss makes its entrance: title card, the camera pushes in and comes back ──
+            var room = dc.CurrentRoom;
+            string bossId = DungeonRules.BossMonster(S.Content, new RunState { routeId = Ids.Area.Meadow, floor = DungeonRules.Floors(S.Content, Ids.Area.Meadow), dungeon = true });
+            var cam = Camera.main;
+            float size0 = cam.orthographicSize;
+            var boss = dc.SpawnEnemy(room, bossId, false, true, (Vector2)dc.Player.Body + Vector2.right * 3f);
+            Assert.IsNotNull(boss, "the boss spawns");
+            dc.BossEntrance(room, boss);
+            yield return Seconds(0.9f);
+            Assert.GreaterOrEqual(dc.Hud.IntroT, 0f, "the title card is up");
+            Assert.Less(cam.orthographicSize, size0 - 0.01f, "the camera pushes in");
+            yield return Shot("9_boss_intro");
+            yield return Until("the entrance ends", () => dc.Hud.IntroT < 0f, 6f);
+            yield return Seconds(0.3f);
+            Assert.AreEqual(size0, cam.orthographicSize, 0.01f, "the camera comes back");
+            boss.TakeHit(99999f, false, Vector2.zero);
+            yield return Seconds(1f);
+            Step("a boss made its entrance: title card, push-in and back");
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
         }
 

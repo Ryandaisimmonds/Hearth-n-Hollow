@@ -693,7 +693,7 @@ namespace HearthHollow.Dungeon
                     var froom = _dc.CurrentRoom; Vector2 fat = froom != null ? froom.NearestWalkable(Feet) : Feet;
                     float crad = 2.8f; float life = m.duration; int perTick = Mathf.Max(1, Mathf.RoundToInt(3f * _mods.skillPower));
                     var fl = DungeonFx.Flash(fat + new Vector2(0, 0.4f), fire, crad * 2.4f, 1.8f, life);
-                    DungeonController.CastShadows(fl, 0.7f, 0.45f);
+                    LightSetup.CastShadows(fl, 0.7f, 0.45f);
                     DungeonFx.Spawn(DungeonFx.Flame, fat + new Vector2(0, 0.3f), fire, life, 1.7f, 1.3f, 0f, DungeonController.SortOrder(fat.y) + 2, true);
                     if (froom != null && froom.Lights != null) froom.Lights.IgniteNear(fat, crad);
                     DungeonZone.Spawn(_dc, fat, crad, life, 0.5f, A(fire, 0.2f), z =>
@@ -796,7 +796,7 @@ namespace HearthHollow.Dungeon
                     _sunMove = m; _sunUntil = Time.time + dur; _sunLvl = 0; _sunHit.Clear();
                     if (_sunLight != null) Destroy(_sunLight.gameObject);
                     _sunLight = DungeonFx.Flash(Body + Aim * 2f, MoveColour(m), LightRadius(m) * (1f + 0.2f * 0), 2.2f, 0f, transform);
-                    DungeonController.CastShadows(_sunLight, 0.7f, 0.4f);
+                    LightSetup.CastShadows(_sunLight, 0.7f, 0.4f);
                     DungeonFx.RingAt(Body, MoveColour(m), 1.4f, 0.4f);
                     return true;
                 }
@@ -1068,7 +1068,7 @@ namespace HearthHollow.Dungeon
                     int perTick = Mathf.Max(1, Mathf.RoundToInt(m.value * _mods.skillPower * k));
                     Color fire = MoveColour(m);
                     var l = DungeonFx.Flash(at + new Vector2(0, 0.4f), fire, rad * 2.4f, 1.6f, m.duration);   // a real light source: light-shy monsters keep away
-                    DungeonController.CastShadows(l, 0.7f, 0.45f);
+                    LightSetup.CastShadows(l, 0.7f, 0.45f);
                     DungeonFx.Spawn(DungeonFx.Flame, at + new Vector2(0, 0.3f), fire, m.duration, 1.3f * k, 1.0f * k, 0f, DungeonController.SortOrder(at.y) + 2, true);
                     DungeonFx.Embers(at, fire, 14, 0.4f);
                     if (room != null && room.Lights != null) room.Lights.IgniteNear(at, rad);

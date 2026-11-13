@@ -210,7 +210,7 @@ namespace HearthHollow.Town
             light.lightType = Light2D.LightType.Global;
             light.color = theme != null ? theme.lightColor : Color.white;
             light.intensity = theme != null ? theme.lightIntensity : 1f;
-            DungeonController.ApplyToAllLayers(light);
+            LightSetup.ApplyToAllLayers(light);
 
             BuildTiles(theme);
             Spots = TownLayout.Spots();
@@ -578,8 +578,8 @@ namespace HearthHollow.Town
             lg.transform.localPosition = new Vector3(0, 1f, 0);
             _fireLight = lg.AddComponent<Light2D>();
             _fireLight.lightType = Light2D.LightType.Point;
-            DungeonController.ApplyToAllLayers(_fireLight);
-            if (Art != null) { _fireWall = WallGlow(_fireLight); DungeonController.CastShadows(_fireLight, 0.8f, 0.5f); }
+            LightSetup.ApplyToAllLayers(_fireLight);
+            if (Art != null) { _fireWall = WallGlow(_fireLight); LightSetup.CastShadows(_fireLight, 0.8f, 0.5f); }
             UpdateFire();
         }
 

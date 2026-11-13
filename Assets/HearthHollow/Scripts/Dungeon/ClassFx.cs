@@ -32,7 +32,7 @@ namespace HearthHollow.Dungeon
             _core = Part(DungeonFx.Orb != null ? DungeonFx.Orb : DungeonFx.Circle, 0.35f, Color.Lerp(_col, Color.white, 0.5f), 21001);
             _lightI = intensity * 1.2f;
             _light = DungeonFx.Flash(transform.position, _col, radius, _lightI, 0f, transform);   // a real light source (lit weak spots, light-shy monsters keep away)
-            DungeonController.CastShadows(_light, 0.7f, 0.45f);
+            LightSetup.CastShadows(_light, 0.7f, 0.45f);
             DungeonFx.RingAt(transform.position, _col, 1.2f, 0.4f);
             DungeonFx.Embers(transform.position, _col, 10, 0.3f);
         }
