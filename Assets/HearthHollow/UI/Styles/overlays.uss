@@ -1,0 +1,122 @@
+/* Hearth & Hollow — overlays. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── overlays ───────────────────────── */
+.overlay {
+    background-color: rgba(6, 14, 10, 0.72);
+    align-items: center;
+    justify-content: center;
+}
+.overlay__box {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Popup/Popup_Bg.png#Popup_Bg");
+    -unity-slice-scale: 0.6px;
+    padding: 30px 40px 34px 40px;
+    align-items: center;
+    min-width: 540px;
+    max-width: 840px;
+}
+.overlay__title {
+    font-size: 20px; -unity-font-style: bold; color: var(--hh-ivory);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 50, 10, 0.85);
+    -unity-text-align: middle-center; white-space: nowrap;
+    height: 44px; padding: 0 52px 4px 52px; margin-bottom: 6px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Green.png#Title_Ribbon01_Green");
+    -unity-slice-scale: 0.32px;
+}
+
+.actions { flex-direction: row; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+
+/* floating numbers */
+.float-text {
+    position: absolute;
+    font-size: 26px;
+    -unity-font-style: bold;
+    color: var(--hh-white);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: #000000;
+}
+
+/* gather */
+.gather__box { -unity-background-image-tint-color: rgb(225, 255, 225); }
+.gather__well { margin-bottom: 4px; }
+.gather__emoji { font-size: 48px; }
+.gather-bar {
+    width: 560px; height: 46px;
+    margin: 16px 0 6px 0;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
+    -unity-slice-scale: 1px;
+    overflow: hidden;
+}
+.gather-bar__fill {
+    position: absolute; left: 4px; right: 4px; top: 4px; bottom: 4px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
+    -unity-slice-scale: 0.6px;
+    -unity-background-image-tint-color: rgb(70, 95, 75);
+}
+.gather-bar__safe { position: absolute; top: 5px; bottom: 5px; background-color: rgba(240, 180, 76, 0.6); border-radius: 4px; }
+.gather-bar__perfect {
+    position: absolute; top: 5px; bottom: 5px;
+    background-color: var(--hh-gold-bright);
+    border-left-width: 1px; border-right-width: 1px; border-color: #fff4c0;
+}
+.gather-bar__marker {
+    position: absolute; top: 0; bottom: 0; width: 8px;
+    margin-left: -4px;
+    background-color: var(--hh-ivory);
+    border-radius: 4px;
+    border-width: 1px; border-color: #3a2208;
+}
+.gather-bar__marker--gold { background-color: rgb(255, 226, 120); border-color: rgb(255, 250, 220); width: 12px; margin-left: -6px; }   /* ticket 59: in the gold */
+.gather__result {
+    min-height: 32px; margin-top: 8px; font-size: 22px; -unity-font-style: bold; color: var(--hh-cream);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
+}
+.gather__result--perfect { color: var(--hh-gold-bright); }
+.gather__result--miss { color: var(--hh-sage); }
+
+/* rest */
+.rest__box { -unity-background-image-tint-color: rgb(255, 225, 185); }
+.rest__fire { width: 104px; height: 104px; font-size: 96px; margin-bottom: 6px; }
+.rest__healed {
+    font-size: 22px; -unity-font-style: bold; color: var(--hh-good); margin: 10px 0;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.6);
+}
+.rest .bar { width: 320px; height: 26px; }
+
+/* summary */
+.summary { align-items: center; justify-content: center; background-color: rgba(10, 18, 13, 0.45); }
+.summary__box { min-width: 580px; max-width: 780px; align-items: stretch; padding: 26px 34px 28px 34px; }
+.summary__headline { width: 420px; height: 94px; align-self: center; -unity-background-scale-mode: scale-to-fit; }
+.summary__title {
+    font-size: 34px; -unity-font-style: bold; -unity-text-align: middle-center; color: var(--hh-text);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
+}
+.summary__title--cleared { color: #9cc4ff; }
+.summary__title--died { color: var(--hh-coral); }
+.summary__title--sub { font-size: 18px; }
+.summary__box > .muted { -unity-text-align: middle-center; }
+.summary__body { margin-top: 10px; }
+.summary__section { margin-top: 6px; }
+.summary__line { flex-direction: row; justify-content: space-between; padding: 2px 0; }
+.summary__line-label { color: var(--hh-sage-light); }
+.summary__line-value { -unity-font-style: bold; }
+.summary__line--total .summary__line-value { color: var(--hh-gold-soft); }
+.summary__line--levelup .summary__line-value { color: var(--hh-gold); }
+.summary__levelup-image { width: 240px; height: 54px; align-self: center; margin: 4px 0; }
+.summary__unlock { color: var(--hh-mint); -unity-font-style: bold; }
+
+/* octagon frames are scale-to-fit, never 9-sliced (overrides any Sprite Editor borders) */
+.item-frame, .bag-slot, .class-card__portrait, .drag-ghost, .pic {
+    -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-top: 0; -unity-slice-bottom: 0;
+}
+.summary__lost { color: var(--hh-coral); white-space: normal; margin-top: 6px; }
+
+/* ticket 37: goods lost in a fall, the same size as the ones you kept, crossed out */
+.summary__lost-head { color: var(--hh-coral); margin-top: 10px; }
+.pantry-item--lost { opacity: 0.6; border-color: rgba(230, 90, 80, 0.7); background-color: rgba(120, 30, 25, 0.25); }
+.pantry-item--lost .pantry-item__name, .pantry-item--lost .pantry-item__count { color: #e7a39b; }
+.pantry-item__strike { position: absolute; left: 4px; right: 4px; top: 50%; height: 3px; background-color: rgba(230, 70, 60, 0.9); rotate: -12deg; border-radius: 2px; }
+/* ticket 65: what got you */
+.summary__recap { flex-shrink: 0; padding: 8px 14px 8px 14px; border-radius: 8px; background-color: rgba(80, 20, 20, 0.35); border-width: 1px; border-color: rgba(200, 90, 80, 0.5); margin-top: 8px; }
+.summary__recap-line { flex-shrink: 0; margin-top: 0; color: rgb(236, 214, 200); }
+.summary__recap-line--last { color: rgb(255, 150, 130); -unity-font-style: bold; }

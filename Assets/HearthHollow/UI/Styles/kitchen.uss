@@ -1,0 +1,113 @@
+/* Hearth & Hollow — kitchen. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── cooking v9: meal pantry + stove pop-up ───────────────────────── */
+.meal-shelf {
+    padding: 4px 10px 8px 10px; margin: 0 2px 6px 2px; border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.18); border-width: 1px; border-color: rgba(240, 180, 76, 0.22);
+}
+.meal-shelf__title { align-self: flex-start; margin: -2px 0 4px 0; }
+.meal-shelf__row { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+.meal-card {
+    flex-direction: row; align-items: center;
+    width: 232px; min-height: 58px; margin: 3px 6px 3px 0; padding: 4px 26px 4px 4px; border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.32); border-width: 1px; border-left-width: 5px; border-color: rgba(200, 195, 180, 0.35);
+}
+.meal-card:hover { background-color: rgba(255, 210, 120, 0.12); }
+.meal-card--grade-1 { border-color: rgba(130, 220, 120, 0.7); }
+.meal-card--grade-2 { border-color: rgba(120, 180, 255, 0.8); background-color: rgba(30, 60, 110, 0.35); }
+.meal-card--empty { justify-content: center; min-height: 0; height: 58px; border-color: rgba(240, 180, 76, 0.12); background-color: rgba(0, 0, 0, 0.12); }
+.meal-card--empty:hover { background-color: rgba(0, 0, 0, 0.12); }
+.meal-card__well { width: 40px; height: 40px; flex-shrink: 0; }
+.meal-card__well > .pic { font-size: 20px; }
+.meal-card__text { flex-grow: 1; flex-shrink: 1; margin-left: 6px; }
+.meal-card__name-row { flex-direction: row; align-items: center; flex-wrap: wrap; }
+.meal-card__name { font-size: 13px; color: var(--hh-cream); -unity-font-style: bold; }
+.meal-card__buffs { font-size: 13px; color: var(--hh-gold-soft); white-space: normal; }
+.meal-card__accel { font-size: 12px; color: var(--hh-sky); white-space: normal; }
+.meal-card .meal-card__x { top: 4px; right: 4px; }
+
+.cook-pop__box { min-width: 640px; max-width: 860px; align-items: stretch; }
+.cook-pop__head { flex-direction: row; align-items: center; margin-bottom: 6px; }
+.cook-pop__well { width: 56px; height: 56px; flex-shrink: 0; }
+.cook-pop__well > .pic { font-size: 30px; }
+.cook-pop__emoji { font-size: 30px; }
+.cook-pop__head-text { flex-shrink: 1; margin-left: 10px; }
+.cook-pop__title { -unity-text-align: middle-left; margin: 0; }
+.cook-pop__sub { margin: 8px 0 3px 0; }
+.cook-line { flex-direction: row; align-items: center; margin: 2px 0; }
+.cook-line--wrap { flex-wrap: wrap; }
+.cook-line__name { width: 190px; font-size: 13px; color: var(--hh-cream); }
+.cook-grade--short { opacity: 0.45; }
+.cook-pop__odds {
+    flex-direction: row; height: 26px; border-radius: 8px; overflow: hidden;
+    border-width: 1px; border-color: rgba(240, 180, 76, 0.35); background-color: rgba(0, 0, 0, 0.3);
+}
+.cook-odds { justify-content: center; overflow: hidden; }
+.cook-odds--0 { background-color: rgba(120, 115, 105, 0.55); }
+.cook-odds--1 { background-color: rgba(50, 120, 50, 0.7); }
+.cook-odds--2 { background-color: rgba(40, 90, 160, 0.8); }
+.cook-odds__text { font-size: 13px; -unity-text-align: middle-center; white-space: nowrap; color: var(--hh-white); }
+.cook-pop__preview { margin: 6px 0 2px 0; }
+.cook-pop__line { color: var(--hh-gold-soft); white-space: normal; }
+.cook-pop__foot { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 10px; }
+.cook-pop__why { flex-shrink: 1; color: var(--hh-sage); white-space: normal; margin-right: 10px; }
+.cook-pop__result { margin-top: 6px; -unity-text-align: middle-center; -unity-font-style: bold; color: var(--hh-gold-bright); font-size: 16px; }
+
+.pantry-item--grade-1 { border-color: rgba(130, 220, 120, 0.7); }
+.pantry-item--grade-2 { border-color: rgba(120, 180, 255, 0.8); }
+
+
+.meal-card--always { border-color: rgba(255, 210, 58, 0.85); background-color: rgba(120, 85, 20, 0.4); padding-right: 6px; }
+
+/* kitchen upgrades (contentVersion 13) */
+.kitchen {
+    padding: 4px 10px 8px 10px; margin: 0 2px 6px 2px; border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.18); border-width: 1px; border-color: rgba(240, 180, 76, 0.22);
+}
+.kitchen__title { align-self: flex-start; margin: -2px 0 4px 0; }
+.kitchen__row { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+.kitchen-card {
+    width: 232px; margin: 3px 6px 3px 0; padding: 6px 8px; border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3); border-width: 1px; border-left-width: 5px; border-color: rgba(240, 180, 76, 0.25);
+}
+.kitchen-card__name { font-size: 13px; color: var(--hh-cream); -unity-font-style: bold; }
+.kitchen-card__now { font-size: 13px; color: var(--hh-gold-soft); }
+.kitchen-card__next { font-size: 13px; color: var(--hh-sage-light); white-space: normal; margin-top: 2px; }
+.kitchen__costs { flex-direction: row; flex-wrap: wrap; margin: 3px 0; }
+.kitchen__cost { margin-right: 6px; font-size: 13px; }
+.kitchen-card__btn { align-self: flex-start; margin-top: 2px; }
+.recipe-row--locked { opacity: 0.55; }
+.larder-mats { align-self: stretch; align-items: center; margin-top: 8px; padding-top: 6px; border-top-width: 1px; border-color: rgba(240, 180, 76, 0.3); }
+.larder-mats__title { margin: 0 0 2px 0; }
+.larder-mats__row { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+.pantry-item--material { border-color: rgba(190, 160, 120, 0.7); }
+
+/* ticket 11: the stove's timing tap */
+.cook-game { align-items: center; margin: 6px 0 2px 0; }
+.cook-game__bar { width: 100%; max-width: 560px; height: 34px; margin: 4px 0 2px 0; }
+.cook-game__fill { -unity-background-image-tint-color: rgb(120, 60, 30); }
+.cook-game__hint { color: var(--hh-gold-soft); -unity-font-style: bold; }
+.cook-pop__quick { margin-right: 6px; }
+
+/* ticket 27: the spice rack */
+.season-pop__box { min-width: 640px; max-width: 860px; align-items: stretch; }
+.season-pop__intro { margin-bottom: 6px; white-space: normal; }
+.season-pop__step { margin-top: 8px; }
+.season-pop__meals { flex-direction: row; flex-wrap: wrap; }
+.season-pop__meal { width: 220px; }
+.season-pop__meal--on { border-color: var(--hh-gold-bright); border-width: 2px; border-left-width: 5px; background-color: rgba(255, 210, 120, 0.18); }
+.season-pop__spices { flex-direction: row; flex-wrap: wrap; margin-bottom: 6px; }
+.season-pop__spice { font-size: 15px; padding: 6px 12px; margin: 3px 6px 3px 0; }
+.season-pop__effect { padding: 10px 14px; border-radius: 10px; border-width: 2px; margin: 6px 0; background-color: rgba(0, 0, 0, 0.3); border-color: rgba(255, 210, 120, 0.4); }
+.season-pop__effect-head { font-size: 22px; -unity-font-style: bold; color: var(--hh-cream); }
+.season-pop__effect-line { font-size: 15px; color: var(--hh-cream); white-space: normal; margin-top: 3px; }
+.season-pop__meal--done { opacity: 0.5; }
+
+/* ticket 45: simple cooking */
+.cook-pop__gives { margin: 10px 0 6px 0; font-size: 18px; color: var(--hh-cream); -unity-font-style: bold; white-space: normal; }
+.cook-line__have { color: rgb(150, 220, 120); -unity-font-style: bold; }
+.cook-card { align-items: center; padding: 18px 12px 8px 12px; }
+.cook-card__title { font-size: 28px; color: var(--hh-cream); -unity-font-style: bold; margin-top: 12px; -unity-text-align: middle-center; }
+.cook-card--prime .cook-card__title { color: var(--hh-gold); }
+.cook-card__buffs { font-size: 20px; margin: 8px 0 18px 0; color: var(--hh-cream); }
+.cook-card__done { min-width: 260px; }

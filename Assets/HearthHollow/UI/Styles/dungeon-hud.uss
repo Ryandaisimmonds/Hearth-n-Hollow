@@ -1,0 +1,145 @@
+/* Hearth & Hollow — dungeon-hud. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── real-time dungeon ───────────────────────── */
+.theme-dungeon { background-color: rgba(0, 0, 0, 0); background-image: none; }
+.dungeon { padding: 10px; }
+.dungeon__hurt {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    background-color: rgba(200, 30, 20, 0);
+    transition-property: background-color; transition-duration: 0.12s;
+}
+.dungeon__hurt--on { background-color: rgba(200, 30, 20, 0.26); }
+.dungeon__numbers { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.dungeon__top { flex-direction: row; justify-content: space-between; align-items: flex-start; padding-right: 84px; }
+
+.dhud__card { padding: 10px 16px 12px 12px; margin: 0; }
+.dhud__row { flex-direction: row; align-items: center; }
+.dhud__frame { width: 70px; height: 70px; }
+.item-frame > .dhud__portrait { width: 72%; height: 72%; font-size: 30px; }
+.dhud__info { margin-left: 10px; }
+.dhud__name { font-size: 15px; -unity-font-style: bold; color: var(--hh-cream); padding: 0; margin: 0; }
+.dhud__hp { width: 270px; height: 24px; margin: 4px 0 6px 0; }
+.dhud__abilities { flex-direction: row; align-items: center; }
+.dhud__ability {
+    width: 46px; height: 46px; margin-right: 6px;
+    border-radius: 9px; border-width: 2px; border-color: rgba(240, 180, 76, 0.5);
+    background-color: rgba(0, 0, 0, 0.45);
+    align-items: center; justify-content: center; overflow: hidden;
+}
+.dhud__ability--ready { border-color: var(--hh-gold-bright); background-color: rgba(90, 70, 20, 0.6); }
+.dhud__ability--locked { opacity: 0.5; }
+.dhud__ability-icon { width: 30px; height: 30px; font-size: 22px; }
+.dhud__icon-slot { width: 30px; height: 30px; align-items: center; justify-content: center; }
+.dhud__ability-emoji { font-size: 22px; -unity-text-align: middle-center; }
+.dhud__cool { position: absolute; left: 0; right: 0; top: 0; background-color: rgba(0, 0, 0, 0.62); }
+.dhud__key {
+    position: absolute; bottom: 0; right: 3px; padding: 0; margin: 0;
+    font-size: 12px; -unity-font-style: bold; color: var(--hh-ivory);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0);
+}
+.dhud__guard { margin-left: 4px; background-color: #6a5a20; color: var(--hh-gold-pale); }
+
+.dhud__mid { align-items: center; flex-grow: 1; }
+.dhud__where { padding: 8px 20px 10px 20px; margin: 0; align-items: center; }
+.dhud__route-icon { flex-direction: row; align-items: center; }
+.dhud__route-pic { width: 24px; height: 24px; font-size: 18px; margin-right: 6px; }
+.dhud__route { font-size: 15px; -unity-font-style: bold; color: var(--hh-parchment); padding: 0; margin: 0 8px 0 0; }
+.dhud__floor { font-size: 13px; }
+.dhud__status { font-size: 13px; color: var(--hh-sage-light); margin-top: 3px; -unity-text-align: middle-center; padding: 0; }
+.dhud__status--locked { color: var(--hh-coral); -unity-font-style: bold; }
+.dhud__boss { align-items: center; margin-top: 6px; }
+.dhud__boss-name {
+    font-size: 16px; -unity-font-style: bold; color: var(--hh-gold-soft);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0);
+}
+.dhud__boss-bar { width: 520px; height: 20px; }
+.dhud__chips { flex-direction: row; align-items: center; padding-top: 22px; }
+
+.dhud__prompt {
+    position: absolute; left: 50%; bottom: 110px; translate: -50% 0;
+    padding: 6px 18px; border-radius: 18px;
+    background-color: rgba(20, 14, 8, 0.78); border-width: 2px; border-color: rgba(240, 180, 76, 0.85);
+    -unity-text-align: middle-center; font-size: 22px; -unity-font-style: bold; color: var(--hh-ivory); white-space: nowrap;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.7);
+}
+.dhud__help { position: absolute; left: 16px; bottom: 12px; font-size: 13px; color: rgba(255, 250, 240, 0.75); -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.8); }
+.dhud__mapbox { position: absolute; right: 16px; bottom: 16px; padding: 16px; margin: 0; }
+.dhud__map { position: relative; }
+.dmap__room {
+    position: absolute; border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.1); border-width: 1px; border-color: rgba(255, 255, 255, 0.18);
+    align-items: center; justify-content: center;
+}
+.dmap__room--visited { background-color: rgba(240, 180, 76, 0.45); border-color: rgba(255, 227, 168, 0.75); }
+.dmap__room--current { background-color: var(--hh-gold-bright); border-color: var(--hh-ivory); }
+.dmap__mark { font-size: 12px; padding: 0; margin: 0; }
+.dmap__link { position: absolute; background-color: rgba(255, 227, 168, 0.65); }
+.dmap__link--n { width: 4px; height: 6px; left: 10px; top: -7px; }
+.dmap__link--e { width: 6px; height: 4px; right: -7px; top: 6px; }
+
+.dhud__bagwrap { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.dhud__bag { min-width: 440px; }
+.dhud__bag-grid { width: 320px; margin: 10px 0; justify-content: center; }
+
+.dnum {
+    position: absolute; width: 80px;
+    -unity-text-align: middle-center; white-space: nowrap;
+    font-size: 20px; -unity-font-style: bold; color: var(--hh-white);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0);
+}
+.dnum--dmg { color: var(--hh-parchment); }
+.dnum--crit { color: #ffcf3a; font-size: 28px; }
+.dnum--hurt { color: var(--hh-bad); font-size: 22px; }
+.dnum--heal { color: var(--hh-good); }
+.dnum--hazard { color: #c48cff; font-size: 18px; }
+.dnum--coins { color: var(--hh-gold-soft); font-size: 16px; }
+.dnum--info { color: var(--hh-sky); font-size: 14px; width: 220px; margin-left: -70px; }/* dungeon: ladder choice + bag grades (contentVersion 14) */
+.ladder__box { min-width: 600px; max-width: 720px; }
+.ladder__line { white-space: normal; margin: 3px 0; -unity-text-align: middle-center; }
+.ladder__odds { color: var(--hh-gold-soft); }
+.ladder__bag { color: var(--hh-cream); }
+.ladder__risk { color: var(--hh-coral); -unity-font-style: bold; }
+.ladder__buttons { flex-direction: row; justify-content: center; margin: 10px 0 4px 0; }
+.ladder__btn { margin: 0 5px; }
+.bag-slot__grade { position: absolute; left: 2px; top: 0; font-size: 12px; }
+.bag-slot--grade-1 { border-color: rgba(130, 220, 120, 0.8); }
+.bag-slot--grade-2 { border-color: rgba(120, 180, 255, 0.9); }
+
+/* ultimate (C / I): gold frame, glows when ready */
+.dhud__ability--ult { border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgb(214, 160, 60); border-right-color: rgb(214, 160, 60); border-top-color: rgb(214, 160, 60); border-bottom-color: rgb(214, 160, 60); }
+.dhud__ability--ult-ready { border-left-color: rgb(255, 214, 110); border-right-color: rgb(255, 214, 110); border-top-color: rgb(255, 214, 110); border-bottom-color: rgb(255, 214, 110); background-color: rgba(255, 196, 80, 0.35); }
+
+/* HUD readability (31 Oct): bigger buttons, big key labels, bigger badges (sized down 20% after first try) */
+.dhud__abilities .dhud__ability { width: 64px; height: 69px; margin-right: 6px; justify-content: flex-start; padding-top: 6px; border-radius: 10px; }
+.dhud__abilities .dhud__icon-slot { width: 37px; height: 37px; }
+.dhud__abilities .dhud__ability-emoji { font-size: 29px; }
+.dhud__abilities .dhud__key { left: 0; right: 0; bottom: 0; height: 22px; font-size: 17px; -unity-text-align: middle-center; background-color: rgba(0, 0, 0, 0.7); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); }
+.dhud__abilities .dhud__ability--attack { border-color: rgba(255, 236, 200, 0.75); }
+.dhud__abilities .dhud__guard { font-size: 17px; padding-left: 8px; padding-right: 8px; padding-top: 5px; padding-bottom: 5px; margin-right: 5px; }
+.dhud__help { font-size: 13px; }
+
+/* ticket 31: locked HUD slots get a padlock and a hint line */
+.dhud__lock { position: absolute; left: 0; right: 0; top: 0; bottom: 0; font-size: 22px; -unity-text-align: middle-center; color: #ffe7a8; background-color: rgba(0, 0, 0, 0.45); border-radius: 8px; }
+.dhud__ability--padlocked { border-color: rgba(255, 210, 120, 0.35); }
+.dhud__lock-hint { color: var(--hh-gold-soft); margin-top: 4px; white-space: normal; max-width: 520px; }
+
+/* ticket 48: the bag's holding box (an item picked up with a full bag) */
+.bag-hold { flex-direction: row; align-items: center; margin: 8px 0 2px 0; padding: 6px 10px; border-radius: 10px; border-width: 2px; border-color: var(--hh-gold); background-color: rgba(90, 64, 24, 0.6); }
+.bag-hold__slot { margin-right: 10px; }
+.bag-hold__text { white-space: normal; max-width: 300px; color: var(--hh-cream); -unity-font-style: bold; }
+.bag-hint { margin-top: 4px; white-space: normal; max-width: 420px; }
+.loot-tags { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.loot-tag { position: absolute; width: 60px; -unity-text-align: middle-center; font-size: 15px; color: rgb(255, 240, 200); -unity-font-style: bold; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9); }
+
+/* ticket 49: the opening fall */
+.dungeon__fog { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(70, 30, 110, 0.85); opacity: 0; }
+.dhud__tutorial { position: absolute; left: 0; right: 0; bottom: 140px; -unity-text-align: middle-center; font-size: 26px; color: rgb(255, 244, 214); -unity-font-style: bold; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85); }
+.fall-fade { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgb(0, 0, 0); align-items: center; justify-content: center; }
+.fall-fade__text { font-size: 30px; color: rgb(200, 180, 230); -unity-font-style: italic; }
+/* ticket 57: the boss's title card */
+.boss-card { position: absolute; left: 0; right: 0; top: 69%; align-items: center; opacity: 0; }
+.boss-card__band { padding: 8px 64px 10px 64px; background-color: rgba(10, 4, 8, 0.62); border-top-width: 2px; border-bottom-width: 2px; border-color: rgba(255, 170, 90, 0.85); align-items: center; }
+.boss-card__over { font-size: 15px; color: rgb(255, 196, 140); letter-spacing: 6px; -unity-font-style: bold; }
+.boss-card__name { font-size: 44px; color: rgb(255, 240, 214); -unity-font-style: bold; text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.9); }
+.boss-card__sub { font-size: 17px; color: rgb(230, 200, 170); -unity-font-style: italic; }

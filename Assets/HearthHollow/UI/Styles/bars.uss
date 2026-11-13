@@ -1,0 +1,42 @@
+/* Hearth & Hollow — bars. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── bars: slider art ───────────────────────── */
+.bar {
+    -unity-background-image-tint-color: rgb(95, 82, 70);
+    height: 22px;
+    min-width: 120px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
+    -unity-slice-scale: 0.5px;
+    overflow: hidden;
+    justify-content: center;
+}
+.bar__fill {
+    position: absolute; left: 2px; top: 2px; bottom: 2px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
+    -unity-slice-scale: 0.5px;
+    transition-property: width, -unity-background-image-tint-color;
+    transition-duration: 0.25s;
+}
+.bar__text {
+    -unity-text-align: middle-center;
+    font-size: 13px; -unity-font-style: bold;
+    color: var(--hh-white);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0);
+    text-shadow: 1px 1px 0 rgb(0, 0, 0);
+    padding: 0; margin: 0;
+}
+.bar--xp .bar__fill {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+}
+.bar--monster .bar__fill {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+    -unity-background-image-tint-color: rgb(230, 90, 70);
+}
+.bar--low .bar__fill {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+    -unity-background-image-tint-color: rgb(240, 95, 75);
+}
+/* low-HP pulse: GameUI toggles .pulse-on on the root every ~0.4s */
+.bar--low { transition-property: scale, -unity-background-image-tint-color; transition-duration: 0.35s; }
+.pulse-on .bar--low { scale: 1.03 1.08; -unity-background-image-tint-color: rgb(255, 150, 140); }

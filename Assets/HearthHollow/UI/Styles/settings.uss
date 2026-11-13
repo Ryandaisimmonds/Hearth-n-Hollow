@@ -1,0 +1,50 @@
+/* Hearth & Hollow — settings. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── settings ───────────────────────── */
+.hh-gear {
+    position: absolute; top: 30px; right: 30px;
+    width: 54px; height: 54px; min-height: 0; padding: 0; margin: 0;
+    align-items: center; justify-content: center;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-top: 0; -unity-slice-bottom: 0;
+}
+.hh-gear__icon {
+    width: 32px; height: 32px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Icon_ItemIcons/ItemIcon_128/Icon_ItemIcon_Setting.Png#Icon_ItemIcon_Setting");
+    -unity-background-scale-mode: scale-to-fit;
+    transition-property: rotate; transition-duration: 0.35s;
+}
+.hh-gear:hover .hh-gear__icon, .hh-gear--open .hh-gear__icon { rotate: 60deg; }
+.settings { background-color: rgba(6, 14, 10, 0.78); }
+.settings__box { min-width: 560px; max-width: 640px; }
+.settings__close {
+    position: absolute; top: 18px; right: 20px;
+    width: 34px; height: 34px; min-height: 0; padding: 0; margin: 0;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Demo/Demo_Icon/Icon_PictoIcon_Close.Png#Icon_PictoIcon_Close");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-top: 0; -unity-slice-bottom: 0;
+}
+.settings__section {
+    align-self: stretch; margin-top: 10px; padding: 8px 14px 10px 14px;
+    border-radius: 10px; background-color: rgba(0, 0, 0, 0.28);
+    border-width: 1px; border-color: rgba(240, 180, 76, 0.25);
+}
+.settings__section--dev { border-color: rgba(167, 123, 220, 0.7); background-color: rgba(61, 42, 92, 0.35); }
+.subhead--dev { color: #c9a2ff; }
+.settings__row { flex-direction: row; flex-wrap: wrap; }
+.settings__btn { align-self: flex-start; }
+.settings__hint { margin-top: 2px; }
+
+/* ticket 22: small text was bumped (9→11, 10→12, 11→13, 12→13 px) and the whole UI scales with Settings → Text size */
+
+/* ticket 20: the run log in the Esc menu */
+.run-log { max-height: 340px; min-height: 80px; margin: 4px 0 6px 0; padding: 6px 8px; background-color: rgba(0, 0, 0, 0.28); border-radius: 8px; }
+.run-log__floor { font-size: 13px; -unity-font-style: bold; color: var(--hh-gold-soft); margin-top: 6px; }
+.run-log__line { font-size: 14px; color: var(--hh-cream); white-space: normal; margin: 1px 0 1px 6px; }
+/* ticket 22: big text sizes — sections keep their size, the log keeps room, the dev panel gives way */
+.settings__section { flex-shrink: 0; }
+.settings__devscroll { flex-shrink: 1; min-height: 80px; }
+.settings__box { max-height: 96%; }
+.run-log { min-height: 150px; flex-shrink: 0; }
+.settings__body { flex-shrink: 1; align-self: stretch; }

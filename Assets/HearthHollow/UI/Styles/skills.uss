@@ -1,0 +1,93 @@
+/* Hearth & Hollow — skills. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── skills tab (tree + loadout) ───────────────────────── */
+.skills__respec { align-self: stretch; }
+
+/* loadout slots */
+.loadout { margin-bottom: 4px; }
+.load-slot {
+    flex-direction: row; align-items: center; margin: 3px 0; padding: 7px 10px; border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.32); border-width: 2px; border-color: rgba(240, 180, 76, 0.22);
+}
+.load-slot:hover { border-color: rgba(240, 180, 76, 0.7); }
+.load-slot--on { border-color: var(--hh-gold-bright); background-color: rgba(110, 76, 28, 0.6); }
+.load-slot--closed { opacity: 0.55; }
+.load-slot__key {
+    width: 52px; -unity-text-align: middle-center; font-size: 14px; -unity-font-style: bold; color: var(--hh-bg-hearth);
+    background-color: #f0c869; border-radius: 6px; padding: 2px 0; margin-right: 10px;
+}
+.load-slot__icon { width: 40px; height: 40px; align-items: center; justify-content: center; margin-right: 8px;
+    background-color: rgba(0, 0, 0, 0.35); border-radius: 8px; }
+.load-slot__emoji { font-size: 24px; -unity-text-align: middle-center; }
+.load-slot__text { flex-shrink: 1; }
+.load-slot__slot { font-size: 13px; color: var(--hh-sage); padding: 0; margin: 0; }
+.load-slot__name { font-size: 16px; -unity-font-style: bold; color: #fff3d6; padding: 0; margin: 0; }
+.loadout__choices-title { margin-top: 10px; }
+.loadout__choices { flex-shrink: 1; overflow: hidden; }
+.loadout__clear { align-self: flex-start; margin: 0 0 4px 0; }
+.loadout__hint { margin-top: 6px; }
+.move-row {
+    flex-direction: row; align-items: center; margin: 2px 0; padding: 5px 8px; border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.22); border-width: 1px; border-color: rgba(255, 255, 255, 0.06);
+}
+.move-row:hover { border-color: rgba(240, 180, 76, 0.7); background-color: rgba(60, 44, 20, 0.6); }
+.move-row--on { border-color: #7fd17f; background-color: rgba(40, 80, 40, 0.55); }
+.move-row--locked { opacity: 0.5; }
+.move-row__emoji { width: 34px; font-size: 20px; -unity-text-align: middle-center; }
+.move-row__text { flex-shrink: 1; }
+.move-row__name { font-size: 14px; -unity-font-style: bold; padding: 0; margin: 0; }
+.move-row__sub { font-size: 13px; color: var(--hh-sage); padding: 0; margin: 0; }
+
+/* tree */
+.tree { flex-direction: row; flex-grow: 1; justify-content: space-around; }
+.tree__branch { flex-grow: 1; flex-basis: 0; align-items: center; margin: 0 6px; }
+.tree__branch-name {
+    font-size: 18px; -unity-font-style: bold; color: var(--hh-cream); margin-bottom: 6px;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
+}
+.tree__link { width: 4px; height: 14px; background-color: rgba(255, 255, 255, 0.12); }
+.tree__link--lit { background-color: var(--hh-gold); }
+.node {
+    flex-direction: row; align-items: center; align-self: stretch; height: 92px; padding: 6px 10px; border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.4); border-width: 2px; border-color: rgba(255, 255, 255, 0.1);
+}
+.node--move { border-radius: 22px; }
+.node--locked { opacity: 0.45; }
+.node--buy { border-color: rgba(255, 210, 58, 0.8); background-color: rgba(70, 56, 20, 0.55); }
+.node--buy:hover { background-color: rgba(110, 86, 28, 0.8); }
+.node--owned { border-color: var(--hh-gold); background-color: rgba(100, 66, 22, 0.7); }
+.node--maxed { border-color: var(--hh-gold-bright); background-color: rgba(140, 96, 26, 0.85); }
+.node--focus { border-color: var(--hh-ivory); }
+.node__emoji { width: 44px; font-size: 28px; -unity-text-align: middle-center; }
+.node__text { flex-grow: 1; flex-shrink: 1; margin-left: 4px; }
+.node__name { font-size: 15px; -unity-font-style: bold; color: #fff3d6; padding: 0; margin: 0; }
+.node__sub { font-size: 13px; color: #d9c79a; padding: 0; margin: 0; }
+.node--maxed .node__sub { color: var(--hh-gold-pale); }
+.node__plus {
+    width: 26px; height: 26px; border-radius: 13px; -unity-text-align: middle-center; font-size: 18px; -unity-font-style: bold;
+    background-color: var(--hh-gold-bright); color: var(--hh-bg-hearth); padding: 0; margin: 0;
+}
+
+/* details */
+.skill-detail { min-height: 300px; }
+.skill-detail__top { flex-direction: row; align-items: center; margin-bottom: 6px; }
+.skill-detail__emoji { width: 58px; font-size: 38px; -unity-text-align: middle-center; }
+.skill-detail__names { flex-shrink: 1; margin-left: 6px; }
+.skill-detail__name { font-size: 20px; -unity-font-style: bold; color: var(--hh-cream); padding: 0; margin: 0; }
+.skill-detail__desc { font-size: 14px; margin: 2px 0 8px 0; }
+.skill-detail__ranks { color: var(--hh-gold-pale); margin-bottom: 6px; }
+.skill-detail__facts { margin: 2px 0 8px 0; padding: 6px 10px; border-radius: 8px; background-color: rgba(0, 0, 0, 0.28); }
+.skill-detail__fact { flex-direction: row; justify-content: space-between; }
+.skill-detail__fact-value { -unity-font-style: bold; }
+.skill-detail__buy { align-self: stretch; min-height: 52px; font-size: 18px; margin-top: 4px; }
+.skill-detail__block { font-size: 14px; color: #d9c79a; margin-top: 6px; }
+.skill-levels { margin-top: 10px; padding-top: 8px; border-top-width: 1px; border-color: rgba(240, 180, 76, 0.25); }
+.skill-levels__miles { margin: 6px 0; }
+.skill-levels__mile { flex-direction: row; align-items: center; opacity: 0.7; }
+.skill-levels__mile--done { opacity: 1; }
+.skill-levels__lv { width: 70px; font-size: 13px; -unity-font-style: bold; color: var(--hh-gold); }
+
+/* ticket 10: a move unlocked along the arc, waiting to be learned */
+.move-row--ready { border-color: rgba(255, 210, 90, 0.85); background-color: rgba(120, 90, 20, 0.35); }
+.move-row__learn { margin-left: auto; flex-shrink: 0; }
+.skill-detail__unlock { margin-top: 6px; color: var(--hh-gold-soft); white-space: normal; }

@@ -1,0 +1,51 @@
+/* Hearth & Hollow — town. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── town preview (Hearth's Hollow) HUD ───────────────────────── */
+.town-hud { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.town-hud__labels { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.town-label {
+    position: absolute; translate: -50% -100%;
+    font-size: 13px; -unity-font-style: bold; color: var(--hh-parchment); white-space: nowrap;
+    padding: 1px 8px 2px 8px; border-radius: 8px; background-color: rgba(20, 14, 8, 0.6);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
+}
+.town-label--near { color: var(--hh-gold-bright); background-color: rgba(60, 40, 10, 0.85); border-width: 1px; border-color: var(--hh-gold); scale: 1.1 1.1; }
+.town-hud__top { position: absolute; left: 16px; top: 12px; flex-direction: row; align-items: center; padding: 8px 14px; margin: 0; }
+.town-hud__title { font-size: 17px; -unity-font-style: bold; color: var(--hh-parchment); margin-right: 6px; }
+.town-hud__tag { font-size: 12px; color: var(--hh-coral); border-width: 1px; border-color: var(--hh-coral); border-radius: 6px; padding: 0 5px; margin-right: 12px; }
+.town-hud__chip { font-size: 13px; color: var(--hh-cream); margin-right: 12px; }
+.town-hud__who { position: absolute; left: 16px; top: 64px; padding: 8px 14px; margin: 0; }
+.town-hud__class { font-size: 14px; -unity-font-style: bold; color: var(--hh-cream); }
+.town-hud__stats { font-size: 13px; color: var(--hh-gold-soft); margin-top: 2px; }
+.town-hud__prompt {
+    position: absolute; bottom: 36px; align-self: center;
+    font-size: 17px; -unity-font-style: bold; color: var(--hh-ivory); padding: 8px 20px; border-radius: 12px;
+    background-color: rgba(40, 26, 10, 0.88); border-width: 2px; border-color: var(--hh-gold);
+}
+.town-hud__help { position: absolute; left: 16px; bottom: 12px; font-size: 13px; color: rgba(255, 250, 240, 0.8); -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.8); }
+.header__town { margin-left: 8px; }
+
+.fishing__box { min-width: 560px; }
+.fishing__bobber { font-size: 34px; margin: 6px 0; -unity-text-align: middle-center; }
+.fishing__hint { margin-bottom: 4px; }
+
+/* town: people talking (DialogueOverlay) */
+.dialogue { justify-content: flex-end; align-items: center; background-color: rgba(0, 0, 0, 0); }
+.dialogue__box { width: 760px; margin-bottom: 70px; padding: 16px 20px 14px 16px; }
+.dialogue__row { flex-direction: row; align-items: flex-start; }
+.dialogue__face { font-size: 46px; width: 70px; height: 70px; -unity-text-align: middle-center; background-color: rgba(0, 0, 0, 0.3); border-radius: 12px; margin-right: 14px; }
+.dialogue__col { flex-grow: 1; flex-shrink: 1; }
+.dialogue__who { font-size: 16px; -unity-font-style: bold; color: var(--hh-gold); margin-bottom: 4px; }
+.dialogue__text { font-size: 15px; color: var(--hh-parchment); white-space: normal; }
+.dialogue__foot { flex-direction: row; align-items: center; justify-content: flex-end; margin-top: 10px; }
+.dialogue__page { flex-grow: 1; }
+.dialogue__btn { margin-left: 8px; }
+.town-hud__weather { font-size: 13px; color: var(--hh-sky); margin-right: 12px; }
+
+/* dev tools in Settings (scrolls when long) */
+.settings__devscroll { max-height: 360px; align-self: stretch; }
+.settings__devhead { color: #d7c2ff; -unity-font-style: bold; margin: 8px 0 2px 0; }
+.settings__row .btn--small { margin: 2px 6px 2px 0; }
+
+/* ticket 35: Old Wren's next step, always on screen in town */
+.town-hud__objective { position: absolute; top: 74px; left: 50%; translate: -50% 0; padding: 6px 14px; font-size: 16px; -unity-font-style: bold; color: var(--hh-cream); border-color: rgba(255, 210, 120, 0.6); border-width: 1px; border-radius: 10px; }

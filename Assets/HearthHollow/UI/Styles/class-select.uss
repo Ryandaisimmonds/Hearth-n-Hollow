@@ -1,0 +1,55 @@
+/* Hearth & Hollow — class-select. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── title / class select ───────────────────────── */
+.class-select { align-items: center; justify-content: center; background-color: rgba(10, 18, 13, 0.55); }
+.title-block { align-items: center; margin-bottom: 10px; }
+.title-block__name {
+    font-size: 44px; -unity-font-style: bold; color: var(--hh-gold);
+    -unity-text-outline-width: 2px; -unity-text-outline-color: rgba(50, 25, 0, 0.9);
+    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.6);
+}
+.title-block__tagline { font-size: 15px; color: #e3dcc6; -unity-font-style: italic; -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.5); }
+.class-cards { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+.class-card {
+    position: relative;
+    width: 270px; align-items: center;
+    padding: 18px 20px 20px 20px; margin: 8px;
+    -unity-slice-scale: 0.5px;
+}
+.class-card--selected {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/StageFrame_Demo_f.png#StageFrame_Demo_f");
+    -unity-slice-scale: 0.5px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    scale: 1.03 1.03;
+}
+.class-card__portrait {
+    width: 128px; height: 128px;
+    align-items: center; justify-content: center;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_n.png#ItemFrama02_Demo_n");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.class-card--selected .class-card__portrait { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f"); }
+.class-card__anim { width: 96px; height: 96px; font-size: 56px; }
+.class-card__name {
+    font-size: 22px; -unity-font-style: bold; color: var(--hh-cream); margin-top: 4px;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(40, 20, 0, 0.8);
+}
+.class-card__role { align-self: center; }
+.class-card__bonus { color: var(--hh-gold); -unity-font-style: bold; margin: 6px 0; -unity-text-align: middle-center; }
+.class-card__desc { -unity-text-align: middle-center; font-size: 13px; }
+.class-card__skill { margin: 8px 0; padding: 6px 8px; border-radius: 10px; background-color: rgba(0, 0, 0, 0.3); align-self: stretch; }
+.class-card__skill-head { flex-direction: row; align-items: center; }
+.class-card__skill-text { flex-shrink: 1; margin-left: 6px; }
+.class-card__skill-name { -unity-font-style: bold; color: var(--hh-cream); }
+.class-card__unlocked { color: #9be59f; }
+.class-card__locked, .class-card__locked Label { color: #c9b27a; }
+.class-card__level { align-self: stretch; margin-bottom: 4px; }
+.class-card__tick {
+    position: absolute; top: 10px; right: 12px;
+    font-size: 16px; -unity-font-style: bold; color: #2a1c08;
+    background-color: var(--hh-gold); border-radius: 12px; width: 24px; height: 24px;
+    border-width: 2px; border-color: #fff0c8;
+    -unity-text-align: middle-center; padding: 0;
+}
+.class-select__footer { flex-direction: column; align-items: center; margin-top: 6px; }
+.class-select__play { min-width: 320px; }

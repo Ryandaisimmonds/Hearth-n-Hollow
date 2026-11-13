@@ -1,0 +1,159 @@
+/* Hearth & Hollow — hearth. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── hearth ───────────────────────── */
+.hearth__body { flex-direction: row; flex-grow: 1; }
+
+/* ingredient costs (recipe rows) */
+.cost { font-size: 12px; background-color: rgba(0, 0, 0, 0.35); border-radius: 6px; padding: 0 4px; margin: 1px; color: #cfe3d3; }
+.cost--short { color: var(--hh-coral); background-color: rgba(120, 30, 20, 0.45); }
+.cost--free { color: var(--hh-mint); background-color: rgba(60, 120, 70, 0.35); }
+
+/* slots (tray + bag) */
+.slot {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    margin: 3px;
+    align-items: center;
+    justify-content: center;
+    transition-property: -unity-background-image-tint-color, scale, opacity;
+    transition-duration: 0.1s;
+}
+.slot--lifted { opacity: 0.4; }
+.slot__emoji { font-size: 22px; -unity-text-align: middle-center; }
+.slot__name { font-size: 13px; -unity-font-style: bold; color: var(--hh-parchment); padding: 0; margin: 0; }
+.slot__sub { font-size: 11px; color: var(--hh-gold-soft); white-space: normal; padding: 0; margin: 0; }
+.slot__count {
+    position: absolute; right: 5px; bottom: 3px;
+    font-size: 13px; -unity-font-style: bold; color: var(--hh-cream); padding: 0;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+}
+.slot--full-stack .slot__count { color: var(--hh-gold); }
+.slot__x {
+    position: absolute; right: 4px; top: 4px;
+    width: 22px; height: 22px; min-height: 0; padding: 0; margin: 0;
+    border-radius: 11px; font-size: 13px;
+    background-image: none;
+    background-color: #8a3226; border-width: 1px; border-color: #ffb4a3;
+    -unity-text-align: middle-center;
+}
+.slot__x:hover { background-color: #b0402f; }
+
+/* tray slot: card frame + recipe well + text */
+.tray-slot {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 196px; height: 66px;
+    padding: 5px 24px 5px 10px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/BasicFrame_Square03_Demo.png#BasicFrame_Square03_Demo");
+    -unity-slice-scale: 0.35px;
+    -unity-background-image-tint-color: rgb(236, 230, 220);
+}
+.tray-slot__well { width: 42px; height: 42px; }
+.tray-slot__well > .pic { font-size: 22px; }
+.tray-slot__text { flex-shrink: 1; flex-grow: 1; margin-left: 6px; justify-content: center; }
+.tray-slot__num { font-size: 16px; -unity-font-style: bold; color: rgba(255, 227, 168, 0.4); -unity-text-align: middle-center; }
+.tray-slot.slot--empty { -unity-background-image-tint-color: rgb(150, 150, 150); }
+.tray-slot.drop-target { -unity-background-image-tint-color: rgb(255, 225, 160); }
+.tray-slot.drop-target .tray-slot__well { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f"); }
+.tray-slot.slot--drop { -unity-background-image-tint-color: rgb(255, 255, 255); scale: 1.06 1.06; }
+.tray-slot.slot--drop .tray-slot__well { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f"); }
+
+/* tray bonus summary */
+.tray-bonus__head { font-size: 13px; color: var(--hh-sage); margin-bottom: 2px; }
+.tray-bonus { flex-direction: row; flex-wrap: wrap; }
+.tray-bonus__line { margin-right: 14px; margin-bottom: 2px; }
+.tray-bonus__line Label { font-size: 16px; -unity-font-style: bold; color: var(--hh-gold-soft); }
+.tray-bonus__line .ico { width: 22px; height: 22px; }
+.combo-badge { font-size: 13px; margin-top: 4px; padding: 3px 8px; }
+
+/* pantry */
+.pantry-grid { flex-direction: row; flex-wrap: wrap; }
+.pantry-item {
+    flex-direction: row; align-items: center;
+    background-color: rgba(0, 0, 0, 0.32); border-radius: 18px;
+    border-width: 1px; border-color: rgba(240, 180, 76, 0.25);
+    padding: 0 8px 0 0; margin: 2px;
+}
+.pantry-item .item-frame--sm { width: 28px; height: 28px; }
+.pantry-item__emoji { font-size: 15px; }
+.pantry-item__name { font-size: 13px; margin-left: 3px; }
+.pantry-item__count { font-size: 13px; -unity-font-style: bold; color: var(--hh-gold); margin-left: 4px; }
+.pantry-item__reserved { font-size: 12px; color: #c9b27a; margin-left: 4px; }
+.pantry-item--used { opacity: 0.5; }
+
+/* stats */
+.stats { flex-direction: column; }
+.stat-row { flex-direction: row; flex-wrap: wrap; justify-content: space-around; }
+.stat {
+    align-items: center; padding: 5px 10px; margin: 2px; min-width: 76px;
+    background-color: rgba(0, 0, 0, 0.32); border-radius: 10px;
+    border-width: 1px; border-color: rgba(240, 180, 76, 0.2);
+}
+.stat__value Label { font-size: 16px; -unity-font-style: bold; }
+.stat__value .ico { width: 22px; height: 22px; }
+.stat__label { font-size: 12px; color: var(--hh-sage); }
+.stat--boosted .stat__value Label { color: #9be59f; }
+.stat--big { min-width: 104px; padding: 8px 12px; }
+.stat--big .stat__value Label { font-size: 22px; color: var(--hh-cream); }
+.stat--big .stat__value .ico { width: 30px; height: 30px; font-size: 22px; }
+.stats__extras { flex-direction: row; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.stats__extras .icon-text { margin: 0 6px; }
+.stats__extras Label { color: #c9e7c9; }
+.stats__skill { margin-top: 4px; }
+.level-row { flex-direction: row; align-items: center; margin-top: 6px; }
+.level-row__lv { margin-right: 8px; }
+.level-row__lv Label { -unity-font-style: bold; color: var(--hh-gold); }
+.level-row .bar { flex-grow: 1; }
+
+/* gear pictures */
+.shop-row__icon { font-size: 15px; }
+.subhead--merchant, .subhead--merchant Label { color: #c9a2ff; }
+.merchant-grid { flex-direction: row; flex-wrap: wrap; }
+.merchant-card { flex-direction: row; align-items: center; padding: 6px 10px; }
+.merchant-card--sold { opacity: 0.45; }
+.merchant-card__emoji { font-size: 15px; }
+.merchant-card__name { font-size: 13px; margin: 0 4px; }
+
+/* routes */
+.route-grid { flex-direction: row; flex-wrap: wrap; }
+.route-card {
+    width: 31%; min-width: 150px; flex-grow: 1;
+    padding: 10px 12px 10px 12px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/StageFrame_Demo_n.png#StageFrame_Demo_n");
+    -unity-slice-scale: 0.35px;
+}
+.route-card--hunt { -unity-background-image-tint-color: rgb(255, 222, 200); }
+.route-card--selected {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/StageFrame_Demo_f.png#StageFrame_Demo_f");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+.route-card--locked {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/StageFrame_Demo_d.png#StageFrame_Demo_d");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    opacity: 0.7;
+}
+.route-card__top { flex-direction: row; align-items: center; }
+.route-card__well { margin-right: 6px; }
+.route-card__emoji { font-size: 15px; }
+.route-card__names { flex-shrink: 1; flex-grow: 1; }
+.route-card__mid { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 4px; }
+.route-card__tags { flex-direction: row; flex-wrap: wrap; align-items: center; margin-top: 3px; }
+.route-card__tags .badge { margin: 0 4px 0 0; }
+.route-card__tags .route-card__cleared { margin-right: 6px; }
+.route-card__name { font-size: 13px; -unity-font-style: bold; color: var(--hh-parchment); }
+.route-card__kind { font-size: 12px; color: var(--hh-sage); }
+.route-card__kind-row { flex-direction: row; align-items: center; justify-content: space-between; }
+.route-card__monsters { flex-direction: row; flex-shrink: 0; margin-left: 4px; }
+.route-card__monster { width: 22px; height: 22px; margin-left: 1px; font-size: 14px; }
+.route-card__monster--hidden { -unity-background-image-tint-color: rgb(25, 25, 25); opacity: 0.6; }
+.route-card__stats { flex-direction: row; flex-wrap: wrap; }
+.route-card__stats .icon-text { margin-right: 8px; }
+.route-card__stats Label { font-size: 13px; color: var(--hh-sage-light); }
+.route-card__stats .ico { width: 16px; height: 16px; font-size: 13px; }
+.route-card__cleared { font-size: 12px; color: var(--hh-mint); }
+.pips { flex-direction: row; margin: 3px 0; }
+.pip { width: 10px; height: 10px; border-radius: 5px; margin-right: 3px; background-color: rgba(0, 0, 0, 0.45); border-width: 1px; border-color: rgba(240, 180, 76, 0.3); }
+.pip--on { background-color: var(--hh-gold); border-color: #fff0c8; }
+.route-card--locked .pip--on { background-color: #6b5730; }
+.setout-hint { font-size: 13px; margin: 0 6px 0 10px; max-width: 320px; -unity-text-align: middle-right; }
+.setout-hint--warn { color: var(--hh-coral); }

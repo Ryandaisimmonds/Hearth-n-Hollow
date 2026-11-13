@@ -1,0 +1,27 @@
+/* Hearth & Hollow — element-tints. Part of HearthHollow.uss (imported in order; see that file). */
+/* tickets 09, 27, 28–30: a meal with an element takes that element's colour. Last sheet, so these beat each card's normal colour. */
+
+.meal-card.el-tint--fire, .expedition__meal.el-tint--fire { background-color: rgba(255, 115, 30, 0.22); border-color: rgba(255, 115, 30, 0.85); }
+.meal-card.el-tint--fire:hover { background-color: rgba(255, 115, 30, 0.32); }
+.tray-slot.slot--filled.el-tint--fire { -unity-background-image-tint-color: rgb(255, 115, 30); background-color: rgba(255, 115, 30, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(255, 115, 30, 0.9); }
+.meal-card.el-tint--frost, .expedition__meal.el-tint--frost { background-color: rgba(150, 225, 255, 0.22); border-color: rgba(150, 225, 255, 0.85); }
+.meal-card.el-tint--frost:hover { background-color: rgba(150, 225, 255, 0.32); }
+.tray-slot.slot--filled.el-tint--frost { -unity-background-image-tint-color: rgb(150, 225, 255); background-color: rgba(150, 225, 255, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(150, 225, 255, 0.9); }
+.meal-card.el-tint--nature, .expedition__meal.el-tint--nature { background-color: rgba(90, 230, 75, 0.22); border-color: rgba(90, 230, 75, 0.85); }
+.meal-card.el-tint--nature:hover { background-color: rgba(90, 230, 75, 0.32); }
+.tray-slot.slot--filled.el-tint--nature { -unity-background-image-tint-color: rgb(90, 230, 75); background-color: rgba(90, 230, 75, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(90, 230, 75, 0.9); }
+.meal-card.el-tint--water, .expedition__meal.el-tint--water { background-color: rgba(65, 130, 255, 0.22); border-color: rgba(65, 130, 255, 0.85); }
+.meal-card.el-tint--water:hover { background-color: rgba(65, 130, 255, 0.32); }
+.tray-slot.slot--filled.el-tint--water { -unity-background-image-tint-color: rgb(65, 130, 255); background-color: rgba(65, 130, 255, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(65, 130, 255, 0.9); }
+.meal-card.el-tint--light, .expedition__meal.el-tint--light { background-color: rgba(255, 240, 140, 0.22); border-color: rgba(255, 240, 140, 0.85); }
+.meal-card.el-tint--light:hover { background-color: rgba(255, 240, 140, 0.32); }
+.tray-slot.slot--filled.el-tint--light { -unity-background-image-tint-color: rgb(255, 240, 140); background-color: rgba(255, 240, 140, 0.25); border-radius: 10px; border-width: 2px; border-color: rgba(255, 240, 140, 0.9); }
+.season-pop__effect.el-tint--fire { background-color: rgba(255, 115, 30, 0.22); border-color: rgba(255, 115, 30, 0.85); }
+.season-pop__effect.el-tint--frost { background-color: rgba(150, 225, 255, 0.2); border-color: rgba(150, 225, 255, 0.85); }
+.season-pop__effect.el-tint--nature { background-color: rgba(90, 230, 75, 0.2); border-color: rgba(90, 230, 75, 0.85); }
+.season-pop__effect.el-tint--water { background-color: rgba(65, 130, 255, 0.22); border-color: rgba(65, 130, 255, 0.85); }
+.season-pop__effect.el-tint--light { background-color: rgba(255, 240, 140, 0.2); border-color: rgba(255, 240, 140, 0.85); }
+.expedition__pick-chip.el-tint--fire { border-color: rgba(255, 115, 30, 0.9); background-color: rgba(255, 115, 30, 0.25); }
+.expedition__pick-chip.el-tint--frost { border-color: rgba(150, 225, 255, 0.9); background-color: rgba(150, 225, 255, 0.2); }
+.expedition__pick-chip.el-tint--nature { border-color: rgba(90, 230, 75, 0.9); background-color: rgba(90, 230, 75, 0.2); }
+.expedition__pick-chip.el-tint--water { border-color: rgba(65, 130, 255, 0.9); background-color: rgba(65, 130, 255, 0.22); }

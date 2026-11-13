@@ -1,0 +1,264 @@
+/* Hearth & Hollow — base. Part of HearthHollow.uss (imported in order; see that file). */
+
+/* ───────────────────────── root & layers ───────────────────────── */
+.hh-root {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    background-color: #122019;
+    color: var(--hh-text);
+    font-size: 15px;
+    -unity-font-definition: url("project://database/Assets/HearthHollow/UI/Fonts/Changa%20SDF.asset");
+    -unity-background-scale-mode: scale-and-crop;
+    transition-property: background-color, -unity-background-image-tint-color;
+    transition-duration: 0.4s;
+}
+.theme-hearth {
+    background-color: var(--hh-bg-hearth);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Demo/Demo_Image/Background.Png#Background");
+    -unity-background-image-tint-color: rgb(120, 96, 72);
+}
+
+.hh-stage { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.hh-drag-layer { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.hh-toasts {
+    position: absolute; top: 76px; left: 0; right: 0;
+    align-items: center;
+}
+
+.screen {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    padding: 12px;
+    flex-direction: column;
+}
+
+Label { white-space: normal; color: var(--hh-text); }
+.muted, .muted Label { color: var(--hh-sage); }
+.small, .small Label { font-size: 13px; }
+.section-title {
+    font-size: 22px; -unity-font-style: bold; -unity-text-align: middle-center; margin: 8px;
+    color: var(--hh-cream); -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.7);
+}
+.subhead, .subhead Label { font-size: 13px; -unity-font-style: bold; color: var(--hh-gold); }
+.subhead { margin-top: 8px; margin-bottom: 4px; }
+.reason, .reason Label { font-size: 13px; color: var(--hh-coral); }
+.reason { margin-top: 2px; }
+
+/* ───────────────────────── art primitives ───────────────────────── */
+/* Art.Pic: sprite as scale-to-fit background, or an emoji Label fallback */
+.pic {
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+}
+.pic--emoji { -unity-text-align: middle-center; padding: 0; margin: 0; white-space: nowrap; }
+.anim__emoji { -unity-text-align: middle-center; padding: 0; margin: 0; white-space: nowrap; }
+
+/* small UI icons */
+.ico { width: 20px; height: 20px; font-size: 15px; }
+.ico--sm { width: 14px; height: 14px; font-size: 13px; }
+.ico--lg { width: 30px; height: 30px; font-size: 22px; }
+
+/* icon + text rows */
+.icon-text { flex-direction: row; align-items: center; }
+.icon-text__icon { margin-right: 4px; }
+.icon-text__label { padding: 0; margin: 0; }
+
+/* round octagon item frames (scale-to-fit, not sliced) */
+.item-frame {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    align-items: center; justify-content: center;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.item-frame > .pic { width: 64%; height: 64%; font-size: 20px; }
+.item-frame--sm { width: 34px; height: 34px; }
+.item-frame--sm > .pic { font-size: 15px; }
+.item-frame--lg { width: 104px; height: 104px; }
+.item-frame--lg > .pic { font-size: 48px; }
+.item-frame--empty { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_n.png#ItemFrama02_Demo_n"); }
+.item-frame--green { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Green.png#ItemFrama01_Green"); }
+
+/* ───────────────────────── panels & cards ───────────────────────── */
+.panel {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
+    -unity-slice-scale: 0.5px;
+    padding: 16px 18px 18px 18px;
+    margin: 4px;
+}
+/* ribbon titles */
+.panel__title-row { flex-direction: row; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+.ribbon, .panel__title {
+    flex-direction: row;
+    align-items: center;
+    align-self: flex-start;
+    height: 34px;
+    min-width: 96px;
+    padding: 0 30px 3px 30px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Brown.png#Title_Ribbon01_Brown");
+    -unity-slice-scale: 0.25px;
+}
+.panel__title, .panel__title Label, .panel__title-text {
+    font-size: 15px; -unity-font-style: bold; color: var(--hh-cream);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(40, 20, 0, 0.8);
+}
+.panel__title-text { padding: 0; margin: 0; white-space: nowrap; }
+.panel__icon { margin-right: 6px; width: 22px; height: 22px; font-size: 16px; }
+.panel__icon-holder { flex-direction: row; align-items: center; }
+.panel__subtitle { margin-left: 8px; flex-shrink: 1; }
+.panel__head { flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.panel__head .panel__title { margin-bottom: 0; }
+
+.card {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/BasicFrame_Square03_Demo.png#BasicFrame_Square03_Demo");
+    -unity-slice-scale: 0.35px;
+    -unity-background-image-tint-color: rgb(236, 230, 220);
+    padding: 9px 11px;
+    margin: 3px;
+    transition-property: -unity-background-image-tint-color, scale, translate, opacity;
+    transition-duration: 0.12s;
+}
+.clickable:hover { -unity-background-image-tint-color: rgb(255, 255, 255); translate: 0 -2px; }
+
+/* chips: resource-bar pills with the icon at the left */
+.chip {
+    -unity-background-image-tint-color: rgb(120, 100, 80);
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    padding: 2px 14px 4px 8px;
+    margin: 0 3px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/UI_Etc/ResourceBar_Bg02.png#ResourceBar_Bg02");
+    -unity-slice-scale: 0.4px;
+}
+.chip__icon { width: 22px; height: 22px; font-size: 16px; margin-right: 5px; }
+.chip__portrait { width: 26px; height: 26px; }
+.chip__text, .chip Label {
+    font-size: 13px; -unity-font-style: bold; padding: 0; margin: 0; white-space: nowrap;
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.6);
+}
+.chip--coins .chip__text { color: var(--hh-gold-soft); }
+.chip--xp .chip__text { color: var(--hh-sky); }
+
+.badge {
+    font-size: 13px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    background-color: #2f4f40;
+    border-width: 1px; border-color: rgba(255, 227, 168, 0.25);
+    color: var(--hh-text);
+    align-self: flex-start;
+    margin: 2px;
+}
+.badge Label { font-size: 13px; }
+.badge .ico { width: 14px; height: 14px; font-size: 13px; }
+.badge--mod, .badge--mod Label { background-color: #5a4320; color: var(--hh-gold-soft); }
+.badge--mod Label, .badge--mod .pic { background-color: rgba(0, 0, 0, 0); }
+.badge--dangerous { background-color: #6a2a26; }
+.badge--dangerous, .badge--dangerous Label { color: #ffc2b5; }
+.badge--lucky { background-color: #4d5a1c; }
+.badge--lucky, .badge--lucky Label { color: #f6f0a0; }
+.badge--rich { background-color: #5e4a12; }
+.badge--rich, .badge--rich Label { color: var(--hh-gold-pale); }
+.badge--double { background-color: #2e3f66; }
+.badge--double, .badge--double Label { color: var(--hh-sky); }
+.badge--synergy { background-color: #4a3a12; color: var(--hh-gold-soft); border-width: 1px; border-color: var(--hh-gold); }
+
+/* ───────────────────────── buttons: painted slabs ───────────────────────── */
+.btn {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown");
+    -unity-slice-scale: 0.5px;
+    -unity-background-image-tint-color: rgb(232, 232, 232);
+    border-width: 0;
+    color: var(--hh-btn-text);
+    padding: 6px 16px 8px 16px;
+    margin: 4px;
+    min-height: 32px;
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.6);
+    transition-property: -unity-background-image-tint-color, scale, opacity;
+    transition-duration: 0.1s;
+}
+.btn Label { color: var(--hh-btn-text); -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 0, 0, 0.6); }
+.btn:hover { -unity-background-image-tint-color: rgb(255, 255, 255); scale: 1.03 1.03; background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0); }
+.btn:active { scale: 0.96 0.96; -unity-background-image-tint-color: rgb(205, 205, 205); background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0); }
+.btn:disabled { -unity-background-image-tint-color: rgb(130, 130, 130); opacity: 0.6; scale: 1 1; background-color: rgba(0, 0, 0, 0); }
+
+.btn--primary { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Green.png#Button01_Green"); }
+.btn--secondary { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown"); }
+.btn--ghost { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Bluegreen.png#Button01_Bluegreen"); }
+.btn--danger { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); color: #fff0ea; }
+.btn--armed { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); -unity-background-image-tint-color: rgb(255, 255, 255); scale: 1.05 1.05; }
+.btn--nope { -unity-background-image-tint-color: rgb(255, 140, 120); }
+.btn--small { font-size: 13px; padding: 3px 12px 5px 12px; margin: 2px; min-height: 30px; }
+.btn--buy, .btn--buy Label { color: var(--hh-gold-pale); }
+.btn--sale, .btn--sale Label { color: #b6f5b8; }
+
+/* icon + label buttons */
+.btn--icon { flex-direction: row; align-items: center; justify-content: center; }
+.btn__icon { width: 20px; height: 20px; font-size: 15px; margin-right: 5px; }
+.btn__label { padding: 0; margin: 0; white-space: nowrap; -unity-font-style: bold; }
+.btn--small .btn__icon { width: 16px; height: 16px; font-size: 13px; margin-right: 3px; }
+.btn--small .btn__label { font-size: 13px; }
+.btn--flee { flex-direction: row; align-items: center; }
+
+/* huge / set-out: the gold square slab */
+.btn--huge, .btn--setout {
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button_Square02_n.png#Button_Square02_n");
+    -unity-slice-scale: 0.4px;
+    color: var(--hh-ivory);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(70, 35, 0, 0.9);
+}
+.btn--huge Label, .btn--setout Label { color: var(--hh-ivory); -unity-text-outline-color: rgba(70, 35, 0, 0.9); }
+.btn--huge { font-size: 20px; padding: 12px 32px 14px 32px; margin-top: 12px; align-self: center; min-height: 56px; }
+.btn--huge .btn__label { font-size: 20px; }
+.btn--huge .btn__icon { width: 28px; height: 28px; font-size: 20px; margin-right: 8px; }
+.btn--setout { font-size: 18px; padding: 8px 24px 10px 24px; min-height: 48px; }
+
+/* big fight actions */
+.btn-big {
+    flex-direction: column; align-items: center; justify-content: center;
+    width: 170px; min-height: 116px; margin: 5px;
+    padding: 8px 12px 12px 12px;
+}
+.btn-big__title { font-size: 18px; -unity-font-style: bold; color: var(--hh-btn-text); -unity-text-align: middle-center; padding: 0; margin: 0; }
+.btn-big__sub { font-size: 13px; color: var(--hh-text); -unity-text-align: middle-center; margin-top: 2px; padding: 0; }
+.btn-big:hover { scale: 1.05 1.05; }
+.btn-big:active { scale: 0.96 0.96; }
+
+/* ───────────────────────── header / event chip ───────────────────────── */
+.header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 84px 14px 22px;   /* right side leaves room for the gear button */
+    margin: 0 4px 6px 4px;
+    flex-wrap: wrap;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
+    -unity-slice-scale: 0.3px;
+}
+.header--hearth { -unity-background-image-tint-color: rgb(255, 228, 190); }
+.header__brand { flex-direction: row; align-items: center; }
+.header__icon { width: 36px; height: 36px; font-size: 26px; margin-right: 8px; }
+.header__title {
+    font-size: 22px; -unity-font-style: bold; color: var(--hh-cream);
+    -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(40, 20, 0, 0.8);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+.header__info { flex-direction: row; align-items: center; flex-wrap: wrap; }
+
+/* camp-event chip (top right of the Hearth): click to reopen today's event pop-up */
+.chip--event { -unity-background-image-tint-color: rgb(110, 100, 90); opacity: 0.85; }
+.chip--event:hover { -unity-background-image-tint-color: rgb(170, 150, 120); opacity: 1; }
+.chip--event-on { -unity-background-image-tint-color: rgb(150, 115, 70); opacity: 1; }
+.chip--event-on .chip__text { color: var(--hh-gold-soft); }
+.chip--event-merchant { -unity-background-image-tint-color: rgb(150, 110, 210); }
+.chip--event-merchant .chip__text { color: #efe0ff; }
+.chip__icon-holder { flex-direction: row; align-items: center; }

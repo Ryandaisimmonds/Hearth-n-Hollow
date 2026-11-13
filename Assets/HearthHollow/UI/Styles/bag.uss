@@ -1,0 +1,12 @@
+/* Hearth & Hollow — bag. Part of HearthHollow.uss (imported in order; see that file). */
+
+.bag-grid { flex-direction: row; flex-wrap: wrap; }
+.bag-slot {
+    width: 54px; height: 54px; margin: 2px;
+    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_n.png#ItemFrama02_Demo_n");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.bag-slot.slot--filled { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Green.png#ItemFrama01_Green"); }
+.bag-slot.slot--selected, .bag-slot.slot--drop { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f"); }
+.bag-slot.slot--drop { scale: 1.08 1.08; }
+.bag-slot .slot__emoji { width: 60%; height: 60%; font-size: 22px; }
