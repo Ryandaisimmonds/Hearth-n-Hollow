@@ -25,7 +25,7 @@ namespace HearthHollow.Core
         /// Boots, charms and skill nodes for the selected class (no meals): for walking about town.
         public CombatMods TownMods { get { return Progression.Mods(Content, Profile, Profile.selectedClass); } }
 
-        /// Ticket 40: why you can't set out yet: the tray must be full (any meals, Camp Bread included). Not on the first dive.
+        /// Why you can't set out yet: the tray must be full (any meals, Camp Bread included). Not on the first dive.
         public string TrayBlock
         {
             get
@@ -33,12 +33,12 @@ namespace HearthHollow.Core
                 if (!Slice.On || Profile.arcStage == 0 || !Story.TrayShown) return null;
                 int n = Profile.tray.Count, max = Content.tuning.traySize;
                 if (n < max) return "Pack " + max + " meals to set out (" + n + "/" + max + ")";
-                var missing = Tray.Missing(Content, Profile.tray);   // ticket 44: an old tray of three Health meals, say
+                var missing = Tray.Missing(Content, Profile.tray);   // each meal type the tray needs (an old tray of three Health meals, say)
                 return missing.Count > 0 ? "Your tray needs " + Tray.Need(missing) : null;
             }
         }
 
-        /// Build the next stage of the Lamp-maker (in town, with coins and biome materials). Ticket 17.
+        /// Build the next stage of the Lamp-maker (in town, with coins and biome materials).
         public bool BuildLampMaker(out string reason)
         {
             if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }

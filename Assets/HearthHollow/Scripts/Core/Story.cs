@@ -2,11 +2,11 @@
 // GameSession owns one Story (Session.Story) and calls its On… hooks when things happen (a run ends, a meal is cooked,
 // a boss falls). The UI asks it what Wren says next, whether you may set out, and whether the fall is due.
 //
-// Wren's thread (ticket 35; ticket 42 opens the game with a fall, ticket 47 reshaped the areas):
+// Wren's thread:
 //   the fall → [Wren] cook a meal → show it to Wren → beat the Bramble Sow (bottom of Meadow Hollow) →
 //   [Wren] Chili Ridge for chilies → [Wren] season a meal with chili at the spice rack → Frost Hollow opens →
 //   beat the Hoarfrost Alpha at the bottom → done.
-// The fall (tickets 42, 43, 49): a new game doesn't start in town. You wake up in a nameless dungeon ("???", FallRoute):
+// The fall: a new game doesn't start in town. You wake up in a nameless dungeon ("???", FallRoute):
 // a line of fight rooms that get harder (DungeonRules.Enemy, FallEnemySpeed) until you fall, then wake up in town.
 using System;
 using System.Collections.Generic;
@@ -18,20 +18,20 @@ namespace HearthHollow.Core
 
     public partial class Profile
     {
-        public int wrenStep;   // ticket 35: Old Wren's guiding thread (WrenStep)
+        public int wrenStep;   // Old Wren's guiding thread (WrenStep)
     }
 
     public partial class RunState
     {
-        public bool firstRidge;   // ticket 35: your first trip to Chili Ridge is one short, easy floor
-        public int fightRooms;    // ticket 42: rooms whose fight has started this run (the first dive gets tougher with each)
+        public bool firstRidge;   // always false now: Chili Ridge became the gentle area, so there is no special first trip
+        public int fightRooms;    // rooms whose fight has started this run (the first dive gets tougher with each)
     }
 
     public sealed class Story
     {
         public const string MeadowRoute = Ids.Area.Meadow, RidgeRoute = Ids.Area.Chili, FrostRoute = Ids.Area.FrostHollow;
-        public const string WrenFrostFlag = Ids.Flag.WrenFrost;   // ticket 47: Wren has told you the way to Frost Hollow
-        /// Ticket 43: the nameless opening dungeon. Hidden from the Route board; only the fall goes there.
+        public const string WrenFrostFlag = Ids.Flag.WrenFrost;   // Wren has told you the way to Frost Hollow
+        /// The nameless opening dungeon. Hidden from the Route board; only the fall goes there.
         public const string FallRoute = Ids.Area.Fall;
         public const string FallIntro = "🌀 You wake on cold stone, somewhere strange. Purple light, and no way back the way you came. Something is moving in the next room…";
 
@@ -52,7 +52,7 @@ namespace HearthHollow.Core
         /// A town area (kitchen, smithy, workshop, …) is open at this stage of the arc.
         public bool AreaOpen(string area) { return HearthHollow.Core.Arc.IsOpen(_arc, P, area); }
         public bool DashUnlocked { get { return HearthHollow.Core.Arc.DashUnlocked(_arc, P, Run != null ? Run.classId : P.selectedClass); } }
-        /// Ticket 25: this run is the opening's first dive.
+        /// This run is the opening's first dive (it gets harder room by room, so it ends in a fall).
         internal bool FirstDive { get { return !HearthHollow.Core.Arc.Finished(_arc, P) && P.arcStage == 0 && _arc.enabled; } }
 
         internal void OnArcEvent(ArcTrigger t)
@@ -71,7 +71,7 @@ namespace HearthHollow.Core
             _s.Touch(true);
         }
 
-        // ───────────────────────── Old Wren's thread (ticket 35) ─────────────────────────
+        // ───────────────────────── Old Wren's thread ─────────────────────────────────
         public WrenStep Step { get { return (WrenStep)P.wrenStep; } }
         void SetStep(WrenStep s) { if ((int)s > P.wrenStep) P.wrenStep = (int)s; }
 
@@ -103,7 +103,7 @@ namespace HearthHollow.Core
             }
         }
 
-        /// Ticket 42: the Route board's meal tray stays hidden until Wren has told you about packing meals.
+        /// The Route board's meal tray stays hidden until Wren has told you about packing meals.
         public bool TrayShown { get { return !Slice.On || Step >= WrenStep.FirstBoss; } }
 
         /// What to do next, in one line (town HUD, Wren's reminders).
@@ -142,7 +142,7 @@ namespace HearthHollow.Core
                     SetStep(WrenStep.FirstDive);
                     break;
                 case WrenStep.AfterDive:
-                    if (!P.metWren)   // ticket 42: you've never met: she found you after the fall
+                    if (!P.metWren)   // you've never met: she found you after the fall
                     {
                         pages.Add("Easy, easy. Don't try to sit up yet. I found you at the edge of the fog, out cold, and carried you up here. I'm Wren.");
                         pages.Add("Purple light, you say? Rooms full of things that kept coming? That's no part of the Hollow I know. Whatever it was, it spat you out half dead, and on an empty stomach too. No wonder it chewed you up.");
@@ -188,11 +188,11 @@ namespace HearthHollow.Core
             return Objective;
         }
 
-        // ───────────────────────── Wren's Fire hint (ticket 15, reshaped by ticket 47) ─────────────────────────
+        // ───────────────────────── Wren's Fire hint ──────────────────────────────────────────────
         // After you beat the Bramble Sow, the first time you're home Old Wren tells you the Hoarfrost Alpha fears fire
         // and where chilies grow. That teaches its Fire weakness and reveals Chili Ridge. Once only.
 
-        /// Ticket 47: Meadow Hollow's boss floor (the Bramble Sow, at the bottom).
+        /// Meadow Hollow's boss floor (the Bramble Sow, at the bottom).
         public int MeadowBossFloor { get { return DungeonRules.Floors(C, MeadowRoute); } }
 
         /// Wren has the Fire hint to give: the Bramble Sow is down and she hasn't told you yet.
@@ -205,7 +205,7 @@ namespace HearthHollow.Core
             }
         }
 
-        /// The Hoarfrost Alpha, at the bottom of Frost Hollow (ticket 47; it used to be the Meadow's floor-10 boss).
+        /// The Hoarfrost Alpha, at the bottom of Frost Hollow (it used to be the Meadow's floor-10 boss).
         public string DeepBoss
         {
             get
@@ -236,7 +236,7 @@ namespace HearthHollow.Core
         {
             if (!FireHintDue) return false;
             Routes.SetFlag(P, DefaultContent.WrenFireHint);
-            SetStep(WrenStep.Ridge);   // ticket 35
+            SetStep(WrenStep.Ridge);
             _s.DiscoverElement(DeepBoss, Element.Fire);
             var ridge = C.Route(RidgeRoute);
             _s.Info("🗺️ " + (ridge != null ? ridge.emoji + " " + ridge.name : "Chili Ridge") + " is on the route board. 🔥 The " + (C.Monster(DeepBoss) != null ? C.Monster(DeepBoss).name : "floor-10 boss") + " is weak to Fire.");
@@ -244,7 +244,7 @@ namespace HearthHollow.Core
             return true;
         }
 
-        /// Ticket 47: Wren tells you the way: Frost Hollow appears on the Route board.
+        /// Wren tells you the way: Frost Hollow appears on the Route board.
         void OpenFrostHollow()
         {
             if (Routes.HasFlag(P, WrenFrostFlag)) return;
@@ -253,17 +253,17 @@ namespace HearthHollow.Core
             _s.Info("🗺️ " + (r != null ? r.emoji + " " + r.name : "Frost Hollow") + " is on the route board. The Hoarfrost Alpha waits at the bottom.");
         }
 
-        // ───────────────────────── the opening fall (tickets 42, 43, 49) ─────────────────────────
+        // ───────────────────────── the opening fall ──────────────────────────────────────────────
         /// True while BeginFall is starting the run (the run log opens with FallIntro).
         internal bool Falling { get; private set; }
 
-        /// Ticket 49: in the opening fall's nameless dungeon right now.
+        /// In the opening fall's nameless dungeon right now.
         public bool InFall { get { return Run != null && Run.routeId == FallRoute; } }
 
-        /// Ticket 49: the fall has just ended: the UI fades to black and wakes you in town (no run summary).
+        /// The fall has just ended: the UI fades to black and wakes you in town (no run summary).
         public bool FallEnding { get; private set; }
 
-        /// Ticket 43: × monster move speed on the first dive: faster with every room you fight in (so they reach you).
+        /// × monster move speed on the first dive: faster with every room you fight in (so they reach you).
         public float FallEnemySpeed
         {
             get
@@ -274,7 +274,7 @@ namespace HearthHollow.Core
             }
         }
 
-        /// Ticket 49: the fog room. It drains you, a bite at a time, until you fall.
+        /// The fog room. It drains you, a bite at a time, until you fall.
         public void FallFogBite()
         {
             if (!_s.InDungeon || !InFall || Run.hp <= 0) return;
@@ -307,9 +307,9 @@ namespace HearthHollow.Core
         internal void OnRunEnd()
         {
             OnArcEvent(ArcTrigger.FirstRunEnd);   // opening arc: home from the first dive (fallen or not), Wren feeds you, the kitchen opens
-            if (Step == WrenStep.FirstDive) SetStep(WrenStep.AfterDive);   // ticket 35: Wren has something to say when you're home
-            if (Run != null && Run.routeId == RidgeRoute && Step == WrenStep.Ridge) SetStep(WrenStep.RidgeBack);   // ticket 47: any trip to the Ridge
-            if (Run != null && Run.routeId == FallRoute) FallEnding = true;   // ticket 49: the fall fades straight to town
+            if (Step == WrenStep.FirstDive) SetStep(WrenStep.AfterDive);   // Wren has something to say when you're home
+            if (Run != null && Run.routeId == RidgeRoute && Step == WrenStep.Ridge) SetStep(WrenStep.RidgeBack);   // any trip to the Ridge
+            if (Run != null && Run.routeId == FallRoute) FallEnding = true;   // the fall fades straight to town
         }
 
         /// Back in town after a run: the fall's fade is over, the arc may grow the town, and the first time you wake up there.
@@ -317,7 +317,7 @@ namespace HearthHollow.Core
         {
             FallEnding = false;
             if (P.bossesBeaten != null && P.bossesBeaten.Count > 0) OnArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town
-            if (Slice.On && Step == WrenStep.AfterDive && !P.metWren)   // ticket 42: waking up in town after the opening fall
+            if (Slice.On && Step == WrenStep.AfterDive && !P.metWren)   // waking up in town after the opening fall
                 _s.Info("🔥 You wake up by a little fire, in a town you've never seen. Someone carried you out of the fog.");
         }
 
@@ -362,7 +362,7 @@ namespace HearthHollow.Core
             p.saveVersion = 14;
         }
 
-        /// saveVersion 15 (ticket 47): the areas got shorter. Meadow's floor-5 boss is now its floor-3 boss, and the
+        /// saveVersion 15: the areas got shorter. Meadow's floor-5 boss is now its floor-3 boss, and the
         /// old floor-10 Alpha lives at the bottom of Frost Hollow.
         void UpgradeAreas()
         {

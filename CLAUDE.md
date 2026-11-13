@@ -15,17 +15,19 @@ Much of the "Game design" section below describes the build as it stands, which 
 - Update the handover notes (Notion page above, or this file) at the end of each session.
 
 ## Code map (`Assets/HearthHollow/Scripts`)
-- `Core/`: pure C# game rules, no UnityEngine. `GameSession` (partial: `GameSession*.cs`) is the one facade the UI talks to.
-  Content lives in `DefaultContent*.cs`, upgraded through `DefaultContent.Upgrade`. Bump `LatestContentVersion` (now 27) for any content change, then upgrade `Content/GameContent.asset`.
+- `Core/`: pure C# game rules, no UnityEngine (assembly `HearthHollow.Core`). `GameSession` (partial: `GameSession*.cs`) is the one facade the UI talks to. `Story` (`Session.Story`) owns the opening arc, Old Wren's thread and the fall. Ids for areas, monsters, ingredients and recipes are in `Ids.cs`.
+  Content lives in `Core/Content/DefaultContent.*.cs`, upgraded through `DefaultContent.Upgrade`. Bump `LatestContentVersion` (now 46) for any content change, then upgrade `Content/GameContent.asset`.
 - `Runtime/`: `GameBootstrap` (entry point) and `SaveService` (atomic save with `.bak` fallback; `DirectoryOverride` is for tests).
 - `Dungeon/`: real-time rooms. `DungeonController`, `PlayerController`, `RoomInstance`, `RoomLights`, `Interactable` (incl. the Pit), `PitCache`, `ShadowSafeLight`, `DungeonSettings` (one settings asset: feel, lights, and `arc`).
 - `Town/`: the walkable town (`TownController`, `TownPlayer`, `TownVisuals`, `TownWorkAreas`). It's opened from Settings → Visit Hearth's Hollow.
 - `UI/`: UI Toolkit screens. The dev panel is in `SettingsOverlay.cs`.
-- `Tests/Editor/`: 38 EditMode NUnit tests (save, content, rules, opening arc). Run them from Window → General → Test Runner.
+- `Tests/Editor/`: about 180 EditMode NUnit tests (save, content, rules, story, the autoplay bot). `Tests/PlayMode/SmokeTest.cs` plays the real scene with a temp save (about 15 s). Run both from Window → General → Test Runner.
+- `UI/HearthHollow.uss` only imports `UI/Styles/*.uss` (one sheet per screen, in cascade order); add rules to the screen's sheet.
+- Balance: **Hearth & Hollow → Write Balance Report** (`Scripts/Editor/BalanceSimulator.cs`).
 
 ## Systems worth knowing
 - **Lighting:** only `DungeonController.CastShadows(light)` turns shadows on, and it adds `ShadowSafeLight`. That nudges still lights out of walls and fades shadows on moving lights inside walls. New `Light2D`s must set `shadowsEnabled = false` (URP defaults to true).
-- **Opening arc** (`Core/OpeningArc.cs`, `GameSessionArc.cs`): stages are 0 Arrival → 1 first death (fed, kitchen) → 2 first ladder (boots = dash, smithy/workshop) → 3 fall into the pit (cache room) → 4 home (town).
+- **Opening arc** (`Core/OpeningArc.cs`, `Core/Story.cs`): stages are 0 Arrival → 1 first death (fed, kitchen) → 2 first ladder (boots = dash, smithy/workshop) → 3 fall into the pit (cache room) → 4 home (town).
   - Base speed is 0.75, and speed gear is doubled in content v24.
   - Not done yet: hiding town stations by stage (use `Session.AreaOpen("kitchen")` etc.).
 - **Dev panel:** Max everything, arc stage buttons, coins, pantry, levels, story, weather.
