@@ -779,7 +779,7 @@ namespace HearthHollow.UI
 
             _trinkets.Add(UIKit.L("💍 Trinkets — " + worn.Count + "/" + slots + " worn", "subhead", "workshop__title"));
             var wornRow = UIKit.E("trinket-slots");
-            int maxSlots = Slice.On ? slots : Mathf.Max(slots, C.tuning.trinketSlots + 1);   // the slice has no Cavern Hunt to open a third slot
+            int maxSlots = Features.ThirdTrinketSlot ? Mathf.Max(slots, C.tuning.trinketSlots + 1) : slots;
             for (int i = 0; i < maxSlots; i++)
             {
                 if (i < worn.Count)

@@ -30,7 +30,7 @@ namespace HearthHollow.Core
         {
             get
             {
-                if (!Slice.On || Profile.arcStage == 0 || !Story.TrayShown) return null;
+                if (!Features.FullTrayToSetOut || Profile.arcStage == 0 || !Story.TrayShown) return null;
                 int n = Profile.tray.Count, max = Content.tuning.traySize;
                 if (n < max) return "Pack " + max + " meals to set out (" + n + "/" + max + ")";
                 var missing = Tray.Missing(Content, Profile.tray);   // each meal type the tray needs (an old tray of three Health meals, say)

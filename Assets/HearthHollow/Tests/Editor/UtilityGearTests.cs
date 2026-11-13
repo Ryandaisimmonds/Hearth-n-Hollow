@@ -67,7 +67,7 @@ namespace HearthHollow.Tests
             var p = Economy.NewProfile(_c);
             var stock = Gear.WorkshopStock(_c, p);
             var ids = stock.ConvertAll(t => t.id);
-            if (Slice.On)
+            if (!Features.AllTrinkets)
             {
                 CollectionAssert.AreEquivalent(new[] { "ember_locket", "magpie_spoon", "pocket_hearth", "honeylocket" }, ids);
             }

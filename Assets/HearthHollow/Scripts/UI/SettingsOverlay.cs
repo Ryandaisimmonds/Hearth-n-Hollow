@@ -173,7 +173,7 @@ namespace HearthHollow.UI
             HearthHollow.Core.Slice.On = !HearthHollow.Core.Slice.On;
             PlayerPrefs.SetInt(HearthHollow.Runtime.GameBootstrap.SlicePref, HearthHollow.Core.Slice.On ? 1 : 0);
             PlayerPrefs.Save();
-            if (HearthHollow.Core.Slice.On && S.Phase == HearthHollow.Core.Phase.Hearth) Ui.OpenTown();
+            if (HearthHollow.Core.Features.TownIsHome && S.Phase == HearthHollow.Core.Phase.Hearth) Ui.OpenTown();
             Refresh();
         }
 
@@ -198,7 +198,7 @@ namespace HearthHollow.UI
         {
             var p = S.Phase;
             UIKit.Show(_runSection, S.Run != null && p != HearthHollow.Core.Phase.Hearth && p != HearthHollow.Core.Phase.RunEnd);
-            UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null && !HearthHollow.Core.Slice.On);   // the slice has no camp screen to go back to
+            UIKit.Show(_townSection, p == HearthHollow.Core.Phase.Hearth && HearthHollow.Town.TownController.Instance != null && !HearthHollow.Core.Features.TownIsHome);   // no camp screen to go back to
             for (int i = 0; _textSize != null && i < _textSize.Length; i++) _textSize[i].EnableInClassList("filter-chip--on", i == HearthHollow.Runtime.GameBootstrap.TextSize);
             var lv = HearthHollow.Runtime.GameAudio.Levels;   // ticket 62
             for (int i = 0; _music != null && i < _music.Length; i++) _music[i].EnableInClassList("filter-chip--on", Mathf.RoundToInt(HearthHollow.Runtime.GameAudio.MusicVolume * 100f) == lv[i]);

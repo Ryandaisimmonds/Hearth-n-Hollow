@@ -229,7 +229,7 @@ namespace HearthHollow.Core
         }
 
         /// While the slice is on, only its trinkets are sold or dropped.
-        public static bool InSlice(TrinketData t) { return t != null && (!Slice.On || t.slice); }
+        public static bool InSlice(TrinketData t) { return t != null && (Features.AllTrinkets || t.slice); }
 
         /// Trinkets the Workshop will sell later (so the player can see what's coming).
         public static List<TrinketData> WorkshopLater(GameContent c, Profile p)

@@ -111,7 +111,7 @@ namespace HearthHollow.Town
             SetLayer(walls.GetComponent<TilemapRenderer>(), "Walls");
             DungeonController.AddWallShadows(walls);
             Spots = TownLayout.Spots();   // (so decor keeps clear of them; Build() fills the full list next)
-            if (Slice.On) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);
+            if (Features.TownIsHome) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);
             var rng = new System.Random(1234);
             for (int x = -4; x < TownLayout.Width + 4; x++)
                 for (int y = -4; y < TownLayout.Height + 4; y++)

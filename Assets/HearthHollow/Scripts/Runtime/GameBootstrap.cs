@@ -79,7 +79,7 @@ namespace HearthHollow.Runtime
             if (styleSheet != null) root.styleSheets.Add(styleSheet);
             else Debug.LogWarning("[Hearth & Hollow] No style sheet assigned on GameBootstrap — UI will be unstyled.");
             _ui = new GameUI(Session, root, firstLaunch);
-            if (Slice.On) _ui.OpenTown();   // the slice's hub is the town; the old camp screen isn't used
+            if (Features.TownIsHome) _ui.OpenTown();   // the town is the hub; the old camp screen isn't used
 
             if (dungeon != null)
             {

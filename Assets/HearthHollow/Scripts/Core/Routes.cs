@@ -147,7 +147,7 @@ namespace HearthHollow.Core
         /// Can this ingredient be found at all right now? (In the slice: only from its routes, the starter food and the pond.)
         public static bool Obtainable(GameContent c, string ingId)
         {
-            if (!Slice.On) return true;
+            if (Features.AllIngredients) return true;
             if (c.starterPantry != null && c.starterPantry.Exists(x => x.ingredientId == ingId)) return true;
             if (ingId == c.tuning.fishIngredient) return true;
             foreach (var id in Slice.RouteIds)

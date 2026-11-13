@@ -92,7 +92,7 @@ namespace HearthHollow.Core
         {
             get
             {
-                if (!Slice.On) return null;
+                if (!Features.WrenGuides) return null;
                 switch (Step)
                 {
                     case WrenStep.Meet: case WrenStep.AfterDive: return "Talk to Old Wren first";
@@ -104,7 +104,7 @@ namespace HearthHollow.Core
         }
 
         /// The Route board's meal tray stays hidden until Wren has told you about packing meals.
-        public bool TrayShown { get { return !Slice.On || Step >= WrenStep.FirstBoss; } }
+        public bool TrayShown { get { return !Features.WrenGuides || Step >= WrenStep.FirstBoss; } }
 
         /// What to do next, in one line (town HUD, Wren's reminders).
         public string Objective
@@ -285,7 +285,7 @@ namespace HearthHollow.Core
         /// A brand-new game in the slice: nothing done yet, so it opens in the dungeon.
         public bool FallDue
         {
-            get { return Slice.On && _s.Phase == Phase.Hearth && Step == WrenStep.Meet && P.runsStarted == 0 && P.arcStage == 0; }
+            get { return Features.OpensWithFall && _s.Phase == Phase.Hearth && Step == WrenStep.Meet && P.runsStarted == 0 && P.arcStage == 0; }
         }
 
         /// Start the opening fall (no town, no Wren, no meals yet). False if it isn't due.
@@ -317,7 +317,7 @@ namespace HearthHollow.Core
         {
             FallEnding = false;
             if (P.bossesBeaten != null && P.bossesBeaten.Count > 0) OnArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town
-            if (Slice.On && Step == WrenStep.AfterDive && !P.metWren)   // waking up in town after the opening fall
+            if (Features.OpensWithFall && Step == WrenStep.AfterDive && !P.metWren)   // waking up in town after the opening fall
                 _s.Info("🔥 You wake up by a little fire, in a town you've never seen. Someone carried you out of the fog.");
         }
 

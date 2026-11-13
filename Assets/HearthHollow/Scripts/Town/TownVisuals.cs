@@ -156,7 +156,7 @@ namespace HearthHollow.Town
         {
             get
             {
-                int n = Slice.On ? 4 + 4 * TownClock.Cleared(Session.Content, Session.Profile) : 2 * (ChaptersCleared - 1);
+                int n = Features.HearthGrowsWithAreas ? 4 + 4 * TownClock.Cleared(Session.Content, Session.Profile) : 2 * (ChaptersCleared - 1);
                 return Mathf.Clamp(n, 0, LanternSpots.Length);
             }
         }

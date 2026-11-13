@@ -63,7 +63,7 @@ namespace HearthHollow.UI
             var footer = UIKit.E("expedition__footer");
             _go = UIKit.B("Enter ➜", Go, "btn--primary", "btn--setout", "expedition__go");
             footer.Add(_go);
-            footer.Add(UIKit.B(Slice.On ? "← Back to town  (Esc)" : "← Back to camp  (Esc)", () => Ui.CloseRoutes(), "btn--small", "btn--ghost"));
+            footer.Add(UIKit.B(Features.TownIsHome ? "← Back to town  (Esc)" : "← Back to camp  (Esc)", () => Ui.CloseRoutes(), "btn--small", "btn--ghost"));
             side.Add(footer);
             body.Add(side);
             Root.Add(body);
@@ -361,7 +361,7 @@ namespace HearthHollow.UI
                     }
                     routeBox.Add(sr);
                 }
-                if (Slice.On)   // ticket 40: they know the route already; keep just its name, any warning and the shortcuts
+                if (Features.SlimRouteBoard)   // they know the route already: keep just its name, any warning and the shortcuts
                 {
                     var keep = new List<VisualElement>();
                     foreach (var ch in routeBox.Children()) if (ch.ClassListContains("expedition__starts") || ch.ClassListContains("expedition__warn") || ch.ClassListContains("expedition__class-row")) keep.Add(ch);
@@ -421,7 +421,7 @@ namespace HearthHollow.UI
             whoText.Add(UIKit.L("with meals · bag " + Economy.BagSlots(C, p) + " slots", "muted", "small"));
             who.Add(whoText);
             cookBox.Add(who);
-            if (!Slice.On) _expedition.Add(cookBox);
+            if (!Features.SlimRouteBoard) _expedition.Add(cookBox);
 
             // meals: ticket 29: you pack the tray here, as you set out
             var mealBox = UIKit.E("expedition__section");
@@ -490,7 +490,7 @@ namespace HearthHollow.UI
             if (p.tray.Count == 0) mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
             mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
             if (S.Story.TrayShown) _expedition.Add(mealBox);   // ticket 42: hidden until Wren has told you about packing meals
-            if (Slice.On) _expedition.Add(cookBox);   // ticket 40: the tray comes first
+            if (Features.SlimRouteBoard) _expedition.Add(cookBox);   // the tray comes first
 
             bool can = r != null && lockWhy == null && classWhy == null;
             string trayWhy = S.Story.SetOutBlock ?? S.TrayBlock;   // Wren first, then a full tray (ticket 40) before you head out

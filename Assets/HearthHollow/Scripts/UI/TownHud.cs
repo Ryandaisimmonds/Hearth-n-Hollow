@@ -71,7 +71,7 @@ namespace HearthHollow.UI
             var cp = p.Progress(p.selectedClass);
             _class.text = cls != null ? cls.emoji + " " + cls.name : p.selectedClass.ToString();
             _objective.text = "📌 " + S.Story.Objective;
-            UIKit.Show(_objective, Slice.On);
+            UIKit.Show(_objective, Features.WrenGuides);
             var st = S.Stats;
             _stats.text = st == null ? "" : "❤️ " + st.maxHp + "   🗡️ " + UIKit.Num(st.damage) + "   🛡️ " + UIKit.Pct(st.armourPct) + "   💥 " + UIKit.Pct(st.critChance);
         }

@@ -129,7 +129,7 @@ namespace HearthHollow.UI
             // Global pulse clock for low-HP bars (USS: .pulse-on .bar--low ...).
             _pulse = Root.schedule.Execute(() => Root.ToggleInClassList("pulse-on")).Every(420);
 
-            _classSelectOpen = firstLaunch && !Slice.On;   // the slice has only the Cook, and opens with a fall (ticket 42)
+            _classSelectOpen = firstLaunch && Features.ClassSelect;   // the slice has only the Cook, and opens with a fall
             _lastPhase = session.Phase;
             Session.Changed += OnChanged;
             Session.EventRaised += OnEvent;
@@ -235,9 +235,9 @@ namespace HearthHollow.UI
             _fishOpen = false;
             _dialogueOpen = false;
             Session.ResetGame();
-            _classSelectOpen = !Slice.On;
+            _classSelectOpen = Features.ClassSelect;
             ApplyLayout();
-            if (Slice.On && Session.Story.BeginFall())   // ticket 42: a fresh game opens with the fall
+            if (Features.OpensWithFall && Session.Story.BeginFall())   // a fresh game opens with the fall
                 Root.schedule.Execute(() => Juice.Toast(Story.FallIntro, "toast--level", 7f)).StartingIn(1200);
         }
 
@@ -247,7 +247,7 @@ namespace HearthHollow.UI
             Phase p = Session.Phase;
             if (p == Phase.Rest && _lastPhase != Phase.Rest) LastRestHeal = _pendingHeal;
             _pendingHeal = 0;
-            if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Slice.On) { _townOpen = true; _townMenuOpen = false; }   // ticket 17: home is the town
+            if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Features.TownIsHome) { _townOpen = true; _townMenuOpen = false; }   // home is the town
             if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _seasonOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
             // (In the town, events are visitors and weather you walk into instead — no pop-up.)

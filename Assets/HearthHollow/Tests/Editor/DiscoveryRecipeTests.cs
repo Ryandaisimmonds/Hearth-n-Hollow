@@ -32,7 +32,7 @@ namespace HearthHollow.Tests
         [Test]
         public void SliceHidesRecipesItCantFinish()
         {
-            if (!Slice.On) Assert.Ignore("slice off");
+            if (Features.AllIngredients) Assert.Ignore("slice off");
             var p = Economy.NewProfile(_c);
             Economy.AddToPantry(p, Ids.Ingredient.Wheat, 1);
             Assert.IsFalse(Routes.RecipeKnown(_c, p, _c.Recipe(Ids.Recipe.MarshButty)), "salt isn't in the slice");

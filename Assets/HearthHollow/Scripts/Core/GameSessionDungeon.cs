@@ -146,7 +146,7 @@ namespace HearthHollow.Core
 
         // ───────────── mutators (fun dungeon rules) ─────────────
         RouteData RunRoute { get { return Run != null ? Content.Route(Run.routeId) : null; } }
-        public bool DungeonHas(Mutator m) { return InDungeon && !Slice.On && Routes.Has(RunRoute, m); }   // no mutators in the slice
+        public bool DungeonHas(Mutator m) { return InDungeon && Features.Mutators && Routes.Has(RunRoute, m); }
 
         /// Walking speed for everyone (player and monsters).
         public float MutatorSpeed { get { return DungeonHas(Mutator.Frantic) ? T.franticSpeed : DungeonHas(Mutator.Swift) ? T.swiftSpeed : 1f; } }
@@ -162,7 +162,7 @@ namespace HearthHollow.Core
             get
             {
                 var r = RunRoute;
-                if (!InDungeon || Slice.On || r == null || r.mutators == null || r.mutators.Count == 0) return null;
+                if (!InDungeon || !Features.Mutators || r == null || r.mutators == null || r.mutators.Count == 0) return null;
                 var parts = new System.Collections.Generic.List<string>();
                 foreach (var m in r.mutators) if (m != Mutator.None) parts.Add(Routes.MutatorEmoji(m) + " " + Routes.MutatorName(m));
                 return parts.Count > 0 ? string.Join("  ", parts.ToArray()) : null;

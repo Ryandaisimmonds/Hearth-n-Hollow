@@ -77,7 +77,7 @@ namespace HearthHollow.Town
             // ticket 15: home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
             if (Session.Story.FireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
             // ticket 33/35: Old Wren comes over when she has something new to tell you (the start, after your first dive, the chilies)
-            if (Slice.On && Session.Story.TalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
+            if (Features.WrenGuides && Session.Story.TalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
             Near = Nearest();
             if (Near != null && Time.unscaledTime - _walkSince > 0.2f && DungeonInput.Interact) Use(Near);
             PushHud();
@@ -156,7 +156,7 @@ namespace HearthHollow.Town
                 {
                     int done = TownClock.Cleared(Session.Content, Session.Profile), total = TownClock.ProgressRoutes(Session.Content).Count;
                     string mood = done >= total ? "blazes blue-white — the Everflame is home" : done * 2 >= total ? "burns bright and golden" : done > 0 ? "is growing stronger" : "burns low";
-                    _ui.Toast("🔥 The Hearth " + mood + ". " + done + " of " + total + (Slice.On ? " areas cleared." : " chapters of the Ember Path cleared."));
+                    _ui.Toast("🔥 The Hearth " + mood + ". " + done + " of " + total + (Features.HearthGrowsWithAreas ? " areas cleared." : " chapters of the Ember Path cleared."));
                     break;
                 }
                 case TownAction.Bed: _ui.Toast("🛏️ Your hammock. You'll wake up here after each expedition."); break;
@@ -214,7 +214,7 @@ namespace HearthHollow.Town
 
             BuildTiles(theme);
             Spots = TownLayout.Spots();
-            if (Slice.On) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);   // the slice has no old camp screen
+            if (Features.TownIsHome) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);   // no old camp screen
             SetupLampMakerSpot();   // the NE plot: build the Lamp-maker (ticket 17)
             // your other two classes hang around the training yard; talk to one to swap
             int k = 0;
@@ -418,8 +418,8 @@ namespace HearthHollow.Town
                 Session.SaveProfile();
                 return;
             }
-            // ticket 35: Wren guides you through the slice step by step
-            if (Slice.On)
+            // Wren guides you through the slice step by step
+            if (Features.WrenGuides)
             {
                 var step = Session.Wren;
                 var talk = Session.Story.Talk();

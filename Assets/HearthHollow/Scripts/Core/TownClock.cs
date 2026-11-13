@@ -21,7 +21,7 @@ namespace HearthHollow.Core
         public static List<string> ProgressRoutes(GameContent c)
         {
             var ids = new List<string>();
-            if (Slice.On) ids.AddRange(Slice.RouteIds);
+            if (Features.HearthGrowsWithAreas) ids.AddRange(Slice.RouteIds);
             else foreach (var r in c.routes) if (r.chapter > 0) ids.Add(r.id);
             return ids;
         }

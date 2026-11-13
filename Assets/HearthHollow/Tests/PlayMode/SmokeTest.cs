@@ -70,6 +70,7 @@ namespace HearthHollow.PlayTests
             yield return Until("Wren comes over", () => S.Wren == WrenStep.CookMeal, 10f);
             UI.CloseDialogue();
             Step("fell, woke in town, Wren had her say");
+            yield return Seconds(2.5f);   // the wake-up fade clears
             yield return Shot("1_town");
 
             // ── walk the town and open every station ──

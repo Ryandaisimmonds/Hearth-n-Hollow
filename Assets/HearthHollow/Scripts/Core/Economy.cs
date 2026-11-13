@@ -209,7 +209,7 @@ namespace HearthHollow.Core
             else if (roll < (edge += t.armourerChance)) h.campEvent = CampEvent.Armourer;
             else if (roll < (edge += t.foragerChance)) h.campEvent = CampEvent.Forager;
             else if (roll < (edge += t.harvestMoonChance)) h.campEvent = CampEvent.HarvestMoon;
-            if (Slice.On) h.campEvent = CampEvent.None;   // no camp events in the slice
+            if (!Features.CampEvents) h.campEvent = CampEvent.None;
 
             if (h.campEvent == CampEvent.Forager)
             {
