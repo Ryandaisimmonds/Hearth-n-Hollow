@@ -73,6 +73,10 @@ namespace HearthHollow.PlayTests
             yield return Seconds(2.5f);   // the wake-up fade clears
             yield return Shot("1_town");
 
+            // ── every overlay opens and closes; pop-ups stack; Esc closes the top one ──
+            yield return Overlays();
+            Step("every town overlay opened and closed, stacked pop-ups unwound, Esc closed the top");
+
             // ── walk the town and open every station ──
             var town = TownController.Instance;
             string opened = "";
@@ -117,6 +121,15 @@ namespace HearthHollow.PlayTests
             Assert.IsTrue(S.StartRun(Ids.Area.Meadow), "set out for Meadow Hollow");
             CloseEverything();
 
+            // ── the ladder choice opens and closes in the dungeon ──
+            yield return Until("the dungeon is up for the ladder", () => DungeonController.Instance != null && DungeonController.Instance.CurrentRoom != null, 10f);
+            UI.OpenLadderChoice(() => { }, () => { });
+            yield return null;
+            Assert.IsTrue(UI.LadderChoiceOpen, "ladder choice opens");
+            UI.CloseLadderChoice();
+            yield return null;
+            Assert.IsFalse(UI.LadderChoiceOpen, "ladder choice closes");
+
             // ── clear the first fight room ──
             var dc = DungeonController.Instance;
             yield return Until("the dungeon is up", () => dc.CurrentRoom != null, 10f);
@@ -158,6 +171,53 @@ namespace HearthHollow.PlayTests
             yield return Seconds(3f);
             Step("a second round of boss deaths made no new effect objects (" + made + " pooled)");
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
+        }
+
+        IEnumerator Overlays()
+        {
+            Assert.IsTrue(UI.TownWalking, "walking in town to start with");
+            var opens = new (string name, Action open, Action close)[]
+            {
+                ("larder", UI.OpenPantry, UI.ClosePantry),
+                ("stove", () => UI.OpenCook(S.Content.recipes.Find(r => !r.always).id), UI.CloseCook),
+                ("spice rack", UI.OpenSeason, UI.CloseSeason),
+                ("fishing", UI.OpenFishing, UI.CloseFishing),
+                ("dialogue", () => UI.OpenDialogue("Test", "🙂", new System.Collections.Generic.List<string> { "Hello." }), UI.CloseDialogue),
+                ("notice board", UI.OpenCampEvent, UI.CloseCampEvent),
+                ("settings", UI.OpenSettings, UI.CloseSettings),
+                ("kitchen", () => UI.OpenTownMenu(CampTab.Cooking), UI.CloseTownMenu),
+                ("route board", UI.OpenRoutes, UI.CloseRoutes),
+            };
+            foreach (var o in opens)
+            {
+                o.open(); yield return null;
+                Assert.IsFalse(UI.TownWalking, o.name + " opens over the town");
+                o.close(); yield return null;
+                Assert.IsTrue(UI.TownWalking, o.name + " closes back to walking");
+            }
+            Assert.IsTrue(UI.TownWorldVisible);
+            UI.OpenTownMenu(CampTab.Cooking); yield return null;
+            Assert.IsTrue(UI.TownStationOpen && !UI.TownWorldVisible, "a station covers the town");
+            UI.CloseTownMenu(); yield return null;
+
+            // pop-ups stack: the newest shows, closing it goes back to the one under it
+            UI.OpenPantry(); UI.OpenSeason(); yield return null;
+            UI.CloseSeason(); yield return null;
+            Assert.IsFalse(UI.TownWalking, "the larder is still open under the spice rack");
+            UI.ClosePantry(); yield return null;
+            Assert.IsTrue(UI.TownWalking);
+
+            // Esc: closes the top pop-up; from walking it opens settings, and again closes them
+            var key = typeof(GameUI).GetMethod("RouteKey", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Action esc = () => key.Invoke(UI, new object[] { KeyCode.Escape });
+            UI.OpenPantry(); yield return null;
+            esc(); yield return null;
+            Assert.IsTrue(UI.TownWalking, "Esc closes the larder");
+            esc(); yield return null;
+            Assert.IsTrue(UI.SettingsOpen, "Esc in town opens settings");
+            esc(); yield return null;
+            Assert.IsFalse(UI.SettingsOpen, "Esc closes settings");
+            Assert.IsTrue(UI.TownWalking);
         }
 
         /// A boss dies in every element at once, with hits, rings and sparks all round: the worst case for effects.

@@ -46,14 +46,29 @@ namespace HearthHollow.UI
         readonly Button _gear;
         readonly UIScreen[] _all;
 
-        bool _classSelectOpen;
-        bool _settingsOpen;
-        bool _campEventOpen;
-        bool _pantryOpen;
-        bool _cookOpen, _seasonOpen;
-        bool _fishOpen, _dialogueOpen, _ladderOpen;
-        bool _townOpen, _townMenuOpen;   // town preview: walking around, or a building's menu (the camp screen) on top
-        bool _routesOpen;
+        /// What's open, oldest first. Places (Town, a Station over it, the Route board, class select) and pop-ups
+        /// share one stack: the newest pop-up is the one you see, and Esc goes to whatever is on top. With no Town
+        /// in it, home is the old camp screen.
+        enum Layer { Town, Station, ClassSelect, Routes, CampEvent, Pantry, Cook, Season, Fishing, Dialogue, Ladder, Settings }
+        readonly System.Collections.Generic.List<Layer> _open = new System.Collections.Generic.List<Layer>();
+        static readonly Layer[] PopUps = { Layer.CampEvent, Layer.Pantry, Layer.Cook, Layer.Season, Layer.Fishing, Layer.Dialogue };
+        /// Only make sense in town at home: they close when a run starts.
+        static readonly Layer[] HomeOnly = { Layer.Station, Layer.ClassSelect, Layer.Routes, Layer.CampEvent, Layer.Pantry, Layer.Cook, Layer.Season, Layer.Fishing, Layer.Dialogue };
+
+        bool Has(Layer l) { return _open.Contains(l); }
+        void Open(Layer l) { _open.Remove(l); _open.Add(l); ApplyLayout(); }
+        void Close(Layer l) { _open.Remove(l); ApplyLayout(); }
+        void Drop(params Layer[] ls) { foreach (var l in ls) _open.Remove(l); }
+        /// The newest pop-up that's open (null = none).
+        Layer? TopPopUp
+        {
+            get
+            {
+                for (int i = _open.Count - 1; i >= 0; i--) if (System.Array.IndexOf(PopUps, _open[i]) >= 0) return _open[i];
+                return null;
+            }
+        }
+        bool Top(Layer l) { var t = TopPopUp; return t.HasValue && t.Value == l; }
         Phase _lastPhase;
         IVisualElementScheduledItem _pulse;
         int _pendingHeal;
@@ -129,7 +144,7 @@ namespace HearthHollow.UI
             // Global pulse clock for low-HP bars (USS: .pulse-on .bar--low ...).
             _pulse = Root.schedule.Execute(() => Root.ToggleInClassList("pulse-on")).Every(420);
 
-            _classSelectOpen = firstLaunch && Features.ClassSelect;   // the slice has only the Cook, and opens with a fall
+            if (firstLaunch && Features.ClassSelect) _open.Add(Layer.ClassSelect);   // the slice has only the Cook, and opens with a fall
             _lastPhase = session.Phase;
             Session.Changed += OnChanged;
             Session.EventRaised += OnEvent;
@@ -148,70 +163,70 @@ namespace HearthHollow.UI
         }
 
         // ───────── class select ─────────
-        public void OpenClassSelect() { if (Session.Phase == Phase.Hearth) { _classSelectOpen = true; ApplyLayout(); } }
-        public void CloseClassSelect() { _classSelectOpen = false; ApplyLayout(); }
+        public void OpenClassSelect() { if (Session.Phase == Phase.Hearth) Open(Layer.ClassSelect); }
+        public void CloseClassSelect() { Close(Layer.ClassSelect); }
 
         // ───────── route board (camp → choose a route → enter) ─────────
-        public void OpenRoutes() { if (Session.Phase == Phase.Hearth) { _routesOpen = true; ApplyLayout(); } }
-        public void CloseRoutes() { _routesOpen = false; ApplyLayout(); }
+        public void OpenRoutes() { if (Session.Phase == Phase.Hearth) Open(Layer.Routes); }
+        public void CloseRoutes() { Close(Layer.Routes); }
 
         // ───────── skills & loadout page ─────────
         /// Skills live on the camp's Skills tab now.
-        public void OpenSkills() { if (Session.Phase == Phase.Hearth) { _routesOpen = false; ApplyLayout(); _hearth.ShowTab(CampTab.Skills); } }
-        public void ShowCampTab(CampTab t) { if (Session.Phase == Phase.Hearth) { _routesOpen = false; if (_townOpen) _townMenuOpen = true; ApplyLayout(); _hearth.ShowTab(t); } }
+        public void OpenSkills() { if (Session.Phase == Phase.Hearth) { Close(Layer.Routes); _hearth.ShowTab(CampTab.Skills); } }
+        public void ShowCampTab(CampTab t) { if (Session.Phase == Phase.Hearth) { Drop(Layer.Routes); if (Has(Layer.Town)) Open(Layer.Station); else ApplyLayout(); _hearth.ShowTab(t); } }
 
-        // ───────── Hearth's Hollow (town preview) ─────────
+        // ───────── Hearth's Hollow (the town) ─────────
         /// The town is open (walking, or one of its menus on top).
-        public bool TownOpen { get { return _townOpen; } }
+        public bool TownOpen { get { return Has(Layer.Town); } }
         /// The town's world is on screen (not covered by the camp screen, route board or class select).
-        public bool TownWorldVisible { get { return _townOpen && Session.Phase == Phase.Hearth && !_townMenuOpen && !_routesOpen && !_classSelectOpen; } }
+        public bool TownWorldVisible { get { return Has(Layer.Town) && Session.Phase == Phase.Hearth && !Has(Layer.Station) && !Has(Layer.Routes) && !Has(Layer.ClassSelect); } }
         /// A town station's page (cooking, smithy, workshop, training yard) is open as a window over the town.
-        public bool TownStationOpen { get { return _townOpen && _townMenuOpen && Session.Phase == Phase.Hearth && !_routesOpen && !_classSelectOpen; } }
+        public bool TownStationOpen { get { return Has(Layer.Town) && Has(Layer.Station) && Session.Phase == Phase.Hearth && !Has(Layer.Routes) && !Has(Layer.ClassSelect); } }
         /// You can walk around: the world is showing and no pop-up is open.
-        public bool TownWalking { get { return TownWorldVisible && !_settingsOpen && !_campEventOpen && !_pantryOpen && !_cookOpen && !_seasonOpen && !_fishOpen && !_dialogueOpen; } }
+        public bool TownWalking { get { return TownWorldVisible && !Has(Layer.Settings) && !TopPopUp.HasValue; } }
         /// Someone in town talks to you (pages of text; the last page may offer an action).
         public void OpenDialogue(string speaker, string face, System.Collections.Generic.List<string> pages, string actionLabel = null, Action onAction = null)
         {
             if (!TownWorldVisible) return;
             _dialogue.Show(speaker, face, pages, actionLabel, onAction);
-            _dialogueOpen = true; ApplyLayout();
+            Open(Layer.Dialogue);
         }
-        public void CloseDialogue() { _dialogueOpen = false; ApplyLayout(); }
+        public void CloseDialogue() { Close(Layer.Dialogue); }
 
         /// Dungeon ladder: go deeper or head home (the dungeon pauses while it's open).
-        public bool LadderChoiceOpen { get { return _ladderOpen; } }
-        public void OpenLadderChoice(Action deeper, Action home) { if (!InDungeonView) return; _ladder.Set(deeper, home); _ladderOpen = true; ApplyLayout(); }
-        public void CloseLadderChoice() { _ladderOpen = false; ApplyLayout(); }
-        public void OpenFishing() { if (TownWorldVisible) { _fishOpen = true; ApplyLayout(); } }
-        public void CloseFishing() { _fishOpen = false; ApplyLayout(); }
-        public void OpenTown() { if (Session.Phase != Phase.Hearth) return; _townOpen = true; _townMenuOpen = false; _routesOpen = false; _settingsOpen = false; ApplyLayout(); }
-        public void CloseTown() { _townOpen = false; _townMenuOpen = false; ApplyLayout(); }
+        public bool LadderChoiceOpen { get { return Has(Layer.Ladder); } }
+        public void OpenLadderChoice(Action deeper, Action home) { if (!InDungeonView) return; _ladder.Set(deeper, home); Open(Layer.Ladder); }
+        public void CloseLadderChoice() { Close(Layer.Ladder); }
+        public void OpenFishing() { if (TownWorldVisible) Open(Layer.Fishing); }
+        public void CloseFishing() { Close(Layer.Fishing); }
+        public void OpenTown() { if (Session.Phase != Phase.Hearth) return; Drop(Layer.Station, Layer.Routes, Layer.Settings); Open(Layer.Town); }
+        public void CloseTown() { Drop(Layer.Station); Close(Layer.Town); }
         /// A building in town opens its menu (the camp screen on that tab). Esc goes back to walking.
-        public void OpenTownMenu(CampTab t) { if (!_townOpen || Session.Phase != Phase.Hearth) return; _townMenuOpen = true; ApplyLayout(); _hearth.ShowTab(t); }
-        public void CloseTownMenu() { _townMenuOpen = false; ApplyLayout(); }
+        public void OpenTownMenu(CampTab t) { if (!Has(Layer.Town) || Session.Phase != Phase.Hearth) return; Open(Layer.Station); _hearth.ShowTab(t); }
+        public void CloseTownMenu() { Close(Layer.Station); }
         public void Toast(string text) { Juice.Toast(text, null, 4f); }
 
         // ───────── pantry pop-up (camp) ─────────
-        public void OpenPantry() { if (Session.Phase == Phase.Hearth) { _pantryOpen = true; ApplyLayout(); } }
-        public void ClosePantry() { _pantryOpen = false; ApplyLayout(); }
+        public void OpenPantry() { if (Session.Phase == Phase.Hearth) Open(Layer.Pantry); }
+        public void ClosePantry() { Close(Layer.Pantry); }
 
         // ───────── the stove (camp): cook one recipe ─────────
-        public void OpenCook(string recipeId) { if (Session.Phase == Phase.Hearth) { _cook.SetRecipe(recipeId); _cookOpen = true; ApplyLayout(); } }
-        public void CloseCook() { _cookOpen = false; ApplyLayout(); }
-        public void OpenSeason() { if (Session.Phase == Phase.Hearth) { _seasonOpen = true; ApplyLayout(); } }
-        public void CloseSeason() { _seasonOpen = false; ApplyLayout(); }
+        public void OpenCook(string recipeId) { if (Session.Phase == Phase.Hearth) { _cook.SetRecipe(recipeId); Open(Layer.Cook); } }
+        public void CloseCook() { Close(Layer.Cook); }
+        public void OpenSeason() { if (Session.Phase == Phase.Hearth) Open(Layer.Season); }
+        public void CloseSeason() { Close(Layer.Season); }
 
         // ───────── settings ─────────
-        public void OpenSettings() { _settingsOpen = true; ApplyLayout(); }
-        public void CloseSettings() { _settingsOpen = false; ApplyLayout(); }
-        public void ToggleSettings() { _settingsOpen = !_settingsOpen; ApplyLayout(); }
+        public void OpenSettings() { Open(Layer.Settings); }
+        public void CloseSettings() { Close(Layer.Settings); }
+        public void ToggleSettings() { if (Has(Layer.Settings)) CloseSettings(); else OpenSettings(); }
         /// The settings panel is open (the dungeon pauses while it is).
-        public bool SettingsOpen { get { return _settingsOpen; } }
+        public bool SettingsOpen { get { return Has(Layer.Settings); } }
 
         // ───────── camp event pop-up ─────────
-        public void OpenCampEvent() { if (Session.Phase == Phase.Hearth) { _campEventOpen = true; ApplyLayout(); } }
-        public void CloseCampEvent() { _campEventOpen = false; ApplyLayout(); }
-        public bool CampEventOpen { get { return _campEventOpen; } }
+        public void OpenCampEvent() { if (Session.Phase == Phase.Hearth) Open(Layer.CampEvent); }
+        public void CloseCampEvent() { Close(Layer.CampEvent); }
+        public bool CampEventOpen { get { return Has(Layer.CampEvent); } }
         /// A real-time dungeon run is on screen (dungeon, or a forage / campfire overlay over it).
         public bool InDungeonView
         {
@@ -222,20 +237,13 @@ namespace HearthHollow.UI
             }
         }
 
-        /// Full wipe from the settings menu: new profile, back to camp, pick a class like a first launch.
+        /// Full wipe from the settings menu: new profile, back home, pick a class like a first launch.
         public void ResetGame()
         {
             _lastPhase = Phase.Hearth;
-            _settingsOpen = false;
-            _campEventOpen = false;
-            _routesOpen = false;
-            _pantryOpen = false;
-            _cookOpen = false;
-            _townMenuOpen = false;
-            _fishOpen = false;
-            _dialogueOpen = false;
+            _open.RemoveAll(l => l != Layer.Town && l != Layer.Ladder);
             Session.ResetGame();
-            _classSelectOpen = Features.ClassSelect;
+            if (Features.ClassSelect) _open.Add(Layer.ClassSelect);
             ApplyLayout();
             if (Features.OpensWithFall && Session.Story.BeginFall())   // a fresh game opens with the fall
                 Root.schedule.Execute(() => Juice.Toast(Story.FallIntro, "toast--level", 7f)).StartingIn(1200);
@@ -247,16 +255,16 @@ namespace HearthHollow.UI
             Phase p = Session.Phase;
             if (p == Phase.Rest && _lastPhase != Phase.Rest) LastRestHeal = _pendingHeal;
             _pendingHeal = 0;
-            if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Features.TownIsHome) { _townOpen = true; _townMenuOpen = false; }   // home is the town
-            if (p != Phase.Hearth) { _classSelectOpen = false; _routesOpen = false; _campEventOpen = false; _pantryOpen = false; _cookOpen = false; _seasonOpen = false; _townMenuOpen = false; _fishOpen = false; _dialogueOpen = false; }
+            if (p == Phase.Hearth && _lastPhase != Phase.Hearth && Features.TownIsHome) { Drop(Layer.Station); if (!Has(Layer.Town)) _open.Insert(0, Layer.Town); }   // home is the town
+            if (p != Phase.Hearth) Drop(HomeOnly);
             // Back at camp from an expedition: pop up today's camp event (if anything is happening).
             // (In the town, events are visitors and weather you walk into instead — no pop-up.)
-            else if (_lastPhase != Phase.Hearth && !_townOpen && Session.Hearth != null && Session.Hearth.campEvent != CampEvent.None)
+            else if (_lastPhase != Phase.Hearth && !Has(Layer.Town) && Session.Hearth != null && Session.Hearth.campEvent != CampEvent.None)
             {
-                _campEventOpen = true;
-                _routesOpen = false; _pantryOpen = false;
+                Drop(Layer.Routes, Layer.Pantry);
+                _open.Remove(Layer.CampEvent); _open.Add(Layer.CampEvent);
             }
-            if (p == Phase.RunEnd && _lastPhase != Phase.RunEnd && Session.Story.FallEnding) FadeOutOfTheFall();   // ticket 49
+            if (p == Phase.RunEnd && _lastPhase != Phase.RunEnd && Session.Story.FallEnding) FadeOutOfTheFall();
             _lastPhase = p;
             ApplyLayout();
         }
@@ -264,27 +272,30 @@ namespace HearthHollow.UI
         public void ApplyLayout()
         {
             Phase p = Session.Phase;
+            bool home = p == Phase.Hearth;
             bool dungeon = InDungeonView;
             bool world = dungeon || TownWorldVisible || TownStationOpen;   // the camera draws the world (dungeon or town) behind a transparent UI (town stations open over it)
+            bool classSelect = Has(Layer.ClassSelect), routes = Has(Layer.Routes), settings = Has(Layer.Settings);
 
-            _classSelect.SetVisible(p == Phase.Hearth && _classSelectOpen);
-            _hearth.SetVisible(p == Phase.Hearth && !_classSelectOpen && !_routesOpen && (!_townOpen || _townMenuOpen));
+            _classSelect.SetVisible(home && classSelect);
+            _hearth.SetVisible(home && !classSelect && !routes && (!Has(Layer.Town) || Has(Layer.Station)));
             _townHud.SetVisible(TownWorldVisible);
-            _routes.SetVisible(p == Phase.Hearth && !_classSelectOpen && _routesOpen);
+            _routes.SetVisible(home && !classSelect && routes);
             _dungeon.SetVisible(dungeon);
-            _summary.SetVisible(p == Phase.RunEnd && !Session.Story.FallEnding);   // ticket 49: the fall has no summary
+            _summary.SetVisible(p == Phase.RunEnd && !Session.Story.FallEnding);   // the fall has no summary
             _rest.SetVisible(p == Phase.Rest);
             _gather.SetVisible(p == Phase.Gather);
-            _campEvent.SetVisible(_campEventOpen && p == Phase.Hearth && !_classSelectOpen);
-            _pantry.SetVisible(_pantryOpen && !_campEventOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
-            _cook.SetVisible(_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
-            _season.SetVisible(_seasonOpen && !_cookOpen && !_campEventOpen && !_pantryOpen && p == Phase.Hearth && !_classSelectOpen && !_routesOpen);
-            _fishing.SetVisible(_fishOpen && TownWorldVisible && !_campEventOpen);
-            _dialogue.SetVisible(_dialogueOpen && TownWorldVisible && !_campEventOpen);
-            if (_ladderOpen && !(dungeon && p == Phase.Dungeon)) _ladderOpen = false;
-            _ladder.SetVisible(_ladderOpen && !_settingsOpen);
-            _settings.SetVisible(_settingsOpen);
-            _gear.EnableInClassList("hh-gear--open", _settingsOpen);
+            // pop-ups: only the newest one shows
+            _campEvent.SetVisible(Top(Layer.CampEvent) && home && !classSelect);
+            _pantry.SetVisible(Top(Layer.Pantry) && home && !classSelect && !routes);
+            _cook.SetVisible(Top(Layer.Cook) && home && !classSelect && !routes);
+            _season.SetVisible(Top(Layer.Season) && home && !classSelect && !routes);
+            _fishing.SetVisible(Top(Layer.Fishing) && TownWorldVisible);
+            _dialogue.SetVisible(Top(Layer.Dialogue) && TownWorldVisible);
+            if (Has(Layer.Ladder) && !(dungeon && p == Phase.Dungeon)) _open.Remove(Layer.Ladder);
+            _ladder.SetVisible(Has(Layer.Ladder) && !settings);
+            _settings.SetVisible(settings);
+            _gear.EnableInClassList("hh-gear--open", settings);
 
             Root.EnableInClassList("theme-dungeon", world);   // transparent: the dungeon / town is drawn by the camera
             Root.EnableInClassList("theme-hearth", !world);
@@ -390,7 +401,7 @@ namespace HearthHollow.UI
             if (_season.Visible) { _season.HandleKey(k); return true; }
             if (_fishing.Visible) { _fishing.HandleKey(k); return true; }
             if (_dialogue.Visible) { _dialogue.HandleKey(k); return true; }
-            if (k == KeyCode.Escape && _townOpen && _townMenuOpen && _hearth.Visible) { CloseTownMenu(); return true; }   // town: back to walking
+            if (k == KeyCode.Escape && Has(Layer.Town) && Has(Layer.Station) && _hearth.Visible) { CloseTownMenu(); return true; }   // town: back to walking
             if (k == KeyCode.Escape && !_classSelect.Visible && !_routes.Visible) { OpenSettings(); return true; }
             // Top-most first.
             UIScreen[] order = { _gather, _rest, _summary, _dungeon, _classSelect, _routes, _hearth };
