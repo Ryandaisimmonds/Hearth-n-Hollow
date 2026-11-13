@@ -148,13 +148,15 @@ namespace HearthHollow.PlayTests
             yield return Until("the dungeon is up", () => dc.CurrentRoom != null, 10f);
             yield return Seconds(1f);
             RoomInstance fight = null;
-            for (int hop = 0; hop < 8 && fight == null; hop++)
+            var rng = new System.Random(7);
+            for (int hop = 0; hop < 30 && fight == null; hop++)   // wander through doors until a room has a fight
             {
                 var here = dc.CurrentRoom;
                 if (here.HasEvent && !here.Cleared) { fight = here; break; }
-                foreach (Side side in Enum.GetValues(typeof(Side)))
-                    if (here.Node.Has(side)) { dc.GoThrough(here, side); break; }
-                yield return Seconds(0.6f);
+                var sides = new System.Collections.Generic.List<Side>();
+                foreach (Side side in Enum.GetValues(typeof(Side))) if (here.Node.Has(side)) sides.Add(side);
+                if (sides.Count > 0) dc.GoThrough(here, sides[rng.Next(sides.Count)]);
+                yield return Seconds(0.5f);
             }
             Assert.IsNotNull(fight, "found a fight room");
             yield return Seconds(0.8f);
@@ -202,6 +204,19 @@ namespace HearthHollow.PlayTests
             boss.TakeHit(99999f, false, Vector2.zero);
             yield return Seconds(1f);
             Step("a boss made its entrance: title card, push-in and back");
+
+            // ── every kind of monster moves and lands a hit (the boss, as a boss, too) ──
+            var kinds = new System.Collections.Generic.List<string>();
+            foreach (EnemyArchetype a in Enum.GetValues(typeof(EnemyArchetype)))
+            {
+                var md = S.Content.monsters.Find(m => m.archetype == a && m.lightReaction != LightReaction.Shy)
+                      ?? S.Content.monsters.Find(m => m.archetype == a);   // light-shy ones hold back in a lit room
+                if (md == null) { kinds.Add(a + " (none in the content)"); continue; }
+                yield return Fights(dc, md.id, false, a.ToString());
+                kinds.Add(a + " (" + md.name + ")");
+            }
+            yield return Fights(dc, bossId, true, "boss");
+            Step("monsters fought: " + string.Join(", ", kinds.ToArray()) + ", and the boss");
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
         }
 
@@ -250,6 +265,36 @@ namespace HearthHollow.PlayTests
             esc(); yield return null;
             Assert.IsFalse(UI.SettingsOpen, "Esc closes settings");
             Assert.IsTrue(UI.TownWalking);
+        }
+
+        /// One monster against you: within a few seconds it has to move, wind up an attack and strike (you're kept alive).
+        IEnumerator Fights(DungeonController dc, string monsterId, bool boss, string what)
+        {
+            var room = dc.CurrentRoom;
+            dc.Player.Teleport(room.PlayerStart);   // the same open spot each time
+            yield return null;
+            var e = dc.SpawnEnemy(room, monsterId, false, boss, room.NearestWalkable((Vector2)dc.Player.Feet + Vector2.up * 3.5f));
+            Assert.IsNotNull(e, what + " spawns");
+            Vector2 start = e.transform.position;
+            var stField = typeof(EnemyController).GetField("_st", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            float moved = 0f; bool woundUp = false, struck = false;
+            float until = Time.unscaledTime + 10f;
+            while (Time.unscaledTime < until && !(struck && moved > 0.3f))
+            {
+                yield return null;
+                S.DungeonHealPlayer(9999);
+                if (e == null || e.Dead) break;
+                string st = stField.GetValue(e).ToString();
+                if (st == "Windup") woundUp = true;
+                if (woundUp && (st == "Striking" || st == "Charging")) struck = true;
+                moved = Mathf.Max(moved, Vector2.Distance(start, e.transform.position));
+            }
+            string why = e == null ? "gone" : monsterId + " state " + stField.GetValue(e) + ", " + Vector2.Distance(e.transform.position, dc.Player.Feet).ToString("0.0") + " m away, moved " + moved.ToString("0.0") + ", playing " + dc.GameplayActive + ", time " + Time.timeScale + ", cd " + e.GetType().GetField("_cd", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(e);
+            Assert.IsTrue(woundUp, what + " winds up an attack (" + why + ")");
+            Assert.IsTrue(struck, what + " strikes");
+            Assert.Greater(moved, 0.3f, what + " moves");
+            if (e != null && !e.Dead) e.TakeHit(99999f, false, Vector2.zero);
+            yield return Seconds(0.5f);
         }
 
         /// A boss dies in every element at once, with hits, rings and sparks all round: the worst case for effects.
