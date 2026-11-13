@@ -14,7 +14,7 @@ namespace HearthHollow.EditorTools
     public static class NormalMapBuilder
     {
         const string Out = "Assets/HearthHollow/Art/Generated/Normals";
-        static readonly string[] Folders = { "Assets/Cainos/Pixel Art Top Down - Basic/Texture", "Assets/HearthHollow/Art/ThirdParty/Top Down Monsters Vol 1" };
+        static readonly string[] Folders = { "Assets/ThirdParty/Cainos/Pixel Art Top Down - Basic/Texture", "Assets/ThirdParty/Top Down Monsters Vol 1" };
 
         [MenuItem("Hearth & Hollow/Generate Normal Maps", priority = 6)]
         public static void All()

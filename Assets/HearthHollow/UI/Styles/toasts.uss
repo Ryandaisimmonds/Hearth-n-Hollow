@@ -6,7 +6,7 @@
     width: 60px; height: 60px;
     font-size: 30px;
     -unity-text-align: middle-center;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_f.png#ItemFrama02_Demo_f");
     -unity-background-scale-mode: scale-to-fit;
 }
 

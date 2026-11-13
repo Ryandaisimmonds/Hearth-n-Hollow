@@ -11,7 +11,7 @@ namespace HearthHollow.EditorTools
     public static class AudioLibraryBuilder
     {
         const string Path = "Assets/HearthHollow/Resources/HHAudio/AudioLibrary.asset";
-        const string NA = "Assets/Ninja Adventure - Asset Pack/Audio/";
+        const string NA = "Assets/ThirdParty/Ninja Adventure - Asset Pack/Audio/";
         const string S = NA + "Sounds/", M = NA + "Musics/", J = NA + "Jingles/";
 
         // id, volume, clips…

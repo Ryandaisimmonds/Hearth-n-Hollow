@@ -8,7 +8,7 @@
 }
 .overlay__box {
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Popup/Popup_Bg.png#Popup_Bg");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Popup/Popup_Bg.png#Popup_Bg");
     -unity-slice-scale: 0.6px;
     padding: 30px 40px 34px 40px;
     align-items: center;
@@ -20,7 +20,7 @@
     -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(0, 50, 10, 0.85);
     -unity-text-align: middle-center; white-space: nowrap;
     height: 44px; padding: 0 52px 4px 52px; margin-bottom: 6px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Green.png#Title_Ribbon01_Green");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Green.png#Title_Ribbon01_Green");
     -unity-slice-scale: 0.32px;
 }
 
@@ -43,13 +43,13 @@
 .gather-bar {
     width: 560px; height: 46px;
     margin: 16px 0 6px 0;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
     -unity-slice-scale: 1px;
     overflow: hidden;
 }
 .gather-bar__fill {
     position: absolute; left: 4px; right: 4px; top: 4px; bottom: 4px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
     -unity-slice-scale: 0.6px;
     -unity-background-image-tint-color: rgb(70, 95, 75);
 }

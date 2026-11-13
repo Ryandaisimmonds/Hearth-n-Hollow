@@ -8,8 +8,8 @@ Everything the game draws lives under `Assets/HearthHollow`. Nothing is loaded f
 |---|---|---|
 | **Colours** for every screen | `UI/Theme.uss` | `--hh-…` variables, used by `HearthHollow.uss` |
 | **All UI styling** (panels, buttons, cards, HUD) | `UI/HearthHollow.uss` | has a CONTENTS list at the top |
-| **UI skin** (panels, buttons, ribbons, frames, bars, word art, icons) | `Art/ThirdParty/GUI-TheStone/` | referenced by path from `HearthHollow.uss` and by the Art Library |
-| **Characters + monsters** (sprite sheets) | `Art/ThirdParty/Top Down Monsters Vol 1/<Name>/` | Art Library → Monsters / Classes |
+| **UI skin** (panels, buttons, ribbons, frames, bars, word art, icons) | `Assets/ThirdParty/GUI-TheStone/` | referenced by path from `HearthHollow.uss` and by the Art Library |
+| **Characters + monsters** (sprite sheets) | `Assets/ThirdParty/Top Down Monsters Vol 1/<Name>/` | Art Library → Monsters / Classes |
 | **Which sprite each game id uses** | `Art/ArtLibrary.asset` | the game asks by id: `slime`, `weapon_2`, `coin`, `herb_stew`… |
 | **Dungeon tiles & props** (one set per route) | `Dungeon/Themes/<route>/*.png` | the route's `Theme … .asset` |
 | **Room layouts** | `Dungeon/Rooms/*.prefab` | Dungeon Settings / theme room lists |
@@ -26,7 +26,7 @@ any more, so you can delete them if you don't want the extra pieces.
 **Recolour the UI** — open `UI/Theme.uss`, change a value (e.g. `--hh-gold`), save. Every screen updates, even in Play mode.
 Colours with transparency (`rgba(...)`) are still written directly in `HearthHollow.uss` (search for the section).
 
-**Repaint a panel, button or icon** — edit the PNG in `Art/ThirdParty/GUI-TheStone/...` in place and save; Unity
+**Repaint a panel, button or icon** — edit the PNG in `Assets/ThirdParty/GUI-TheStone/...` in place and save; Unity
 re-imports it. Keep the canvas size. Panels and buttons are **9-sliced**: if you move the painted border, fix the
 border in the Sprite Editor (select the PNG → Sprite Editor → green border handles). In the USS, `-unity-slice-scale`
 shrinks the corners on screen — don't hand-write `-unity-slice-*` sizes for these sprites.
@@ -63,9 +63,9 @@ files that already exist, so your edits are safe (delete a file and re-run it to
 To apply one to an existing file: select it → Inspector → the slider icon (top right) → pick the preset.
 
 ## Careful with
-- **Hearth & Hollow → Build Art Library** re-fills the slots it knows about from `Art/ThirdParty`. If you've swapped
+- **Hearth & Hollow → Build Art Library** re-fills the slots it knows about from `Assets/ThirdParty`. If you've swapped
   a monster or icon in the Art Library by hand, re-running it puts the original back for those ids.
 - Move or rename art **inside Unity's Project window**, not in Finder — Unity then keeps every link. (The style
   sheet points at the UI skin by path, so if you move a UI-skin PNG, update its `url(...)` in `HearthHollow.uss`.)
-- Pack licences: `Art/ThirdParty/GUI-TheStone/README LayerLab_UserAssetGuide.txt` and
-  `Art/ThirdParty/Top Down Monsters Vol 1/Read Me (pack licence).txt`.
+- Pack licences: `Assets/ThirdParty/GUI-TheStone/README LayerLab_UserAssetGuide.txt` and
+  `Assets/ThirdParty/Top Down Monsters Vol 1/Read Me (pack licence).txt`.

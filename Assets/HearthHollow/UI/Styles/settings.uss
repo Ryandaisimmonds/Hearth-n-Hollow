@@ -5,13 +5,13 @@
     position: absolute; top: 30px; right: 30px;
     width: 54px; height: 54px; min-height: 0; padding: 0; margin: 0;
     align-items: center; justify-content: center;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
     -unity-background-scale-mode: scale-to-fit;
     -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-top: 0; -unity-slice-bottom: 0;
 }
 .hh-gear__icon {
     width: 32px; height: 32px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Icon_ItemIcons/ItemIcon_128/Icon_ItemIcon_Setting.Png#Icon_ItemIcon_Setting");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Icon_ItemIcons/ItemIcon_128/Icon_ItemIcon_Setting.Png#Icon_ItemIcon_Setting");
     -unity-background-scale-mode: scale-to-fit;
     transition-property: rotate; transition-duration: 0.35s;
 }
@@ -21,7 +21,7 @@
 .settings__close {
     position: absolute; top: 18px; right: 20px;
     width: 34px; height: 34px; min-height: 0; padding: 0; margin: 0;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Demo/Demo_Icon/Icon_PictoIcon_Close.Png#Icon_PictoIcon_Close");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Demo/Demo_Icon/Icon_PictoIcon_Close.Png#Icon_PictoIcon_Close");
     -unity-background-scale-mode: scale-to-fit;
     -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-top: 0; -unity-slice-bottom: 0;
 }

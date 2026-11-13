@@ -13,7 +13,7 @@
 }
 .theme-hearth {
     background-color: var(--hh-bg-hearth);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Demo/Demo_Image/Background.Png#Background");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Demo/Demo_Image/Background.Png#Background");
     -unity-background-image-tint-color: rgb(120, 96, 72);
 }
 
@@ -68,7 +68,7 @@ Label { white-space: normal; color: var(--hh-text); }
     width: 44px; height: 44px;
     flex-shrink: 0;
     align-items: center; justify-content: center;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Brown.png#ItemFrama01_Brown");
     -unity-background-scale-mode: scale-to-fit;
 }
 .item-frame > .pic { width: 64%; height: 64%; font-size: 20px; }
@@ -76,13 +76,13 @@ Label { white-space: normal; color: var(--hh-text); }
 .item-frame--sm > .pic { font-size: 15px; }
 .item-frame--lg { width: 104px; height: 104px; }
 .item-frame--lg > .pic { font-size: 48px; }
-.item-frame--empty { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_n.png#ItemFrama02_Demo_n"); }
-.item-frame--green { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Green.png#ItemFrama01_Green"); }
+.item-frame--empty { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama02_Demo_n.png#ItemFrama02_Demo_n"); }
+.item-frame--green { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/ItemFrama01_Green.png#ItemFrama01_Green"); }
 
 /* ───────────────────────── panels & cards ───────────────────────── */
 .panel {
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
     -unity-slice-scale: 0.5px;
     padding: 16px 18px 18px 18px;
     margin: 4px;
@@ -96,7 +96,7 @@ Label { white-space: normal; color: var(--hh-text); }
     height: 34px;
     min-width: 96px;
     padding: 0 30px 3px 30px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Brown.png#Title_Ribbon01_Brown");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Label-Title/Title_Ribbon01_Brown.png#Title_Ribbon01_Brown");
     -unity-slice-scale: 0.25px;
 }
 .panel__title, .panel__title Label, .panel__title-text {
@@ -112,7 +112,7 @@ Label { white-space: normal; color: var(--hh-text); }
 
 .card {
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/BasicFrame_Square03_Demo.png#BasicFrame_Square03_Demo");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/BasicFrame_Square03_Demo.png#BasicFrame_Square03_Demo");
     -unity-slice-scale: 0.35px;
     -unity-background-image-tint-color: rgb(236, 230, 220);
     padding: 9px 11px;
@@ -130,7 +130,7 @@ Label { white-space: normal; color: var(--hh-text); }
     height: 32px;
     padding: 2px 14px 4px 8px;
     margin: 0 3px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/UI_Etc/ResourceBar_Bg02.png#ResourceBar_Bg02");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/UI_Etc/ResourceBar_Bg02.png#ResourceBar_Bg02");
     -unity-slice-scale: 0.4px;
 }
 .chip__icon { width: 22px; height: 22px; font-size: 16px; margin-right: 5px; }
@@ -169,7 +169,7 @@ Label { white-space: normal; color: var(--hh-text); }
 /* ───────────────────────── buttons: painted slabs ───────────────────────── */
 .btn {
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown");
     -unity-slice-scale: 0.5px;
     -unity-background-image-tint-color: rgb(232, 232, 232);
     border-width: 0;
@@ -189,11 +189,11 @@ Label { white-space: normal; color: var(--hh-text); }
 .btn:active { scale: 0.96 0.96; -unity-background-image-tint-color: rgb(205, 205, 205); background-color: rgba(0, 0, 0, 0); border-color: rgba(0, 0, 0, 0); }
 .btn:disabled { -unity-background-image-tint-color: rgb(130, 130, 130); opacity: 0.6; scale: 1 1; background-color: rgba(0, 0, 0, 0); }
 
-.btn--primary { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Green.png#Button01_Green"); }
-.btn--secondary { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown"); }
-.btn--ghost { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Bluegreen.png#Button01_Bluegreen"); }
-.btn--danger { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); color: #fff0ea; }
-.btn--armed { background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); -unity-background-image-tint-color: rgb(255, 255, 255); scale: 1.05 1.05; }
+.btn--primary { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Green.png#Button01_Green"); }
+.btn--secondary { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Brown.png#Button01_Brown"); }
+.btn--ghost { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Bluegreen.png#Button01_Bluegreen"); }
+.btn--danger { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); color: #fff0ea; }
+.btn--armed { background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button01_Red.png#Button01_Red"); -unity-background-image-tint-color: rgb(255, 255, 255); scale: 1.05 1.05; }
 .btn--nope { -unity-background-image-tint-color: rgb(255, 140, 120); }
 .btn--small { font-size: 13px; padding: 3px 12px 5px 12px; margin: 2px; min-height: 30px; }
 .btn--buy, .btn--buy Label { color: var(--hh-gold-pale); }
@@ -209,7 +209,7 @@ Label { white-space: normal; color: var(--hh-text); }
 
 /* huge / set-out: the gold square slab */
 .btn--huge, .btn--setout {
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Button/Button_Square02_n.png#Button_Square02_n");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Button/Button_Square02_n.png#Button_Square02_n");
     -unity-slice-scale: 0.4px;
     color: var(--hh-ivory);
     -unity-text-outline-width: 1px;
@@ -241,7 +241,7 @@ Label { white-space: normal; color: var(--hh-text); }
     margin: 0 4px 6px 4px;
     flex-wrap: wrap;
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Frame/PanelFrame01_Demo.png#PanelFrame01_Demo");
     -unity-slice-scale: 0.3px;
 }
 .header--hearth { -unity-background-image-tint-color: rgb(255, 228, 190); }

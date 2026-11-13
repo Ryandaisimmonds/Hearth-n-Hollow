@@ -34,7 +34,9 @@ Everything is under `Assets/HearthHollow/`.
 | `Scripts/UI/` | UI Toolkit screens and overlays. `GameUI` is the hub, and the dev panel is in `SettingsOverlay.cs`. |
 | `Scripts/Editor/` | Editor menus and builders (see below), plus the balance simulator. |
 | `UI/` | Styles: `Theme.uss` (the colour palette) and `HearthHollow.uss`, which imports one sheet per screen from `UI/Styles/` in order. |
-| `Content/`, `Dungeon/`, `Art/`, `Resources/` | The content asset, the Dungeon Settings asset, art (including third-party packs under `Art/ThirdParty`) and runtime-loaded assets. |
+| `Content/`, `Dungeon/`, `Art/`, `Resources/` | The content asset, the Dungeon Settings asset, our own art and runtime-loaded assets. |
+
+Every third-party pack lives in `Assets/ThirdParty/`: Ninja Adventure (characters, bosses, items, audio; CC0), Cainos Pixel Art Top Down Basic (the town), Layer Lab GUI-TheStone (the UI skin) and 100 Top Down Monsters Vol 1 (monsters). Only the parts the game uses are kept from the last two; each folder has its licence.
 | `Tests/Editor/` | EditMode tests (NUnit) for the rules, content, saves and story, plus an autoplay bot that plays the whole slice in code. |
 | `Tests/PlayMode/` | A smoke test that plays the real scene with a throwaway save: the fall, every town station, cooking, setting out, and clearing a room. |
 

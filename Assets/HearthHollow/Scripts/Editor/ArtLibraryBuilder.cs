@@ -14,12 +14,12 @@ namespace HearthHollow.EditorTools
     public static class ArtLibraryBuilder
     {
         const string LibPath = "Assets/HearthHollow/Art/ArtLibrary.asset";
-        const string LL = "Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/";   // moved from Assets/Layer Lab (Oct 2026)
+        const string LL = "Assets/ThirdParty/GUI-TheStone/";   // the Layer Lab pack's UI art (the rest of the pack was removed)
         const string ITEM = LL + "Components/Icon_ItemIcons/ItemIcon_128/Icon_ItemIcon_";
         const string DEMO = LL + "Demo/Demo_Icon/";
         const string ETC = LL + "Components/UI_Etc/";
         const string ACT = LL + "Components/ActionText/";
-        const string MON = "Assets/HearthHollow/Art/ThirdParty/Top Down Monsters Vol 1/";   // moved from the pack folder
+        const string MON = "Assets/ThirdParty/Top Down Monsters Vol 1/";   // the monsters we use from the pack
 
         // id → sprite path. Edit freely; ids are what the UI asks for.
         static readonly string[,] IconMap =
@@ -99,14 +99,14 @@ namespace HearthHollow.EditorTools
             { "Lamplighter", "Mage Priest" }, { "Emberfist", "Mage Monk" },   // class rework (31 Oct), from the 100 Monsters pack
         };
 
-        // ───── Ninja Adventure (Assets/Ninja Adventure - Asset Pack, CC0) ─────
+        // ───── Ninja Adventure (Assets/ThirdParty/Ninja Adventure - Asset Pack, CC0) ─────
         // Each character has SeparateAnim/Idle.png (64×16), Walk.png (64×64) and Attack.png (64×16): 16px cells, one COLUMN per
         // direction (Down, Up, Left, Right) and walk frames down the rows. They're sliced here and re-ordered into the
         // Anim layout (rows Down, Left, Right, Up; frames across), and drawn ×NinjaScale so they stand about a tile tall.
         // Monster folders (Actor/Monster/<Name>/<Name>.png or SpriteSheet.png, 64×64) use the same layout as Walk.png:
         // one column per direction, 4 walk frames down the rows. Map entries: { our id, folder under Actor/, scale }.
         // An entry whose folder is missing is skipped, so the older art (ClassMap / MonsterMap) stays as the fallback.
-        const string NINJA = "Assets/Ninja Adventure - Asset Pack/Actor/";
+        const string NINJA = "Assets/ThirdParty/Ninja Adventure - Asset Pack/Actor/";
         const float NinjaScale = 1.8f;   // was 2.25, cut 20% (31 Oct) so figures sit better in the rooms
         static readonly string[,] NinjaClassMap =
         {

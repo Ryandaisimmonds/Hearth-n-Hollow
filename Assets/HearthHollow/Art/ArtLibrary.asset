@@ -142,6 +142,12 @@ MonoBehaviour:
     sprite: {fileID: 0}
   - id: ember_coal
     sprite: {fileID: 0}
+  - id: starmoss
+    sprite: {fileID: 0}
+  - id: wild_honeycomb
+    sprite: {fileID: 0}
+  - id: golden_wheat
+    sprite: {fileID: 0}
   recipes:
   - id: herb_stew
     sprite: {fileID: 0}
@@ -210,6 +216,12 @@ MonoBehaviour:
   - id: trail_wrap
     sprite: {fileID: 0}
   - id: frostberry_toast
+    sprite: {fileID: 0}
+  - id: herb_stew_2
+    sprite: {fileID: 0}
+  - id: mushroom_skewer_2
+    sprite: {fileID: 0}
+  - id: herb_butty_2
     sprite: {fileID: 0}
   routes:
   - id: meadow

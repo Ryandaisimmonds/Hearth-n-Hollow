@@ -1,5 +1,5 @@
 // Hearth & Hollow — "Hearth & Hollow > Apply Cainos Art".
-// Swaps the placeholder art for the Cainos "Pixel Art Top Down - Basic" pack (Assets/Cainos, free, by Cainos — credit appreciated):
+// Swaps the placeholder art for the Cainos "Pixel Art Top Down - Basic" pack (Assets/ThirdParty/Cainos, free, by Cainos — credit appreciated):
 //   • makes Art Tiles from the pack's grass / stone / wall tilesets and plants (Dungeon/Tiles/Cainos),
 //   • points every dungeon theme at them (grass routes vs stone routes, each with its own tint; hazards stay),
 //   • builds the TownArt asset (tiles + every Cainos prefab) and hooks it into Dungeon Settings,
@@ -18,7 +18,7 @@ namespace HearthHollow.EditorTools
 {
     public static class CainosArtBuilder
     {
-        const string Pack = "Assets/Cainos/Pixel Art Top Down - Basic";
+        const string Pack = "Assets/ThirdParty/Cainos/Pixel Art Top Down - Basic";
         const string Out = "Assets/HearthHollow/Dungeon/Tiles/Cainos";
         const string SettingsPath = "Assets/HearthHollow/Dungeon/DungeonSettings.asset";
         const string TownArtPath = "Assets/HearthHollow/Dungeon/TownArt.asset";

@@ -6,14 +6,14 @@
     height: 22px;
     min-width: 120px;
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Bg_Demo.png#Slider_Basic02_Bg_Demo");
     -unity-slice-scale: 0.5px;
     overflow: hidden;
     justify-content: center;
 }
 .bar__fill {
     position: absolute; left: 2px; top: 2px; bottom: 2px;
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Border01_Fill_Green.png#Slider_Border01_Fill_Green");
     -unity-slice-scale: 0.5px;
     transition-property: width, -unity-background-image-tint-color;
     transition-duration: 0.25s;
@@ -27,14 +27,14 @@
     padding: 0; margin: 0;
 }
 .bar--xp .bar__fill {
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
 }
 .bar--monster .bar__fill {
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
     -unity-background-image-tint-color: rgb(230, 90, 70);
 }
 .bar--low .bar__fill {
-    background-image: url("project://database/Assets/HearthHollow/Art/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
+    background-image: url("project://database/Assets/ThirdParty/GUI-TheStone/Components/Slider/Slider_Basic02_Fill_Orange.png#Slider_Basic02_Fill_Orange");
     -unity-background-image-tint-color: rgb(240, 95, 75);
 }
 /* low-HP pulse: GameUI toggles .pulse-on on the root every ~0.4s */
