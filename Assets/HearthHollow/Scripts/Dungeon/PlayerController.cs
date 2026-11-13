@@ -238,18 +238,20 @@ namespace HearthHollow.Dungeon
 
         void PushHud()
         {
-            DungeonHud.SkillUnlocked = _skill1 != null;
-            DungeonHud.Skill01 = _skill1 != null ? Mathf.Clamp01(1f - _skill1Cd / Mathf.Max(0.1f, SkillCooldown(_skill1))) : 0f;
-            DungeonHud.Skill2Move = _skill2;
-            DungeonHud.Skill1Move = _skill1;
-            DungeonHud.Skill2_01 = _skill2 != null ? Mathf.Clamp01(1f - _skill2Cd / Mathf.Max(0.1f, SkillCooldown(_skill2))) : 0f;
-            DungeonHud.Dash01 = Mathf.Clamp01(1f - _dashCd / Mathf.Max(0.1f, DashCooldown));
-            DungeonHud.DashMove = _dash;
-            DungeonHud.AttackMove = _atk;
-            DungeonHud.Attack01 = _atk != null ? Mathf.Clamp01(1f - _attackCd / Mathf.Max(0.1f, _atk.cooldown)) : 1f;
-            DungeonHud.UltMove = _ult;
-            DungeonHud.Ult01 = _ult != null ? Mathf.Clamp01(1f - _ultCd / Mathf.Max(0.1f, _ult.cooldown)) : 0f;
-            DungeonHud.Guarding = _guardUntil > 0f;
+            if (_dc == null) return;
+            var hud = _dc.Hud;
+            hud.SkillUnlocked = _skill1 != null;
+            hud.Skill01 = _skill1 != null ? Mathf.Clamp01(1f - _skill1Cd / Mathf.Max(0.1f, SkillCooldown(_skill1))) : 0f;
+            hud.Skill2Move = _skill2;
+            hud.Skill1Move = _skill1;
+            hud.Skill2_01 = _skill2 != null ? Mathf.Clamp01(1f - _skill2Cd / Mathf.Max(0.1f, SkillCooldown(_skill2))) : 0f;
+            hud.Dash01 = Mathf.Clamp01(1f - _dashCd / Mathf.Max(0.1f, DashCooldown));
+            hud.DashMove = _dash;
+            hud.AttackMove = _atk;
+            hud.Attack01 = _atk != null ? Mathf.Clamp01(1f - _attackCd / Mathf.Max(0.1f, _atk.cooldown)) : 1f;
+            hud.UltMove = _ult;
+            hud.Ult01 = _ult != null ? Mathf.Clamp01(1f - _ultCd / Mathf.Max(0.1f, _ult.cooldown)) : 0f;
+            hud.Guarding = _guardUntil > 0f;
             string buff = null;
             if (_guardUntil > 0f) buff = "🛡 Guard";
             if (_furyUntil > 0f) buff = (buff != null ? buff + "  " : "") + "📯 Fury";
@@ -260,7 +262,7 @@ namespace HearthHollow.Dungeon
             if (hazard != null) buff = (buff != null ? buff + "  " : "") + hazard;
             string muts = _dc != null ? _dc.Session.DungeonMutatorText : null;   // 💨 Swift  💥 Big Bangs
             if (muts != null) buff = (buff != null ? buff + "  " : "") + muts;
-            DungeonHud.BuffText = buff;
+            hud.BuffText = buff;
         }
 
         // ───────────────────────── numbers ─────────────────────────
@@ -1502,7 +1504,7 @@ namespace HearthHollow.Dungeon
             GameLook.Hurt();
             DungeonFx.Sparks(Body, away, new Color(1f, 0.35f, 0.3f), 7);
             DungeonFx.Ghost(_anim.Renderer, new Color(1f, 0.25f, 0.2f, 0.9f), 0.14f, true, true);
-            if (DungeonHud.PlayerHurt != null) DungeonHud.PlayerHurt();
+            if (_dc != null) _dc.RaisePlayerHurt();
             HearthHollow.Runtime.GameAudio.Play("hurt");
             Vector3 numAt = Body + Vector2.up * 0.6f;
             int dmg = S.DungeonDamagePlayer(raw, source);   // may end the run (the floor is torn down); ticket 65: who did it

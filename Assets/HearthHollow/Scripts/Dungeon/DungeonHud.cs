@@ -1,11 +1,11 @@
-// Hearth & Hollow — what the dungeon tells the HUD (written by the dungeon each frame, read by DungeonScreen).
-using System;
+// Hearth & Hollow — what the dungeon tells the HUD. The dungeon owns one DungeonHudState (DungeonController.Hud),
+// writes it every frame, and swaps in a fresh one for each floor; DungeonScreen reads it.
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace HearthHollow.Dungeon
 {
-    public static class DungeonHud
+    public sealed class DungeonHudState
     {
         public struct MapRoom
         {
@@ -13,55 +13,47 @@ namespace HearthHollow.Dungeon
             public bool visited, current, cleared, known;
             public bool n, s, e, w;
         }
-
-        public static bool Active;            // a dungeon floor exists
-        public static bool BagOpen;           // HUD's bag panel is open (pauses the dungeon)
-        public static float Fog01;            // ticket 49: the fall's rising fog (a purple veil over the screen)
-        public static string Tutorial;        // ticket 49: the fall's how-to-play line (null = none)
-        public static bool InFall;            // ticket 49: hide the locked-skill hints
-        public static float Skill01 = 1f;     // 1 = ready
-        public static bool SkillUnlocked;
-        public static float Dash01 = 1f;
-        public static bool Guarding;
-        public static string BuffText;        // e.g. "🛡 Guard  📯 Fury" (null = none)
-        public static HearthHollow.Core.MoveData Skill1Move, Skill2Move, DashMove;   // what's in K / U / Space
-        public static float Skill2_01 = 1f;
-        public static HearthHollow.Core.MoveData AttackMove;   // what's on left click / J
-        public static float Attack01 = 1f;
-        public static HearthHollow.Core.MoveData UltMove;   // the class's ultimate (C / I)
-        public static float Ult01;
-        public static float FlareCooldown;
-        public static string Prompt;          // e.g. "E  Forage" (null = none)
-        public static string Status;          // e.g. "Clear the room!"
-        public static bool Locked;            // doors shut
-        public static float BossHp01 = -1f;   // < 0 = no boss bar
-        public static string BossName;
-        public static string IntroName, IntroSub;   // ticket 57: the boss's title card
-        public static float IntroT = -1f;            // seconds into the card (< 0 = none)
-        public const float IntroLength = 2.8f;
-        public static readonly List<MapRoom> Map = new List<MapRoom>();
-        public static int MapVersion;
-
-        /// Floating text at a world position (set by the HUD screen). text, extra USS class.
-        public static Action<Vector3, string, string> ShowNumber;
-        /// Ticket 48: loot on the floor, as tags the HUD pins above each pickup (emoji + count). Rebuilt every frame.
+        /// Loot on the floor, as tags the HUD pins above each pickup (emoji + count). Rebuilt every frame.
         public struct LootTag { public Vector3 at; public string text; }
-        public static readonly List<LootTag> LootTags = new List<LootTag>();
 
-        /// Screen flash when the player is hurt.
-        public static Action PlayerHurt;
+        public const float IntroLength = 2.8f;   // seconds the boss's title card is up
 
+        public bool Active;            // a dungeon floor exists
+        public bool BagOpen;           // the HUD's bag panel is open (pauses the dungeon)
+        public float Fog01;            // the fall's rising fog (a purple veil over the screen)
+        public string Tutorial;        // the fall's how-to-play line (null = none)
+        public bool InFall;            // hide the locked-skill hints
+        public float Skill01 = 1f;     // 1 = ready
+        public bool SkillUnlocked;
+        public float Dash01 = 1f;
+        public bool Guarding;
+        public string BuffText;        // e.g. "🛡 Guard  📯 Fury" (null = none)
+        public HearthHollow.Core.MoveData Skill1Move, Skill2Move, DashMove;   // what's in K / U / Space
+        public float Skill2_01 = 1f;
+        public HearthHollow.Core.MoveData AttackMove;   // what's on left click / J
+        public float Attack01 = 1f;
+        public HearthHollow.Core.MoveData UltMove;      // the class's ultimate (C / I)
+        public float Ult01;
+        public float FlareCooldown;
+        public string Prompt;          // e.g. "E  Forage" (null = none)
+        public string Status;          // e.g. "Clear the room!"
+        public bool Locked;            // doors shut
+        public float BossHp01 = -1f;   // < 0 = no boss bar
+        public string BossName;
+        public string IntroName, IntroSub;   // the boss's title card
+        public float IntroT = -1f;           // seconds into the card (< 0 = none)
+        public readonly List<MapRoom> Map = new List<MapRoom>();
+        public int MapVersion;               // goes up whenever Map changes
+        public readonly List<LootTag> LootTags = new List<LootTag>();
+    }
+
+    public static class DungeonHud
+    {
+        /// Floating text at a world position (drawn by the HUD screen; nothing happens when there's no dungeon).
         public static void Number(Vector3 world, string text, string cls)
         {
-            if (ShowNumber != null) ShowNumber(world, text, cls);
-        }
-
-        public static void Reset()
-        {
-            Active = false; BagOpen = false; Skill01 = 1f; Dash01 = 1f; Guarding = false;
-            BuffText = null; Skill1Move = Skill2Move = DashMove = null; Skill2_01 = 1f;
-            Prompt = null; Status = null; Locked = false; BossHp01 = -1f; BossName = null;
-            Map.Clear(); MapVersion++; LootTags.Clear(); Fog01 = 0f; Tutorial = null; InFall = false; IntroT = -1f;
+            var dc = DungeonController.Instance;
+            if (dc != null) dc.ShowNumber(world, text, cls);
         }
     }
 }

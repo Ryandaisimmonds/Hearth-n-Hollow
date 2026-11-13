@@ -40,7 +40,8 @@ namespace HearthHollow.Dungeon
             var S = _dc.Session;
             var root = _dc.FloorRoot != null ? _dc.FloorRoot.transform : null;
             var live = new HashSet<int>();
-            DungeonHud.LootTags.Clear();
+            var tags = _dc.Hud.LootTags;
+            tags.Clear();
             if (root != null && S.Run != null && S.Run.dungeon && (S.InDungeon || S.Phase == Phase.Gather || S.Phase == Phase.Rest))
             {
                 foreach (var it in S.FloorLoot)
@@ -58,7 +59,7 @@ namespace HearthHollow.Dungeon
                     }
                     Animate(it, tr);
                     var ing = S.Content.Ingredient(it.ingredientId);
-                    DungeonHud.LootTags.Add(new DungeonHud.LootTag { at = tr.position + new Vector3(0f, 0.95f, 0f), text = (ing == null ? "🎒" : ArtLibrary.GetIngredient(it.ingredientId) != null ? ing.name : ing.emoji) + (it.count > 1 ? " ×" + it.count : "") });   // with art the tag names it
+                    tags.Add(new DungeonHudState.LootTag { at = tr.position + new Vector3(0f, 0.95f, 0f), text = (ing == null ? "🎒" : ArtLibrary.GetIngredient(it.ingredientId) != null ? ing.name : ing.emoji) + (it.count > 1 ? " ×" + it.count : "") });   // with art the tag names it
                 }
             }
             var dead = new List<int>();

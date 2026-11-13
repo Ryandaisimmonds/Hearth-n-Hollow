@@ -3,6 +3,7 @@
 // station and open it, cook a meal, show Wren, pack the tray, set out for Meadow Hollow and clear the first fight room.
 // Any error in the console fails it (the test framework does that), and so does any step that doesn't finish in time.
 // Your real save is never touched: saves go to a temp folder, and the test checks the real file didn't change.
+// It also leaves screenshots of the key screens in Temp/ClaudeShots/smoke_*.png, for before/after checks of UI work.
 using System;
 using System.Collections;
 using System.IO;
@@ -69,6 +70,7 @@ namespace HearthHollow.PlayTests
             yield return Until("Wren comes over", () => S.Wren == WrenStep.CookMeal, 10f);
             UI.CloseDialogue();
             Step("fell, woke in town, Wren had her say");
+            yield return Shot("1_town");
 
             // ── walk the town and open every station ──
             var town = TownController.Instance;
@@ -82,6 +84,9 @@ namespace HearthHollow.PlayTests
                 town.Use(used);
                 opened += used.name + ", ";
                 yield return Seconds(0.3f);
+                if (used.action == TownAction.Cooking) yield return Shot("2_kitchen");
+                if (used.action == TownAction.Larder) yield return Shot("3_larder");
+                if (used.action == TownAction.SpiceRack) yield return Shot("4_spice");
                 CloseEverything();
                 yield return null;
             }
@@ -107,6 +112,7 @@ namespace HearthHollow.PlayTests
             yield return Until("walk up to the gate", () => town.Near == gate, 3f);
             town.Use(gate);
             yield return Seconds(0.3f);
+            yield return Shot("5_routes");
             Assert.IsTrue(S.StartRun(Ids.Area.Meadow), "set out for Meadow Hollow");
             CloseEverything();
 
@@ -124,6 +130,8 @@ namespace HearthHollow.PlayTests
                 yield return Seconds(0.6f);
             }
             Assert.IsNotNull(fight, "found a fight room");
+            yield return Seconds(0.8f);
+            yield return Shot("6_fight");
             yield return Until("the monsters arrive", () => AnyReady(fight), 10f);
             float until = Time.unscaledTime + 30f;
             while (!fight.Cleared)
@@ -134,6 +142,8 @@ namespace HearthHollow.PlayTests
                 yield return Seconds(0.2f);
             }
             Assert.Greater(S.Run.hp, 0, "still standing");
+            yield return Seconds(0.6f);
+            yield return Shot("7_cleared");
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
         }
 
@@ -149,6 +159,14 @@ namespace HearthHollow.PlayTests
         {
             UI.CloseDialogue(); UI.CloseCook(); UI.CloseSeason(); UI.ClosePantry(); UI.CloseFishing();
             UI.CloseCampEvent(); UI.CloseRoutes(); UI.CloseTownMenu(); UI.CloseSettings();
+        }
+
+        static IEnumerator Shot(string name)
+        {
+            string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "Temp", "ClaudeShots"));
+            Directory.CreateDirectory(dir);
+            ScreenCapture.CaptureScreenshot(Path.Combine(dir, "smoke_" + name + ".png"), 1);
+            yield return null; yield return null;
         }
 
         static void Step(string what) { Debug.Log("[Smoke] " + what); }

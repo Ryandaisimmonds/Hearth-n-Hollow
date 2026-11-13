@@ -15,6 +15,15 @@ namespace HearthHollow.Dungeon
     {
         public static DungeonController Instance { get; private set; }
 
+        /// What the HUD shows (a fresh one for each floor). DungeonScreen reads it.
+        public DungeonHudState Hud { get; private set; } = new DungeonHudState();
+        /// Floating text at a world position (DungeonHud.Number); the HUD screen draws it.
+        public event System.Action<Vector3, string, string> NumberShown;
+        /// The player was hurt (the HUD flashes the screen).
+        public event System.Action PlayerHurt;
+        public void ShowNumber(Vector3 world, string text, string cls) { if (NumberShown != null) NumberShown(world, text, cls); }
+        public void RaisePlayerHurt() { if (PlayerHurt != null) PlayerHurt(); }
+
         public GameSession Session { get; private set; }
         public DungeonSettings Settings { get; private set; }
         public PlayerController Player { get; private set; }
@@ -90,8 +99,7 @@ namespace HearthHollow.Dungeon
             if (Player != null) { _carryCd = Player.Cooldowns; _carrySeed = run.dungeonSeed; }
             else if (_carrySeed != run.dungeonSeed) _carryCd = null;
             if (_root != null) DestroyFloor();
-            DungeonHud.Reset();
-            DungeonHud.Active = true;
+            Hud = new DungeonHudState { Active = true };
             _regenRate = -1f; _regenAcc = 0f; _calmHealT = 0f;   // ticket 38: re-read meal Regen each floor
             _builtKey = key;
 
@@ -347,7 +355,7 @@ namespace HearthHollow.Dungeon
             GameFeel.Reset();
             GameLook.Release("dungeon");
             Session.DungeonGuardMult = 1f;
-            DungeonHud.Reset();
+            Hud = new DungeonHudState();
             if (_cam != null && _camSaved)
             {
                 _cam.transform.position = _camHome; _cam.orthographicSize = _camHomeSize; _cam.backgroundColor = _camHomeBg;
@@ -540,7 +548,7 @@ namespace HearthHollow.Dungeon
             float ld = 99f; var floorItem = _loot != null ? _loot.Nearest(p.Feet, 1.2f, out ld) : null;
             if (floorItem != null && (it == null || ld <= Vector2.Distance(p.Feet, it.transform.position)))
             {
-                if (Session.DungeonPickUp(floorItem)) DungeonHud.BagOpen = true;   // ticket 48: the bag's full: swap something out
+                if (Session.DungeonPickUp(floorItem)) Hud.BagOpen = true;   // ticket 48: the bag's full: swap something out
                 return;
             }
             var dig = NearestDig(p.Feet);   // ticket 50: a buried chest underfoot
@@ -584,8 +592,8 @@ namespace HearthHollow.Dungeon
         /// Ticket 49: the fall's first two rooms teach you to play, one line at a time.
         void UpdateTutorial()
         {
-            DungeonHud.InFall = Session.InFall;
-            if (!Session.InFall || _current == null) { DungeonHud.Tutorial = null; return; }
+            Hud.InFall = Session.InFall;
+            if (!Session.InFall || _current == null) { Hud.Tutorial = null; return; }
             if (_tutSeed != Session.Run.dungeonSeed) { _tutSeed = Session.Run.dungeonSeed; _tMoved = _tAttacked = _tSkill = _tFlare = false; }
             if (GameplayActive)
             {
@@ -601,7 +609,7 @@ namespace HearthHollow.Dungeon
             else if (d <= 1 && !_tAttacked) line = mouse ? "🗡️ Click to attack" : "🗡️ J to attack";
             else if (d == 2 && !_tSkill) line = mouse ? "✨ Right-click for your skill" : "✨ K for your skill";
             else if (d == 2 && !_tFlare) line = "🔆 F for Flare: light up the dark";
-            DungeonHud.Tutorial = line;
+            Hud.Tutorial = line;
         }
 
         public void Shake(float seconds, float amp) { _shakeT = Mathf.Max(_shakeT, seconds); _shakeAmp = Mathf.Max(_shakeAmp, amp); }
@@ -611,9 +619,9 @@ namespace HearthHollow.Dungeon
         {
             bool hasFloor = _root != null && Player != null;
             bool settings = _ui != null && (_ui.SettingsOpen || _ui.LadderChoiceOpen);   // paused while a menu / the ladder choice is open
-            if (hasFloor && Session.Phase == Phase.Dungeon && !settings && DungeonInput.Bag) DungeonHud.BagOpen = !DungeonHud.BagOpen;
-            if (!hasFloor || Session.Phase != Phase.Dungeon) DungeonHud.BagOpen = false;
-            GameplayActive = hasFloor && Session.Phase == Phase.Dungeon && !settings && !DungeonHud.BagOpen;
+            if (hasFloor && Session.Phase == Phase.Dungeon && !settings && DungeonInput.Bag) Hud.BagOpen = !Hud.BagOpen;
+            if (!hasFloor || Session.Phase != Phase.Dungeon) Hud.BagOpen = false;
+            GameplayActive = hasFloor && Session.Phase == Phase.Dungeon && !settings && !Hud.BagOpen;
             if (_root != null) Time.timeScale = GameplayActive ? GameFeel.TimeScale : 0f;   // hit-stop / slow motion
             if (_root != null) DungeonLight.Refresh();
             if (!hasFloor) return;
@@ -647,10 +655,10 @@ namespace HearthHollow.Dungeon
                 if (DungeonInput.Flare && Player != null && _flareCd <= 0f) Flare();
                 SlowHealing(Time.deltaTime);   // ticket 38
             }
-            DungeonHud.FlareCooldown = Mathf.Max(0f, _flareCd);
+            Hud.FlareCooldown = Mathf.Max(0f, _flareCd);
             UpdateTutorial();   // ticket 49
             if (!Session.InFall) _fogTarget = 0f;
-            DungeonHud.Fog01 = Mathf.MoveTowards(DungeonHud.Fog01, _fogTarget, Time.unscaledDeltaTime * (_fogTarget >= 1f ? 0.3f : 0.6f));
+            Hud.Fog01 = Mathf.MoveTowards(Hud.Fog01, _fogTarget, Time.unscaledDeltaTime * (_fogTarget >= 1f ? 0.3f : 0.6f));
 
             // embers drifting through the dark room (atmosphere)
             if (GameplayActive && _current != null)
@@ -672,18 +680,18 @@ namespace HearthHollow.Dungeon
             if (lootNear != null && (near == null || lootD <= Vector2.Distance(Player.Feet, near.transform.position)))
             {
                 var ing = Session.Content.Ingredient(lootNear.ingredientId);
-                DungeonHud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
+                Hud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
             }
-            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) DungeonHud.Prompt = "⛏️ Dig here";   // ticket 50
-            else DungeonHud.Prompt = near != null ? near.Prompt(this) : null;
-            DungeonHud.Locked = _current != null && _current.EventRunning;
-            DungeonHud.Status = StatusText();
+            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) Hud.Prompt = "⛏️ Dig here";   // ticket 50
+            else Hud.Prompt = near != null ? near.Prompt(this) : null;
+            Hud.Locked = _current != null && _current.EventRunning;
+            Hud.Status = StatusText();
             if (_current != null && _current.Boss != null && !_current.Boss.Dead)
             {
-                DungeonHud.BossHp01 = _current.Boss.Hp / (float)Mathf.Max(1, _current.Boss.Stats.maxHp);
-                DungeonHud.BossName = _current.Boss.DisplayName;
+                Hud.BossHp01 = _current.Boss.Hp / (float)Mathf.Max(1, _current.Boss.Stats.maxHp);
+                Hud.BossName = _current.Boss.DisplayName;
             }
-            else DungeonHud.BossHp01 = -1f;
+            else Hud.BossHp01 = -1f;
         }
 
         string StatusText()
@@ -711,8 +719,8 @@ namespace HearthHollow.Dungeon
         /// How far in the camera is pushed (0 = normal, 1 = full) at `t` seconds into the entrance.
         public static float IntroPush(float t)
         {
-            if (t < 0f || t >= DungeonHud.IntroLength) return 0f;
-            float inK = Mathf.Clamp01(t / 0.6f), outK = Mathf.Clamp01((DungeonHud.IntroLength - t) / 0.8f);
+            if (t < 0f || t >= DungeonHudState.IntroLength) return 0f;
+            float inK = Mathf.Clamp01(t / 0.6f), outK = Mathf.Clamp01((DungeonHudState.IntroLength - t) / 0.8f);
             return Mathf.SmoothStep(0f, 1f, Mathf.Min(inK, outK));
         }
 
@@ -720,9 +728,9 @@ namespace HearthHollow.Dungeon
         {
             if (boss == null) return;
             var route = Session.Content.Route(Session.Run != null ? Session.Run.routeId : null);
-            DungeonHud.IntroName = boss.DisplayName;
-            DungeonHud.IntroSub = route != null && !string.IsNullOrEmpty(route.name) ? "Guardian of " + route.name : "It has been waiting for you";
-            DungeonHud.IntroT = 0f;
+            Hud.IntroName = boss.DisplayName;
+            Hud.IntroSub = route != null && !string.IsNullOrEmpty(route.name) ? "Guardian of " + route.name : "It has been waiting for you";
+            Hud.IntroT = 0f;
             _introBoss = boss;
             if (!_wasPushing && _cam != null) _introBaseSize = _cam.orthographicSize;   // push in from whatever the camera is now
             Vector3 at = boss.Body;
@@ -738,10 +746,10 @@ namespace HearthHollow.Dungeon
 
         void UpdateBossIntro(float dt)
         {
-            if (DungeonHud.IntroT < 0f) { _introPush = 0f; return; }
-            DungeonHud.IntroT += dt;
-            _introPush = IntroPush(DungeonHud.IntroT);
-            if (DungeonHud.IntroT >= DungeonHud.IntroLength) { DungeonHud.IntroT = -1f; _introBoss = null; _introPush = 0f; }
+            if (Hud.IntroT < 0f) { _introPush = 0f; return; }
+            Hud.IntroT += dt;
+            _introPush = IntroPush(Hud.IntroT);
+            if (Hud.IntroT >= DungeonHudState.IntroLength) { Hud.IntroT = -1f; _introBoss = null; _introPush = 0f; }
         }
 
         void LateUpdate()
@@ -770,7 +778,7 @@ namespace HearthHollow.Dungeon
 
         void RefreshMap()
         {
-            DungeonHud.Map.Clear();
+            Hud.Map.Clear();
             if (_plan == null) return;
             var known = new HashSet<RoomNode>();
             foreach (var kv in _rooms)
@@ -782,14 +790,14 @@ namespace HearthHollow.Dungeon
             foreach (var node in known)
             {
                 RoomInstance ri; _rooms.TryGetValue(node, out ri);
-                DungeonHud.Map.Add(new DungeonHud.MapRoom
+                Hud.Map.Add(new DungeonHudState.MapRoom
                 {
                     cell = node.cell, kind = node.kind,
                     visited = ri != null && ri.Visited, current = ri == _current, cleared = ri != null && ri.Cleared, known = true,
                     n = node.Has(Side.North), s = node.Has(Side.South), e = node.Has(Side.East), w = node.Has(Side.West)
                 });
             }
-            DungeonHud.MapVersion++;
+            Hud.MapVersion++;
         }
     }
 }

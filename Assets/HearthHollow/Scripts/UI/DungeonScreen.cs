@@ -195,12 +195,18 @@ namespace HearthHollow.UI
             Root.Add(_bagPanel);
         }
 
-        void ToggleBag() { DungeonHud.BagOpen = !DungeonHud.BagOpen; Tick(); }
+        DungeonController _dc;
+        DungeonHudState _mapHud;
+        readonly DungeonHudState _none = new DungeonHudState();
+        /// What the dungeon wants shown (an empty state before there's a dungeon).
+        DungeonHudState H { get { var dc = DungeonController.Instance; return dc != null ? dc.Hud : _none; } }
+
+        void ToggleBag() { H.BagOpen = !H.BagOpen; Tick(); }
 
         protected override void OnShow()
         {
-            DungeonHud.ShowNumber = ShowNumber;
-            DungeonHud.PlayerHurt = FlashHurt;
+            _dc = DungeonController.Instance;
+            if (_dc != null) { _dc.NumberShown -= ShowNumber; _dc.NumberShown += ShowNumber; _dc.PlayerHurt -= FlashHurt; _dc.PlayerHurt += FlashHurt; }
             _mapVersion = -1;
             if (_tick == null) _tick = Root.schedule.Execute(Tick).Every(50);
             else _tick.Resume();
@@ -213,8 +219,7 @@ namespace HearthHollow.UI
             if (_tick != null) _tick.Pause();
             if (_tagTick != null) _tagTick.Pause();
             foreach (var t in _tags) t.style.display = DisplayStyle.None;
-            if (DungeonHud.ShowNumber == ShowNumber) DungeonHud.ShowNumber = null;
-            if (DungeonHud.PlayerHurt == FlashHurt) DungeonHud.PlayerHurt = null;
+            if (_dc != null) { _dc.NumberShown -= ShowNumber; _dc.PlayerHurt -= FlashHurt; }
             _numbers.Clear();
             UIKit.Show(_bagPanel, false); _bagShown = false;
         }
@@ -250,7 +255,7 @@ namespace HearthHollow.UI
         // ───────────────────────── per-frame bits (from DungeonHud) ─────────────────────────
         void Tick()
         {
-            var m1 = DungeonHud.Skill1Move; var m2 = DungeonHud.Skill2Move; var md = DungeonHud.DashMove; var mu = DungeonHud.UltMove; var ma = DungeonHud.AttackMove;
+            var m1 = H.Skill1Move; var m2 = H.Skill2Move; var md = H.DashMove; var mu = H.UltMove; var ma = H.AttackMove;
             string key = (m1 != null ? m1.id : "-") + "|" + (m2 != null ? m2.id : "-") + "|" + (md != null ? md.id : "-") + "|" + (mu != null ? mu.id : "-") + "|" + (ma != null ? ma.id : "-") + "|" + DungeonInput.MouseAim;
             if (key != _iconKey)
             {
@@ -266,47 +271,47 @@ namespace HearthHollow.UI
                 if (m2 == null) _skill2.tooltip = "Empty — pick a second skill in the Skills page at camp";
             }
             RefreshLocks(m2, mu);
-            Cool(_skill, _skillFill, m1 != null, DungeonHud.Skill01);
-            Cool(_skill2, _skill2Fill, m2 != null, DungeonHud.Skill2_01);
-            Cool(_atk, _atkFill, ma != null, DungeonHud.Attack01);
-            if (mu != null) { Cool(_ult, _ultFill, true, DungeonHud.Ult01); _ult.EnableInClassList("dhud__ability--ult-ready", DungeonHud.Ult01 >= 1f); }
-            _dashFill.style.height = Length.Percent((1f - DungeonHud.Dash01) * 100f);
-            _flare.text = DungeonHud.FlareCooldown > 0.05f ? "✨ " + Mathf.CeilToInt(DungeonHud.FlareCooldown) + "s" : "✨ F";
-            _flare.style.opacity = DungeonHud.FlareCooldown > 0.05f ? 0.55f : 1f;
-            _guard.text = DungeonHud.BuffText ?? "";
-            UIKit.Show(_guard, !string.IsNullOrEmpty(DungeonHud.BuffText));
+            Cool(_skill, _skillFill, m1 != null, H.Skill01);
+            Cool(_skill2, _skill2Fill, m2 != null, H.Skill2_01);
+            Cool(_atk, _atkFill, ma != null, H.Attack01);
+            if (mu != null) { Cool(_ult, _ultFill, true, H.Ult01); _ult.EnableInClassList("dhud__ability--ult-ready", H.Ult01 >= 1f); }
+            _dashFill.style.height = Length.Percent((1f - H.Dash01) * 100f);
+            _flare.text = H.FlareCooldown > 0.05f ? "✨ " + Mathf.CeilToInt(H.FlareCooldown) + "s" : "✨ F";
+            _flare.style.opacity = H.FlareCooldown > 0.05f ? 0.55f : 1f;
+            _guard.text = H.BuffText ?? "";
+            UIKit.Show(_guard, !string.IsNullOrEmpty(H.BuffText));
 
-            _status.text = DungeonHud.Status ?? "";
-            _status.EnableInClassList("dhud__status--locked", DungeonHud.Locked);
-            bool boss = DungeonHud.BossHp01 >= 0f;
+            _status.text = H.Status ?? "";
+            _status.EnableInClassList("dhud__status--locked", H.Locked);
+            bool boss = H.BossHp01 >= 0f;
             UIKit.Show(_bossBox, boss);
-            if (boss) { _bossName.text = "👑 " + DungeonHud.BossName; _bossBar.Set(DungeonHud.BossHp01, 1f, ""); }
+            if (boss) { _bossName.text = "👑 " + H.BossName; _bossBar.Set(H.BossHp01, 1f, ""); }
 
-            _fog.style.opacity = DungeonHud.Fog01 * 0.6f;   // ticket 49; lighter since ticket 55 (the fog now rolls through the world too)
-            UIKit.Show(_fog, DungeonHud.Fog01 > 0.01f);
-            float it = DungeonHud.IntroT;   // ticket 57: in, hold, out
-            bool card = it >= 0f && it < DungeonHud.IntroLength;
+            _fog.style.opacity = H.Fog01 * 0.6f;   // ticket 49; lighter since ticket 55 (the fog now rolls through the world too)
+            UIKit.Show(_fog, H.Fog01 > 0.01f);
+            float it = H.IntroT;   // ticket 57: in, hold, out
+            bool card = it >= 0f && it < DungeonHudState.IntroLength;
             UIKit.Show(_bossCard, card);
             if (card)
             {
-                _bossCardName.text = DungeonHud.IntroName ?? ""; _bossCardSub.text = DungeonHud.IntroSub ?? "";
-                float a = Mathf.Clamp01(it / 0.35f) * Mathf.Clamp01((DungeonHud.IntroLength - it) / 0.5f);
+                _bossCardName.text = H.IntroName ?? ""; _bossCardSub.text = H.IntroSub ?? "";
+                float a = Mathf.Clamp01(it / 0.35f) * Mathf.Clamp01((DungeonHudState.IntroLength - it) / 0.5f);
                 _bossCard.style.opacity = a;
                 float slide = (1f - Mathf.Clamp01(it / 0.35f)) * 40f;
                 _bossCard.style.translate = new Translate(slide, 0f);
-                _bossCard.style.scale = new Scale(Vector3.one * (1f + 0.04f * Mathf.Clamp01(it / DungeonHud.IntroLength)));
+                _bossCard.style.scale = new Scale(Vector3.one * (1f + 0.04f * Mathf.Clamp01(it / DungeonHudState.IntroLength)));
             }
-            _tutorial.text = DungeonHud.Tutorial ?? "";
-            UIKit.Show(_tutorial, !string.IsNullOrEmpty(DungeonHud.Tutorial));
-            string prompt = DungeonHud.Prompt;
+            _tutorial.text = H.Tutorial ?? "";
+            UIKit.Show(_tutorial, !string.IsNullOrEmpty(H.Tutorial));
+            string prompt = H.Prompt;
             _prompt.text = string.IsNullOrEmpty(prompt) ? "" : "E   " + prompt;
             UIKit.Show(_prompt, !string.IsNullOrEmpty(prompt));
 
-            if (DungeonHud.MapVersion != _mapVersion) { _mapVersion = DungeonHud.MapVersion; DrawMap(); }
+            if (H != _mapHud || H.MapVersion != _mapVersion) { _mapHud = H; _mapVersion = H.MapVersion; DrawMap(); }
 
-            if (DungeonHud.BagOpen != _bagShown)
+            if (H.BagOpen != _bagShown)
             {
-                _bagShown = DungeonHud.BagOpen;
+                _bagShown = H.BagOpen;
                 UIKit.Show(_bagPanel, _bagShown);
                 _bagPanel.pickingMode = _bagShown ? PickingMode.Position : PickingMode.Ignore;
                 if (_bagShown) { _cursor = 0; _shownAt = Time.unscaledTime; RefreshBag(); }
@@ -338,7 +343,7 @@ namespace HearthHollow.UI
             if (dashLocked) parts.Add("🔒 Dash: boots from the smithy");
             if (mu == null && ultHint != null) parts.Add("🔒 Ultimate: " + ultHint);
             if (m2 == null && skillHint != null) parts.Add("🔒 L skill: " + skillHint);
-            if (DungeonHud.InFall || S.InFall) parts.Clear();   // ticket 49: no "learn this later" clutter in the opening
+            if (H.InFall || S.InFall) parts.Clear();   // ticket 49: no "learn this later" clutter in the opening
             _lockHint.text = string.Join("   ", parts.ToArray());
             UIKit.Show(_lockHint, parts.Count > 0);
         }
@@ -360,7 +365,7 @@ namespace HearthHollow.UI
         void DrawMap()
         {
             _map.Clear();
-            var rooms = DungeonHud.Map;
+            var rooms = H.Map;
             if (rooms.Count == 0) return;
             int minX = int.MaxValue, maxX = int.MinValue, minY = int.MaxValue, maxY = int.MinValue;
             foreach (var r in rooms) { minX = Mathf.Min(minX, r.cell.x); maxX = Mathf.Max(maxX, r.cell.x); minY = Mathf.Min(minY, r.cell.y); maxY = Mathf.Max(maxY, r.cell.y); }
@@ -460,7 +465,7 @@ namespace HearthHollow.UI
         void Swap(int slot)
         {
             if (!S.SwapHeld(slot)) return;
-            DungeonHud.BagOpen = false;   // swapped: back to the dungeon
+            H.BagOpen = false;   // swapped: back to the dungeon
             Tick();
         }
 
@@ -498,7 +503,7 @@ namespace HearthHollow.UI
             var cam = Camera.main;
             if (cam == null || Root.panel == null) return;
             if (_tagLayer == null) { _tagLayer = UIKit.E("loot-tags"); _tagLayer.pickingMode = PickingMode.Ignore; Root.Insert(0, _tagLayer); }
-            var tags = DungeonHud.LootTags;
+            var tags = H.LootTags;
             while (_tags.Count < tags.Count) { var l = UIKit.L("", "loot-tag"); l.pickingMode = PickingMode.Ignore; _tags.Add(l); _tagLayer.Add(l); }
             for (int i = 0; i < _tags.Count; i++)
             {
@@ -525,7 +530,7 @@ namespace HearthHollow.UI
 
         public override bool HandleKey(KeyCode key)
         {
-            if (!DungeonHud.BagOpen || S.Run == null) return false;   // gameplay keys are read by the dungeon
+            if (!H.BagOpen || S.Run == null) return false;   // gameplay keys are read by the dungeon
             int n = S.Run.bag.Count, cols = BagCols();
             switch (key)
             {
@@ -538,7 +543,7 @@ namespace HearthHollow.UI
                     if (S.HeldItem != null) Swap(_cursor);
                     return true;
                 case KeyCode.X: S.BagDrop(_cursor); break;
-                case KeyCode.Escape: DungeonHud.BagOpen = false; Tick(); return true;
+                case KeyCode.Escape: H.BagOpen = false; Tick(); return true;
                 default: return false;
             }
             RefreshBag();

@@ -1,6 +1,6 @@
 // Hearth & Hollow — ticket 55: each area's air. Meadow: drifting pollen and fireflies. Chili Ridge: ember sparks
 // and heat shimmer. Frost Hollow: falling snow and the cook's frosty breath. The fall: rolling world-space fog
-// that thickens room by room (DungeonHud.Fog01), under a lighter screen veil.
+// that thickens room by room (DungeonController.Hud.Fog01), under a lighter screen veil.
 // A small pool of sprites, each fading in and out over its life; nothing here touches gameplay.
 using System.Collections.Generic;
 using HearthHollow.Core;
@@ -101,7 +101,7 @@ namespace HearthHollow.Dungeon
 
             if (dt > 0f) Spawn(kind, view, dc, dt);
             Step(dt, view);
-            Fog(kind == AirKind.Fall ? DungeonHud.Fog01 : 0f, view, dt);
+            Fog(kind == AirKind.Fall && dc != null ? dc.Hud.Fog01 : 0f, view, dt);
         }
 
         void Spawn(AirKind kind, Rect v, DungeonController dc, float dt)
