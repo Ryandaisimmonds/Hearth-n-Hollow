@@ -62,7 +62,7 @@ namespace HearthHollow.Dungeon
             if (sprite == DungeonFx.Orb)
             {
                 // orbs / fire: glowing, lit and trailing embers
-                if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+                if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
                 DungeonFx.Flash(pos, color, 2.8f, 1.6f, 0f, go.transform);
                 p._trail = color;
             }

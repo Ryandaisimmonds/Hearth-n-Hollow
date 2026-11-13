@@ -290,11 +290,11 @@ namespace HearthHollow.Dungeon
             {
                 _floorLights++;
                 var l = Flash(pos + new Vector3(0, 0.1f), color, 1.6f, 0.85f, life);
-                l.gameObject.AddComponent<FloorLightCount>();
+                l.GetComponent<FxLight>().Done = FloorLightOut;
             }
         }
 
-        class FloorLightCount : MonoBehaviour { void OnDestroy() { _floorLights = Mathf.Max(0, _floorLights - 1); } }
+        static readonly System.Action FloorLightOut = () => _floorLights = Mathf.Max(0, _floorLights - 1);
 
         /// An arrow pointing right (+x).
         public static Sprite Arrow
@@ -311,23 +311,107 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        // ───────────── glow materials (Resources/HHFx, made by "Hearth & Hollow > Set Up HD-2D Look") ─────────────
-        static Material _glowMat, _flatMat;
-        /// Additive HDR sprite: effects that bloom.
-        public static Material GlowMat { get { if (_glowMat == null) _glowMat = Resources.Load<Material>("HHFx/Glow Sprite"); return _glowMat; } }
-        /// Additive solid silhouette: hit flashes and after-images.
-        public static Material FlatMat { get { if (_flatMat == null) _flatMat = Resources.Load<Material>("HHFx/Glow Flat"); return _flatMat; } }
+        // ───────────── pools: one-shot sprites and lights are reused, not made and destroyed ─────────────
+        static Transform _poolRoot;
+        static readonly Stack<FxSprite> _sprites = new Stack<FxSprite>();
+        static readonly Stack<FxLight> _lights = new Stack<FxLight>();
+        static readonly List<FxLight> _riders = new List<FxLight>();
+        static Material _spriteDefault;
+
+        /// GameObjects the pools have made so far. After a warm-up, effects reuse what they have and this stops growing.
+        public static int Created { get; private set; }
+
+        static Transform PoolRoot
+        {
+            get
+            {
+                if (_poolRoot == null)   // first use, or the scene that held it is gone
+                {
+                    _poolRoot = new GameObject("fx_pool").transform;
+                    _sprites.Clear(); _lights.Clear();
+                }
+                return _poolRoot;
+            }
+        }
+
+        static FxSprite TakeSprite(Transform parent)
+        {
+            var root = PoolRoot;
+            FxSprite fx = null;
+            while (fx == null && _sprites.Count > 0) fx = _sprites.Pop();   // skips any destroyed with a parent they rode on
+            if (fx == null)
+            {
+                var go = new GameObject("fx"); Created++;
+                var sr = go.AddComponent<SpriteRenderer>();
+                if (_spriteDefault == null) _spriteDefault = sr.sharedMaterial;
+                fx = go.AddComponent<FxSprite>();
+            }
+            fx.transform.SetParent(parent != null ? parent : root, false);
+            fx.transform.localPosition = Vector3.zero; fx.transform.localRotation = Quaternion.identity; fx.transform.localScale = Vector3.one;
+            var r = fx.Renderer;
+            r.flipX = false; r.flipY = false; r.sortingLayerID = 0;
+            fx.gameObject.SetActive(true);
+            return fx;
+        }
+
+        /// Back to the pool (FxSprite calls this when it has faded). Lights riding on it go back first.
+        public static void Release(FxSprite fx)
+        {
+            if (fx == null) return;
+            fx.GetComponentsInChildren(true, _riders);
+            foreach (var l in _riders) Release(l);
+            _riders.Clear();
+            if (_poolRoot == null) { Object.Destroy(fx.gameObject); return; }
+            fx.gameObject.SetActive(false);
+            fx.transform.SetParent(_poolRoot, false);
+            _sprites.Push(fx);
+        }
+
+        static FxLight TakeLight(Transform parent)
+        {
+            var root = PoolRoot;
+            FxLight fl = null;
+            while (fl == null && _lights.Count > 0) fl = _lights.Pop();
+            if (fl == null)
+            {
+                var go = new GameObject("fx_light"); Created++;
+                var l = go.AddComponent<Light2D>();
+                l.lightType = Light2D.LightType.Point;
+                DungeonController.ApplyToAllLayers(l);
+                var w = new GameObject("fx_wallglow"); Created++;   // walls catch it from further away than the floor
+                w.transform.SetParent(go.transform, false);
+                var wl = w.AddComponent<Light2D>();
+                wl.lightType = Light2D.LightType.Point;
+                DungeonController.ApplyToLayers(wl, "Walls");
+                fl = go.AddComponent<FxLight>();
+                fl.Setup(l, wl);
+            }
+            var shadowSafe = fl.GetComponent<ShadowSafeLight>();   // a fire that cast shadows last time
+            if (shadowSafe != null) Object.Destroy(shadowSafe);
+            fl.transform.SetParent(parent != null ? parent : root, true);
+            fl.gameObject.SetActive(true);
+            return fl;
+        }
+
+        /// Back to the pool (FxLight calls this when it has faded).
+        public static void Release(FxLight fl)
+        {
+            if (fl == null) return;
+            if (_poolRoot == null) { Object.Destroy(fl.gameObject); return; }
+            fl.gameObject.SetActive(false);
+            fl.transform.SetParent(_poolRoot, false);
+            _lights.Push(fl);
+        }
 
         // ───────────── one-shot effects ─────────────
         public static FxSprite Spawn(Sprite sprite, Vector3 pos, Color color, float life, float startScale, float endScale, float rotation = 0f, int order = 20500, bool glow = false)
         {
-            var go = new GameObject("fx_" + (sprite != null ? sprite.name : "x"));
-            go.transform.position = pos;
-            go.transform.rotation = Quaternion.Euler(0, 0, rotation);
-            var sr = go.AddComponent<SpriteRenderer>();
+            var fx = TakeSprite(null);
+            fx.transform.position = pos;
+            fx.transform.rotation = Quaternion.Euler(0, 0, rotation);
+            var sr = fx.Renderer;
             sr.sprite = sprite; sr.color = color; sr.sortingOrder = order;
-            if (glow && GlowMat != null) sr.sharedMaterial = GlowMat;
-            var fx = go.AddComponent<FxSprite>();
+            sr.sharedMaterial = glow && FxMaterials.Glow != null ? FxMaterials.Glow : _spriteDefault;
             fx.Init(life, startScale, endScale, color);
             return fx;
         }
@@ -370,34 +454,45 @@ namespace HearthHollow.Dungeon
         /// A point light that fades out over <paramref name="life"/> seconds (life ≤ 0 = stays; parent it to something).
         public static Light2D Flash(Vector3 pos, Color color, float radius, float intensity, float life, Transform follow = null)
         {
+            Color c = new Color(color.r, color.g, color.b, 1f);
+            if (life <= 0f) return StayingLight(pos, c, radius, intensity, follow);
+            var fl = TakeLight(null);
+            fl.transform.position = pos;
+            if (follow != null) fl.transform.SetParent(follow, true);
+            Light(fl.Main, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);   // a softer, more gradual edge
+            bool wall = radius >= 1.5f;
+            fl.Wall.gameObject.SetActive(wall);
+            if (wall) Light(fl.Wall, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
+            fl.Init(life);
+            return fl.Main;
+        }
+
+        static void Light(Light2D l, Color c, float intensity, float outer, float inner, float falloff)
+        {
+            l.shadowsEnabled = false;   // URP turns shadows on by default; only CastShadows turns them on (a few big lights)
+            l.color = c; l.intensity = intensity;
+            l.pointLightOuterRadius = outer; l.pointLightInnerRadius = inner;
+            l.falloffIntensity = falloff;
+        }
+
+        /// A light that stays until its parent goes (not pooled: arrows, the reticle, beams).
+        static Light2D StayingLight(Vector3 pos, Color c, float radius, float intensity, Transform follow)
+        {
             var go = new GameObject("fx_light");
             go.transform.position = pos;
             if (follow != null) go.transform.SetParent(follow, true);
             var l = go.AddComponent<Light2D>();
-            l.shadowsEnabled = false;   // URP turns shadows on by default; only CastShadows turns them on (a few big lights)
             l.lightType = Light2D.LightType.Point;
-            l.color = new Color(color.r, color.g, color.b, 1f);
-            l.intensity = intensity;
-            l.pointLightOuterRadius = Mathf.Max(0.2f, radius);
-            l.pointLightInnerRadius = radius * 0.15f;
-            l.falloffIntensity = 0.35f;   // softer, more gradual edge
+            Light(l, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);
             DungeonController.ApplyToAllLayers(l);
-            if (life > 0f) go.AddComponent<FxLight>().Init(life, intensity);
             if (radius >= 1.5f)
             {
-                // walls catch it from further away than the floor
                 var w = new GameObject("fx_wallglow");
                 w.transform.SetParent(go.transform, false);
                 var wl = w.AddComponent<Light2D>();
-                wl.shadowsEnabled = false;
                 wl.lightType = Light2D.LightType.Point;
-                wl.color = l.color;
-                wl.intensity = intensity * 0.6f;
-                wl.pointLightOuterRadius = radius * 1.7f;
-                wl.pointLightInnerRadius = radius * 0.2f;
-                wl.falloffIntensity = 0.3f;
+                Light(wl, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
                 DungeonController.ApplyToLayers(wl, "Walls");
-                if (life > 0f) w.AddComponent<FxLight>().Init(life, wl.intensity);
             }
             return l;
         }
@@ -450,40 +545,43 @@ namespace HearthHollow.Dungeon
         public static void Ghost(SpriteRenderer src, Color color, float life, bool flat, bool follow)
         {
             if (src == null || src.sprite == null) return;
-            var go = new GameObject("fx_ghost");
-            if (follow) go.transform.SetParent(src.transform, false);
-            else { go.transform.position = src.transform.position; go.transform.rotation = src.transform.rotation; go.transform.localScale = src.transform.lossyScale; }
-            var sr = go.AddComponent<SpriteRenderer>();
+            var fx = TakeSprite(follow ? src.transform : null);
+            if (!follow) { fx.transform.position = src.transform.position; fx.transform.rotation = src.transform.rotation; fx.transform.localScale = src.transform.lossyScale; }
+            var sr = fx.Renderer;
             sr.sprite = src.sprite; sr.flipX = src.flipX; sr.flipY = src.flipY; sr.color = color;
             sr.sortingLayerID = src.sortingLayerID; sr.sortingOrder = src.sortingOrder + (follow ? 1 : -1);
-            var m = flat ? FlatMat : GlowMat;
-            if (m != null) sr.sharedMaterial = m;
-            go.AddComponent<FxSprite>().InitKeep(life, color);
+            var m = flat ? FxMaterials.Flat : FxMaterials.Glow;
+            sr.sharedMaterial = m != null ? m : _spriteDefault;
+            fx.InitKeep(life, color);
         }
     }
 
-    /// Fades / scales / drifts a sprite, then destroys it. Runs on scaled time (pauses with the game).
+    /// Fades / scales / drifts a sprite, then goes back to DungeonFx's pool. Runs on scaled time (pauses with the game).
     public class FxSprite : MonoBehaviour
     {
         public Vector2 velocity;
         public Vector2 accel;
         public float drag = 6f;
-        public float spin;    // ticket 56: degrees a second (shards, leaves)
-        public float sway;    // ticket 56: side-to-side flutter (leaves falling)
+        public float spin;    // degrees a second (shards, leaves)
+        public float sway;    // side-to-side flutter (leaves falling)
         float _life, _t, _s0, _s1; Color _c; SpriteRenderer _sr; bool _keep;
+
+        public SpriteRenderer Renderer { get { if (_sr == null) _sr = GetComponent<SpriteRenderer>(); return _sr; } }
 
         public void Init(float life, float s0, float s1, Color c)
         {
-            _life = Mathf.Max(0.01f, life); _s0 = s0; _s1 = s1; _c = c;
-            _sr = GetComponent<SpriteRenderer>();
+            Restart(life, c, false);
+            _s0 = s0; _s1 = s1;
             transform.localScale = Vector3.one * s0;
         }
 
         /// Fade only — keeps the transform's scale as it is (ghosts).
-        public void InitKeep(float life, Color c)
+        public void InitKeep(float life, Color c) { Restart(life, c, true); }
+
+        void Restart(float life, Color c, bool keep)
         {
-            _life = Mathf.Max(0.01f, life); _c = c; _keep = true;
-            _sr = GetComponent<SpriteRenderer>();
+            _life = Mathf.Max(0.01f, life); _t = 0f; _c = c; _keep = keep;
+            velocity = Vector2.zero; accel = Vector2.zero; drag = 6f; spin = 0f; sway = 0f;
         }
 
         void Update()
@@ -496,22 +594,41 @@ namespace HearthHollow.Dungeon
             if (spin != 0f) transform.Rotate(0f, 0f, spin * Time.deltaTime);
             if (sway != 0f) transform.position += new Vector3(Mathf.Sin(_t * 6f) * sway * Time.deltaTime, 0f, 0f);
             velocity *= 1f - Mathf.Clamp01(Time.deltaTime * drag);
-            if (_sr != null) _sr.color = new Color(_c.r, _c.g, _c.b, _c.a * (1f - k));
-            if (_t >= _life) Destroy(gameObject);
+            Renderer.color = new Color(_c.r, _c.g, _c.b, _c.a * (1f - k));
+            if (_t >= _life) DungeonFx.Release(this);
         }
     }
 
-    /// Fades a Light2D out, then destroys it. Scaled time (freezes with hit-stop and pause).
+    /// Fades a pooled Light2D (and its wall glow) out, then goes back to DungeonFx's pool. Scaled time (freezes with
+    /// hit-stop and pause).
     public class FxLight : MonoBehaviour
     {
-        float _life, _t, _i0; Light2D _l;
-        public void Init(float life, float intensity) { _life = Mathf.Max(0.01f, life); _i0 = intensity; _l = GetComponent<Light2D>(); }
+        float _life, _t, _i0, _w0;
+        public Light2D Main { get; private set; }
+        public Light2D Wall { get; private set; }
+        /// Called once when it has faded (then cleared).
+        public System.Action Done;
+
+        public void Setup(Light2D main, Light2D wall) { Main = main; Wall = wall; }
+
+        public void Init(float life)
+        {
+            _life = Mathf.Max(0.01f, life); _t = 0f; Done = null;
+            _i0 = Main.intensity; _w0 = Wall.intensity;
+        }
+
         void Update()
         {
             _t += Time.deltaTime;
-            float k = Mathf.Clamp01(_t / _life);
-            if (_l != null) _l.intensity = _i0 * (1f - k) * (1f - k);
-            if (_t >= _life) Destroy(gameObject);
+            float k = Mathf.Clamp01(_t / _life), f = (1f - k) * (1f - k);
+            Main.intensity = _i0 * f;
+            if (Wall.gameObject.activeSelf) Wall.intensity = _w0 * f;
+            if (_t >= _life)
+            {
+                var done = Done; Done = null;
+                if (done != null) done();
+                DungeonFx.Release(this);
+            }
         }
     }
 }

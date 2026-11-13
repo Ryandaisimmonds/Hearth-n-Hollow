@@ -182,7 +182,7 @@ namespace HearthHollow.Dungeon
             transform.localScale = new Vector3(0.95f / b.x, 0.95f / b.y, 1f);
             var g = new GameObject("Glint"); g.transform.SetParent(transform, false); g.transform.localPosition = new Vector3(0.1f, 0.12f, 0);
             _glint = g.AddComponent<SpriteRenderer>(); _glint.sprite = DungeonFx.Pixel; _glint.color = new Color(1f, 0.9f, 0.6f, 0f);
-            if (DungeonFx.GlowMat != null) _glint.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) _glint.sharedMaterial = FxMaterials.Glow;
         }
 
         /// Close enough to dig?
@@ -248,7 +248,7 @@ namespace HearthHollow.Dungeon
             g.transform.localScale = new Vector3(len / b.x, w / b.y, 1f);
             var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Pixel; sr.color = new Color(1f, 0.75f, 0.4f, 0f);
             sr.sortingOrder = 30000;   // over the wall (Default layer draws after Walls)
-            if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
             return sr;
         }
 

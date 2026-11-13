@@ -11,8 +11,6 @@ namespace HearthHollow.Dungeon
 {
     public class EnemyGlow : MonoBehaviour
     {
-        static Material _rimMat;
-        static Material RimMat { get { if (_rimMat == null) _rimMat = Resources.Load<Material>("HHFx/Rim Sprite"); return _rimMat; } }
         static readonly int RimColorId = Shader.PropertyToID("_RimColor"), AmountId = Shader.PropertyToID("_Amount");
 
         EnemyController _e; CharacterAnimator _anim; EnemyProfile _p; DungeonSettings _set;
@@ -50,7 +48,7 @@ namespace HearthHollow.Dungeon
                 _lanternSr.sprite = DungeonFx.Pixel;
                 lg.transform.localScale = new Vector3(5f, 6f, 1f);
                 _lanternSr.color = set.eliteLantern;
-                if (DungeonFx.GlowMat != null) _lanternSr.sharedMaterial = DungeonFx.GlowMat;
+                if (FxMaterials.Glow != null) _lanternSr.sharedMaterial = FxMaterials.Glow;
                 _lantern = DungeonFx.Flash(lg.transform.position, set.eliteLantern, 4.5f, 1.25f, 0f, lg.transform);
             }
             if (stats.boss)
@@ -71,12 +69,12 @@ namespace HearthHollow.Dungeon
         void MakeRimAndEyes()
         {
             // rim: a copy of the body's sprite drawn as an outline, on top of it
-            if (_anim != null && _anim.Renderer != null && RimMat != null)
+            if (_anim != null && _anim.Renderer != null && FxMaterials.Rim != null)
             {
                 var r = new GameObject("Rim");
                 r.transform.SetParent(_anim.transform, false);
                 _rim = r.AddComponent<SpriteRenderer>();
-                _rim.sharedMaterial = RimMat;
+                _rim.sharedMaterial = FxMaterials.Rim;
             }
             if (_showEyes) { _eyeL = Eye("Eye L"); _eyeR = Eye("Eye R"); }
             _blinkT = Random.Range(2f, 5f);
@@ -92,7 +90,7 @@ namespace HearthHollow.Dungeon
             sr.sprite = DungeonFx.Pixel;
             float px = Mathf.Clamp(2.2f * _size, 2f, 4.5f);   // pixels (the Pixel sprite is 1 art pixel)
             g.transform.localScale = new Vector3(px, px * 0.8f, 1f);
-            if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
             return sr;
         }
 

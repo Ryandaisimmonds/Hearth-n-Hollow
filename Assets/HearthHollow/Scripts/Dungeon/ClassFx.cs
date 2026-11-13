@@ -43,7 +43,7 @@ namespace HearthHollow.Dungeon
             var b = s.bounds.size;
             g.transform.localScale = new Vector3(size / Mathf.Max(0.0001f, b.x), size / Mathf.Max(0.0001f, b.y), 1f);
             var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = s; sr.color = c; sr.sortingOrder = order;
-            if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
             return sr;
         }
 

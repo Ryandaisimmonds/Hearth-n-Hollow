@@ -14,15 +14,13 @@ namespace HearthHollow.Dungeon
         float _life, _t, _len, _width;
         bool _ring;
 
-        static Material Unlit { get { return Resources.Load<Material>("HHFx/Unlit Sprite"); } }
-
         static SpriteRenderer Part(Transform parent, Sprite s, Color c, int order)
         {
             var go = new GameObject("part");
             go.transform.SetParent(parent, false);
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = s; sr.color = c; sr.sortingOrder = order;
-            var m = Unlit; if (m != null) sr.sharedMaterial = m;   // readable even in a dark boss room
+            var m = FxMaterials.Unlit; if (m != null) sr.sharedMaterial = m;   // readable even in a dark boss room
             return sr;
         }
 

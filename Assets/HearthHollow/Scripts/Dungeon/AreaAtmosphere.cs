@@ -25,7 +25,6 @@ namespace HearthHollow.Dungeon
         readonly List<Mote> _fog = new List<Mote>();
         Transform _root;
         float _spawnT, _breathT;
-        static Material _unlit;
 
         /// Which air an area has (the fall has its own; Cold hazard routes get snow).
         public static AirKind KindFor(GameContent c, string routeId)
@@ -36,15 +35,6 @@ namespace HearthHollow.Dungeon
             if (routeId == Ids.Area.Chili || routeId == Ids.Area.Ember || (r != null && r.hazard == Hazard.Heat)) return AirKind.Chili;
             if (routeId == Ids.Area.Meadow || routeId == Ids.Area.Berry) return AirKind.Meadow;
             return AirKind.None;
-        }
-
-        static Material Unlit
-        {
-            get
-            {
-                if (_unlit == null) _unlit = Resources.Load<Material>("HHFx/Unlit Sprite");
-                return _unlit;
-            }
         }
 
         SpriteRenderer Take(Sprite s, int order, bool glow)
@@ -58,7 +48,7 @@ namespace HearthHollow.Dungeon
             }
             sr.gameObject.SetActive(true);
             sr.sprite = s; sr.sortingOrder = order;
-            var m = glow ? DungeonFx.GlowMat : Unlit;
+            var m = glow ? FxMaterials.Glow : FxMaterials.Unlit;
             if (m != null) sr.sharedMaterial = m;
             return sr;
         }

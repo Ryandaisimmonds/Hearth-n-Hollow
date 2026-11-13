@@ -1339,7 +1339,7 @@ namespace HearthHollow.Dungeon
             {
                 var g = new GameObject("Sunbeam"); g.transform.SetParent(transform, false);
                 _beamSr = g.AddComponent<SpriteRenderer>(); _beamSr.sprite = DungeonFx.Pixel; _beamSr.sortingOrder = 21000;
-                if (DungeonFx.GlowMat != null) _beamSr.sharedMaterial = DungeonFx.GlowMat;
+                if (FxMaterials.Glow != null) _beamSr.sharedMaterial = FxMaterials.Glow;
                 _beamLights = new UnityEngine.Rendering.Universal.Light2D[3];
                 for (int i = 0; i < 3; i++) _beamLights[i] = DungeonFx.Flash(Body, MoveColour(m), LightRadius(m), 1.6f, 0f, g.transform);
             }

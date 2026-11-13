@@ -125,7 +125,7 @@ namespace HearthHollow.Dungeon
             fx.transform.localScale = new Vector3(size.x / Mathf.Max(0.0001f, b.x), size.y / Mathf.Max(0.0001f, b.y), 1f);
             var sr = fx.AddComponent<SpriteRenderer>();
             sr.sprite = s; sr.color = c; sr.sortingOrder = order;
-            if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
             return sr;
         }
 
@@ -209,7 +209,7 @@ namespace HearthHollow.Dungeon
             g.transform.localScale = new Vector3(0.85f / b.x, 0.32f / b.y, 1f);
             _rune = g.AddComponent<SpriteRenderer>(); _rune.sprite = DungeonFx.Circle; _rune.color = Rune;
             _rune.sortingOrder = DungeonController.SortOrder(transform.position.y) - 1;
-            if (DungeonFx.GlowMat != null) _rune.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) _rune.sharedMaterial = FxMaterials.Glow;
         }
 
         /// The puzzle is solved: stay lit for good.
@@ -274,7 +274,7 @@ namespace HearthHollow.Dungeon
             var g = new GameObject("Flame"); g.transform.SetParent(transform, false); g.transform.localPosition = local;
             g.transform.localScale = new Vector3(0.9f * k, 0.9f * k, 1f);
             var sr = g.AddComponent<SpriteRenderer>(); sr.sprite = DungeonFx.Flame; sr.color = c; sr.sortingOrder = order;
-            if (DungeonFx.GlowMat != null) sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
             return sr;
         }
 
@@ -323,7 +323,7 @@ namespace HearthHollow.Dungeon
             _sr = gameObject.AddComponent<SpriteRenderer>();
             _sr.sprite = DungeonFx.Pixel; _sr.color = c; _sr.sortingOrder = 21000;
             transform.localScale = new Vector3(3f, 3f, 1f);
-            if (DungeonFx.GlowMat != null) _sr.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) _sr.sharedMaterial = FxMaterials.Glow;
             if (light) _l = DungeonFx.Flash(transform.position, c, 1.4f, 0.8f, 0f, transform);
         }
         Vector2 Pick() { return _room.Origin + new Vector2(1.5f + (float)_rng.NextDouble() * (RoomTemplate.Width - 3f), 1.5f + (float)_rng.NextDouble() * (RoomTemplate.Height - 5f)); }
@@ -380,7 +380,7 @@ namespace HearthHollow.Dungeon
             var fl = new GameObject("Flame"); fl.transform.SetParent(transform, false); fl.transform.localPosition = new Vector3(0, 0.22f, 0);
             fl.transform.localScale = new Vector3(0.55f, 0.55f, 1f);
             _flame = fl.AddComponent<SpriteRenderer>(); _flame.sprite = DungeonFx.Flame; _flame.color = Fire;
-            if (DungeonFx.GlowMat != null) _flame.sharedMaterial = DungeonFx.GlowMat;
+            if (FxMaterials.Glow != null) _flame.sharedMaterial = FxMaterials.Glow;
             _light = DungeonFx.Flash((Vector2)transform.position + new Vector2(0, 0.4f), Fire, 5.5f, 1.45f, 0f, transform);
             DungeonController.CastShadows(_light, 0.75f, 0.45f);
         }

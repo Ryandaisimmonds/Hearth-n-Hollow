@@ -145,7 +145,33 @@ namespace HearthHollow.PlayTests
             Assert.Greater(S.Run.hp, 0, "still standing");
             yield return Seconds(0.6f);
             yield return Shot("7_cleared");
+
+            // ── effects come from pools: after one warm-up, a boss dying in a full room makes no new objects ──
+            Vector3 at = dc.Player.Body;
+            yield return BossDeaths(at);
+            yield return Seconds(5.5f);   // everything fades and goes back (floor embers last up to 5 s)
+            int made = DungeonFx.Created;
+            yield return BossDeaths(at);
+            yield return Seconds(0.15f);
+            yield return Shot("8_bursts");
+            Assert.AreEqual(made, DungeonFx.Created, "effects made new objects after warm-up");
+            yield return Seconds(3f);
+            Step("a second round of boss deaths made no new effect objects (" + made + " pooled)");
             Step("set out for Meadow Hollow and cleared a " + fight.Node.kind + " room");
+        }
+
+        /// A boss dies in every element at once, with hits, rings and sparks all round: the worst case for effects.
+        static IEnumerator BossDeaths(Vector3 at)
+        {
+            foreach (Element e in Enum.GetValues(typeof(Element)))
+            {
+                DungeonFx.DeathBurst(at, e, new Color(0.6f, 0.4f, 0.3f), true, false);
+                DungeonFx.Sparks(at, Vector2.right, Color.white, 14);
+                DungeonFx.RingAt(at, Color.white, 1.6f, 0.35f);
+                DungeonFx.SlashAt(at, Vector2.left, Color.white, 1f);
+                DungeonFx.FloorEmbers(at, new Color(1f, 0.5f, 0.2f));
+                yield return null;
+            }
         }
 
         static bool AnyReady(RoomInstance room)
