@@ -1,52 +1,41 @@
-// Hearth & Hollow — the slice's story beats in town. Pure C#.
-// Ticket 15: after you beat the Meadow Hollow floor-5 boss, the first time you're home Old Wren tells you the
-// floor-10 boss fears fire and where chilies grow. That teaches its Fire weakness and reveals Chili Ridge. Once only.
-using System.Collections.Generic;
+// Hearth & Hollow — GameSession: the story (Story.cs) and the town calls that go with it. Pure C#.
+// The opening arc, Old Wren's thread and the opening fall live in Story; GameSession owns one and calls its hooks.
+// The few story answers used all over the game are forwarded here; for the rest, ask Session.Story.
 
 namespace HearthHollow.Core
 {
     public partial class GameSession
     {
-        public const string MeadowRoute = Ids.Area.Meadow, RidgeRoute = Ids.Area.Chili, FrostRoute = Ids.Area.FrostHollow;
-        public const string WrenFrostFlag = Ids.Flag.WrenFrost;   // ticket 47: Wren has told you the way to Frost Hollow
+        Story _story;
+        /// The opening arc, Old Wren's guiding thread and the opening fall.
+        public Story Story { get { return _story ?? (_story = new Story(this)); } }
 
-        /// Ticket 47: Meadow Hollow's boss floor (the Bramble Sow, at the bottom).
-        public int MeadowBossFloor { get { return DungeonRules.Floors(Content, MeadowRoute); } }
+        /// Set from the Dungeon Settings asset at start-up (GameBootstrap); a default arc otherwise.
+        public OpeningArc Arc { get { return Story.Arc; } set { Story.Arc = value; } }
+        public int ArcStage { get { return Profile.arcStage; } }
+        public WrenStep Wren { get { return Story.Step; } }
+        public bool InFall { get { return Story.InFall; } }
+        public const string FallRoute = Story.FallRoute;
+        /// A town area (kitchen, smithy, workshop, …) is open at this stage of the arc.
+        public bool AreaOpen(string area) { return Story.AreaOpen(area); }
+        public bool DashUnlocked { get { return Story.DashUnlocked; } }
 
-        /// Wren has the Fire hint to give: the Bramble Sow is down and she hasn't told you yet.
-        public bool WrenFireHintDue
+        /// × the walk speed (the opening's 75% start was cut in Design v2; kept at 1 for callers).
+        public float ArcSpeed { get { return 1f; } }
+        /// Boots, charms and skill nodes for the selected class (no meals): for walking about town.
+        public CombatMods TownMods { get { return Progression.Mods(Content, Profile, Profile.selectedClass); } }
+
+        /// Ticket 40: why you can't set out yet: the tray must be full (any meals, Camp Bread included). Not on the first dive.
+        public string TrayBlock
         {
             get
             {
-                return Phase == Phase.Hearth && !Routes.HasFlag(Profile, DefaultContent.WrenFireHint)
-                    && Progression.BeatBoss(Profile, MeadowRoute, MeadowBossFloor);
+                if (!Slice.On || Profile.arcStage == 0 || !Story.TrayShown) return null;
+                int n = Profile.tray.Count, max = Content.tuning.traySize;
+                if (n < max) return "Pack " + max + " meals to set out (" + n + "/" + max + ")";
+                var missing = Tray.Missing(Content, Profile.tray);   // ticket 44: an old tray of three Health meals, say
+                return missing.Count > 0 ? "Your tray needs " + Tray.Need(missing) : null;
             }
-        }
-
-        /// The Hoarfrost Alpha, at the bottom of Frost Hollow (ticket 47; it used to be the Meadow's floor-10 boss).
-        public string MeadowDeepBoss
-        {
-            get
-            {
-                string route = Content.Route(FrostRoute) != null ? FrostRoute : MeadowRoute;
-                return DungeonRules.BossMonster(Content, new RunState { routeId = route, floor = DungeonRules.Floors(Content, route), dungeon = true });
-            }
-        }
-
-        public List<string> WrenFireHintPages()
-        {
-            var boss = Content.Monster(MeadowDeepBoss);
-            string bossName = boss != null ? boss.name : "the beast at the bottom";
-            var ridge = Content.Route(RidgeRoute);
-            string ridgeName = ridge != null ? ridge.name : "Chili Ridge";
-            var chili = Content.Ingredient(Ids.Ingredient.Chili);
-            return new List<string>
-            {
-                "Back from the Hollow with bramble in your hair! You beat that old Sow at the bottom, didn't you? Good. Then it's time you heard about the cold.",
-                "Past the Hollow there's a colder place, Frost Hollow, and the " + bossName + " prowls at the bottom of it. Frost through and through: frost won't touch it, but it can't abide fire. 🔥 Hit it with Fire and it'll feel it, half again.",
-                "Fire food's what you want. " + (chili != null ? chili.emoji + " " + chili.name + "s" : "Chilies") + " put Fire in your attacks. They grow wild up on " + ridgeName + ", past the east road. It's a quiet place, not much lives up there, so gather what you can. I've marked it on your route board.",
-                "Off you go to Chili Ridge, then. Come back with the chilies and I'll show you what to do with them.",
-            };
         }
 
         /// Build the next stage of the Lamp-maker (in town, with coins and biome materials). Ticket 17.
@@ -56,19 +45,6 @@ namespace HearthHollow.Core
             if (!LampMaker.Build(Content, Profile, out reason)) return false;
             var s = LampMaker.Current(Content, Profile);
             Info("🏮 " + (s != null ? s.name : "The Lamp-maker") + " is built! " + LampMaker.EffectText(s));
-            Touch(true);
-            return true;
-        }
-
-        /// Wren gives the hint: the boss's Fire weakness is known and Chili Ridge opens. True the first time.
-        public bool GiveWrenFireHint()
-        {
-            if (!WrenFireHintDue) return false;
-            Routes.SetFlag(Profile, DefaultContent.WrenFireHint);
-            SetWren(WrenStep.Ridge);   // ticket 35
-            DiscoverElement(MeadowDeepBoss, Element.Fire);
-            var ridge = Content.Route(RidgeRoute);
-            Info("🗺️ " + (ridge != null ? ridge.emoji + " " + ridge.name : "Chili Ridge") + " is on the route board. 🔥 The " + (Content.Monster(MeadowDeepBoss) != null ? Content.Monster(MeadowDeepBoss).name : "floor-10 boss") + " is weak to Fire.");
             Touch(true);
             return true;
         }

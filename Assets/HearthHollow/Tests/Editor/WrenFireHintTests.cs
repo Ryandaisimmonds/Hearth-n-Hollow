@@ -15,10 +15,10 @@ namespace HearthHollow.Tests
         public void NotDue_UntilTheSowIsBeaten()
         {
             var s = Fresh();
-            Assert.IsFalse(s.WrenFireHintDue);
-            Assert.IsFalse(s.GiveWrenFireHint());
+            Assert.IsFalse(s.Story.FireHintDue);
+            Assert.IsFalse(s.Story.GiveFireHint());
             Progression.RecordFloor(s.Profile, Ids.Area.Meadow, 3);
-            Assert.IsFalse(s.WrenFireHintDue, "reaching floor 3 isn't beating its boss");
+            Assert.IsFalse(s.Story.FireHintDue, "reaching floor 3 isn't beating its boss");
         }
 
         [Test]
@@ -26,18 +26,18 @@ namespace HearthHollow.Tests
         {
             var s = Fresh();
             Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 3);
-            Assert.IsTrue(s.WrenFireHintDue);
-            Assert.AreEqual(Ids.Monster.HoarfrostAlpha, s.MeadowDeepBoss);
+            Assert.IsTrue(s.Story.FireHintDue);
+            Assert.AreEqual(Ids.Monster.HoarfrostAlpha, s.Story.DeepBoss);
             Assert.IsFalse(s.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
             Assert.IsFalse(s.IsRouteUnlocked(Ids.Area.Chili));
 
-            var pages = s.WrenFireHintPages();
+            var pages = s.Story.FireHintPages();
             Assert.That(string.Join(" ", pages.ToArray()), Does.Contain("Hoarfrost Alpha").And.Contain("Chili Ridge"));
-            Assert.IsTrue(s.GiveWrenFireHint());
+            Assert.IsTrue(s.Story.GiveFireHint());
             Assert.IsTrue(s.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
             Assert.IsTrue(s.IsRouteUnlocked(Ids.Area.Chili));
-            Assert.IsFalse(s.WrenFireHintDue, "plays once");
-            Assert.IsFalse(s.GiveWrenFireHint());
+            Assert.IsFalse(s.Story.FireHintDue, "plays once");
+            Assert.IsFalse(s.Story.GiveFireHint());
         }
 
         [Test]
@@ -45,11 +45,11 @@ namespace HearthHollow.Tests
         {
             var s = Fresh();
             Progression.RecordBoss(s.Profile, Ids.Area.Meadow, 3);
-            s.GiveWrenFireHint();
+            s.Story.GiveFireHint();
             var json = UnityEngine.JsonUtility.ToJson(s.Profile);
             var back = UnityEngine.JsonUtility.FromJson<Profile>(json);
             var s2 = new GameSession(_c, back, 12);
-            Assert.IsFalse(s2.WrenFireHintDue);
+            Assert.IsFalse(s2.Story.FireHintDue);
             Assert.IsTrue(s2.IsRouteUnlocked(Ids.Area.Chili));
             Assert.IsTrue(s2.KnowsElement(Ids.Monster.HoarfrostAlpha, Element.Fire));
         }
@@ -62,10 +62,10 @@ namespace HearthHollow.Tests
             for (int i = 0; i < 2; i++) s.DungeonDescend();
             Assert.AreEqual(3, s.Run.floor);
             s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.BrambleSow, true, true));
-            Assert.IsFalse(s.WrenFireHintDue, "not while still in the dungeon");
+            Assert.IsFalse(s.Story.FireHintDue, "not while still in the dungeon");
             s.DungeonExit();
             s.ReturnToHearth();
-            Assert.IsTrue(s.WrenFireHintDue);
+            Assert.IsTrue(s.Story.FireHintDue);
         }
     }
 }

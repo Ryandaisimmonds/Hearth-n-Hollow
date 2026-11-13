@@ -154,7 +154,7 @@ namespace HearthHollow.UI
                 {
                     int stage = st;
                     string nm = S.Arc.stages[st] != null ? S.Arc.stages[st].name : st.ToString();
-                    arc.Add(UIKit.B(st + " " + nm, () => S.DevSetArcStage(stage), "btn--secondary", "btn--small", "settings__btn"));
+                    arc.Add(UIKit.B(st + " " + nm, () => S.Story.DevSetArcStage(stage), "btn--secondary", "btn--small", "settings__btn"));
                 }
                 dev.Add(arc);
                 var kt = UIKit.E("settings__row");

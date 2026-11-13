@@ -504,7 +504,7 @@ namespace HearthHollow.Dungeon
             var md = Session.Content.Monster(monsterId);
             string artId = md != null && !string.IsNullOrEmpty(md.artId) ? md.artId : monsterId;   // named bosses borrow a base monster's sprites (ticket 13)
             var art = boss ? (ArtLibrary.GetBoss(artId) ?? ArtLibrary.GetMonster(artId)) : ArtLibrary.GetMonster(artId);   // bosses get their own big sprite
-            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.FallEnemySpeed);   // the fall: faster each room (ticket 43)
+            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.Story.FallEnemySpeed);   // the fall: faster each room (ticket 43)
             // shadow creatures: more the deeper you go, more in caves; never bosses or elites
             if (!boss && !elite && given == null && Settings.shadowChance != null && Settings.shadowChance.Length > 0)
             {
@@ -575,7 +575,7 @@ namespace HearthHollow.Dungeon
             yield return new WaitForSeconds(1.2f);
             while (Session.InDungeon && Session.InFall && Session.Run.hp > 0)
             {
-                Session.FallFogBite();
+                Session.Story.FallFogBite();
                 if (Player != null && Session.InDungeon) DungeonHud.Number(Player.transform.position + Vector3.up * 1.3f, "🌫️", "dnum--hazard");
                 yield return new WaitForSeconds(0.5f);
             }

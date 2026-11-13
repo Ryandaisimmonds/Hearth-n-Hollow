@@ -95,7 +95,7 @@ namespace HearthHollow.Tests
             var s = new GameSession(_c, p, 9);
             Assert.IsTrue(Progression.BeatBoss(s.Profile, Ids.Area.Meadow, 3));
             Assert.IsTrue(Progression.BeatBoss(s.Profile, Ids.Area.FrostHollow, 3));
-            Assert.IsTrue(Routes.HasFlag(s.Profile, GameSession.WrenFrostFlag), "Frost Hollow is open for a save that was hunting the Alpha");
+            Assert.IsTrue(Routes.HasFlag(s.Profile, Story.WrenFrostFlag), "Frost Hollow is open for a save that was hunting the Alpha");
         }
     }
 }

@@ -14,27 +14,27 @@ namespace HearthHollow.Tests
         public void NewGame_FallsIn_WakesInTown_ThenMeetsWren()
         {
             var s = new GameSession(_c, null, 91);
-            Assert.IsTrue(s.FallDue);
-            Assert.IsTrue(s.BeginTheFall());
+            Assert.IsTrue(s.Story.FallDue);
+            Assert.IsTrue(s.Story.BeginFall());
             Assert.AreEqual(Phase.Dungeon, s.Phase);
             Assert.IsTrue(s.Run.firstDive);
             Assert.AreEqual(WrenStep.FirstDive, s.Wren);
             Assert.IsFalse(s.Profile.metWren, "you haven't met her yet");
-            Assert.IsFalse(s.BeginTheFall(), "only once");
+            Assert.IsFalse(s.Story.BeginFall(), "only once");
 
             s.DungeonDamagePlayer(99999f);   // the fog wins
             Assert.AreEqual(Phase.RunEnd, s.Phase);
             s.ReturnToHearth();
             Assert.AreEqual(Phase.Hearth, s.Phase);
             Assert.AreEqual(WrenStep.AfterDive, s.Wren);
-            Assert.IsTrue(s.WrenTalkDue, "Wren comes over when you wake");
-            Assert.IsFalse(s.TrayShown, "no meal tray yet");
-            var pages = s.WrenTalk();
+            Assert.IsTrue(s.Story.TalkDue, "Wren comes over when you wake");
+            Assert.IsFalse(s.Story.TrayShown, "no meal tray yet");
+            var pages = s.Story.Talk();
             StringAssert.Contains("I'm Wren", pages[0]);
             Assert.IsTrue(s.Profile.metWren);
             Assert.AreEqual(WrenStep.CookMeal, s.Wren);
             Assert.IsTrue(s.AreaOpen("kitchen"));
-            Assert.IsFalse(s.FallDue);
+            Assert.IsFalse(s.Story.FallDue);
         }
 
         [Test]
@@ -43,10 +43,10 @@ namespace HearthHollow.Tests
             var s = new GameSession(_c, null, 92);
             s.Profile.arcStage = 1;
             s.Profile.wrenStep = (int)WrenStep.ShowMeal;
-            Assert.IsFalse(s.TrayShown);
+            Assert.IsFalse(s.Story.TrayShown);
             Assert.IsNull(s.TrayBlock, "no tray, nothing to fill");
             s.Profile.wrenStep = (int)WrenStep.FirstBoss;
-            Assert.IsTrue(s.TrayShown);
+            Assert.IsTrue(s.Story.TrayShown);
             Assert.IsNotNull(s.TrayBlock);
         }
 
@@ -54,17 +54,17 @@ namespace HearthHollow.Tests
         public void TheFall_IsANamelessHiddenDungeon_ThatSpeedsUp()
         {
             var s = new GameSession(_c, null, 94);
-            Assert.IsTrue(s.BeginTheFall());
+            Assert.IsTrue(s.Story.BeginFall());
             Assert.AreEqual(GameSession.FallRoute, s.Run.routeId);
             Assert.AreEqual("???", _c.Route(GameSession.FallRoute).name);
             Assert.IsFalse(Slice.ShowsRoute(GameSession.FallRoute), "never on the Route board");
             s.Run.fightRooms = 1;
-            Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f);
+            Assert.AreEqual(1f, s.Story.FallEnemySpeed, 0.001f);
             var first = s.DungeonEnemy(Ids.Monster.Wolf, false, false);
             s.Run.fightRooms = 2;
-            Assert.AreEqual(1f, s.FallEnemySpeed, 0.001f, "ticket 49: rooms 1–2 are the tutorial: no ramp yet");
+            Assert.AreEqual(1f, s.Story.FallEnemySpeed, 0.001f, "ticket 49: rooms 1–2 are the tutorial: no ramp yet");
             s.Run.fightRooms = 6;
-            Assert.Greater(s.FallEnemySpeed, 1.3f, "faster each room after that");
+            Assert.Greater(s.Story.FallEnemySpeed, 1.3f, "faster each room after that");
             var sixth = s.DungeonEnemy(Ids.Monster.Wolf, false, false);
             Assert.Greater(sixth.damage, first.damage * 4f, "and they hit much harder");
         }
@@ -89,18 +89,18 @@ namespace HearthHollow.Tests
         public void TheFall_HasNoLoot_AndEndsInAFade_NotASummary()   // ticket 49
         {
             var s = new GameSession(_c, null, 95);
-            Assert.IsTrue(s.BeginTheFall());
+            Assert.IsTrue(s.Story.BeginFall());
             Assert.AreEqual(7, _c.tuning.fallRooms, "the wake-up room + 6");
             int coins = s.Run.coinsEarned;
             s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.Slime, false, false));
             Assert.AreEqual(coins, s.Run.coinsEarned, "no coins");
             Assert.AreEqual(0, s.FloorLoot.Count);
             for (int i = 0; i < s.Run.bag.Count; i++) Assert.IsTrue(Bag.IsEmpty(s.Run.bag[i]), "no loot");
-            for (int i = 0; i < 40 && s.Phase == Phase.Dungeon; i++) s.FallFogBite();   // the fog room
+            for (int i = 0; i < 40 && s.Phase == Phase.Dungeon; i++) s.Story.FallFogBite();   // the fog room
             Assert.AreEqual(Phase.RunEnd, s.Phase, "the fog always wins");
-            Assert.IsTrue(s.FallEnding, "the UI fades to town instead of showing a summary");
+            Assert.IsTrue(s.Story.FallEnding, "the UI fades to town instead of showing a summary");
             s.ReturnToHearth();
-            Assert.IsFalse(s.FallEnding);
+            Assert.IsFalse(s.Story.FallEnding);
             Assert.AreEqual(WrenStep.AfterDive, s.Wren);
         }
 
@@ -110,13 +110,13 @@ namespace HearthHollow.Tests
             var s = new GameSession(_c, null, 96);
             s.Profile.arcStage = 1;
             s.Profile.wrenStep = (int)WrenStep.AfterDive;
-            StringAssert.Contains("Talk to Old Wren", s.WrenSetOutBlock);
+            StringAssert.Contains("Talk to Old Wren", s.Story.SetOutBlock);
             s.Profile.wrenStep = (int)WrenStep.CookMeal;
-            StringAssert.Contains("Cook a meal", s.WrenSetOutBlock);
+            StringAssert.Contains("Cook a meal", s.Story.SetOutBlock);
             s.Profile.wrenStep = (int)WrenStep.ShowMeal;
-            StringAssert.Contains("Show Old Wren", s.WrenSetOutBlock);
+            StringAssert.Contains("Show Old Wren", s.Story.SetOutBlock);
             s.Profile.wrenStep = (int)WrenStep.FirstBoss;
-            Assert.IsNull(s.WrenSetOutBlock, "she's explained the tray: off you go");
+            Assert.IsNull(s.Story.SetOutBlock, "she's explained the tray: off you go");
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace HearthHollow.Tests
         {
             var s = new GameSession(_c, null, 93);
             s.Profile.runsStarted = 2;
-            Assert.IsFalse(s.FallDue);
+            Assert.IsFalse(s.Story.FallDue);
         }
     }
 }

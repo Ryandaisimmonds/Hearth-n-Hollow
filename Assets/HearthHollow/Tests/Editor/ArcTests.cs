@@ -79,7 +79,7 @@ namespace HearthHollow.Tests
             Assert.AreEqual(1, s.ArcStage, "the town grows when you're home, not mid-dive");
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(2, s.ArcStage);
-            Assert.IsTrue(s.ArcFinished);
+            Assert.IsTrue(s.Story.ArcFinished);
             Assert.IsTrue(s.AreaOpen("smithy") && s.AreaOpen("workshop") && s.AreaOpen("lampmaker"));
             Assert.Greater(s.Profile.coins, coins, "a little coin to get started");
             Assert.IsFalse(s.DashUnlocked, "the dash comes from the smithy's first boots");
@@ -128,7 +128,7 @@ namespace HearthHollow.Tests
             var s = NewSession();
             Assert.IsTrue(s.DashUnlocked);
             Assert.IsTrue(s.AreaOpen("kitchen"));
-            Assert.IsTrue(s.ArcFinished);
+            Assert.IsTrue(s.Story.ArcFinished);
         }
 
         [Test]

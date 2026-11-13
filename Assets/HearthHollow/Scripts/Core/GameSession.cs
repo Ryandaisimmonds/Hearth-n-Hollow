@@ -20,7 +20,7 @@ namespace HearthHollow.Core
         public event Action ProfileSaveRequested;
 
         private readonly Rng _rng;
-        private TuningData T { get { return Content.tuning; } }
+        internal TuningData T { get { return Content.tuning; } }
 
         public GameSession(GameContent content, Profile profile, int seed)
         {
@@ -43,8 +43,7 @@ namespace HearthHollow.Core
             GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12, ticket 16)
             if (Profile.seenIngredients == null) Profile.seenIngredients = new System.Collections.Generic.List<string>();
             Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13, ticket 24)
-            UpgradeWren();                                    // Old Wren's guiding thread (saveVersion 14, ticket 35)
-            UpgradeAreas();                                   // shorter areas, Frost Hollow (saveVersion 15, ticket 47)
+            Story.UpgradeSave();                              // Old Wren's thread (saveVersion 14, ticket 35); shorter areas, Frost Hollow (saveVersion 15, ticket 47)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
@@ -73,7 +72,7 @@ namespace HearthHollow.Core
         public PlayerStats BaseStats { get { return StatCalc.ComputeBase(Content, Profile); } }
 
         // ───────────────────────── helpers ─────────────────────────
-        private void Recompute() { Stats = StatCalc.Compute(Content, Profile, Run); }
+        internal void Recompute() { Stats = StatCalc.Compute(Content, Profile, Run); }
 
         private void Emit(GameEvent e)
         {
@@ -81,9 +80,9 @@ namespace HearthHollow.Core
             if (e != null && EventRaised != null) EventRaised(e);
         }
         private void Emit(List<GameEvent> list) { if (list == null) return; foreach (var e in list) Emit(e); }
-        private void Info(string text) { Emit(new GameEvent(GameEventType.Info, 0, false, text)); }
+        internal void Info(string text) { Emit(new GameEvent(GameEventType.Info, 0, false, text)); }
 
-        private void Touch(bool save)
+        internal void Touch(bool save)
         {
             Recompute();
             if (save && ProfileSaveRequested != null) ProfileSaveRequested();
@@ -135,7 +134,7 @@ namespace HearthHollow.Core
             if (meal == null) { Info(reason); return null; }
             Emit(new GameEvent(GameEventType.Info, meal.grade, false,
                 Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + r.emoji + " " + r.name + " — into the meal pantry"));
-            WrenOnCooked();   // ticket 35
+            Story.OnCooked();   // ticket 35
             Touch(true);
             return meal;
         }
@@ -154,7 +153,7 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }
             if (!Cooking.Season(Content, Profile, m, ingId, out reason)) return false;
-            WrenOnSeasoned(m);   // ticket 35
+            Story.OnSeasoned(m);   // ticket 35
             var r = Content.Recipe(m.recipeId); var ing = Content.Ingredient(ingId);
             Info("🧂 " + (r != null ? r.name : "Meal") + " seasoned: " + Cooking.SlotText(ing));
             Touch(true);
@@ -337,7 +336,7 @@ namespace HearthHollow.Core
 
             Run = RunRules.CreateRun(Content, Profile, offer, storm);
             ClearRunLog();   // a fresh log each run (ticket 20)
-            Run.firstDive = !HearthHollow.Core.Arc.Finished(_arc, Profile) && Profile.arcStage == 0 && _arc.enabled;   // ticket 25
+            Run.firstDive = Story.FirstDive;   // ticket 25
             Run.firstRidge = false;   // ticket 47: Chili Ridge is the gentle area now (no special first trip)
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
             Run.infusions = Cooking.Infusions(Content, Run.eaten);   // ticket 46: every meal's infusion; attacks without their own element carry them all
@@ -359,7 +358,7 @@ namespace HearthHollow.Core
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
             if (Run.firstDive)
             {
-                if (_falling) Log(FallIntro);   // the UI shows it as a banner once the dungeon is on screen (ticket 42)
+                if (Story.Falling) Log(Story.FallIntro);   // the UI shows it as a banner once the dungeon is on screen (ticket 42)
                 else Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
             }
 
@@ -467,9 +466,7 @@ namespace HearthHollow.Core
             var joinedBefore = JoinedNow();
             LastSummary = Economy.SettleRun(Content, Profile, Run, Stats);
             AnnounceJoins(joinedBefore);   // story: a class may have joined your camp
-            ArcEvent(ArcTrigger.FirstRunEnd);   // opening arc: home from the first dive (fallen or not), Wren feeds you, the kitchen opens
-            WrenOnRunEnd();                      // ticket 35: Wren has something to say when you're home
-            FallOnRunEnd();                      // ticket 49: the fall fades straight to town
+            Story.OnRunEnd();                    // the opening arc, Wren's thread and the fall take note
             Phase = Phase.RunEnd;
             Touch(true);
         }
@@ -479,11 +476,9 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.RunEnd) return;
             Run = null;
-            FallEnding = false;
             RollNewCamp();
             Phase = Phase.Hearth;
-            if (Profile.bossesBeaten != null && Profile.bossesBeaten.Count > 0) ArcEvent(ArcTrigger.HomeAfterBoss);   // opening arc: home after your first boss, the camp grows into a town
-            WrenOnHome();   // ticket 42: waking up in town after the opening fall
+            Story.OnHome();   // the fall's fade ends, the arc may grow the town, and you may wake up there for the first time
             // Today's camp event is announced by the UI's camp-event pop-up (no toast).
             Touch(true);
         }

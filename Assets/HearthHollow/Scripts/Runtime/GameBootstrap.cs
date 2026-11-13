@@ -83,8 +83,8 @@ namespace HearthHollow.Runtime
             {
                 gameObject.AddComponent<HearthHollow.Dungeon.DungeonController>().Init(Session, _ui, dungeon);
                 gameObject.AddComponent<HearthHollow.Town.TownController>().Init(Session, _ui, dungeon);   // Hearth's Hollow (town preview)
-                if (Session.BeginTheFall())   // ticket 42: a new game opens with a fall into Meadow Hollow
-                    root.schedule.Execute(() => _ui.Juice.Toast(GameSession.FallIntro, "toast--level", 7f)).StartingIn(1200);   // once the dungeon's on screen
+                if (Session.Story.BeginFall())   // ticket 42: a new game opens with a fall into Meadow Hollow
+                    root.schedule.Execute(() => _ui.Juice.Toast(Story.FallIntro, "toast--level", 7f)).StartingIn(1200);   // once the dungeon's on screen
             }
             else
             {

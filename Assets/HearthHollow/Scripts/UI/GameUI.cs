@@ -237,8 +237,8 @@ namespace HearthHollow.UI
             Session.ResetGame();
             _classSelectOpen = !Slice.On;
             ApplyLayout();
-            if (Slice.On && Session.BeginTheFall())   // ticket 42: a fresh game opens with the fall
-                Root.schedule.Execute(() => Juice.Toast(GameSession.FallIntro, "toast--level", 7f)).StartingIn(1200);
+            if (Slice.On && Session.Story.BeginFall())   // ticket 42: a fresh game opens with the fall
+                Root.schedule.Execute(() => Juice.Toast(Story.FallIntro, "toast--level", 7f)).StartingIn(1200);
         }
 
         // ───────── session → UI ─────────
@@ -256,7 +256,7 @@ namespace HearthHollow.UI
                 _campEventOpen = true;
                 _routesOpen = false; _pantryOpen = false;
             }
-            if (p == Phase.RunEnd && _lastPhase != Phase.RunEnd && Session.FallEnding) FadeOutOfTheFall();   // ticket 49
+            if (p == Phase.RunEnd && _lastPhase != Phase.RunEnd && Session.Story.FallEnding) FadeOutOfTheFall();   // ticket 49
             _lastPhase = p;
             ApplyLayout();
         }
@@ -272,7 +272,7 @@ namespace HearthHollow.UI
             _townHud.SetVisible(TownWorldVisible);
             _routes.SetVisible(p == Phase.Hearth && !_classSelectOpen && _routesOpen);
             _dungeon.SetVisible(dungeon);
-            _summary.SetVisible(p == Phase.RunEnd && !Session.FallEnding);   // ticket 49: the fall has no summary
+            _summary.SetVisible(p == Phase.RunEnd && !Session.Story.FallEnding);   // ticket 49: the fall has no summary
             _rest.SetVisible(p == Phase.Rest);
             _gather.SetVisible(p == Phase.Gather);
             _campEvent.SetVisible(_campEventOpen && p == Phase.Hearth && !_classSelectOpen);

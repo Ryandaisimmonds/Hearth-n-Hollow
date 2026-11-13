@@ -15,16 +15,16 @@ namespace HearthHollow.Tests
             var s = new GameSession(_c, null, 71);
             s.Profile.selectedClass = ClassId.Cook;
             Assert.AreEqual(WrenStep.Meet, s.Wren);
-            Assert.IsTrue(s.WrenTalkDue, "Wren comes over at the start");
-            s.WrenTalk();
+            Assert.IsTrue(s.Story.TalkDue, "Wren comes over at the start");
+            s.Story.Talk();
             Assert.AreEqual(WrenStep.FirstDive, s.Wren);
-            Assert.IsFalse(s.WrenTalkDue);
+            Assert.IsFalse(s.Story.TalkDue);
 
             // first dive → home → Wren: cook a meal
             s.StartRun(Ids.Area.Meadow); s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(WrenStep.AfterDive, s.Wren);
-            Assert.IsTrue(s.WrenTalkDue);
-            s.WrenTalk();
+            Assert.IsTrue(s.Story.TalkDue);
+            s.Story.Talk();
             Assert.AreEqual(WrenStep.CookMeal, s.Wren);
 
             // cook → show Wren
@@ -32,8 +32,8 @@ namespace HearthHollow.Tests
             Assert.IsNotNull(r, "the starter food cooks something");
             Assert.IsNotNull(s.Cook(r.id, new CookChoice()));
             Assert.AreEqual(WrenStep.ShowMeal, s.Wren);
-            Assert.IsFalse(s.WrenTalkDue, "you go and show her yourself");
-            s.WrenTalk();
+            Assert.IsFalse(s.Story.TalkDue, "you go and show her yourself");
+            s.Story.Talk();
             Assert.AreEqual(WrenStep.FirstBoss, s.Wren);
 
             // the Sow at the bottom of the Meadow (floor 3) → the fire hint → Chili Ridge
@@ -42,8 +42,8 @@ namespace HearthHollow.Tests
             s.DungeonEnemyKilled(s.DungeonEnemy(Ids.Monster.BrambleSow, true, true));
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(WrenStep.HearHint, s.Wren);
-            Assert.IsTrue(s.WrenTalkDue);
-            s.GiveWrenFireHint();
+            Assert.IsTrue(s.Story.TalkDue);
+            s.Story.GiveFireHint();
             Assert.AreEqual(WrenStep.Ridge, s.Wren);
 
             // Chili Ridge: two quiet floors with an exit at the top (ticket 47)
@@ -53,8 +53,8 @@ namespace HearthHollow.Tests
             Assert.IsTrue(s.DungeonEndExit);
             s.DungeonExit(); s.ReturnToHearth();
             Assert.AreEqual(WrenStep.RidgeBack, s.Wren);
-            Assert.IsTrue(s.WrenTalkDue);
-            s.WrenTalk();
+            Assert.IsTrue(s.Story.TalkDue);
+            s.Story.Talk();
             Assert.AreEqual(WrenStep.SeasonMeal, s.Wren);
             Assert.IsFalse(s.IsRouteUnlocked(Ids.Area.FrostHollow), "Frost Hollow waits for a Fire meal");
 
@@ -64,7 +64,7 @@ namespace HearthHollow.Tests
             string why;
             Assert.IsTrue(s.SeasonMeal(s.Profile.mealPantry[s.Profile.mealPantry.Count - 1], Ids.Ingredient.Chili, out why), why);
             Assert.AreEqual(WrenStep.Alpha, s.Wren);
-            StringAssert.Contains("Hoarfrost Alpha", s.WrenObjective);
+            StringAssert.Contains("Hoarfrost Alpha", s.Story.Objective);
             Assert.IsTrue(s.IsRouteUnlocked(Ids.Area.FrostHollow), "Wren tells you the way");
 
             // the Alpha at the bottom of Frost Hollow → done

@@ -30,13 +30,13 @@ namespace HearthHollow.Tests
                 var rng = new System.Random(seed);
                 int lastStep = (int)s.Wren, sinceProgress = 0, runs = 0;
 
-                Assert.IsTrue(s.FallDue, "a new slice game opens with the fall");
+                Assert.IsTrue(s.Story.FallDue, "a new slice game opens with the fall");
                 for (int step = 0; step < Budget && s.Wren != WrenStep.Done; step++)
                 {
                     string did = Act(s, rng, ref runs);
                     log.AppendLine(step + " [" + s.Phase + " · Wren " + s.Wren + "] " + did);
                     if ((int)s.Wren != lastStep) { lastStep = (int)s.Wren; sinceProgress = 0; }
-                    else if (++sinceProgress > StallLimit) Assert.Fail("Stuck at Wren step " + s.Wren + " (objective: " + s.WrenObjective + ")\n" + Tail(log));
+                    else if (++sinceProgress > StallLimit) Assert.Fail("Stuck at Wren step " + s.Wren + " (objective: " + s.Story.Objective + ")\n" + Tail(log));
                     if (did.StartsWith("STUCK")) Assert.Fail(did + "\n" + Tail(log));
                 }
                 Assert.AreEqual(WrenStep.Done, s.Wren, "the slice didn't finish in " + Budget + " actions\n" + Tail(log));
@@ -52,11 +52,11 @@ namespace HearthHollow.Tests
         static string Act(GameSession s, System.Random rng, ref int runs)
         {
             var c = s.Content;
-            if (s.FallDue) { runs++; return s.BeginTheFall() ? "fell into the nameless dungeon" : "STUCK: the fall wouldn't start"; }
+            if (s.Story.FallDue) { runs++; return s.Story.BeginFall() ? "fell into the nameless dungeon" : "STUCK: the fall wouldn't start"; }
 
             if (s.InDungeon)
             {
-                if (s.InFall) { s.FallFogBite(); return "the fog bites (hp " + (s.Run != null ? s.Run.hp : 0) + ")"; }
+                if (s.InFall) { s.Story.FallFogBite(); return "the fog bites (hp " + (s.Run != null ? s.Run.hp : 0) + ")"; }
                 // fight a few of the floor's monsters for their loot
                 var pool = DungeonRules.NormalPool(c, s.Run);
                 for (int i = 0; i < 4 && pool.Count > 0 && s.InDungeon; i++) s.DungeonEnemyKilled(s.DungeonEnemy(pool[rng.Next(pool.Count)], false, false));
@@ -92,8 +92,8 @@ namespace HearthHollow.Tests
             }
 
             // Old Wren first, whenever she has something to say
-            if (s.WrenFireHintDue) { s.GiveWrenFireHint(); return "heard Wren's fire hint"; }
-            if (s.WrenTalkDue || s.Wren == WrenStep.ShowMeal) { s.WrenTalk(); return "talked to Wren"; }
+            if (s.Story.FireHintDue) { s.Story.GiveFireHint(); return "heard Wren's fire hint"; }
+            if (s.Story.TalkDue || s.Wren == WrenStep.ShowMeal) { s.Story.Talk(); return "talked to Wren"; }
 
             if (s.Wren == WrenStep.CookMeal)
             {
@@ -130,12 +130,12 @@ namespace HearthHollow.Tests
                 if (always == null || !s.PackAlwaysMeal(always.id)) break;
             }
 
-            string block = s.WrenSetOutBlock ?? s.TrayBlock;
+            string block = s.Story.SetOutBlock ?? s.TrayBlock;
             if (block != null) return "STUCK: can't set out: " + block;
 
             // go where the objective says (or, for chili, to the ridge)
             string route = RouteFor(s);
-            if (route == null) return "STUCK: the objective names nowhere you can go: " + s.WrenObjective;
+            if (route == null) return "STUCK: the objective names nowhere you can go: " + s.Story.Objective;
             runs++;
             if (!s.StartRun(route)) return "STUCK: couldn't start " + route + " (" + Routes.EnterBlock(c, s.Profile, route, s.Profile.selectedClass) + ")";
             return "set out for " + route + " (" + string.Join(", ", s.Profile.packed.ConvertAll(m => m.recipeId).ToArray()) + ")";
@@ -157,7 +157,7 @@ namespace HearthHollow.Tests
         {
             var c = s.Content;
             if (s.Wren == WrenStep.SeasonMeal && s.IsRouteUnlocked(Ids.Area.Chili)) return Ids.Area.Chili;
-            string obj = s.WrenObjective ?? "";
+            string obj = s.Story.Objective ?? "";
             foreach (var id in Slice.RouteIds)
             {
                 var r = c.Route(id);

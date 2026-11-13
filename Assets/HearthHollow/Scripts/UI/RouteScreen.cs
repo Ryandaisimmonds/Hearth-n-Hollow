@@ -489,19 +489,19 @@ namespace HearthHollow.UI
             }
             if (p.tray.Count == 0) mealBox.Add(UIKit.L("No meals packed — you'll head out on base stats.", "small", "expedition__warn"));
             mealBox.Add(UIKit.L("Meals are eaten as you enter; their buffs last the whole run.", "muted", "small", "expedition__note"));
-            if (S.TrayShown) _expedition.Add(mealBox);   // ticket 42: hidden until Wren has told you about packing meals
+            if (S.Story.TrayShown) _expedition.Add(mealBox);   // ticket 42: hidden until Wren has told you about packing meals
             if (Slice.On) _expedition.Add(cookBox);   // ticket 40: the tray comes first
 
             bool can = r != null && lockWhy == null && classWhy == null;
-            string trayWhy = S.WrenSetOutBlock ?? S.TrayBlock;   // Wren first, then a full tray (ticket 40) before you head out
+            string trayWhy = S.Story.SetOutBlock ?? S.TrayBlock;   // Wren first, then a full tray (ticket 40) before you head out
             _go.SetEnabled(can && trayWhy == null);
-            _go.text = r == null ? "Pick a route" : !can ? "🔒 " + r.name : trayWhy != null ? (S.WrenSetOutBlock != null ? "👵 " : "🧺 ") + trayWhy : "Enter " + r.name + " ➜";
+            _go.text = r == null ? "Pick a route" : !can ? "🔒 " + r.name : trayWhy != null ? (S.Story.SetOutBlock != null ? "👵 " : "🧺 ") + trayWhy : "Enter " + r.name + " ➜";
         }
 
         void Go()
         {
-            string block = S.WrenSetOutBlock ?? S.TrayBlock;
-            if (block != null) { Ui.Toast((S.WrenSetOutBlock != null ? "👵 " : "🧺 ") + block); return; }
+            string block = S.Story.SetOutBlock ?? S.TrayBlock;
+            if (block != null) { Ui.Toast((S.Story.SetOutBlock != null ? "👵 " : "🧺 ") + block); return; }
             if (_feast.Playing) { _feast.Skip(); return; }
             if (_selected == null || Routes.EnterBlock(C, S.Profile, _selected, S.Profile.selectedClass) != null) return;
             string route = _selected; int floor = _startFloor;

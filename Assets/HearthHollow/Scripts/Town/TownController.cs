@@ -75,9 +75,9 @@ namespace HearthHollow.Town
             // a short grace period after a menu closes, so the key that closed it doesn't reopen something
             if (!Walking) { _walkSince = Time.unscaledTime; Near = null; PushHud(); return; }
             // ticket 15: home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
-            if (Session.WrenFireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
+            if (Session.Story.FireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
             // ticket 33/35: Old Wren comes over when she has something new to tell you (the start, after your first dive, the chilies)
-            if (Slice.On && Session.WrenTalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
+            if (Slice.On && Session.Story.TalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
             Near = Nearest();
             if (Near != null && Time.unscaledTime - _walkSince > 0.2f && DungeonInput.Interact) Use(Near);
             PushHud();
@@ -134,7 +134,7 @@ namespace HearthHollow.Town
 
         void Use(TownSpot s)
         {
-            if (s.action == TownAction.Gate && Session.WrenSetOutBlock != null) { _ui.Toast("👵 " + Session.WrenSetOutBlock + "."); return; }   // ticket 33: no adventures until Wren's had her say
+            if (s.action == TownAction.Gate && Session.Story.SetOutBlock != null) { _ui.Toast("👵 " + Session.Story.SetOutBlock + "."); return; }   // ticket 33: no adventures until Wren's had her say
             string area = AreaOf(s.action);
             if (area != null && !Session.AreaOpen(area))   // opening arc (ticket 18)
             {
@@ -409,10 +409,10 @@ namespace HearthHollow.Town
         void TalkToWren()
         {
             var C = Session.Content; var p = Session.Profile;
-            if (Session.WrenFireHintDue)   // ticket 15: the floor-10 boss fears fire; chilies grow on Chili Ridge
+            if (Session.Story.FireHintDue)   // ticket 15: the floor-10 boss fears fire; chilies grow on Chili Ridge
             {
-                var hint = Session.WrenFireHintPages();
-                Session.GiveWrenFireHint();
+                var hint = Session.Story.FireHintPages();
+                Session.Story.GiveFireHint();
                 _ui.OpenDialogue("Old Wren", "👵", hint, "🗺️ Open the route board", () => _ui.OpenRoutes());
                 Session.SaveProfile();
                 return;
@@ -421,13 +421,13 @@ namespace HearthHollow.Town
             if (Slice.On)
             {
                 var step = Session.Wren;
-                var talk = Session.WrenTalk();
+                var talk = Session.Story.Talk();
                 var next = Session.Wren;
                 string act = null; System.Action onAct = null;
                 if (next == WrenStep.FirstDive || next == WrenStep.FirstBoss || next == WrenStep.Ridge || next == WrenStep.Alpha) { act = "🗺️ To the Route board"; onAct = () => _ui.OpenRoutes(); }
                 else if (next == WrenStep.CookMeal) { act = "🍳 To the cooking area"; onAct = () => _ui.OpenTownMenu(CampTab.Cooking); }
                 else if (next == WrenStep.SeasonMeal) { act = "🧂 To the spice rack"; onAct = () => _ui.OpenSeason(); }
-                if (next != step || step == WrenStep.Done) talk.Add("📌 " + Session.WrenObjective);
+                if (next != step || step == WrenStep.Done) talk.Add("📌 " + Session.Story.Objective);
                 _ui.OpenDialogue("Old Wren", "👵", talk, act, onAct);
                 return;
             }
