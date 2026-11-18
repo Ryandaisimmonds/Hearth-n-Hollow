@@ -65,7 +65,7 @@ namespace HearthHollow.Lab
 
         // ───────────────────────── the throwaway profile ─────────────────────────
         /// Moves still being made: they live here (not in the content) until they're ready to port.
-        public const string VerdantCrescent = "lab_verdant_crescent";
+        public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -76,6 +76,15 @@ namespace HearthHollow.Lab
                     slot = MoveSlot.Skill, kind = MoveKind.VerdantCrescent, element = Element.Nature,
                     power = 1.8f, cooldown = 6f, radius = 2.4f, range = 1f, duration = 0.5f, value = 1.15f,   // value = turns
                     lightColour = "9CFF7A", lightIntensity = 0.9f, lightRadius = 4f,
+                });
+            if (c.Move(CinderCrescent) == null)
+                c.moves.Add(new MoveData
+                {
+                    id = CinderCrescent, name = "Cinder Crescent", emoji = "🔥", anyClass = true,
+                    description = "Throw a crescent slash of fire that flies out, cooling from white-hot to deep red. Lv 2: three in a fan, burning the floor. Lv 3: five, and the middle one bursts into a ring of fire.",
+                    slot = MoveSlot.Skill, kind = MoveKind.CinderCrescent, element = Element.Fire,
+                    power = 1.4f, cooldown = 4f, radius = 1.5f, range = 5f,
+                    lightColour = "FF9A3C", lightIntensity = 0.9f, lightRadius = 4f,
                 });
         }
 
@@ -538,7 +547,7 @@ namespace HearthHollow.Lab
 
             // grouped: the lab's own moves first, then each class, then the moves any class can use
             var lab = C.moves.FindAll(m => m.id.StartsWith("lab_"));
-            if (lab.Count > 0) SkillGroup(b, "🧪 New in the lab", lab);
+            if (lab.Count > 0) LevelGroup(b, "🧪 New in the lab (each level)", lab);
             foreach (var cd in C.classes)
             {
                 var own = C.moves.FindAll(m => !m.anyClass && m.owner == cd.id && !m.id.StartsWith("lab_"));
@@ -570,15 +579,43 @@ namespace HearthHollow.Lab
             parent.Add(grid);
         }
 
+        /// The lab's own moves: one row each, with a button per level.
+        void LevelGroup(VisualElement parent, string title, List<MoveData> moves)
+        {
+            var l = Text(title, 13, new Color(1f, 0.78f, 0.45f));
+            l.style.marginTop = 10; l.style.marginBottom = 2; l.style.unityFontStyleAndWeight = FontStyle.Bold;
+            parent.Add(l);
+            foreach (var m in moves)
+            {
+                var mv = m;
+                var row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row; row.style.alignItems = Align.Center; row.style.marginTop = 2;
+                var name = Text(mv.emoji + " " + mv.name, 12, Color.white);
+                name.style.flexGrow = 1; name.style.flexShrink = 1;
+                name.tooltip = mv.description; name.pickingMode = PickingMode.Position;
+                row.Add(name);
+                for (int lv = 1; lv <= GameSession.MaxMoveLevel; lv++)
+                {
+                    int level = lv;
+                    var btn = Btn("Lv " + lv, () => Cast(mv, level));
+                    btn.style.flexGrow = 0; btn.style.width = 56; btn.style.marginLeft = 3;
+                    row.Add(btn);
+                }
+                parent.Add(row);
+            }
+        }
+
         static string SlotTag(MoveSlot s)
         {
             switch (s) { case MoveSlot.Attack: return "Attack"; case MoveSlot.Dash: return "Dash"; case MoveSlot.Ultimate: return "Ult"; default: return "Skill"; }
         }
 
-        void Cast(MoveData m)
+        void Cast(MoveData m) { Cast(m, _castLevel); }
+
+        void Cast(MoveData m, int level)
         {
             if (!Ready) return;
-            if (_castLevel > 0) S.SetMoveLevel(m.id, _castLevel);
+            if (level > 0) S.SetMoveLevel(m.id, level);
             Vector2 aim = Vector2.zero;
             if (_castAtNearest)
             {

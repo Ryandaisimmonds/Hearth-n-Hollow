@@ -132,6 +132,128 @@ namespace HearthHollow.Dungeon
             return true;
         }
 
+        /// Cinder Crescent: a crescent slash of fire thrown forward. It flies out, slowing, widening and cooling from
+        /// white-hot through yellow and orange to a deep red, burning everything it passes.
+        ///   Level 1  one crescent.
+        ///   Level 2  three in a fan, further and harder; each leaves a line of embers burning on the floor.
+        ///   Level 3  five; the middle one is bigger and, where it stops, bursts into a ring of fire.
+        bool UseCinderCrescent(MoveData m, Vector2 dir, float mult)
+        {
+            int lvl = Mathf.Clamp(S.MoveLevel(m.id), 1, GameSession.MaxMoveLevel);
+            int up = lvl - 1;
+            float reach = m.range * (1f + 0.3f * up);          // how far they fly: 100% → 130% → 160%
+            float size = m.radius * (1f + 0.2f * up);           // the crescent's radius
+            float arc = (150f + 20f * up) * Mathf.Deg2Rad;      // how much of a circle each one is
+            mult *= 1f + 0.3f * up;
+            int count = lvl >= 3 ? 5 : lvl >= 2 ? 3 : 1;
+            float fan = (lvl >= 3 ? 14f : 18f) * Mathf.Deg2Rad;
+            var type = _curType; var hit = new HashSet<EnemyController>();
+
+            _anim.PlayAttack(0.28f);
+            DungeonFx.SlashAt(Body + dir * 0.5f, dir, new Color(1f, 0.85f, 0.5f), 1.2f + 0.3f * up);   // the throw
+            _dc.Shake(0.08f + 0.04f * up, 0.06f + 0.03f * up);
+            for (int i = 0; i < count; i++)
+            {
+                float off = (i - (count - 1) * 0.5f) * fan;
+                Vector2 d = Quaternion.Euler(0f, 0f, off * Mathf.Rad2Deg) * dir;
+                bool middle = i == count / 2;
+                float k = middle ? 1f : 0.72f;
+                ThrowCinder(d, size * (middle && lvl >= 3 ? 1.25f : k), reach * (middle ? 1f : 0.85f), arc, mult * (middle ? 1f : 0.6f),
+                            lvl, middle && lvl >= 3, middle, type, hit, i * 0.035f);
+            }
+            return true;
+        }
+
+        void ThrowCinder(Vector2 d, float size, float reach, float arc, float mult, int lvl, bool bursts, bool middle, Element type, HashSet<EnemyController> hit, float delay)
+        {
+            const float Fly = 0.42f, Drag = 2.2f;
+            // a start speed that, slowing by Drag, covers `reach` in Fly seconds
+            float v0 = reach * Drag / (1f - Mathf.Exp(-Drag * Fly));
+            var mover = FxMover.Throw(Body, d * v0, Fly + delay);
+            mover.Drag = Drag; mover.Linger = 0.9f;
+            if (delay > 0f) { var keep = mover.Velocity; mover.Velocity = Vector2.zero; After(delay, () => { if (mover != null) mover.Velocity = keep; }); }
+
+            var ring = SlashRing.Play(mover.transform, Vector2.zero, 0f, 1);
+            float squash = ring.Squash;
+            float a0 = Mathf.Atan2(d.y / squash, d.x);   // the travel direction, on the ring's ellipse
+            ring.SetStart(a0 - arc * 0.5f);
+            ring.ShowBlade = false; ring.Delay = delay;
+            ring.Radius = size; ring.Width = size * 0.68f; ring.Turns = arc / (Mathf.PI * 2f); ring.SweepTime = 0.08f;
+            ring.TrailLife = Fly + 0.35f; ring.Drift = 0.35f; ring.Grow = 0.6f; ring.StartFadeDeg = 22f;
+            ring.Sparks = middle ? lvl : 0; ring.LeafChance = 0f;
+            CinderFire(ring, lvl);
+            var glow = DungeonFx.Flash(Body, ring.LightColour, size * 2.4f, 0.7f + 0.15f * lvl, Fly + 0.3f + delay, mover.transform);   // it lights the room as it goes
+
+            float emberT = 0f; Vector2 last = Body;
+            mover.Tick = pos =>
+            {
+                if (!Alive || mover.Velocity.sqrMagnitude < 0.01f) return;
+                // embers shed as it flies (and from level 2, a burning line on the floor)
+                emberT -= Time.deltaTime;
+                if (emberT <= 0f)
+                {
+                    emberT = 0.06f;
+                    Vector2 front = pos + new Vector2(Mathf.Cos(a0), Mathf.Sin(a0) * squash) * size;
+                    if (middle) DungeonFx.Embers(front, new Color(1f, 0.55f, 0.15f), lvl, 0.3f);   // a few, from the middle one only
+                    if (lvl >= 2 && (pos - last).sqrMagnitude > 0.16f) { DungeonFx.FloorEmbers(pos, new Color(1f, 0.45f, 0.1f), 2); last = pos; }
+                }
+                // burn what the crescent's edge passes over
+                foreach (var e in Combat2D.EnemiesIn(pos, size + 0.7f))
+                {
+                    if (e == null || e.Dead || hit.Contains(e)) continue;
+                    Vector2 off = e.Body - pos;
+                    Vector2 flat = new Vector2(off.x, off.y / squash);
+                    float r = flat.magnitude;
+                    if (r > size + 0.5f || r < size * 0.35f) continue;
+                    if (Mathf.Abs(Mathf.DeltaAngle(Mathf.Atan2(flat.y, flat.x) * Mathf.Rad2Deg, a0 * Mathf.Rad2Deg)) > arc * Mathf.Rad2Deg * 0.5f + 12f) continue;
+                    hit.Add(e);
+                    _curType = type;
+                    Hit(e, mult * S.MutatorAreaDamage, d, 7f + lvl, type);
+                    if (!Alive) return;
+                    DungeonFx.Sparks(e.Body, d, new Color(1f, 0.75f, 0.35f), 8 + 4 * lvl);
+                }
+            };
+
+            if (!bursts) return;
+            // level 3's middle crescent: where it stops, a ring of fire bursts outwards
+            mover.Landed = at =>
+            {
+                if (!Alive) return;
+                var wave = SlashRing.Play(mover.transform, Vector2.zero, a0, 1);
+                wave.ShowBlade = false; wave.Radius = size * 0.6f; wave.Width = size * 0.45f;
+                wave.SweepTime = 0.03f; wave.Turns = 1f; wave.StartFadeDeg = 0f;
+                wave.TrailLife = 0.5f; wave.Drift = 1.4f; wave.Grow = 0.9f; wave.Sparks = 0; wave.LeafChance = 0f;
+                CinderFire(wave, 3);
+                _dc.Shake(0.22f, 0.16f);
+                GameFeel.HitStop(0.05f);
+                GameLook.Punch(0.5f);
+                DungeonFx.Flash(at, new Color(1f, 0.55f, 0.15f), size * 3f, 1.2f, 0.45f);
+                DungeonFx.Embers(at, new Color(1f, 0.6f, 0.2f), 30, size);
+                for (int i = 0; i < 10; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.FloorEmbers(at + new Vector2(o.x, o.y * squash) * size * Random.Range(0.4f, 1.3f), new Color(1f, 0.45f, 0.1f), 2); }
+                float burst = size * 1.6f;
+                foreach (var e in Combat2D.EnemiesIn(at, burst + 0.5f))
+                {
+                    if (e == null || e.Dead) continue;
+                    Vector2 off = e.Body - at;
+                    if (new Vector2(off.x, off.y / squash).magnitude > burst + 0.4f) continue;
+                    _curType = type;
+                    Hit(e, mult * 0.8f * S.MutatorAreaDamage, off.sqrMagnitude > 0.001f ? off.normalized : d, 10f, type);
+                    if (!Alive) return;
+                }
+            };
+        }
+
+        /// Cinder Crescent's fire: white-hot → yellow → orange → deep red, fiercer each level.
+        static void CinderFire(SlashRing r, int lvl)
+        {
+            r.HotColour = new Color(1f, 0.98f, 0.9f);
+            r.PaleColour = new Color(1f, 0.76f, 0.32f);   // straight to a hot orange-yellow (fire cools fast)
+            r.LightColour = lvl >= 3 ? new Color(1f, 0.42f, 0.06f) : new Color(1f, 0.55f, 0.12f);
+            r.DeepColour = lvl >= 3 ? new Color(0.85f, 0.06f, 0.02f) : lvl >= 2 ? new Color(0.8f, 0.12f, 0.03f) : new Color(0.7f, 0.16f, 0.05f);
+            r.HeatScale = 0.8f + 0.15f * (lvl - 1);   // fire stays orange: too hot and it all blooms to yellow-white
+            r.HeadHeat = 2.6f + 0.3f * (lvl - 1);
+        }
+
         /// Verdant Crescent's greens: each level a deeper, stronger green that burns brighter.
         static void CrescentGreen(SlashRing r, int lvl)
         {

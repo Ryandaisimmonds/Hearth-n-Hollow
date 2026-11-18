@@ -104,6 +104,9 @@ namespace HearthHollow.Dungeon
             return go.GetComponent<MeshFilter>().sharedMesh;
         }
 
+        /// Where the swing starts (radians on the ellipse) — for a caller that needs the ring before it knows the angle.
+        public void SetStart(float radians) { _start = radians; _lastA = radians; }
+
         float AngleAt(float t)
         {
             float p = Mathf.Clamp01(t / Mathf.Max(0.01f, SweepTime));
