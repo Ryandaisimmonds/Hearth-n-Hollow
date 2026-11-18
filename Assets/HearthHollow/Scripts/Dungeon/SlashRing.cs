@@ -5,7 +5,10 @@
 // outwards the longer it hangs, before fading. The half of the ring above the character draws behind them, the half
 // below in front. Everything runs on scaled time, so the lab's slow motion (and hit-stops) slow it down too.
 //
-// The trail is a mesh ribbon (two of them: back and front) with streaks along its length (Rendering/GlowTrail.shader).
+// The trail is one mesh ribbon with streaks along its length (Rendering/GlowTrail.shader), drawn oldest first so a
+// second lap lies over the first. Both ends taper and fade, so nothing ends in a hard line. (It used to be split in
+// two, behind and in front of the character, but where a lap crossed from one half to the other the layers swapped
+// and left a straight seam; the blade itself still goes behind the character on the far side.)
 // Swept tells whoever cast it which angles the blade crossed this frame, so they can hit what's there.
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +33,8 @@ namespace HearthHollow.Dungeon
         public float BladeThickness = 0.36f;
         public bool ShowBlade = true;      // false: just the trail (echo rings and wind lines round a bigger swing)
         public float Delay;                // seconds before it starts (echoes trail the main swing a moment behind)
-        public float StartFadeDeg = 40f;   // the swing's first bit fades in over this many degrees (0 = a full ring at once)
+        public float StartFadeDeg = 40f;   // the swing's first bit fades in (and narrows) over this many degrees (0 = a full ring at once)
+        public float EndFadeDeg = 30f;     // …and its last bit, once the blade has gone (or always, with no blade)
         public float HeatScale = 1f;       // × how bright the whole trail burns (a stronger green)
         public int Sparks = 1;             // sparks thrown off the tip each beat…
         public float LeafChance = 0.35f;   // …and the chance of a leaf
@@ -55,7 +59,7 @@ namespace HearthHollow.Dungeon
         struct Sample { public float a, born; }
         readonly List<Sample> _samples = new List<Sample>(256);
 
-        MeshRenderer _backR, _frontR; Mesh _back, _front;
+        MeshRenderer _trailR; Mesh _trail; int _backOrder;
         SpriteRenderer _blade, _halo; Transform _lightAt; Light2D _light;
         float _emitT;
 
@@ -72,8 +76,7 @@ namespace HearthHollow.Dungeon
 
         void Start()
         {
-            _back = NewMesh("Back", out _backR);
-            _front = NewMesh("Front", out _frontR);
+            _trail = NewMesh("Trail", out _trailR);
             if (ShowBlade)
             {
                 _halo = BladeSprite("Blade glow");   // a wide soft glow round…
@@ -161,47 +164,47 @@ namespace HearthHollow.Dungeon
             c.a = k < 0.5f ? 1f : 1f - Mathf.SmoothStep(0f, 1f, (k - 0.5f) / 0.5f);
         }
 
-        readonly List<Vector3> _bv = new List<Vector3>(), _fv = new List<Vector3>();
-        readonly List<Color> _bc = new List<Color>(), _fc = new List<Color>();
-        readonly List<Vector2> _bu = new List<Vector2>(), _fu = new List<Vector2>(), _bh = new List<Vector2>(), _fh = new List<Vector2>();
-        readonly List<int> _bt = new List<int>(), _ft = new List<int>();
+        readonly List<Vector3> _tv = new List<Vector3>();
+        readonly List<Color> _tc = new List<Color>();
+        readonly List<Vector2> _tu = new List<Vector2>(), _th = new List<Vector2>();
+        readonly List<int> _tt = new List<int>();
 
         void Rebuild()
         {
-            _bv.Clear(); _fv.Clear(); _bc.Clear(); _fc.Clear(); _bu.Clear(); _fu.Clear(); _bh.Clear(); _fh.Clear(); _bt.Clear(); _ft.Clear();
+            _tv.Clear(); _tc.Clear(); _tu.Clear(); _th.Clear(); _tt.Clear();
             int n = _samples.Count;
             float headA = n > 0 ? _samples[n - 1].a : _start;
-            for (int i = 0; i + 1 < n; i++)
+            // the leading end fades too once there's no blade there: always without a blade, and after the swing with one
+            float endFade = EndFadeDeg * (ShowBlade ? Mathf.Clamp01((_t - SweepTime) / 0.15f) : 1f);
+            for (int i = 0; i < n; i++) Edge(_samples[i], headA, endFade);
+            for (int i = 0; i + 1 < n; i++)   // oldest first: a later lap draws over an earlier one
             {
-                var s0 = _samples[i]; var s1 = _samples[i + 1];
-                float mid = (s0.a + s1.a) * 0.5f;
-                bool back = Mathf.Sin(mid) > 0f;   // the half above the centre is behind the character
-                var V = back ? _bv : _fv; var C = back ? _bc : _fc; var U = back ? _bu : _fu; var H = back ? _bh : _fh; var T = back ? _bt : _ft;
-                int b = V.Count;
-                Edge(s0, headA, V, C, U, H);
-                Edge(s1, headA, V, C, U, H);
-                T.Add(b); T.Add(b + 1); T.Add(b + 3);
-                T.Add(b); T.Add(b + 3); T.Add(b + 2);
+                int b = i * 2;
+                _tt.Add(b); _tt.Add(b + 1); _tt.Add(b + 3);
+                _tt.Add(b); _tt.Add(b + 3); _tt.Add(b + 2);
             }
-            Fill(_back, _bv, _bc, _bu, _bh, _bt);
-            Fill(_front, _fv, _fc, _fu, _fh, _ft);
-            int feet = DungeonController.SortOrder(_follow != null ? _follow.position.y : transform.position.y);
-            _backR.sortingOrder = feet - 3;     // behind the caster, over the floor
-            _frontR.sortingOrder = 20400;       // over everyone (hit sparks still on top)
+            Fill(_trail, _tv, _tc, _tu, _th, _tt);
+            _backOrder = DungeonController.SortOrder(_follow != null ? _follow.position.y : transform.position.y) - 3;   // behind the caster
+            _trailR.sortingOrder = 20400;   // over everyone (hit sparks still on top)
         }
 
-        void Edge(Sample s, float headA, List<Vector3> V, List<Color> C, List<Vector2> U, List<Vector2> H)
+        void Edge(Sample s, float headA, float endFadeDeg)
         {
             float age = Mathf.Max(0f, _t - s.born);
             float k = age / Mathf.Max(0.01f, TrailLife);
             float behind = Mathf.Abs(headA - s.a);                                  // radians behind the blade
             float taper = Mathf.SmoothStep(0f, 1f, behind / (35f * Mathf.Deg2Rad));   // a little narrower right at the blade, full just behind
             float w = Width * (0.8f + 0.2f * taper) * (1f + Grow * k);
-            float fromStart = Mathf.Abs(s.a - _start);                                  // the very start of the swing fades in (no hard cut)
             float r = Radius * (1f + Drift * k);
             Color c; float heat; Cool(age, out c, out heat);
-            if (StartFadeDeg > 0f) c.a *= Mathf.SmoothStep(0f, 1f, fromStart / (StartFadeDeg * Mathf.Deg2Rad));
+            // both ends fade out and come to a point, so the ribbon never stops in a straight line
+            float ends = 1f;
+            if (StartFadeDeg > 0f) ends *= Mathf.SmoothStep(0f, 1f, Mathf.Abs(s.a - _start) / (StartFadeDeg * Mathf.Deg2Rad));
+            if (endFadeDeg > 0f) ends *= Mathf.SmoothStep(0f, 1f, behind / (endFadeDeg * Mathf.Deg2Rad));
+            c.a *= ends;
+            w *= Mathf.Lerp(0.25f, 1f, ends);
             heat *= HeatScale;
+            var V = _tv; var C = _tc; var U = _tu; var H = _th;
             V.Add(Point(s.a, r - w)); V.Add(Point(s.a, r));
             Color inner = c; inner.a *= 0.85f;
             C.Add(inner); C.Add(c);
@@ -235,7 +238,7 @@ namespace HearthHollow.Dungeon
             Color hc = Color.Lerp(HotColour, PaleColour, p * p); hc.a = fade;
             Color gc = Color.Lerp(PaleColour, LightColour, p); gc.a = 0.75f * fade;
             float flicker = 1f + 0.12f * Mathf.Sin(_t * 70f);
-            int order = Mathf.Sin(a) > 0f ? _backR.sortingOrder + 1 : 20410;
+            int order = Mathf.Sin(a) > 0f ? _backOrder + 1 : 20410;   // the blade goes behind you on the far side
             PlaceBlade(_blade, root, rot, len, BladeThickness * flicker * Mathf.Lerp(1f, 0.7f, p), hc, order + 1);
             PlaceBlade(_halo, root, rot, len * 1.04f, BladeThickness * 3.5f * Mathf.Lerp(1f, 0.75f, p), gc, order);
             _lightAt.localPosition = Point(a, Radius * 0.75f);
@@ -312,8 +315,7 @@ namespace HearthHollow.Dungeon
         void OnDestroy()
         {
             if (_light != null) Destroy(_light.gameObject);
-            if (_back != null) Destroy(_back);
-            if (_front != null) Destroy(_front);
+            if (_trail != null) Destroy(_trail);
         }
 
         // ── the material and its streak texture (made once) ──

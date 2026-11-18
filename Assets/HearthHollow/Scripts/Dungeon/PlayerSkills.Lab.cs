@@ -103,7 +103,7 @@ namespace HearthHollow.Dungeon
                 {
                     var wave = SlashRing.Play(transform, lift, aim, spin);
                     wave.ShowBlade = false; wave.Radius = radius; wave.Width = radius * 0.35f;
-                    wave.SweepTime = 0.03f; wave.Turns = 1f; wave.StartFadeDeg = 0f;
+                    wave.SweepTime = 0.03f; wave.Turns = 1.1f; wave.StartFadeDeg = 36f; wave.EndFadeDeg = 36f;   // the ends overlap and cross-fade: no seam where the ring closes
                     wave.TrailLife = 0.5f; wave.Drift = 0.75f; wave.Grow = 0.9f; wave.Sparks = 0; wave.LeafChance = 0f;
                     CrescentGreen(wave, lvl);
                     _dc.Shake(0.25f, 0.18f);
@@ -179,7 +179,7 @@ namespace HearthHollow.Dungeon
             ring.SetStart(a0 - arc * 0.5f);
             ring.ShowBlade = false; ring.Delay = delay;
             ring.Radius = size; ring.Width = size * 0.68f; ring.Turns = arc / (Mathf.PI * 2f); ring.SweepTime = 0.08f;
-            ring.TrailLife = Fly + 0.35f; ring.Drift = 0.35f; ring.Grow = 0.6f; ring.StartFadeDeg = 22f;
+            ring.TrailLife = Fly + 0.35f; ring.Drift = 0.35f; ring.Grow = 0.6f; ring.StartFadeDeg = 40f; ring.EndFadeDeg = 40f;   // both tips taper to points
             ring.Sparks = middle ? lvl : 0; ring.LeafChance = 0f;
             CinderFire(ring, lvl);
             var glow = DungeonFx.Flash(Body, ring.LightColour, size * 2.4f, 0.7f + 0.15f * lvl, Fly + 0.3f + delay, mover.transform);   // it lights the room as it goes
@@ -221,7 +221,7 @@ namespace HearthHollow.Dungeon
                 if (!Alive) return;
                 var wave = SlashRing.Play(mover.transform, Vector2.zero, a0, 1);
                 wave.ShowBlade = false; wave.Radius = size * 0.6f; wave.Width = size * 0.45f;
-                wave.SweepTime = 0.03f; wave.Turns = 1f; wave.StartFadeDeg = 0f;
+                wave.SweepTime = 0.03f; wave.Turns = 1.1f; wave.StartFadeDeg = 36f; wave.EndFadeDeg = 36f;   // the ends overlap and cross-fade: no seam where the ring closes
                 wave.TrailLife = 0.5f; wave.Drift = 1.4f; wave.Grow = 0.9f; wave.Sparks = 0; wave.LeafChance = 0f;
                 CinderFire(wave, 3);
                 _dc.Shake(0.22f, 0.16f);
