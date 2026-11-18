@@ -10,7 +10,7 @@ namespace HearthHollow.Dungeon
         public struct MapRoom
         {
             public Vector2Int cell; public RoomKind kind;
-            public bool visited, current, cleared, known;
+            public bool visited, current, cleared;
             public bool n, s, e, w;
         }
         /// Loot on the floor, as tags the HUD pins above each pickup (emoji + count). Rebuilt every frame.

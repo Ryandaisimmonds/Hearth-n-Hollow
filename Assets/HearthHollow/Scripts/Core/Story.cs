@@ -23,7 +23,6 @@ namespace HearthHollow.Core
 
     public partial class RunState
     {
-        public bool firstRidge;   // always false now: Chili Ridge became the gentle area, so there is no special first trip
         public int fightRooms;    // rooms whose fight has started this run (the first dive gets tougher with each)
     }
 

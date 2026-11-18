@@ -30,7 +30,7 @@ namespace HearthHollow.Dungeon
         public GameObject FloorRoot { get { return _root; } }
         public DungeonTheme Theme { get { return _theme; } }
         public RoomInstance CurrentRoom { get { return _current; } }
-        FloorLootView _loot;   // ticket 48
+        FloorLootView _loot;
         FallGuide _fall;       // the opening fall: its fog and its how-to-play lines
         /// False while paused (menus, minigames, bag) or when there is no floor.
         public bool GameplayActive { get; private set; }
@@ -56,9 +56,9 @@ namespace HearthHollow.Dungeon
         public void Init(GameSession session, GameUI ui, DungeonSettings settings)
         {
             Instance = this;
-            if (GetComponent<AreaAtmosphere>() == null) gameObject.AddComponent<AreaAtmosphere>();   // ticket 55: each area's air
+            if (GetComponent<AreaAtmosphere>() == null) gameObject.AddComponent<AreaAtmosphere>();   // each area's air
             Session = session; _ui = ui; Settings = settings;
-            _loot = gameObject.AddComponent<FloorLootView>(); _loot.Init(this);   // ticket 48: loot on the floor
+            _loot = gameObject.AddComponent<FloorLootView>(); _loot.Init(this);   // loot on the floor
             _intro = new BossIntro(this, _camera);
             _fall = new FallGuide(this);
             Session.Changed += OnChanged;
@@ -94,7 +94,7 @@ namespace HearthHollow.Dungeon
             else if (_carrySeed != run.dungeonSeed) _carryCd = null;
             if (_root != null) DestroyFloor();
             Hud = new DungeonHudState { Active = true };
-            _regenRate = -1f; _regenAcc = 0f; _calmHealT = 0f;   // ticket 38: re-read meal Regen each floor
+            _regenRate = -1f; _regenAcc = 0f; _calmHealT = 0f;   // re-read meal Regen each floor
             _builtKey = key;
 
             var C = Session.Content;
@@ -103,10 +103,10 @@ namespace HearthHollow.Dungeon
             int seed = unchecked(run.dungeonSeed * 31 + run.floor * 7919);
             var rng = new System.Random(seed);
             int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
-            bool fall = run.routeId == GameSession.FallRoute;   // ticket 43: the nameless opening dungeon
+            bool fall = run.routeId == GameSession.FallRoute;   // the nameless opening dungeon
             _plan = fall ? DungeonGenerator.Gauntlet(seed, T.fallRooms)
                          : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice,
-                                                     Session.DungeonNoLadder || Session.DungeonEndExit,   // ticket 47: a boss-free area's last floor ends in an exit
+                                                     Session.DungeonNoLadder || Session.DungeonEndExit,   // a boss-free area's last floor ends in an exit
                                                      run.floor, route != null ? route.gatherChance : 0.2f);
             _theme = Settings.ThemeFor(fall ? Ids.Area.Heart : run.routeId);   // it borrows the Hollow Heart's purple gloom
 
@@ -232,7 +232,7 @@ namespace HearthHollow.Dungeon
         /// No fight on: the room is calm or cleared (Flare is cheap then).
         bool OutOfFight { get { return _current != null && (!_current.HasEvent || _current.Cleared) && !_current.EventRunning; } }
 
-        // ── ticket 38: meals that heal over time (Regen) ──
+        // ── meals that heal over time (Regen) ──
         float _calmHealT, _regenAcc, _regenRate = -1f;
         void SlowHealing(float dt)
         {
@@ -245,22 +245,22 @@ namespace HearthHollow.Dungeon
                 _regenAcc += _regenRate * dt / 10f;
                 if (_regenAcc >= 1f) { int h = Session.DungeonHealPlayer((int)_regenAcc); _regenAcc -= (int)_regenAcc; if (h > 0) DungeonHud.Number(Player.Body + Vector2.up * 0.7f, "+" + h, "dnum--heal"); }
             }
-            // (ticket 39: the out-of-fight trickle was replaced by a heal for every room you clear: GameSession.DungeonRoomCleared)
+            // (there's no out-of-fight trickle: clearing a room heals instead, GameSession.DungeonRoomCleared)
         }
 
-        /// A monster went down: the Ember Locket takes time off Flare's cooldown (ticket 16).
+        /// A monster went down: the Ember Locket takes time off Flare's cooldown.
         public void OnEnemyKilled()
         {
             float cut = Gear.Perk(Session.Content, Session.Profile, TrinketPerk.FlareOnKill);
             if (cut > 0f && _flareCd > 0f) _flareCd = Mathf.Max(0f, _flareCd - cut);
         }
 
-        /// Flare's reach, widened by the Lamp-maker (ticket 17).
+        /// Flare's reach, widened by the Lamp-maker.
         public float FlareRadius { get { return Settings.flareRadius * (1f + LampMaker.FlareRadius(Session.Content, Session.Profile)); } }
 
         void Flare()
         {
-            float lampCut = LampMaker.FlareCooldownCut(Session.Content, Session.Profile);   // the Lamp-maker (ticket 17)
+            float lampCut = LampMaker.FlareCooldownCut(Session.Content, Session.Profile);   // the Lamp-maker
             _flareCd = OutOfFight ? Settings.flareCalmCooldown : Mathf.Max(Settings.flareMinCooldown - lampCut * 0.5f, Settings.flareCooldown - Settings.mealSteady * _light.MealSteady - lampCut);
             float flareR = FlareRadius;
             var col = new Color(1f, 0.92f, 0.75f);
@@ -298,29 +298,29 @@ namespace HearthHollow.Dungeon
         public void OnRoomCleared(RoomInstance room)
         {
             int hpBefore = Session.Run != null ? Session.Run.hp : 0;
-            Session.DungeonRoomCleared();   // ticket 39: clearing a room heals a share of your max HP
+            Session.DungeonRoomCleared();   // clearing a room heals a share of your max HP
             int healed = Session.Run != null ? Session.Run.hp - hpBefore : 0;
             if (healed > 0 && Player != null) DungeonHud.Number(Player.Body + Vector2.up * 0.9f, "💗 +" + healed, "dnum--heal");
             if (_light != null) _light.Cleared(room == _current);   // cleared: the room lights up too
             if (room.Lights != null) room.Lights.IgniteWave(room.LastKill != Vector2.zero ? room.LastKill : (Vector2)(room.Origin + RoomTemplate.Centre));   // braziers flare on from the last kill
             DungeonFx.RingAt(Player != null ? (Vector3)Player.Body : (Vector3)(room.Origin + RoomTemplate.Centre), new Color(1f, 0.95f, 0.7f, 0.7f), 3f, 0.6f);
-            HearthHollow.Runtime.GameAudio.Play("room_clear");   // ticket 62
+            HearthHollow.Runtime.GameAudio.Play("room_clear");
             RefreshMap();
         }
 
         public EnemyController SpawnEnemy(RoomInstance room, string monsterId, bool elite, bool boss, Vector2 at, EnemyStats given = null)
         {
             if (string.IsNullOrEmpty(monsterId)) return null;
-            var stats = given ?? Session.DungeonEnemy(monsterId, elite, boss);   // ticket 64: split slimes bring their own
+            var stats = given ?? Session.DungeonEnemy(monsterId, elite, boss);   // split slimes bring their own
             var profile = Settings.ProfileFor(monsterId);
             var go = new GameObject((boss ? "BOSS " : elite ? "Elite " : "") + monsterId);
             go.transform.SetParent(room.transform, false);
             go.transform.position = at;
             var e = go.AddComponent<EnemyController>();
             var md = Session.Content.Monster(monsterId);
-            string artId = md != null && !string.IsNullOrEmpty(md.artId) ? md.artId : monsterId;   // named bosses borrow a base monster's sprites (ticket 13)
+            string artId = md != null && !string.IsNullOrEmpty(md.artId) ? md.artId : monsterId;   // named bosses borrow a base monster's sprites
             var art = boss ? (ArtLibrary.GetBoss(artId) ?? ArtLibrary.GetMonster(artId)) : ArtLibrary.GetMonster(artId);   // bosses get their own big sprite
-            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.Story.FallEnemySpeed);   // the fall: faster each room (ticket 43)
+            e.Setup(this, room, stats, profile, art, (_theme != null ? _theme.enemySpeedMult : 1f) * Session.MutatorEnemySpeed * Session.Story.FallEnemySpeed);   // the fall: faster each room
             // shadow creatures: more the deeper you go, more in caves; never bosses or elites
             if (!boss && !elite && given == null && Settings.shadowChance != null && Settings.shadowChance.Length > 0)
             {
@@ -356,10 +356,10 @@ namespace HearthHollow.Dungeon
             float ld = 99f; var floorItem = _loot != null ? _loot.Nearest(p.Feet, 1.2f, out ld) : null;
             if (floorItem != null && (it == null || ld <= Vector2.Distance(p.Feet, it.transform.position)))
             {
-                if (Session.DungeonPickUp(floorItem)) Hud.BagOpen = true;   // ticket 48: the bag's full: swap something out
+                if (Session.DungeonPickUp(floorItem)) Hud.BagOpen = true;   // the bag's full: swap something out
                 return;
             }
-            var dig = NearestDig(p.Feet);   // ticket 50: a buried chest underfoot
+            var dig = NearestDig(p.Feet);   // a buried chest underfoot
             if (dig != null && it == null) { dig.Dig(this); return; }
             if (it != null) it.Use(this);
         }
@@ -367,12 +367,12 @@ namespace HearthHollow.Dungeon
         /// A ladder: ask whether to go deeper or head home with the haul (the dungeon pauses meanwhile).
         public void AskLadder(Interactable ladder)
         {
-            if (Session.DungeonDescend()) ladder.MarkUsed();   // ticket 36: a ladder only goes down — the way home is a portal or a boss's exit
+            if (Session.DungeonDescend()) ladder.MarkUsed();   // a ladder only goes down — the way home is a portal or a boss's exit
             return;
             _ui.OpenLadderChoice(() => { if (Session.DungeonDescend()) ladder.MarkUsed(); }, () => Session.DungeonExit());
         }
 
-        /// Ticket 50: a buried chest in reach in this room, or null.
+        /// A buried chest in reach in this room, or null.
         HiddenForage NearestDig(Vector2 feet)
         {
             if (_current == null || _current.Secrets == null) return null;
@@ -380,7 +380,7 @@ namespace HearthHollow.Dungeon
             return null;
         }
 
-        /// Ticket 49: the fall's last room: no monsters. The fog pours in and drains you until you fall.
+        /// The fall's last room: no monsters. The fog pours in and drains you until you fall.
         public void StartFogRoom(RoomInstance room) { StartCoroutine(_fall.FogRoom()); }
 
         public void Shake(float seconds, float amp) { _camera.Shake(seconds, amp); }
@@ -418,7 +418,7 @@ namespace HearthHollow.Dungeon
                 if (_flareCd > Settings.flareCalmCooldown && OutOfFight) _flareCd = Settings.flareCalmCooldown;   // the fight's over: Flare is nearly ready again
             if (_flareCd > 0f) _flareCd -= Time.deltaTime;
                 if (DungeonInput.Flare && Player != null && _flareCd <= 0f) Flare();
-                SlowHealing(Time.deltaTime);   // ticket 38
+                SlowHealing(Time.deltaTime);
             }
             Hud.FlareCooldown = Mathf.Max(0f, _flareCd);
             _fall.Tick();   // the fall's tutorial lines and its fog

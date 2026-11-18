@@ -12,9 +12,9 @@ namespace HearthHollow.Core
         public int floor = 1;             // 1-based
         public int floorsTotal = 3;
         public int dungeonSeed;           // the Unity generator seeds each floor from this + floor
-        public bool secondWindUsed;       // ticket 16: the Pocket Hearth has saved you this run
-        public bool firstDive;            // ticket 25: the opening's first dive (no ladder, tougher monsters)
-        public bool mustGoHome;           // ticket 32: you've just beaten your first boss ever: no going deeper this run
+        public bool secondWindUsed;       // the Pocket Hearth has saved you this run
+        public bool firstDive;            // the opening's first dive (no ladder, tougher monsters)
+        public bool mustGoHome;           // you've just beaten your first boss ever: no going deeper this run
     }
 
     /// Stats for one spawned enemy (difficulty-scaled, same formulas as the old turn-based fights).
@@ -22,11 +22,11 @@ namespace HearthHollow.Core
     {
         public string monsterId; public bool elite; public bool boss;
         public int difficulty; public int maxHp; public float damage;
-        public bool split;           // ticket 64: a little slime split off another: no coins, xp or loot of its own
-        public float sizeMult = 1f;  // ticket 64: drawn smaller (split slimes)
+        public bool split;           // a little slime split off another: no coins, xp or loot of its own
+        public float sizeMult = 1f;  // drawn smaller (split slimes)
     }
 
-    /// Ticket 64: the slime split's numbers. (Which monsters circle, swoop or split is data on MonsterData: refactor 04.)
+    /// The slime split's numbers. (Which monsters circle, swoop or split is data on MonsterData: refactor 04.)
     public static class MonsterHabits
     {
         public const float SplitHpPct = 0.35f, SplitDamagePct = 0.5f, SplitSize = 0.62f;
@@ -51,7 +51,7 @@ namespace HearthHollow.Core
     {
         const float EliteHpMult = 1.5f, EliteAtkMult = 1.25f;
 
-        /// Ticket 49: how far up the opening ramp this room is. In the fall's dungeon rooms 1–2 are the tutorial (no ramp);
+        /// How far up the opening ramp this room is. In the fall's dungeon rooms 1–2 are the tutorial (no ramp);
         /// elsewhere (an old save's first Meadow dive) it starts at once.
         public static int FirstDiveRamp(RunState run)
         {
@@ -77,13 +77,12 @@ namespace HearthHollow.Core
             float hp = (t.monsterHpBase + diff * t.monsterHpPerDiff) * (m != null ? m.hpMult : 1f);
             float atk = t.monsterAtkBase + diff * t.monsterAtkPerDiff;
             if (elite || boss) { hp *= EliteHpMult; atk *= EliteAtkMult; }
-            if (run.firstDive)   // ticket 25/42: the opening fall: every room you fight through is tougher than the last, so it ends in a fall
+            if (run.firstDive)   // the opening fall: every room you fight through is tougher than the last, so it ends in a fall
             {
                 int k = FirstDiveRamp(run);
                 hp *= t.firstDiveHpMult + k * t.firstDiveHpPerRoom;
                 atk *= t.firstDiveAtkMult + k * t.firstDiveAtkPerRoom;
             }
-            if (run.firstRidge) { hp *= 0.6f; atk *= 0.6f; }   // ticket 35: the first Ridge trip is quick and easy
             if (boss) { hp *= t.bossHpMult; atk *= t.bossAtkMult; }
             if (Routes.Has(c.Route(run.routeId), Mutator.Giants)) hp *= t.giantHp;
             if (Routes.Has(c.Route(run.routeId), Mutator.Swarm) && !boss) hp *= t.swarmHp;
@@ -121,7 +120,7 @@ namespace HearthHollow.Core
             return list;
         }
 
-        /// Monsters that join this route from this floor down (ticket 13).
+        /// Monsters that join this route from this floor down.
         public static List<string> DeepMonsters(GameContent c, RouteData route, int floor)
         {
             var list = new List<string>();
@@ -146,7 +145,7 @@ namespace HearthHollow.Core
             return ids[ids.Count - 1];
         }
 
-        // ───────────── deep dungeons (Design v2, ticket 12) ─────────────
+        // ───────────── deep dungeons (Design v2) ─────────────
         public static int Floors(GameContent c, string routeId)
         {
             RouteData r = c.Route(routeId);
@@ -157,24 +156,24 @@ namespace HearthHollow.Core
         public static bool IsBossFloor(GameContent c, string routeId, int floor)
         {
             RouteData r = c.Route(routeId);
-            if (r != null && r.noBoss) return false;   // ticket 47: a resource area
+            if (r != null && r.noBoss) return false;   // a resource area
             if (floor >= Floors(c, routeId)) return true;
             int every = r != null ? r.bossEvery : 0;
             return every > 0 && floor > 0 && floor % every == 0;
         }
 
-        /// Ticket 26: a way home is rare: every boss room has one, and a portal turns up on about 1 floor in 5
+        /// A way home is rare: every boss room has one, and a portal turns up on about 1 floor in 5
         /// (never floor 1; seeded by the run and floor, so it doesn't change on reload). Elsewhere the ladder just goes down.
         public static bool HomeChoiceOn(GameContent c, string routeId, int floor, int seed)
         {
             return IsBossFloor(c, routeId, floor) || EndsInExit(c, routeId, floor) || (LongArea(c, routeId) && PortalFloor(c, floor, seed));
         }
 
-        /// Ticket 47: a long area (5+ floors) has way-home portals and floor shortcuts; a short one's only way home is its bottom.
+        /// A long area (5+ floors) has way-home portals and floor shortcuts; a short one's only way home is its bottom.
         public const int LongAreaFloors = 5;
         public static bool LongArea(GameContent c, string routeId) { return Floors(c, routeId) >= LongAreaFloors; }
 
-        /// Ticket 47: the last floor of a boss-free area ends in an exit home.
+        /// The last floor of a boss-free area ends in an exit home.
         public static bool EndsInExit(GameContent c, string routeId, int floor)
         {
             RouteData r = c.Route(routeId);
@@ -192,7 +191,7 @@ namespace HearthHollow.Core
         public static List<int> StartFloors(GameContent c, Profile p, string routeId)
         {
             var list = new List<int> { 1 };
-            if (!LongArea(c, routeId)) return list;   // ticket 47: shortcuts only in long areas
+            if (!LongArea(c, routeId)) return list;   // shortcuts only in long areas
             int n = Floors(c, routeId);
             for (int f = 1; f < n; f++)
                 if (IsBossFloor(c, routeId, f) && Progression.BeatBoss(p, routeId, f) && !list.Contains(f + 1)) list.Add(f + 1);

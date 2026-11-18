@@ -73,7 +73,7 @@ namespace HearthHollow.Dungeon
             _playerLight.lightType = Light2D.LightType.Point;
             _playerLight.color = Color.Lerp(new Color(1f, 0.76f, 0.48f), PlayerController.ClassColour(player.ClassId), Settings.carriedLightClassTint);   // firelight, tinted by your class colour
             _playerLight.intensity = Mathf.Max(theme.playerLight, Settings.carriedLight);
-            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LightReach(Session.Content, Session.Profile));   // the lantern (ticket 16) + the Lamp-maker (ticket 17)
+            _playerLight.pointLightOuterRadius = Settings.carriedLightRadius * (1f + Gear.LightReach(Session.Content, Session.Profile));   // the lantern + the Lamp-maker
             // packed meals feed your light (step 5): Sandwich = wider, BBQ = hotter + redder, Pot = steadier; finer meals count more
             float reach = 0f, heat = 0f, steady = 0f;
             if (Session.Run != null)

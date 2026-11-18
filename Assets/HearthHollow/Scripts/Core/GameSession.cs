@@ -33,21 +33,21 @@ namespace HearthHollow.Core
             UpgradeProgression();   // skill trees + loadouts (saveVersion 3), kept valid every load
             Economy.UpgradeBag(Content, Profile);   // bag tiers (saveVersion 4)
             Cooking.UpgradeSave(Profile);           // meal pantry + packed cooked meals (saveVersion 6)
-            Cooking.MergeIngredientGrades(Profile);   // ingredients lost their grades (saveVersion 10, ticket 08)
+            Cooking.MergeIngredientGrades(Profile);   // ingredients lost their grades (saveVersion 10)
             Cooking.DropUnknownMeals(Content, Profile);   // meals whose recipe is gone
             if (Profile.saveVersion < 7) { ClassRework7(); UpgradeProgression(); }   // class rework: a fresh start for every class (GameSessionClasses.cs)
             if (Profile.saveVersion < 8) Profile.saveVersion = 8;
             if (Profile.knownElements == null) Profile.knownElements = new System.Collections.Generic.List<KnownElement>();
-            if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2 (ticket 07): element discovery starts empty   // Design v2 (ticket 04): no levels, XP or skill trees; their old fields drop out on the next save
-            UpgradeArcProgress();                     // deepest floors / bosses / learned moves (saveVersion 11, ticket 10)
-            GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12, ticket 16)
+            if (Profile.saveVersion < 9) Profile.saveVersion = 9;   // Design v2: element discovery starts empty   // Design v2: no levels, XP or skill trees; their old fields drop out on the next save
+            UpgradeArcProgress();                     // deepest floors / bosses / learned moves (saveVersion 11)
+            GearRefund = Gear.ShareGear(Content, Profile);   // one shared utility set; power gear refunded (saveVersion 12)
             if (Profile.seenIngredients == null) Profile.seenIngredients = new System.Collections.Generic.List<string>();
-            Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13, ticket 24)
-            Story.UpgradeSave();                              // Old Wren's thread (saveVersion 14, ticket 35); shorter areas, Frost Hollow (saveVersion 15, ticket 47)
+            Routes.SeedSeen(Content, Profile);               // ingredients you've had reveal recipes (saveVersion 13)
+            Story.UpgradeSave();                              // Old Wren's thread (saveVersion 14); shorter areas, Frost Hollow (saveVersion 15)
             UpgradeProgression();                     // loadouts follow the move pool
             EnsureJoinedSelection();
             if (Profile.keyItems == null) Profile.keyItems = new System.Collections.Generic.List<string>();   // story key items (content v4)
-            if (Profile.storyFlags == null) Profile.storyFlags = new System.Collections.Generic.List<string>();   // story beats (ticket 14)
+            if (Profile.storyFlags == null) Profile.storyFlags = new System.Collections.Generic.List<string>();   // story beats
             _rng = new Rng(seed);
             // Reuse today's saved camp so relaunching doesn't reroll the merchant / events.
             if (Profile.camp != null && Profile.campDay == Profile.day && Profile.camp.routeOffers != null && Profile.camp.routeOffers.Count > 0)
@@ -76,7 +76,7 @@ namespace HearthHollow.Core
 
         private void Emit(GameEvent e)
         {
-            if (e != null && Run != null && Loggable(e.type) && !string.IsNullOrEmpty(e.text)) Log(e.text);   // the run log (ticket 20)
+            if (e != null && Run != null && Loggable(e.type) && !string.IsNullOrEmpty(e.text)) Log(e.text);   // the run log
             if (e != null && EventRaised != null) EventRaised(e);
         }
         private void Emit(List<GameEvent> list) { if (list == null) return; foreach (var e in list) Emit(e); }
@@ -122,7 +122,7 @@ namespace HearthHollow.Core
         }
 
         /// Cook a meal with the chosen ingredient grades and accelerator. Returns the cooked meal (null if it couldn't).
-        /// Coins refunded when gear became one shared utility set (ticket 16); 0 once it's been shown.
+        /// Coins refunded when gear became one shared utility set; 0 once it's been shown.
         public int GearRefund { get; set; }
 
         public CookedMeal Cook(string recipeId, CookChoice choice)
@@ -134,13 +134,13 @@ namespace HearthHollow.Core
             if (meal == null) { Info(reason); return null; }
             Emit(new GameEvent(GameEventType.Info, meal.grade, false,
                 Cooking.GradeGem(meal.grade) + " " + Cooking.GradeName(meal.grade) + " " + r.emoji + " " + r.name + " — into the meal pantry"));
-            Story.OnCooked();   // ticket 35
+            Story.OnCooked();
             Touch(true);
             return meal;
         }
 
         /// Pack a cooked meal from the meal pantry onto the tray.
-        /// Cooked meals with an empty element slot (meal pantry first, then the tray). Ticket 27.
+        /// Cooked meals with an empty element slot (meal pantry first, then the tray).
         public List<CookedMeal> SeasonableMeals()
         {
             var list = new List<CookedMeal>();
@@ -153,7 +153,7 @@ namespace HearthHollow.Core
         {
             if (Phase != Phase.Hearth) { reason = "Only in town"; return false; }
             if (!Cooking.Season(Content, Profile, m, ingId, out reason)) return false;
-            Story.OnSeasoned(m);   // ticket 35
+            Story.OnSeasoned(m);
             var r = Content.Recipe(m.recipeId); var ing = Content.Ingredient(ingId);
             Info("🧂 " + (r != null ? r.name : "Meal") + " seasoned: " + Cooking.SlotText(ing));
             Touch(true);
@@ -322,24 +322,23 @@ namespace HearthHollow.Core
 
         public bool StartRun(string routeId) { return StartRun(routeId, 1); }
 
-        /// Start a run, optionally from a shortcut floor (one past a boss you've beaten; ticket 12).
+        /// Start a run, optionally from a shortcut floor (one past a boss you've beaten).
         public bool StartRun(string routeId, int startFloor)
         {
             if (Phase != Phase.Hearth) return false;
             if (!ClassAvailable(Profile.selectedClass)) { Info(ClassJoinHint(Profile.selectedClass)); return false; }
-            if (!Slice.ShowsRoute(routeId) && routeId != FallRoute) { Info("Not in this build yet"); return false; }   // the fall's nameless dungeon is hidden (ticket 43)
+            if (!Slice.ShowsRoute(routeId) && routeId != FallRoute) { Info("Not in this build yet"); return false; }   // the fall's nameless dungeon is hidden
             string block = Routes.EnterBlock(Content, Profile, routeId, Profile.selectedClass);
             if (block != null) { Info(block); return false; }
-            RouteOffer offer = routeId == FallRoute ? null : Hearth.routeOffers.Find(o => o.routeId == routeId);   // the fall's dungeon never rolls Rich / Lucky / Dangerous (ticket 43)
+            RouteOffer offer = routeId == FallRoute ? null : Hearth.routeOffers.Find(o => o.routeId == routeId);   // the fall's dungeon never rolls Rich / Lucky / Dangerous
             if (offer == null) offer = new RouteOffer { routeId = routeId, mod = RouteMod.None };
             bool storm = Hearth.campEvent == CampEvent.Storm;
 
             Run = RunRules.CreateRun(Content, Profile, offer, storm);
-            ClearRunLog();   // a fresh log each run (ticket 20)
-            Run.firstDive = Story.FirstDive;   // ticket 25
-            Run.firstRidge = false;   // ticket 47: Chili Ridge is the gentle area now (no special first trip)
+            ClearRunLog();   // a fresh log each run
+            Run.firstDive = Story.FirstDive;
             Run.eaten = Cooking.Packed(Content, Profile);   // the packed cooked meals (quality + element ingredients)
-            Run.infusions = Cooking.Infusions(Content, Run.eaten);   // ticket 46: every meal's infusion; attacks without their own element carry them all
+            Run.infusions = Cooking.Infusions(Content, Run.eaten);   // every meal's infusion; attacks without their own element carry them all
             Run.element = Run.infusions.Count > 0 ? Run.infusions[0] : Element.None;
             Run.guards = Cooking.Guards(Content, Run.eaten);      // elements the meals guard against
             if (Run.infusions.Count > 0) Log(Elements.List(Run.infusions) + " Your attacks are infused with " + Elements.Names(Run.infusions));
@@ -358,7 +357,7 @@ namespace HearthHollow.Core
             Info("Setting out: " + (r != null ? r.emoji + " " + r.name : routeId) + (offer.mod != RouteMod.None ? "  (" + offer.mod + ")" : ""));
             if (Run.firstDive)
             {
-                if (Story.Falling) Log(Story.FallIntro);   // the UI shows it as a banner once the dungeon is on screen (ticket 42)
+                if (Story.Falling) Log(Story.FallIntro);   // the UI shows it as a banner once the dungeon is on screen
                 else Info("🌫️ The fog is thick and the monsters are restless. Just get as far as you can.");
             }
 
@@ -371,8 +370,8 @@ namespace HearthHollow.Core
             DropMaterial(elite, false);   // building materials for kitchen upgrades
             var route = Content.Route(Run.routeId);
             if (route == null) return;
-            if (!elite && !Run.firstRidge && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // Magpie Spoon (ticket 16); the first Ridge trip always drops
-            string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops (ticket 13)
+            if (!elite && !_rng.Chance(T.monsterDropChance + Gear.Perk(Content, Profile, TrinketPerk.LootOnKill))) return;   // the Magpie Spoon raises the drop chance
+            string id = PickRouteIngredient();   // gather ingredients + this floor's deeper drops
             if (id == null) return;
             // hazard routes: sometimes the matching guard (nettle in poison dungeons, ginger in the cold…)
             if (route.hazard != Hazard.None && _rng.Chance(T.guardDropChance))
@@ -404,11 +403,11 @@ namespace HearthHollow.Core
             int left = Bag.Add(Run, id, count, T.stackSize);
             int got = count - left;
             if (got > 0 && Routes.See(Profile, id) && Content.Ingredient(id) != null && !Kitchen.IsMaterial(Content, id))
-                Info("📖 New ingredient: " + Content.Ingredient(id).emoji + " " + Content.Ingredient(id).name + " — new recipes to try at the cooking area");   // ticket 24
+                Info("📖 New ingredient: " + Content.Ingredient(id).emoji + " " + Content.Ingredient(id).name + " — new recipes to try at the cooking area");
             var ing = Content.Ingredient(id);
             string name = ing != null ? ing.emoji + " " + ing.name : id;
             if (got > 0) Emit(new GameEvent(GameEventType.Loot, got, true, "+" + got + " " + name));
-            if (left > 0 && InDungeon) { DropOnFloor(id, left); Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " dropped on the floor (E to swap)")); }   // ticket 48
+            if (left > 0 && InDungeon) { DropOnFloor(id, left); Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " dropped on the floor (E to swap)")); }
             else if (left > 0) Emit(new GameEvent(GameEventType.BagFull, left, true, "Bag full — " + left + " " + name + " left behind"));
         }
 
@@ -453,7 +452,7 @@ namespace HearthHollow.Core
         public void BagDiscard(int slot)
         {
             if (Run == null || !InRun || slot < 0 || slot >= Run.bag.Count) return;
-            if (InDungeon) { BagDrop(slot); return; }   // ticket 48: in the dungeon it lands on the floor, so nothing's lost by accident
+            if (InDungeon) { BagDrop(slot); return; }   // in the dungeon it lands on the floor, so nothing's lost by accident
             Bag.Discard(Run, slot);
             Touch(false);
         }

@@ -383,15 +383,8 @@ namespace HearthHollow.Dungeon
             while (fl == null && _lights.Count > 0) fl = _lights.Pop();
             if (fl == null)
             {
-                var go = new GameObject("fx_light"); Created++;
-                var l = go.AddComponent<Light2D>();
-                l.lightType = Light2D.LightType.Point; l.shadowsEnabled = false;
-                LightSetup.ApplyToAllLayers(l);
-                var w = new GameObject("fx_wallglow"); Created++;   // walls catch it from further away than the floor
-                w.transform.SetParent(go.transform, false);
-                var wl = w.AddComponent<Light2D>();
-                wl.lightType = Light2D.LightType.Point; wl.shadowsEnabled = false;
-                LightSetup.ApplyToLayers(wl, "Walls");
+                Light2D l, wl;
+                var go = NewLight(out l, out wl); Created += 2;
                 fl = go.AddComponent<FxLight>();
                 fl.Setup(l, wl);
             }
@@ -469,12 +462,33 @@ namespace HearthHollow.Dungeon
             var fl = TakeLight(null);
             fl.transform.position = pos;
             if (follow != null) fl.transform.SetParent(follow, true);
-            Light(fl.Main, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);   // a softer, more gradual edge
-            bool wall = radius >= 1.5f;
-            fl.Wall.gameObject.SetActive(wall);
-            if (wall) Light(fl.Wall, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
+            Shine(fl.Main, fl.Wall, c, radius, intensity);
             fl.Init(life);
             return fl.Main;
+        }
+
+        /// A point light with a wall glow under it (walls catch the light from further away than the floor).
+        static GameObject NewLight(out Light2D main, out Light2D wall)
+        {
+            var go = new GameObject("fx_light");
+            main = go.AddComponent<Light2D>();
+            main.lightType = Light2D.LightType.Point; main.shadowsEnabled = false;
+            LightSetup.ApplyToAllLayers(main);
+            var w = new GameObject("fx_wallglow");
+            w.transform.SetParent(go.transform, false);
+            wall = w.AddComponent<Light2D>();
+            wall.lightType = Light2D.LightType.Point; wall.shadowsEnabled = false;
+            LightSetup.ApplyToLayers(wall, "Walls");
+            return go;
+        }
+
+        /// Colour and size a light and its wall glow (the glow only for lights big enough to reach a wall).
+        static void Shine(Light2D main, Light2D wall, Color c, float radius, float intensity)
+        {
+            Light(main, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);   // a softer, more gradual edge
+            bool reach = radius >= 1.5f;
+            wall.gameObject.SetActive(reach);
+            if (reach) Light(wall, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
         }
 
         static void Light(Light2D l, Color c, float intensity, float outer, float inner, float falloff)
@@ -488,22 +502,11 @@ namespace HearthHollow.Dungeon
         /// A light that stays until its parent goes (not pooled: arrows, the reticle, beams).
         static Light2D StayingLight(Vector3 pos, Color c, float radius, float intensity, Transform follow)
         {
-            var go = new GameObject("fx_light");
+            Light2D l, wl;
+            var go = NewLight(out l, out wl);
             go.transform.position = pos;
             if (follow != null) go.transform.SetParent(follow, true);
-            var l = go.AddComponent<Light2D>();
-            l.lightType = Light2D.LightType.Point;
-            Light(l, c, intensity, Mathf.Max(0.2f, radius), radius * 0.15f, 0.35f);
-            LightSetup.ApplyToAllLayers(l);
-            if (radius >= 1.5f)
-            {
-                var w = new GameObject("fx_wallglow");
-                w.transform.SetParent(go.transform, false);
-                var wl = w.AddComponent<Light2D>();
-                wl.lightType = Light2D.LightType.Point;
-                Light(wl, c, intensity * 0.6f, radius * 1.7f, radius * 0.2f, 0.3f);
-                LightSetup.ApplyToLayers(wl, "Walls");
-            }
+            Shine(l, wl, c, radius, intensity);
             return l;
         }
 

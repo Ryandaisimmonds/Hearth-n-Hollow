@@ -48,7 +48,6 @@ namespace HearthHollow.Tests
 
             // Chili Ridge: two quiet floors with an exit at the top (ticket 47)
             Assert.IsTrue(s.StartRun(Ids.Area.Chili));
-            Assert.IsFalse(s.Run.firstRidge, "no special first trip any more");
             Assert.IsTrue(s.DungeonDescend());
             Assert.IsTrue(s.DungeonEndExit);
             s.DungeonExit(); s.ReturnToHearth();

@@ -19,7 +19,7 @@ namespace HearthHollow.UI
         readonly Label _atkKey;
         readonly VisualElement _skill, _skillFill, _skill2, _skill2Fill, _dash, _dashFill, _ult, _ultFill;
         readonly VisualElement _skillIcon, _skill2Icon, _dashIcon, _ultIcon;
-        readonly Label _dashLock, _ultLock, _skill2Lock, _lockHint;   // ticket 31: what's still locked, and how to unlock it
+        readonly Label _dashLock, _ultLock, _skill2Lock, _lockHint;   // what's still locked, and how to unlock it
         string _lockKey;
         readonly Label _guard;
         Label _flare;   // Flare cooldown (step 5)
@@ -39,13 +39,13 @@ namespace HearthHollow.UI
         // bag
         readonly VisualElement _bagPanel, _bagGrid;
         readonly Label _bagTitle;
-        readonly VisualElement _holdRow, _holdSlot;   // ticket 48
-        readonly VisualElement _fog;   // ticket 49
-        readonly VisualElement _bossCard; readonly Label _bossCardName, _bossCardSub;   // ticket 57
+        readonly VisualElement _holdRow, _holdSlot;
+        readonly VisualElement _fog;
+        readonly VisualElement _bossCard; readonly Label _bossCardName, _bossCardSub;
         readonly Label _tutorial;
         readonly Label _holdText, _bagHint;
         int _cursor, _dragFrom = -1;
-        VisualElement _tagLayer;   // ticket 48: loot tags pinned over the world
+        VisualElement _tagLayer;   // loot tags pinned over the world
         readonly List<Label> _tags = new List<Label>();
         IVisualElementScheduledItem _tagTick;
         float _shownAt;
@@ -61,9 +61,9 @@ namespace HearthHollow.UI
 
             _hurt = UIKit.E("dungeon__hurt"); _hurt.pickingMode = PickingMode.Ignore;
             Root.Add(_hurt);
-            _fog = UIKit.E("dungeon__fog"); _fog.pickingMode = PickingMode.Ignore;   // ticket 49: the fall's rising fog
+            _fog = UIKit.E("dungeon__fog"); _fog.pickingMode = PickingMode.Ignore;   // the fall's rising fog
             Root.Add(_fog);
-            _bossCard = UIKit.E("boss-card"); _bossCard.pickingMode = PickingMode.Ignore;   // ticket 57: the boss's title card
+            _bossCard = UIKit.E("boss-card"); _bossCard.pickingMode = PickingMode.Ignore;   // the boss's title card
             var band = UIKit.E("boss-card__band"); band.pickingMode = PickingMode.Ignore; _bossCard.Add(band);
             band.Add(UIKit.L("— GUARDIAN —", "boss-card__over"));
             _bossCardName = UIKit.L("", "boss-card__name"); band.Add(_bossCardName);
@@ -149,7 +149,7 @@ namespace HearthHollow.UI
             var chips = UIKit.E("dhud__chips");
             chips.Add(Art.Chip("coin", "🪙", out _coins, "chip--coins"));
             chips.Add(Art.Chip("xp", "✨", out _xp, "chip--xp"));
-            UIKit.Show(_xp.parent, false);   // no XP since Design v2 (ticket 04)
+            UIKit.Show(_xp.parent, false);   // no XP since Design v2
             chips.Add(Art.Chip("skull", "💀", out _kills));
             var bagChip = Art.Chip("bag", "🎒", out _bagChip, "dhud__bag-chip");
             bagChip.RegisterCallback<ClickEvent>(e => ToggleBag());
@@ -175,7 +175,7 @@ namespace HearthHollow.UI
             var box = UIKit.E("overlay__box", "dhud__bag");
             _bagTitle = UIKit.L("Bag", "overlay__title");
             box.Add(_bagTitle);
-            // ticket 48: what you picked up with a full bag waits here until you swap it in
+            // what you picked up with a full bag waits here until you swap it in
             _holdRow = UIKit.E("bag-hold");
             _holdSlot = UIKit.E("slot", "bag-slot", "slot--filled", "bag-hold__slot");
             _holdRow.Add(_holdSlot);
@@ -287,9 +287,9 @@ namespace HearthHollow.UI
             UIKit.Show(_bossBox, boss);
             if (boss) { _bossName.text = "👑 " + H.BossName; _bossBar.Set(H.BossHp01, 1f, ""); }
 
-            _fog.style.opacity = H.Fog01 * 0.6f;   // ticket 49; lighter since ticket 55 (the fog now rolls through the world too)
+            _fog.style.opacity = H.Fog01 * 0.6f;   // the fall's fog; a light veil, as the fog also rolls through the world
             UIKit.Show(_fog, H.Fog01 > 0.01f);
-            float it = H.IntroT;   // ticket 57: in, hold, out
+            float it = H.IntroT;   // in, hold, out
             bool card = it >= 0f && it < DungeonHudState.IntroLength;
             UIKit.Show(_bossCard, card);
             if (card)
@@ -315,11 +315,11 @@ namespace HearthHollow.UI
                 UIKit.Show(_bagPanel, _bagShown);
                 _bagPanel.pickingMode = _bagShown ? PickingMode.Position : PickingMode.Ignore;
                 if (_bagShown) { _cursor = 0; _shownAt = Time.unscaledTime; RefreshBag(); }
-                else { S.CancelHeld(); _dragFrom = -1; _dragHeld = false; }   // ticket 48: closed without swapping: it stays on the floor
+                else { S.CancelHeld(); _dragFrom = -1; _dragHeld = false; }   // closed without swapping: it stays on the floor
             }
         }
 
-        /// Ticket 31: a padlock on slots you haven't unlocked yet, and a line saying how to get them.
+        /// A padlock on slots you haven't unlocked yet, and a line saying how to get them.
         void RefreshLocks(MoveData m2, MoveData mu)
         {
             if (S.Run == null) return;
@@ -343,7 +343,7 @@ namespace HearthHollow.UI
             if (dashLocked) parts.Add("🔒 Dash: boots from the smithy");
             if (mu == null && ultHint != null) parts.Add("🔒 Ultimate: " + ultHint);
             if (m2 == null && skillHint != null) parts.Add("🔒 L skill: " + skillHint);
-            if (H.InFall || S.InFall) parts.Clear();   // ticket 49: no "learn this later" clutter in the opening
+            if (H.InFall || S.InFall) parts.Clear();   // no "learn this later" clutter in the opening
             _lockHint.text = string.Join("   ", parts.ToArray());
             UIKit.Show(_lockHint, parts.Count > 0);
         }

@@ -16,7 +16,7 @@ namespace HearthHollow.Core
         {
             Run.dungeon = true;
             Run.floorsTotal = DungeonRules.Floors(Content, Run.routeId);
-            Run.floor = Math.Max(1, Math.Min(Run.floorsTotal, startFloor));   // a shortcut starts deeper (ticket 12)
+            Run.floor = Math.Max(1, Math.Min(Run.floorsTotal, startFloor));   // a shortcut starts deeper
             ReachedFloor();
             Run.dungeonSeed = _rng.Range(1, int.MaxValue - 1);
             DungeonGuardMult = 1f;
@@ -29,14 +29,14 @@ namespace HearthHollow.Core
         /// A boss guards this floor (every 5th floor in a deep dungeon, and always the last).
         public bool DungeonBossFloor { get { return Run != null && DungeonRules.IsBossFloor(Content, Run.routeId, Run.floor); } }
         /// This floor offers the way home (an exit, and the ladder asks deeper-or-home); between those floors the ladder just goes down.
-        public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || Run.firstRidge || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
-        /// A way-home portal is on this floor (not a boss's exit). Ticket 26.
+        public bool DungeonHomeChoice { get { return Run != null && (Run.firstDive || DungeonRules.HomeChoiceOn(Content, Run.routeId, Run.floor, Run.dungeonSeed)); } }
+        /// A way-home portal is on this floor (not a boss's exit).
         public bool DungeonPortalFloor { get { return Run != null && !DungeonBossFloor && DungeonRules.LongArea(Content, Run.routeId) && DungeonRules.PortalFloor(Content, Run.floor, Run.dungeonSeed); } }
-        /// Ticket 47: the bottom of a boss-free area: its far room is the exit home.
+        /// The bottom of a boss-free area: its far room is the exit home.
         public bool DungeonEndExit { get { return Run != null && DungeonRules.EndsInExit(Content, Run.routeId, Run.floor); } }
-        /// The first dive has no ladder: its far room is the way home (ticket 25).
-        public bool DungeonNoLadder { get { return Run != null && (Run.firstDive || Run.firstRidge); } }
-        /// This floor's boss would be your first ever: its room has only the way home (ticket 32).
+        /// The first dive has no ladder: its far room is the way home.
+        public bool DungeonNoLadder { get { return Run != null && Run.firstDive; } }
+        /// This floor's boss would be your first ever: its room has only the way home.
         public bool DungeonFirstBossFloor { get { return Run != null && DungeonBossFloor && (Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0 || Run.mustGoHome); } }
         public List<int> StartFloors(string routeId) { return DungeonRules.StartFloors(Content, Profile, routeId); }
 
@@ -64,7 +64,7 @@ namespace HearthHollow.Core
 
         /// The run's infused element (None outside a run).
         public Element RunElement { get { return Run != null ? Run.element : Element.None; } }
-        /// Ticket 46: every infused element this run.
+        /// Every infused element this run.
         public IList<Element> RunInfusions { get { return Run != null && Run.infusions != null ? (IList<Element>)Run.infusions : new Element[0]; } }
 
         public bool DungeonSkillUnlocked
@@ -80,18 +80,18 @@ namespace HearthHollow.Core
             if (DungeonHas(Mutator.GlassHearts)) raw *= T.glassMult;
             int dmg = DungeonRules.IncomingDamage(raw, Stats, DungeonGuardMult);
             Run.hp -= dmg;
-            DeathRecap.Note(Run, source, dmg);   // ticket 65
+            DeathRecap.Note(Run, source, dmg);
             Emit(new GameEvent(GameEventType.MonsterHit, dmg, true, "-" + dmg));
             if (Run.hp <= 0 && !Run.secondWindUsed && Gear.Perk(Content, Profile, TrinketPerk.SecondWind) > 0f)
             {
-                Run.secondWindUsed = true;   // Pocket Hearth (ticket 16): once a run, a fall leaves you on 1 HP
+                Run.secondWindUsed = true;   // Pocket Hearth: once a run, a fall leaves you on 1 HP
                 Run.hp = 1;
                 Info("🕯️ The Pocket Hearth flares — you're back on your feet!");
             }
             if (Run.hp <= 0)
             {
                 Run.hp = 0;
-                bool fall = InFall;   // ticket 49: the opening fall isn't a failure: no "You fall…", no "limp home"
+                bool fall = InFall;   // the opening fall isn't a failure: no "You fall…", no "limp home"
                 Emit(new GameEvent(GameEventType.PlayerDied, 0, true, fall ? "…the fog closes in" : "You fall…"));
                 if (!fall) Info("You limp home…");
                 EndRun(RunOutcome.Died);
@@ -139,7 +139,7 @@ namespace HearthHollow.Core
             int dmg = Math.Max(1, (int)Math.Round(Stats.maxHp * pct));
             dmg = Math.Min(dmg, Run.hp - 1);
             Run.hp -= dmg;
-            DeathRecap.Note(Run, Routes.HazardEmoji(h) + " The " + Routes.HazardName(h).ToLowerInvariant(), dmg);   // ticket 65
+            DeathRecap.Note(Run, Routes.HazardEmoji(h) + " The " + Routes.HazardName(h).ToLowerInvariant(), dmg);
             Touch(false);
             return dmg;
         }
@@ -186,8 +186,8 @@ namespace HearthHollow.Core
         {
             if (!InDungeon || e == null) return;
             Run.kills++;
-            if (e.split) { Touch(false); return; }   // ticket 64: a split-off little slime gives nothing extra
-            if (InFall) { int h = Mods.healOnKill; if (h > 0 && Run.hp > 0 && Run.hp < Stats.maxHp) DungeonHealPlayer(h); Touch(false); return; }   // ticket 49: no loot in the fall
+            if (e.split) { Touch(false); return; }   // a split-off little slime gives nothing extra
+            if (InFall) { int h = Mods.healOnKill; if (h > 0 && Run.hp > 0 && Run.hp < Stats.maxHp) DungeonHealPlayer(h); Touch(false); return; }   // no loot in the fall
             int coins = Math.Max(1, (int)Math.Round(RunRules.KillCoins(Content, Run, Stats, e.elite, e.difficulty) * T.dungeonKillCoinMult));
             int xp = Math.Max(1, (int)Math.Round(RunRules.KillXp(Content, Run, e.elite, e.difficulty) * T.dungeonKillXpMult));
             if (e.boss) { coins = (int)Math.Round(coins * T.bossRewardMult); xp = (int)Math.Round(xp * T.bossRewardMult); }
@@ -198,8 +198,8 @@ namespace HearthHollow.Core
             if (e.boss)
             {
                 bool first = Profile.bossesBeaten == null || Profile.bossesBeaten.Count == 0;
-                BeatBoss();   // arc step (ticket 10)
-                if (first) { Run.mustGoHome = true; Info("🏠 Your first boss is down! Head home and tell Old Wren."); }   // ticket 32
+                BeatBoss();   // arc step
+                if (first) { Run.mustGoHome = true; Info("🏠 Your first boss is down! Head home and tell Old Wren."); }
             }
             if (e.boss) { string ing = PickRouteIngredient(); if (ing != null) AddLoot(ing, 2, false, true); DropMaterial(false, true); }
             string trinket = Gear.RollDrop(Content, Profile, e.boss, e.elite, _rng);   // rare: kept straight away, even if you fall
@@ -217,8 +217,7 @@ namespace HearthHollow.Core
 
         private string PickRouteIngredient()
         {
-            if (Run.firstRidge && _rng.Chance(0.7f) && Content.Ingredient(Ids.Ingredient.Chili) != null) return Ids.Ingredient.Chili;   // ticket 35: the first Ridge trip is all about chilies
-            return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.floor, _rng.Value());   // deeper floors add their drops (ticket 13)
+            return DungeonRules.PickIngredient(Content, Content.Route(Run.routeId), Run.floor, _rng.Value());   // deeper floors add their drops
         }
 
         /// An event room's enemies are all down (its doors open again).
@@ -226,7 +225,7 @@ namespace HearthHollow.Core
         {
             if (!InDungeon) return;
             Run.roomsCleared++;
-            // ticket 39: catch your breath — every room you clear heals a share of your max HP
+            // catch your breath — every room you clear heals a share of your max HP
             if (T.roomClearHealPct > 0f && Run.hp < Stats.maxHp)
             {
                 int h = DungeonHealPlayer(Math.Max(1, (int)Math.Round(Stats.maxHp * T.roomClearHealPct)));
@@ -236,7 +235,7 @@ namespace HearthHollow.Core
         }
 
         // ───────────── secrets (light plan step 7) ─────────────
-        /// Ticket 50: a buried chest, dug up with E: two of the area's ingredients, and about one in four times a few
+        /// A buried chest, dug up with E: two of the area's ingredients, and about one in four times a few
         /// coins or a building material as well.
         public void DungeonHiddenForage()
         {
@@ -283,7 +282,7 @@ namespace HearthHollow.Core
         public bool DungeonStartGather()
         {
             if (!InDungeon) return false;
-            if (T.forageHeal > 0 && Run.hp < Stats.maxHp) { int h = DungeonHealPlayer(T.forageHeal); if (h > 0) Info("🫐 You snack while you forage: +" + h + " HP"); }   // ticket 38
+            if (T.forageHeal > 0 && Run.hp < Stats.maxHp) { int h = DungeonHealPlayer(T.forageHeal); if (h > 0) Info("🫐 You snack while you forage: +" + h + " HP"); }
             Run.gather = RunRules.StartGather(Content, Run, Stats, _rng);
             Phase = Phase.Gather;
             Touch(false);
@@ -304,10 +303,10 @@ namespace HearthHollow.Core
         /// Ladder: down to the next floor (harder, richer). The Unity side builds the new floor on Changed.
         public bool DungeonDescend()
         {
-            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.firstRidge || Run.mustGoHome) return false;
+            if (!InDungeon || Run.floor >= Run.floorsTotal || Run.firstDive || Run.mustGoHome) return false;
             Run.floor++;
-            ForgetFloorLoot();   // ticket 48: loot left on the floor above stays there
-            ReachedFloor();   // arc steps can unlock moves (ticket 10)
+            ForgetFloorLoot();   // loot left on the floor above stays there
+            ReachedFloor();   // arc steps can unlock moves
             Info("🪜 Floor " + Run.floor + " of " + Run.floorsTotal + (DungeonBossFloor ? " — something big waits here" : DungeonPortalFloor ? " — ✨ a way-home portal shimmers somewhere on this floor" : " — no way home here"));
             Touch(false);
             return true;

@@ -30,7 +30,8 @@ namespace HearthHollow.Dungeon
         public virtual bool WantsToStrike(float dist) { return dist <= Data.attackRange; }
         /// A windup has started (a brute picks breath or charge now, so its marker shows the right one).
         public virtual void OnWindup() { }
-        /// A boss's ground marker for the strike it's winding up (null for a fan of lanes, which can't be cancelled).
+        /// Shows a boss's ground marker for the strike it's winding up, and returns it so it can be cancelled if the
+        /// boss is interrupted (null when the marker can't be cancelled: a brute's fan of lanes just plays out).
         public abstract Telegraph Telegraph(Vector2 from, Vector2 dir, float seconds, float width);
         /// The windup is over: strike.
         public abstract void Release(Vector2 dir);
@@ -51,6 +52,13 @@ namespace HearthHollow.Dungeon
             return HearthHollow.Dungeon.Telegraph.Lane(from, dir, E.ChargeReach() + 0.6f, width, seconds);
         }
         protected void Charge(Vector2 dir) { E.StartCharge(dir, ChargeTime); }
+
+        /// Walks straight at you until in reach; wolves circle round you while they wait their turn.
+        protected Vector2 WalkIn(float dist, Vector2 dir, Vector2 to, float speed)
+        {
+            if (Data.circles && E.Cooldown > 0.15f && dist < 5.5f) return E.CircleVelocity(to, speed);
+            return dist > Data.attackRange * 0.8f ? dir * speed : Vector2.zero;
+        }
     }
 
     /// Walks at you and bites when close; wolves circle round you while they wait their turn.
@@ -63,11 +71,7 @@ namespace HearthHollow.Dungeon
 
         public override void Release(Vector2 dir) { E.Lunge(dir); }
 
-        public override Vector2 Move(float dist, Vector2 dir, Vector2 to, float speed)
-        {
-            if (Data.circles && E.Cooldown > 0.15f && dist < 5.5f) return E.CircleVelocity(to, speed);
-            return dist > Data.attackRange * 0.8f ? dir * speed : Vector2.zero;
-        }
+        public override Vector2 Move(float dist, Vector2 dir, Vector2 to, float speed) { return WalkIn(dist, dir, to, speed); }
 
         public override Vector2 StrikeVelocity() { return E.LockDir * 2.5f; }
     }
@@ -110,7 +114,7 @@ namespace HearthHollow.Dungeon
             var v = lockDir * cs * mult;
             if (Data.swoops)
             {   // it bows out and back, ending on the same line
-                float k = 1f - Mathf.Clamp01(timeLeft / 0.22f);
+                float k = 1f - Mathf.Clamp01(timeLeft / ChargeTime);
                 v += new Vector2(-lockDir.y, lockDir.x) * _swoopSide * Mathf.Cos(k * Mathf.PI) * cs * 0.9f;
             }
             return v;
@@ -158,11 +162,7 @@ namespace HearthHollow.Dungeon
             else Charge(dir);
         }
 
-        public override Vector2 Move(float dist, Vector2 dir, Vector2 to, float speed)
-        {
-            if (Data.circles && E.Cooldown > 0.15f && dist < 5.5f) return E.CircleVelocity(to, speed);   // walks at you like a chaser
-            return dist > Data.attackRange * 0.8f ? dir * speed : Vector2.zero;
-        }
+        public override Vector2 Move(float dist, Vector2 dir, Vector2 to, float speed) { return WalkIn(dist, dir, to, speed); }   // walks at you like a chaser
 
         public override float ChargeSpeed { get { return 8f; } }
         public override float ChargeTime { get { return 0.7f; } }

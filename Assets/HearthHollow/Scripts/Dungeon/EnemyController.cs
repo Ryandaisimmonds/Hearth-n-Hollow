@@ -38,8 +38,8 @@ namespace HearthHollow.Dungeon
         Facing _facing = Facing.Down;
         // statuses from player moves
         float _stunT, _rootT, _slowT, _slowMult = 1f, _markT, _markBonus;
-        float _burnT, _frostT, _burnFxT;   // ticket 61: element marks left by hits (fire: a burn flicker; frost: a blue chill)
-        public const float BurnTime = 1.2f, ChillTime = 1.5f, ChillSlow = 0.85f;   // ticket 61: frost slows 15% for 1.5 s (the one gameplay number here)
+        float _burnT, _frostT, _burnFxT;   // element marks left by hits (fire: a burn flicker; frost: a blue chill)
+        public const float BurnTime = 1.2f, ChillTime = 1.5f, ChillSlow = 0.85f;   // frost slows 15% for 1.5 s (the one gameplay number here)
         public bool Stunned { get { return _stunT > 0f; } }
         public bool Spawning { get { return _st == St.Spawning; } }
         // light plan step 6
@@ -64,7 +64,7 @@ namespace HearthHollow.Dungeon
             var md = dc.Session.Content.Monster(stats.monsterId);
             DisplayName = md != null ? md.name : stats.monsterId;
             float size = profile.scale * (stats.boss ? 1.7f : stats.elite ? 1.3f : 1f) * (stats.sizeMult > 0f ? stats.sizeMult : 1f);
-            if (stats.split) { DisplayName = "Little " + DisplayName; _stT0 = 0.25f; }   // ticket 64: a split-off pops in quick
+            if (stats.split) { DisplayName = "Little " + DisplayName; _stT0 = 0.25f; }   // a split-off pops in quick
 
             _rb = gameObject.AddComponent<Rigidbody2D>();
             _rb.gravityScale = 0f; _rb.freezeRotation = true;
@@ -93,7 +93,7 @@ namespace HearthHollow.Dungeon
             _stT = _stT0 > 0f ? _stT0 : 0.7f;   // spawn telegraph
             _cd = Random.Range(0.5f, 1.2f);
             _wobble = Random.value * 10f;
-            _orbitDir = Random.value < 0.5f ? 1f : -1f;   // ticket 64: pack members circle both ways
+            _orbitDir = Random.value < 0.5f ? 1f : -1f;   // pack members circle both ways
             if (Data.circles) _cd += Random.Range(0.4f, 1.6f);   // …and take turns to dart in
             SetAlpha(0f);
         }
@@ -136,7 +136,7 @@ namespace HearthHollow.Dungeon
             UpdateLight(dt);
             if (_slowT > 0f) { _slowT -= dt; if (_slowT <= 0f) _slowMult = 1f; }
             if (_frostT > 0f) _frostT -= dt;
-            if (_burnT > 0f)   // ticket 61: a burning monster sheds little flames
+            if (_burnT > 0f)   // a burning monster sheds little flames
             {
                 _burnT -= dt; _burnFxT -= dt;
                 if (_burnFxT <= 0f)
@@ -192,7 +192,7 @@ namespace HearthHollow.Dungeon
             _facing = CharacterAnimator.FacingFrom(look, _facing);
             _anim.Dir = _facing;
             _anim.SetMoving(_st == St.Moving || _st == St.Charging);
-            if (_tele != null && _st != St.Windup) { _tele.Stop(); _tele = null; }   // ticket 63: interrupted — the marker goes
+            if (_tele != null && _st != St.Windup) { _tele.Stop(); _tele = null; }   // interrupted — the marker goes
             UpdateTint();
             UpdateHpBar();
         }
@@ -209,7 +209,7 @@ namespace HearthHollow.Dungeon
 
         void BeginWindup(Vector2 dir, float seconds)
         {
-            if (Stats.boss) seconds = Mathf.Max(seconds, BossTelegraphMin);   // ticket 63: a boss's markers stay up long enough to read
+            if (Stats.boss) seconds = Mathf.Max(seconds, BossTelegraphMin);   // a boss's markers stay up long enough to read
             _st = St.Windup; _stT = seconds; _lockDir = dir;
             _hitsLeft = Mathf.Max(1, Data.hits);
             _anim.PlayAttack(seconds + 0.2f);
@@ -217,10 +217,10 @@ namespace HearthHollow.Dungeon
             if (Stats.boss) ShowTelegraph(dir, seconds);
         }
 
-        /// Ticket 63: a boss always telegraphs at least this long (seconds) — the one timing change here.
+        /// A boss always telegraphs at least this long (seconds), so its markers can be read.
         public const float BossTelegraphMin = 0.6f;
         Telegraph _tele;
-        float _stT0;            // ticket 64: a shorter spawn-in (split slimes)
+        float _stT0;            // a shorter spawn-in (split slimes)
         float _orbitDir = 1f;   // which way a wolf circles
 
         /// How far a charge carries (speed × time), for the lane marker.
@@ -257,13 +257,13 @@ namespace HearthHollow.Dungeon
 
         void Release(float dist, Vector2 dir)
         {
-            if (Stats.boss) dir = _lockDir;   // ticket 63: a boss does what its marker showed (aimed when it wound up)
+            if (Stats.boss) dir = _lockDir;   // a boss does what its marker showed (aimed when it wound up)
             _cd = T.monsterAttackCooldown * Data.cooldownMult * Random.Range(0.85f, 1.2f);
             if (Data.lightReaction == LightReaction.Shy && Lit01 < 0.15f) _cd /= Mathf.Max(1f, _dc.Settings.shyBoldness);   // bolder in the dark
             _how.Release(dir);
         }
 
-        /// Ticket 65: how this monster shows up in the death recap ("👑 Bramble Sow", "⭐ Fog Wolf", "🐺 Fog Wolf").
+        /// How this monster shows up in the death recap ("👑 Bramble Sow", "⭐ Fog Wolf", "🐺 Fog Wolf").
         public string HitName
         {
             get
@@ -288,7 +288,7 @@ namespace HearthHollow.Dungeon
             Color c = _how.ShotColour;
             // hip height (same plane as player arrows), so a tall monster's level shots don't sail over the player
             var shot = Projectile.Spawn(_dc, false, (Vector2)transform.position + new Vector2(0, 0.5f) + d * 0.5f, d, Data.projectileSpeed, 0f, Stats.damage, DungeonFx.Orb, c, false, Stats.boss ? 1.6f : 1.1f);
-            if (shot != null) { shot.SetHit(OwnElement); shot.Source = HitName; }   // ticket 65   // the monster's element: a guard meal halves it
+            if (shot != null) { shot.SetHit(OwnElement); shot.Source = HitName; }   // the monster's element (a guard meal halves it) and its name for the death recap
         }
 
         void FixedUpdate()
@@ -356,7 +356,7 @@ namespace HearthHollow.Dungeon
         public void TakeHit(float dmg, bool crit, Vector2 knockDir, float knock = 6f, Element element = Element.None)
         {
             if (Dead || _st == St.Spawning) return;
-            // ticket 46: an attack carrying the meals' infusion carries every infused element (weakness ×1.5, resistance
+            // an attack carrying the meals' infusion carries every infused element (weakness ×1.5, resistance
             // ×0.5, a weakness and a resistance cancel out)
             var infused = _dc != null && _dc.Session != null ? _dc.Session.RunInfusions : null;
             bool multi = element != Element.None && infused != null && infused.Count > 1 && infused.Contains(element);
@@ -373,7 +373,7 @@ namespace HearthHollow.Dungeon
             _flashT = 0.12f;
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
-            HearthHollow.Runtime.GameAudio.Play(crit ? "crit" : "hit");   // ticket 62
+            HearthHollow.Runtime.GameAudio.Play(crit ? "crit" : "hit");
             bool learned = false;   // a first discovery shows its own "found" message instead
             if (multi) { int n = 0; foreach (var e in infused) if (ElementContact(e, n)) { learned = true; n++; } }   // each carried element teaches you its result, one line each
             else learned = ElementContact(element);
@@ -391,7 +391,7 @@ namespace HearthHollow.Dungeon
             DungeonFx.Ghost(_anim.Renderer, new Color(1f, 1f, 1f, 0.8f), 0.1f, true, true);
             GameFeel.HitStop(crit ? 0.075f : 0.035f);
             if (crit) { if (_dc != null) _dc.Shake(0.08f, 0.07f); GameLook.Punch(0.35f); }
-            if (multi) foreach (var e in infused) ElementMark(e, knockDir); else ElementMark(element, knockDir);   // ticket 61
+            if (multi) foreach (var e in infused) ElementMark(e, knockDir); else ElementMark(element, knockDir);
             if (Hp <= 0) { Die(); return; }
             if (!Stats.boss && !Stats.elite && _st != St.Charging)
             {
@@ -400,7 +400,7 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Ticket 61: what an element leaves on a monster it hits. Fire: a short burn (a flicker and little flames; looks
+        /// What an element leaves on a monster it hits. Fire: a short burn (a flicker and little flames; looks
         /// only). Frost: a blue chill and a slight slow. Nature: a burst of leaves. Water: a splash.
         void ElementMark(Element e, Vector2 dir)
         {
@@ -441,7 +441,7 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Ticket 61: the tint a burning / chilled monster wears this frame (null = none).
+        /// The tint a burning / chilled monster wears this frame (null = none).
         public Color? ElementTint
         {
             get
@@ -522,7 +522,7 @@ namespace HearthHollow.Dungeon
             return null;
         }
 
-        // ───────────────────────── elements (Design v2, ticket 06) ─────────────────────────
+        // ───────────────────────── elements (Design v2) ─────────────────────────
         readonly List<Element> _weak = new List<Element>(), _resist = new List<Element>();
         public IList<Element> WeakTo { get { return _weak; } }
         /// The monster's own element (its attacks carry it).
@@ -539,11 +539,11 @@ namespace HearthHollow.Dungeon
         }
 
         /// This monster was touched by an element (a hit, Flare's Light, a brazier's fire), damage or not.
-        /// Discovery (ticket 07): you now know how that element works on every monster of this kind.
+        /// Discovery: you now know how that element works on every monster of this kind.
         /// Returns true when this taught you something new.
         public bool ElementContact(Element element) { return ElementContact(element, 0); }
 
-        /// <paramref name="stack"/>: the nth discovery from one hit (ticket 46), shown that many lines higher.
+        /// <paramref name="stack"/>: the nth discovery from one hit, shown that many lines higher.
         public bool ElementContact(Element element, int stack)
         {
             if (element == Element.None || Dead || _dc == null || Stats == null) return false;
@@ -554,12 +554,12 @@ namespace HearthHollow.Dungeon
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 1.1f + stack * 0.38f),
                 Elements.Emoji(element) + (weak ? " Weakness found!" : res ? " Resistance found" : " No effect"), weak ? "dnum--crit" : "dnum--info");
             var md = _dc.Session.Content.Monster(Stats.monsterId);
-            _dc.Session.Log(Elements.Emoji(element) + " " + (md != null ? md.name : Stats.monsterId) + (weak ? " is weak to " : res ? " resists " : " shrugs off ") + Elements.Name(element));   // run log (ticket 20)
+            _dc.Session.Log(Elements.Emoji(element) + " " + (md != null ? md.name : Stats.monsterId) + (weak ? " is weak to " : res ? " resists " : " shrugs off ") + Elements.Name(element));   // run log
             return true;
         }
 
         // ───── element icons over the head (what you've learned about this kind of monster) ─────
-        //   ticket 41: the element's own icon (flame, snowflake, leaf, droplet, sparkle)
+        //   the element's own icon (flame, snowflake, leaf, droplet, sparkle)
         //   weakness: big and bright · resistance: faded with a slash through it · no effect: small and greyed
         public static int DiscoveryVersion;
         readonly List<SpriteRenderer> _elIcons = new List<SpriteRenderer>();
@@ -683,8 +683,8 @@ namespace HearthHollow.Dungeon
             if (_tele != null) { _tele.Stop(); _tele = null; }
             CancelInvoke();
             if (Stats.boss) _dc.Shake(0.3f, 0.25f);
-            HearthHollow.Runtime.GameAudio.Play(Stats.boss ? "boss_kill" : "kill");   // ticket 62
-            // ticket 56: it bursts in its own colour and element (fire embers, frost shards, nature leaves…)
+            HearthHollow.Runtime.GameAudio.Play(Stats.boss ? "boss_kill" : "kill");
+            // it bursts in its own colour and element (fire embers, frost shards, nature leaves…)
             Element el = Profile != null ? Data.element : Element.None;
             Color bodyCol = DungeonFx.AverageColour(_anim != null && _anim.Renderer != null ? _anim.Renderer.sprite : null, new Color(0.85f, 0.85f, 0.85f));
             Color deathCol = el != Element.None ? Color.Lerp(ElementColour(el), bodyCol, 0.35f) : Color.Lerp(bodyCol, new Color(1f, 0.88f, 0.7f), 0.4f);
@@ -696,7 +696,7 @@ namespace HearthHollow.Dungeon
             if (Stats.boss) for (int i = 0; i < 30; i++) { Vector2 o = Random.insideUnitCircle.normalized; DungeonFx.Throw(Body, o, deathCol, 1, 3f, 10f); }
             if (Stats.boss) { GameFeel.SlowMo(0.25f, 1f); GameLook.Punch(1f); }
             else GameFeel.HitStop(Stats.elite ? 0.09f : 0.06f);
-            if (MonsterHabits.Splits(Data, Stats) && _dc != null && _room != null)   // ticket 64: a slime splits in two little ones
+            if (MonsterHabits.Splits(Data, Stats) && _dc != null && _room != null)   // a slime splits in two little ones
             {
                 for (int i = 0; i < MonsterHabits.SplitCount; i++)
                 {
@@ -708,7 +708,7 @@ namespace HearthHollow.Dungeon
             }
             var room = _room; var dc = _dc; var stats = Stats; Vector2 dropAt = room != null ? room.NearestWalkable(transform.position) : (Vector2)transform.position;
             Destroy(gameObject);
-            if (dc != null) { dc.Session.SetLootSpot(dropAt.x, dropAt.y); dc.Session.DungeonEnemyKilled(stats); dc.Session.ClearLootSpot(); dc.OnEnemyKilled(); }   // ticket 48: overflow lands where it fell   // rewards, loot (refreshes the HUD); trinkets (ticket 16)
+            if (dc != null) { dc.Session.SetLootSpot(dropAt.x, dropAt.y); dc.Session.DungeonEnemyKilled(stats); dc.Session.ClearLootSpot(); dc.OnEnemyKilled(); }   // overflow lands where it fell   // rewards, loot (refreshes the HUD); trinkets
             if (room != null) room.OnEnemyDied(this);
         }
 
@@ -721,7 +721,7 @@ namespace HearthHollow.Dungeon
             else if (_stunT > 0f) c = new Color(0.75f, 0.8f, 1f);
             else if (_rootT > 0f) c = new Color(0.7f, 1f, 0.7f);
             else if (_markT > 0f && Mathf.FloorToInt(Time.time * 6f) % 2 == 0) c = new Color(1f, 0.6f, 0.55f);
-            else if (ElementTint.HasValue) c = ElementTint.Value;   // ticket 61: burning / chilled
+            else if (ElementTint.HasValue) c = ElementTint.Value;   // burning / chilled
             else if (_slowT > 0f) c = new Color(0.85f, 0.85f, 0.7f);
             else if (_st == St.Windup && Mathf.FloorToInt(Time.time * 16f) % 2 == 0) c = new Color(1f, 0.75f, 0.55f);
             sr.color = c;

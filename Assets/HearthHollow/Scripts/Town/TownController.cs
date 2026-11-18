@@ -74,9 +74,9 @@ namespace HearthHollow.Town
 
             // a short grace period after a menu closes, so the key that closed it doesn't reopen something
             if (!Walking) { _walkSince = Time.unscaledTime; Near = null; PushHud(); return; }
-            // ticket 15: home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
+            // home after beating the Meadow floor-5 boss, Wren comes over with the Fire hint (once)
             if (Session.Story.FireHintDue && Time.unscaledTime - _walkSince > 0.6f) { TalkToWren(); return; }
-            // ticket 33/35: Old Wren comes over when she has something new to tell you (the start, after your first dive, the chilies)
+            // Old Wren comes over when she has something new to tell you (the start, after your first dive, the chilies)
             if (Features.WrenGuides && Session.Story.TalkDue && Time.unscaledTime - _walkSince > 0.8f) { TalkToWren(); return; }
             Near = Nearest();
             if (Near != null && Time.unscaledTime - _walkSince > 0.2f && DungeonInput.Interact) Use(Near);
@@ -135,9 +135,9 @@ namespace HearthHollow.Town
         /// Use a spot, as if you walked up to it and pressed E (also driven by the play-mode smoke test).
         public void Use(TownSpot s)
         {
-            if (s.action == TownAction.Gate && Session.Story.SetOutBlock != null) { _ui.Toast("👵 " + Session.Story.SetOutBlock + "."); return; }   // ticket 33: no adventures until Wren's had her say
+            if (s.action == TownAction.Gate && Session.Story.SetOutBlock != null) { _ui.Toast("👵 " + Session.Story.SetOutBlock + "."); return; }   // no adventures until Wren's had her say
             string area = AreaOf(s.action);
-            if (area != null && !Session.AreaOpen(area))   // opening arc (ticket 18)
+            if (area != null && !Session.AreaOpen(area))   // opening arc
             {
                 _ui.Toast(area == "kitchen" || area == "larder" ? "🔒 Cold and empty for now. Old Wren will get it going once you've been down there."
                                                                 : "🔒 Not open yet. The town grows once you've beaten your first boss.");
@@ -216,7 +216,7 @@ namespace HearthHollow.Town
             BuildTiles(theme);
             Spots = TownLayout.Spots();
             if (Features.TownIsHome) Spots.RemoveAll(s => s.action == TownAction.BackToCamp);   // no old camp screen
-            SetupLampMakerSpot();   // the NE plot: build the Lamp-maker (ticket 17)
+            SetupLampMakerSpot();   // the NE plot: build the Lamp-maker
             // your other two classes hang around the training yard; talk to one to swap
             int k = 0;
             foreach (var cd in Session.Content.classes)
@@ -411,7 +411,7 @@ namespace HearthHollow.Town
         void TalkToWren()
         {
             var C = Session.Content; var p = Session.Profile;
-            if (Session.Story.FireHintDue)   // ticket 15: the floor-10 boss fears fire; chilies grow on Chili Ridge
+            if (Session.Story.FireHintDue)   // the floor-10 boss fears fire; chilies grow on Chili Ridge
             {
                 var hint = Session.Story.FireHintPages();
                 Session.Story.GiveFireHint();
@@ -477,7 +477,7 @@ namespace HearthHollow.Town
         }
 
         // ───────────────────────── weather & visitors ─────────────────────────
-        /// Ticket 58: the time of day this town was built for.
+        /// The time of day this town was built for.
         public DayTime DayPart { get; private set; }
         readonly List<Light2D> _lanterns = new List<Light2D>();
         readonly List<SpriteRenderer> _lanternFlames = new List<SpriteRenderer>();
@@ -487,7 +487,7 @@ namespace HearthHollow.Town
             Weather = ev == CampEvent.Storm ? TownWeather.Kind.Rain : ev == CampEvent.HarvestMoon ? TownWeather.Kind.Night : TownWeather.Kind.Calm;
             if (Weather == TownWeather.Kind.Rain) { light.color = new Color(0.7f, 0.76f, 0.92f); light.intensity = 0.5f; }
             if (Weather == TownWeather.Kind.Night) { light.color = new Color(0.5f, 0.58f, 0.95f); light.intensity = 0.28f; }
-            // ticket 58: on a calm day the light follows the time of day; the lanterns come on towards evening
+            // on a calm day the light follows the time of day; the lanterns come on towards evening
             DayPart = TownClock.For(Session.Profile.day);
             if (Weather == TownWeather.Kind.Calm)
             {
@@ -524,7 +524,7 @@ namespace HearthHollow.Town
         {
             get
             {
-                return TownClock.Progress(Session.Content, Session.Profile);   // ticket 58: the slice's areas count in the slice
+                return TownClock.Progress(Session.Content, Session.Profile);   // the slice's areas count in the slice
             }
         }
 

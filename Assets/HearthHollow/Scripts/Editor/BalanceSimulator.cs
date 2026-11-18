@@ -226,7 +226,7 @@ namespace HearthHollow.EditorTools
             }
             sb.AppendLine("## How to read it");
             sb.AppendLine();
-            sb.AppendLine("The plan's targets (ticket 44): **hungry loses by Meadow floor 2**, a **Plain** tray is a fair fight (gets through, but hurt), **Prime** dominates, and **Frost Hollow** wants a Fine tray with Fire.");
+            sb.AppendLine("The plan's targets: **hungry loses by Meadow floor 2**, a **Plain** tray is a fair fight (gets through, but hurt), **Prime** dominates, and **Frost Hollow** wants a Fine tray with Fire.");
             return sb.ToString();
         }
     }

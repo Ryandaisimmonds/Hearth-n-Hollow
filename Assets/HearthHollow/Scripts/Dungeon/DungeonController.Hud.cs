@@ -18,7 +18,7 @@ namespace HearthHollow.Dungeon
                 var ing = Session.Content.Ingredient(lootNear.ingredientId);
                 Hud.Prompt = "Pick up " + (ing != null ? ing.emoji + " " + ing.name : lootNear.ingredientId) + (lootNear.count > 1 ? " ×" + lootNear.count : "");
             }
-            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) Hud.Prompt = "⛏️ Dig here";   // ticket 50
+            else if (near == null && GameplayActive && NearestDig(Player.Feet) != null) Hud.Prompt = "⛏️ Dig here";
             else Hud.Prompt = near != null ? near.Prompt(this) : null;
             Hud.Locked = _current != null && _current.EventRunning;
             Hud.Status = StatusText();
@@ -66,7 +66,7 @@ namespace HearthHollow.Dungeon
                 Hud.Map.Add(new DungeonHudState.MapRoom
                 {
                     cell = node.cell, kind = node.kind,
-                    visited = ri != null && ri.Visited, current = ri == _current, cleared = ri != null && ri.Cleared, known = true,
+                    visited = ri != null && ri.Visited, current = ri == _current, cleared = ri != null && ri.Cleared,
                     n = node.Has(Side.North), s = node.Has(Side.South), e = node.Has(Side.East), w = node.Has(Side.West)
                 });
             }
