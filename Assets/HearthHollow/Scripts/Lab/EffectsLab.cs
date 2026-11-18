@@ -4,7 +4,8 @@
 // meals, spawn monsters and training dummies, slow time down and read a damage meter.
 //
 // Keys: F1 menu · F2 dummy at the cursor · F3 spawn the picked monster at the cursor · F4 kill all · F5 restart ·
-//       - / = slower / faster time.
+//       - / = slower / faster time. No F keys? R opens a ring of the same actions round the mouse (time holds still
+//       while it's open; click one, or click anywhere else / press R again to close).
 using System.Collections.Generic;
 using HearthHollow.Core;
 using HearthHollow.Dungeon;
@@ -54,7 +55,7 @@ namespace HearthHollow.Lab
         void OnDestroy()
         {
             EnemyController.AnyHit -= OnAnyHit;
-            GameFeel.LabScale = 1f;
+            GameFeel.LabScale = 1f; GameFeel.LabPaused = false;
             if (S != null) S.DevNoDeath = false;
         }
 
@@ -111,9 +112,13 @@ namespace HearthHollow.Lab
         }
 
         // ───────────────────────── spawning ─────────────────────────
-        Vector2 SpawnPoint()
+        Vector2 SpawnPoint() { return SpawnPoint(null); }
+
+        /// Where to put a spawn: the given spot, else the cursor (when it's over the room), else near the player.
+        Vector2 SpawnPoint(Vector2? spot)
         {
             var room = DC.CurrentRoom;
+            if (spot.HasValue) return room.NearestWalkable(spot.Value);
             Vector2 at;
             if (DungeonInput.Cursor(out at) && !DungeonInput.PointerOverUI()) return room.NearestWalkable(at);
             Vector2 off = Random.insideUnitCircle.normalized * 2.8f;
@@ -155,7 +160,8 @@ namespace HearthHollow.Lab
         void Update()
         {
             var k = Keyboard.current;
-            if (k != null)
+            if (k != null && k.rKey.wasPressedThisFrame) { if (RingOpen) CloseRing(); else OpenRing(); }
+            if (k != null && !RingOpen)
             {
                 if (k.f1Key.wasPressedThisFrame) _panel.style.display = _panel.style.display == DisplayStyle.None ? DisplayStyle.Flex : DisplayStyle.None;
                 if (k.f2Key.wasPressedThisFrame && Ready) SpawnDummy(SpawnPoint());
@@ -235,7 +241,7 @@ namespace HearthHollow.Lab
 
             var title = Text("🔥 Effects Lab", 17, new Color(1f, 0.85f, 0.55f));
             _panel.Add(title);
-            _panel.Add(Text("F1 menu · F2 dummy · F3 spawn · F4 kill all · F5 restart · − / = time", 11, new Color(1f, 1f, 1f, 0.55f)));
+            _panel.Add(Text("R quick ring · F1 menu · F2 dummy · F3 spawn · F4 kill all · F5 restart · − / = time", 11, new Color(1f, 1f, 1f, 0.55f)));
             _status = Text("", 12, Color.white); _status.style.marginTop = 4;
             _panel.Add(_status);
             _meter = Text("", 12, new Color(1f, 0.9f, 0.5f)); _meter.style.marginTop = 2;
@@ -374,6 +380,90 @@ namespace HearthHollow.Lab
             _body.Add(Tog("No skill cooldowns", _noCooldowns, v => _noCooldowns = v));
             _body.Add(Drop("Time", new List<float>(Speeds).ConvertAll(f => "×" + f), _speed, SetSpeed));
             _body.Add(Row(Btn("Reset meter", () => { _recent.Clear(); _total = _hits = _last = _biggest = 0; }), Btn("Heal", () => { if (S.Run != null && S.Stats != null) S.Run.hp = S.Stats.maxHp; })));
+        }
+
+        // ───────────────────────── the quick ring (R): the F-key actions round the mouse ─────────────────────────
+        VisualElement _ring;
+        Vector2? _ringWorld;   // the room spot under the mouse when the ring opened (dummy / spawn go there)
+        bool RingOpen { get { return _ring != null; } }
+
+        void OpenRing()
+        {
+            var m = Mouse.current;
+            if (m != null) OpenRingAt(m.position.ReadValue());
+        }
+
+        /// The ring centred on a screen point (pixels, origin bottom-left).
+        void OpenRingAt(Vector2 screen)
+        {
+            var panel = _ui.Root.panel;
+            if (panel == null) return;
+            Vector2 c = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(screen.x, Screen.height - screen.y));
+            var cam = Camera.main;
+            _ringWorld = cam != null && !DungeonInput.PointerOverUI() ? (Vector2?)(Vector2)cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z)) : null;
+
+            // a see-through cover over the whole screen: a click on it closes the ring (and never swings)
+            _ring = new VisualElement { name = "lab-ring" };
+            _ring.AddToClassList("panel");
+            var rs = _ring.style;
+            rs.position = Position.Absolute; rs.left = 0; rs.top = 0; rs.right = 0; rs.bottom = 0;
+            rs.backgroundColor = new Color(0f, 0f, 0f, 0.25f);
+            rs.backgroundImage = new StyleBackground(StyleKeyword.None);   // .panel draws a framed box: not here
+            rs.marginLeft = rs.marginRight = rs.marginTop = rs.marginBottom = 0;
+            rs.paddingLeft = rs.paddingRight = rs.paddingTop = rs.paddingBottom = 0;
+            _ring.RegisterCallback<PointerDownEvent>(e => { if (e.target == _ring) { CloseRing(); e.StopPropagation(); } });
+
+            var items = new List<KeyValuePair<string, System.Action>>
+            {
+                new KeyValuePair<string, System.Action>("☰\nMenu  F1", () => _panel.style.display = _panel.style.display == DisplayStyle.None ? DisplayStyle.Flex : DisplayStyle.None),
+                new KeyValuePair<string, System.Action>("🎯\nDummy  F2", () => { if (Ready) SpawnDummy(SpawnPoint(_ringWorld)); }),
+                new KeyValuePair<string, System.Action>("👾\nSpawn  F3", () => { if (Ready) SpawnMonster(SpawnPoint(_ringWorld)); }),
+                new KeyValuePair<string, System.Action>("💀\nKill all  F4", () => KillAll(false)),
+                new KeyValuePair<string, System.Action>("🔄\nRestart  F5", Restart),
+                new KeyValuePair<string, System.Action>("🐢\nSlower  −", () => SetSpeed(_speed - 1)),
+                new KeyValuePair<string, System.Action>("🐇\nFaster  =", () => SetSpeed(_speed + 1)),
+            };
+            const float Radius = 112f, Size = 86f;
+            // near a screen edge, slide the ring in so every button shows (the spawn spot stays where the mouse was)
+            float reach = Radius + Size / 2f + 16f;
+            var full = _ui.Root.layout;
+            if (full.width > reach * 2f) c.x = Mathf.Clamp(c.x, reach, full.width - reach);
+            if (full.height > reach * 2f) c.y = Mathf.Clamp(c.y, reach, full.height - reach);
+            for (int i = 0; i < items.Count; i++)
+            {
+                var act = items[i].Value;
+                float a = Mathf.PI / 2f - i * Mathf.PI * 2f / items.Count;   // clockwise from the top
+                var b = new Button(() => { CloseRing(); act(); _ui.Root.Focus(); }) { text = items[i].Key };
+                b.focusable = false;
+                var bs = b.style;
+                bs.position = Position.Absolute; bs.width = Size; bs.height = Size;
+                bs.left = c.x + Mathf.Cos(a) * Radius - Size / 2f; bs.top = c.y - Mathf.Sin(a) * Radius - Size / 2f;
+                bs.borderTopLeftRadius = bs.borderTopRightRadius = bs.borderBottomLeftRadius = bs.borderBottomRightRadius = Size / 2f;
+                bs.backgroundColor = new Color(0.16f, 0.11f, 0.08f, 0.94f);
+                bs.borderLeftWidth = bs.borderRightWidth = bs.borderTopWidth = bs.borderBottomWidth = 2;
+                bs.borderLeftColor = bs.borderRightColor = bs.borderTopColor = bs.borderBottomColor = new Color(1f, 0.75f, 0.4f, 0.7f);
+                bs.color = new Color(1f, 0.93f, 0.8f); bs.fontSize = 12; bs.whiteSpace = WhiteSpace.Normal;
+                bs.unityTextAlign = TextAnchor.MiddleCenter;
+                bs.paddingLeft = bs.paddingRight = bs.paddingTop = bs.paddingBottom = 0;
+                bs.marginLeft = bs.marginRight = bs.marginTop = bs.marginBottom = 0;
+                _ring.Add(b);
+            }
+            var hub = Text("R", 13, new Color(1f, 0.85f, 0.55f));
+            var hs = hub.style;
+            hs.position = Position.Absolute; hs.width = 30; hs.height = 30; hs.left = c.x - 15f; hs.top = c.y - 15f;
+            hs.unityTextAlign = TextAnchor.MiddleCenter; hs.backgroundColor = new Color(0f, 0f, 0f, 0.6f);
+            hs.borderTopLeftRadius = hs.borderTopRightRadius = hs.borderBottomLeftRadius = hs.borderBottomRightRadius = 15;
+            _ring.Add(hub);
+
+            _ui.Root.Add(_ring);
+            GameFeel.LabPaused = true;
+        }
+
+        void CloseRing()
+        {
+            if (_ring != null) _ring.RemoveFromHierarchy();
+            _ring = null;
+            GameFeel.LabPaused = false;
         }
 
         void NextFloor()

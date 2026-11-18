@@ -9,12 +9,15 @@ namespace HearthHollow.Dungeon
         static float _stopUntil, _slowUntil, _slowScale = 1f;
         /// The Effects Lab's slow-motion dial (1 = normal speed). Multiplies everything below.
         public static float LabScale = 1f;
+        /// The Effects Lab's quick menu is open: everything holds still.
+        public static bool LabPaused;
 
         /// 1 normally; nearly 0 during a hit-stop; the slow-mo scale during slow motion.
         public static float TimeScale
         {
             get
             {
+                if (LabPaused) return 0f;
                 float t = Time.unscaledTime;
                 if (t < _stopUntil) return 0.03f * LabScale;
                 if (t < _slowUntil) return _slowScale * LabScale;
@@ -39,6 +42,6 @@ namespace HearthHollow.Dungeon
 
         // domain reload is off: a lab slow-mo mustn't carry into the next play session
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetForPlay() { Reset(); LabScale = 1f; }
+        static void ResetForPlay() { Reset(); LabScale = 1f; LabPaused = false; }
     }
 }
