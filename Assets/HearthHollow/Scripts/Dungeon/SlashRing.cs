@@ -1,5 +1,6 @@
 // Hearth & Hollow — a huge sweeping slash all the way round a character (the Effects Lab's Verdant Crescent, first).
-// The blade's edge travels round an ellipse (the ground seen at an angle). Where the blade is now it burns white-hot
+// The blade — a line from near the character out past the trail's edge, like a sword held out — travels round an
+// ellipse (the ground seen at an angle). Where the blade is now it burns white-hot
 // and lights the room; behind it the trail cools to a pale green, then a deeper green, and grows wider and drifts
 // outwards the longer it hangs, before fading. The half of the ring above the character draws behind them, the half
 // below in front. Everything runs on scaled time, so the lab's slow motion (and hit-stops) slow it down too.
@@ -24,6 +25,9 @@ namespace HearthHollow.Dungeon
         public float Grow = 0.45f;         // how much wider the trail gets as it ages (× Width)
         public float Drift = 0.14f;        // how far it drifts outwards as it ages (× Radius)
         public int Spin = 1;               // +1 anticlockwise, −1 clockwise
+        public float BladeFrom = 0.3f;     // where the blade starts (× Radius out from the centre)…
+        public float BladeReach = 0.18f;   // …and how far its tip pokes past the trail's edge (world units)
+        public float BladeThickness = 0.36f;
 
         // the colour the trail cools through as it ages: white-hot → very light green → light green → green
         public Color HotColour = new Color(1f, 1f, 0.96f);
@@ -46,7 +50,7 @@ namespace HearthHollow.Dungeon
         readonly List<Sample> _samples = new List<Sample>(256);
 
         MeshRenderer _backR, _frontR; Mesh _back, _front;
-        SpriteRenderer _head; Light2D _light;
+        SpriteRenderer _blade, _halo; Transform _lightAt; Light2D _light;
         float _emitT;
 
         /// Start a sweep round <paramref name="follow"/> (+ offset, e.g. the body's height above the feet).
@@ -64,13 +68,20 @@ namespace HearthHollow.Dungeon
         {
             _back = NewMesh("Back", out _backR);
             _front = NewMesh("Front", out _frontR);
-            var h = new GameObject("Head"); h.transform.SetParent(transform, false);
-            _head = h.AddComponent<SpriteRenderer>();
-            _head.sprite = DungeonFx.Soft;
-            if (FxMaterials.Glow != null) _head.sharedMaterial = FxMaterials.Glow;
-            _head.sortingOrder = 20450;
-            _light = DungeonFx.Flash(transform.position, PaleColour, Radius * 1.3f, LightIntensity, 0f, h.transform);   // the blade lights the room as it goes
+            _halo = BladeSprite("Blade glow");   // a wide soft glow round…
+            _blade = BladeSprite("Blade");       // …a thin white-hot line
+            _lightAt = new GameObject("Blade light").transform; _lightAt.SetParent(transform, false);
+            _light = DungeonFx.Flash(transform.position, PaleColour, Radius * 1.3f, LightIntensity, 0f, _lightAt);   // the blade lights the room as it goes
             AddSample(_start, 0f);
+        }
+
+        SpriteRenderer BladeSprite(string name)
+        {
+            var go = new GameObject(name); go.transform.SetParent(transform, false);
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = BladeShape;
+            if (FxMaterials.Glow != null) sr.sharedMaterial = FxMaterials.Glow;
+            return sr;
         }
 
         Mesh NewMesh(string name, out MeshRenderer mr)
@@ -170,8 +181,8 @@ namespace HearthHollow.Dungeon
             float age = Mathf.Max(0f, _t - s.born);
             float k = age / Mathf.Max(0.01f, TrailLife);
             float behind = Mathf.Abs(headA - s.a);                                  // radians behind the blade
-            float taper = Mathf.SmoothStep(0f, 1f, behind / (35f * Mathf.Deg2Rad));   // narrower at the blade, full a little behind
-            float w = Width * (0.4f + 0.6f * taper) * (1f + Grow * k);
+            float taper = Mathf.SmoothStep(0f, 1f, behind / (35f * Mathf.Deg2Rad));   // a little narrower right at the blade, full just behind
+            float w = Width * (0.8f + 0.2f * taper) * (1f + Grow * k);
             float fromStart = Mathf.Abs(s.a - _start);                                  // the very start of the swing fades in (no hard cut)
             float r = Radius * (1f + Drift * k);
             Color c; float heat; Cool(age, out c, out heat);
@@ -196,16 +207,21 @@ namespace HearthHollow.Dungeon
         {
             float p = Mathf.Clamp01(_t / Mathf.Max(0.01f, SweepTime));
             float a = _lastA;
-            Vector2 at = Point(a, Radius - Width * 0.15f);
-            _head.transform.localPosition = at;
+            // the blade: a line from near the centre out past the edge, along the ellipse's spoke
+            Vector2 root = Point(a, Radius * BladeFrom);
+            Vector2 tipDir = Point(a, Radius) - root;
+            float len = tipDir.magnitude + BladeReach;
+            float rot = Mathf.Atan2(tipDir.y, tipDir.x) * Mathf.Rad2Deg;
+            Vector2 at = Point(a, Radius);   // the tip (sparks fly from here)
             // white-hot while it whips round, greener as it drags to a stop, then gone
-            float fade = _done ? Mathf.Clamp01(1f - (_t - SweepTime) / 0.18f) : 1f;
-            Color hc = Color.Lerp(HotColour, PaleColour, p * p);
-            hc.a = fade;
-            _head.color = hc;
-            float s = (0.9f + 0.25f * Mathf.Sin(_t * 60f)) * Mathf.Lerp(1.2f, 0.8f, p);
-            _head.transform.localScale = new Vector3(s, s, 1f);
-            _head.sortingOrder = Mathf.Sin(a) > 0f ? _backR.sortingOrder + 1 : 20410;
+            float fade = _done ? Mathf.Clamp01(1f - (_t - SweepTime) / 0.15f) : 1f;
+            Color hc = Color.Lerp(HotColour, PaleColour, p * p); hc.a = fade;
+            Color gc = Color.Lerp(PaleColour, LightColour, p); gc.a = 0.75f * fade;
+            float flicker = 1f + 0.12f * Mathf.Sin(_t * 70f);
+            int order = Mathf.Sin(a) > 0f ? _backR.sortingOrder + 1 : 20410;
+            PlaceBlade(_blade, root, rot, len, BladeThickness * flicker * Mathf.Lerp(1f, 0.7f, p), hc, order + 1);
+            PlaceBlade(_halo, root, rot, len * 1.04f, BladeThickness * 3.5f * Mathf.Lerp(1f, 0.75f, p), gc, order);
+            _lightAt.localPosition = Point(a, Radius * 0.75f);
             if (_light != null)
             {
                 _light.color = Color.Lerp(PaleColour, LightColour, p);
@@ -233,6 +249,41 @@ namespace HearthHollow.Dungeon
                 var leaf = DungeonFx.Spawn(DungeonFx.Leaf, world, Color.Lerp(LightColour, DeepColour, Random.value), Random.Range(0.6f, 0.9f), 1.2f, 0.9f, Random.Range(0f, 360f), 20460, false);
                 leaf.velocity = outward.normalized * Random.Range(1.5f, 3f) + tangent.normalized * 1.5f; leaf.drag = 3f;
                 leaf.accel = new Vector2(0f, -1.5f); leaf.spin = Random.Range(-300f, 300f); leaf.sway = Random.Range(0.6f, 1f);
+            }
+        }
+
+        static void PlaceBlade(SpriteRenderer sr, Vector2 root, float rot, float len, float thick, Color c, int order)
+        {
+            var t = sr.transform;
+            t.localPosition = root;
+            t.localRotation = Quaternion.Euler(0f, 0f, rot);
+            t.localScale = new Vector3(len, thick / BladeH, 1f);   // the sprite is 1 unit long, BladeH units tall
+            sr.color = c; sr.sortingOrder = order;
+        }
+
+        // the blade's sprite: 1 unit long (pivot at its root), bright down the middle, soft at the sides, coming to a point
+        const int BladePxW = 64, BladePxH = 16;
+        const float BladeH = BladePxH / (float)BladePxW;
+        static Sprite _bladeShape;
+        static Sprite BladeShape
+        {
+            get
+            {
+                if (_bladeShape != null) return _bladeShape;
+                var tex = new Texture2D(BladePxW, BladePxH, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, name = "fx_blade" };
+                var px = new Color[BladePxW * BladePxH];
+                for (int y = 0; y < BladePxH; y++)
+                    for (int x = 0; x < BladePxW; x++)
+                    {
+                        float u = (x + 0.5f) / BladePxW, v = Mathf.Abs((y + 0.5f) / BladePxH - 0.5f) * 2f;   // v: 0 on the middle line, 1 at the sides
+                        float half = Mathf.Lerp(1f, 0.15f, Mathf.SmoothStep(0.55f, 1f, u));                // full width, narrowing to a point at the tip
+                        float across = Mathf.Pow(Mathf.Clamp01(1f - v / half), 0.8f);   // a full bright core, soft only at the very sides
+                        float along = Mathf.SmoothStep(0f, 0.25f, u);                                      // fades in from the root
+                        px[y * BladePxW + x] = new Color(1f, 1f, 1f, across * along);
+                    }
+                tex.SetPixels(px); tex.Apply();
+                _bladeShape = Sprite.Create(tex, new Rect(0, 0, BladePxW, BladePxH), new Vector2(0f, 0.5f), BladePxW);
+                return _bladeShape;
             }
         }
 
@@ -284,6 +335,6 @@ namespace HearthHollow.Dungeon
 
         // domain reload is off: the cached material and texture belong to the last play session
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetForPlay() { _mat = null; }
+        static void ResetForPlay() { _mat = null; _bladeShape = null; }
     }
 }
