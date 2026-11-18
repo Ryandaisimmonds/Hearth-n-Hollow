@@ -33,7 +33,10 @@ namespace HearthHollow.Lab
         static readonly float[] Speeds = { 0.1f, 0.25f, 0.5f, 0.75f, 1f };
         int _speed = Speeds.Length - 1;
 
-        VisualElement _panel, _body;
+        VisualElement _panel, _body, _skillsBody, _setupView, _skillsView;
+        Button _setupTab, _skillsTab;
+        int _castLevel;            // 0 = each skill's own level, else 1…3
+        bool _castAtNearest = true;
         Label _status, _meter;
         float _runEndAt = -1f;
 
@@ -266,12 +269,25 @@ namespace HearthHollow.Lab
             _meter = Text("", 12, new Color(1f, 0.9f, 0.5f)); _meter.style.marginTop = 2;
             _panel.Add(_meter);
 
+            // two tabs: Setup (area, class, gear, meals, spawning…) and Skills (every move, one click to use it)
+            var tabs = Row(_setupTab = Btn("⚙️ Setup", () => ShowTab(false)), _skillsTab = Btn("✨ Skills", () => ShowTab(true)));
+            tabs.style.marginTop = 8;
+            _panel.Add(tabs);
             var scroll = new ScrollView(ScrollViewMode.Vertical);
-            scroll.style.flexGrow = 1; scroll.style.marginTop = 6;
+            scroll.style.flexGrow = 1; scroll.style.marginTop = 4;
             scroll.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
             _panel.Add(scroll);
+            _setupView = scroll;
             _body = scroll.contentContainer;
             BuildBody();
+            var skills = new ScrollView(ScrollViewMode.Vertical);
+            skills.style.flexGrow = 1; skills.style.marginTop = 4;
+            skills.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            _panel.Add(skills);
+            _skillsView = skills;
+            _skillsBody = skills.contentContainer;
+            BuildSkills();
+            ShowTab(false);
             _ui.Root.Add(_panel);
 
             _panel.schedule.Execute(() => { Refresh(); _meter.text = MeterText(); }).Every(250);
@@ -496,6 +512,85 @@ namespace HearthHollow.Lab
             if (_ring != null) _ring.RemoveFromHierarchy();
             _ring = null;
             GameFeel.LabPaused = false;
+        }
+
+        void ShowTab(bool skills)
+        {
+            _setupView.style.display = skills ? DisplayStyle.None : DisplayStyle.Flex;
+            _skillsView.style.display = skills ? DisplayStyle.Flex : DisplayStyle.None;
+            var on = new Color(0.62f, 0.42f, 0.2f); var off = new Color(0.25f, 0.18f, 0.12f);
+            _setupTab.style.backgroundColor = skills ? off : on;
+            _skillsTab.style.backgroundColor = skills ? on : off;
+        }
+
+        // ───────────────────────── the Skills tab: every move in the game, one click to use it ─────────────────────────
+        void BuildSkills()
+        {
+            var C = S.Content;
+            var b = _skillsBody;
+            b.Clear();
+            var tip = Text("Click a move to use it now (any class's, any slot). It doesn't change your loadout or cooldowns.", 11, new Color(1, 1, 1, 0.6f));
+            b.Add(tip);
+            var lvl = Drop("Level", new List<string> { "Each skill's own", "Level 1", "Level 2", "Level 3" }, _castLevel, i => _castLevel = i);
+            b.Add(lvl);
+            var aim = Tog("Aim at the nearest monster", _castAtNearest, v => _castAtNearest = v);
+            b.Add(aim);
+
+            // grouped: the lab's own moves first, then each class, then the moves any class can use
+            var lab = C.moves.FindAll(m => m.id.StartsWith("lab_"));
+            if (lab.Count > 0) SkillGroup(b, "🧪 New in the lab", lab);
+            foreach (var cd in C.classes)
+            {
+                var own = C.moves.FindAll(m => !m.anyClass && m.owner == cd.id && !m.id.StartsWith("lab_"));
+                if (own.Count > 0) SkillGroup(b, cd.emoji + " " + cd.name, own);
+            }
+            var any = C.moves.FindAll(m => m.anyClass && !m.id.StartsWith("lab_"));
+            if (any.Count > 0) SkillGroup(b, "Any class", any);
+        }
+
+        void SkillGroup(VisualElement parent, string title, List<MoveData> moves)
+        {
+            var l = Text(title, 13, new Color(1f, 0.78f, 0.45f));
+            l.style.marginTop = 10; l.style.marginBottom = 2; l.style.unityFontStyleAndWeight = FontStyle.Bold;
+            parent.Add(l);
+            moves.Sort((x, y) => x.slot != y.slot ? x.slot.CompareTo(y.slot) : string.CompareOrdinal(x.name, y.name));
+            var grid = new VisualElement();
+            grid.style.flexDirection = FlexDirection.Row; grid.style.flexWrap = Wrap.Wrap;
+            foreach (var m in moves)
+            {
+                var mv = m;
+                var btn = Btn(mv.emoji + " " + mv.name + "  · " + SlotTag(mv.slot), () => Cast(mv));
+                btn.style.flexGrow = 0; btn.style.width = Length.Percent(48); btn.style.height = 28;
+                btn.style.marginLeft = btn.style.marginRight = Length.Percent(1); btn.style.marginTop = btn.style.marginBottom = 2;
+                btn.style.unityTextAlign = TextAnchor.MiddleLeft; btn.style.paddingLeft = 6;
+                btn.style.whiteSpace = WhiteSpace.NoWrap; btn.style.overflow = Overflow.Hidden; btn.style.textOverflow = TextOverflow.Ellipsis;
+                btn.tooltip = mv.description;
+                grid.Add(btn);
+            }
+            parent.Add(grid);
+        }
+
+        static string SlotTag(MoveSlot s)
+        {
+            switch (s) { case MoveSlot.Attack: return "Attack"; case MoveSlot.Dash: return "Dash"; case MoveSlot.Ultimate: return "Ult"; default: return "Skill"; }
+        }
+
+        void Cast(MoveData m)
+        {
+            if (!Ready) return;
+            if (_castLevel > 0) S.SetMoveLevel(m.id, _castLevel);
+            Vector2 aim = Vector2.zero;
+            if (_castAtNearest)
+            {
+                float best = float.MaxValue; Vector2 from = DC.Player.Body;
+                foreach (var e in FindObjectsByType<EnemyController>())
+                {
+                    if (e == null || e.Dead) continue;
+                    float d = (e.Body - from).sqrMagnitude;
+                    if (d < best) { best = d; aim = e.Body - from; }
+                }
+            }
+            if (!DC.Player.LabCast(m, aim)) _ui.Juice.Toast("Lab: " + m.name + " did nothing here", null, 1.6f);
         }
 
         void SetLevel(string moveId, int level)

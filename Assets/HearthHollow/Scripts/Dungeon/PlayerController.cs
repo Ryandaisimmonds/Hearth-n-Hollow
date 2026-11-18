@@ -76,10 +76,44 @@ namespace HearthHollow.Dungeon
         /// Walking, dashing or being shoved (Heat bites harder when this is false).
         public bool Moving { get { return _move.sqrMagnitude > 0.01f || Dashing || _knockT > 0f || _stepT > 0f; } }
         public Vector2 Aim { get { return _aim; } }
+        bool _aimLocked;
+
+        /// Effects Lab: use any move right now (any class's, any slot), aimed along <paramref name="aim"/> (zero = the
+        /// way you're already aiming), without touching your loadout or its cooldowns. False if nothing happened.
+        public bool LabCast(MoveData m, Vector2 aim)
+        {
+            if (m == null || _dc == null || !_dc.GameplayActive) return false;
+            if (aim.sqrMagnitude > 0.0001f) { _aim = aim.normalized; _facing = CharacterAnimator.FacingFrom(_aim, _facing); _anim.Dir = _facing; }
+            _aimLocked = true;
+            try
+            {
+                switch (m.slot)
+                {
+                    case MoveSlot.Attack:
+                    {
+                        var keep = _atk; _atk = m;
+                        StartAttack(); _attackHitDone = true; AttackHit();   // the swing's hit now, not on the next frames
+                        _atk = keep;
+                        return true;
+                    }
+                    case MoveSlot.Dash:
+                    {
+                        var keep = _dash; _dash = m;
+                        StartDash();
+                        After(_dc.Settings.dashSeconds + 0.15f, () => _dash = keep);   // the dash reads its move while it runs
+                        return true;
+                    }
+                    default:
+                        return UseSkill(m);
+                }
+            }
+            finally { _aimLocked = false; }
+        }
 
         /// Point the aim along the current movement input (any angle), and the sprite's facing to match.
         void TurnToInput()
         {
+            if (_aimLocked) return;   // the Effects Lab aimed this one for you
             Vector2 a;   // mouse cursor / right stick first (DungeonInput), then the way you're walking
             if (DungeonInput.AimFrom(Body, out a)) { _aim = a; _facing = CharacterAnimator.FacingFrom(a, _facing); return; }
             if (_move.sqrMagnitude <= 0.01f) return;
