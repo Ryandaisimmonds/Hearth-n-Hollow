@@ -26,6 +26,7 @@ namespace HearthHollow.Lab
         string _area = Ids.Area.Meadow;
         int _floor = 1;
         readonly List<CookedMeal> _meals = new List<CookedMeal>();
+        readonly Dictionary<string, int> _levels = new Dictionary<string, int>();   // skill levels, put back on every new run
         // the menu's own picks
         int _monster, _mealRecipe, _mealGrade = Cooking.Grades - 1, _mealElement;
         bool _elite, _boss, _autoDummy = true, _autoHeal = true, _noCooldowns;
@@ -123,6 +124,7 @@ namespace HearthHollow.Lab
             if (!S.StartRun(_area, 1)) { _ui.Juice.Toast("Lab: couldn't set out for " + _area, null, 3f); return; }
             while (S.Run != null && S.Run.floor < _floor && S.DungeonDescend()) { }   // any floor, not just the shortcut ones
             _runEndAt = -1f;
+            foreach (var kv in _levels) S.SetMoveLevel(kv.Key, kv.Value);
             if (_autoDummy && DC != null && DC.CurrentRoom != null && DC.Player != null)
                 SpawnDummy(DC.CurrentRoom.NearestWalkable(DC.Player.Feet + new Vector2(2.6f, 0.4f)));
             Refresh();
@@ -317,6 +319,18 @@ namespace HearthHollow.Lab
                 }));
             }
 
+            // ── skill levels (this run; the lab keeps them across restarts) ──
+            Section("Skill levels");
+            var shown = new List<string>();
+            foreach (var mv in S.Loadout(P.selectedClass))
+            {
+                if (mv == null || mv.slot == MoveSlot.Dash || shown.Contains(mv.id)) continue;
+                shown.Add(mv.id);
+                string id = mv.id;
+                _body.Add(Drop(mv.emoji + " " + mv.name, new List<string> { "Level 1", "Level 2", "Level 3" }, (_levels.ContainsKey(id) ? _levels[id] : S.MoveLevel(id)) - 1, i => SetLevel(id, i + 1)));
+            }
+            _body.Add(Row(Btn("All Lv 1", () => SetAllLevels(1)), Btn("All Lv 2", () => SetAllLevels(2)), Btn("All Lv 3", () => SetAllLevels(3))));
+
             // ── gear ──
             Section("Gear & trinkets");
             foreach (var g in Gear.Shop)
@@ -439,6 +453,7 @@ namespace HearthHollow.Lab
                 new KeyValuePair<string, System.Action>("🔄\nRestart  F5", Restart),
                 new KeyValuePair<string, System.Action>("🐢\nSlower  −", () => SetSpeed(_speed - 1)),
                 new KeyValuePair<string, System.Action>("🐇\nFaster  =", () => SetSpeed(_speed + 1)),
+                new KeyValuePair<string, System.Action>("⬆️\nSkill level", CycleLevels),
             };
             const float Radius = 112f, Size = 86f;
             // near a screen edge, slide the ring in so every button shows (the spawn spot stays where the mouse was)
@@ -481,6 +496,29 @@ namespace HearthHollow.Lab
             if (_ring != null) _ring.RemoveFromHierarchy();
             _ring = null;
             GameFeel.LabPaused = false;
+        }
+
+        void SetLevel(string moveId, int level)
+        {
+            _levels[moveId] = level;
+            S.SetMoveLevel(moveId, level);
+            _ui.Juice.Toast("Lab: " + (S.Content.Move(moveId) != null ? S.Content.Move(moveId).name : moveId) + " → level " + level, null, 1.6f);
+        }
+
+        void SetAllLevels(int level)
+        {
+            foreach (var mv in S.Loadout(S.Profile.selectedClass))
+                if (mv != null && mv.slot != MoveSlot.Dash) { _levels[mv.id] = level; S.SetMoveLevel(mv.id, level); }
+            _ui.Juice.Toast("Lab: every skill → level " + level, null, 1.6f);
+            BuildBody();
+        }
+
+        /// The quick ring's level button: every skill up one level (3 wraps back to 1).
+        void CycleLevels()
+        {
+            int now = 1;
+            foreach (var mv in S.Loadout(S.Profile.selectedClass)) if (mv != null && mv.slot != MoveSlot.Dash) now = Mathf.Max(now, S.MoveLevel(mv.id));
+            SetAllLevels(now >= GameSession.MaxMoveLevel ? 1 : now + 1);
         }
 
         void NextFloor()

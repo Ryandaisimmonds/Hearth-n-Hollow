@@ -28,6 +28,12 @@ namespace HearthHollow.Dungeon
         public float BladeFrom = 0.3f;     // where the blade starts (× Radius out from the centre)…
         public float BladeReach = 0.18f;   // …and how far its tip pokes past the trail's edge (world units)
         public float BladeThickness = 0.36f;
+        public bool ShowBlade = true;      // false: just the trail (echo rings and wind lines round a bigger swing)
+        public float Delay;                // seconds before it starts (echoes trail the main swing a moment behind)
+        public float StartFadeDeg = 40f;   // the swing's first bit fades in over this many degrees (0 = a full ring at once)
+        public float HeatScale = 1f;       // × how bright the whole trail burns (a stronger green)
+        public int Sparks = 1;             // sparks thrown off the tip each beat…
+        public float LeafChance = 0.35f;   // …and the chance of a leaf
 
         // the colour the trail cools through as it ages: white-hot → very light green → light green → green
         public Color HotColour = new Color(1f, 1f, 0.96f);
@@ -68,10 +74,14 @@ namespace HearthHollow.Dungeon
         {
             _back = NewMesh("Back", out _backR);
             _front = NewMesh("Front", out _frontR);
-            _halo = BladeSprite("Blade glow");   // a wide soft glow round…
-            _blade = BladeSprite("Blade");       // …a thin white-hot line
-            _lightAt = new GameObject("Blade light").transform; _lightAt.SetParent(transform, false);
-            _light = DungeonFx.Flash(transform.position, PaleColour, Radius * 1.3f, LightIntensity, 0f, _lightAt);   // the blade lights the room as it goes
+            if (ShowBlade)
+            {
+                _halo = BladeSprite("Blade glow");   // a wide soft glow round…
+                _blade = BladeSprite("Blade");       // …a thin white-hot line
+                _halo.enabled = _blade.enabled = false;   // placed on the first frame
+                _lightAt = new GameObject("Blade light").transform; _lightAt.SetParent(transform, false);
+                if (LightIntensity > 0f) _light = DungeonFx.Flash(transform.position, PaleColour, Radius * 1.3f, 0f, 0f, _lightAt);   // the blade lights the room as it goes
+            }
             AddSample(_start, 0f);
         }
 
@@ -107,6 +117,7 @@ namespace HearthHollow.Dungeon
         {
             if (_follow != null) transform.position = (Vector2)_follow.position + _offset;
             float dt = Time.deltaTime;
+            if (Delay > 0f) { Delay -= dt; return; }
             _t += dt;
 
             // the blade moves: lay trail every few degrees so the ribbon stays smooth however fast it goes
@@ -186,7 +197,8 @@ namespace HearthHollow.Dungeon
             float fromStart = Mathf.Abs(s.a - _start);                                  // the very start of the swing fades in (no hard cut)
             float r = Radius * (1f + Drift * k);
             Color c; float heat; Cool(age, out c, out heat);
-            c.a *= Mathf.SmoothStep(0f, 1f, fromStart / (40f * Mathf.Deg2Rad));
+            if (StartFadeDeg > 0f) c.a *= Mathf.SmoothStep(0f, 1f, fromStart / (StartFadeDeg * Mathf.Deg2Rad));
+            heat *= HeatScale;
             V.Add(Point(s.a, r - w)); V.Add(Point(s.a, r));
             Color inner = c; inner.a *= 0.85f;
             C.Add(inner); C.Add(c);
@@ -215,6 +227,8 @@ namespace HearthHollow.Dungeon
             Vector2 at = Point(a, Radius);   // the tip (sparks fly from here)
             // white-hot while it whips round, greener as it drags to a stop, then gone
             float fade = _done ? Mathf.Clamp01(1f - (_t - SweepTime) / 0.15f) : 1f;
+            if (!ShowBlade) { Emit(dt, a, at); return; }
+            _halo.enabled = _blade.enabled = true;
             Color hc = Color.Lerp(HotColour, PaleColour, p * p); hc.a = fade;
             Color gc = Color.Lerp(PaleColour, LightColour, p); gc.a = 0.75f * fade;
             float flicker = 1f + 0.12f * Mathf.Sin(_t * 70f);
@@ -229,22 +243,27 @@ namespace HearthHollow.Dungeon
                 if (fade <= 0f) { Destroy(_light.gameObject); _light = null; }
             }
 
-            // sparks and leaves thrown off the blade's edge, along it and outwards
-            if (_done) return;
+            Emit(dt, a, at);
+        }
+
+        /// Sparks and leaves thrown off the blade's tip, along it and outwards.
+        void Emit(float dt, float a, Vector2 at)
+        {
+            if (_done || (Sparks <= 0 && LeafChance <= 0f)) return;
             _emitT -= dt;
             if (_emitT > 0f) return;
             _emitT = 0.018f;
             Vector2 world = (Vector2)transform.position + at;
             Vector2 tangent = new Vector2(-Mathf.Sin(a), Mathf.Cos(a) * Squash) * Spin;
             Vector2 outward = new Vector2(Mathf.Cos(a), Mathf.Sin(a) * Squash);
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < Sparks; i++)
             {
                 var fx = DungeonFx.Spawn(DungeonFx.Pixel, world + Random.insideUnitCircle * 0.25f, Color.Lerp(HotColour, PaleColour, Random.value),
                                          Random.Range(0.25f, 0.45f), Random.Range(2.5f, 4f), 0.5f, 0f, 20460, true);
                 fx.velocity = tangent.normalized * Random.Range(1.5f, 4f) + outward.normalized * Random.Range(1f, 3.5f);
                 fx.drag = 4f;
             }
-            if (Random.value < 0.35f)
+            if (Random.value < LeafChance)
             {
                 var leaf = DungeonFx.Spawn(DungeonFx.Leaf, world, Color.Lerp(LightColour, DeepColour, Random.value), Random.Range(0.6f, 0.9f), 1.2f, 0.9f, Random.Range(0f, 360f), 20460, false);
                 leaf.velocity = outward.normalized * Random.Range(1.5f, 3f) + tangent.normalized * 1.5f; leaf.drag = 3f;

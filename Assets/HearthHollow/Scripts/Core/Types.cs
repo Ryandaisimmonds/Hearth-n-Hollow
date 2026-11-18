@@ -608,7 +608,11 @@ namespace HearthHollow.Core
         public RunOutcome outcome;
         public List<string> trinketsDropped = new List<string>();   // trinkets dropped this run (already added to the profile)
         public int torches = -1;          // (unused since torches went unlimited on a cooldown — kept so saves load)
+        public List<MoveLevel> moveLevels = new List<MoveLevel>();   // skills levelled up this run (1 = base, up to MoveLevels.Max); none = all level 1
     }
+
+    /// A skill's level in the current run (Effects Lab, Nov 2026).
+    [Serializable] public class MoveLevel { public string moveId; public int level = 1; }
 
     [Serializable] public class RunSummary
     {

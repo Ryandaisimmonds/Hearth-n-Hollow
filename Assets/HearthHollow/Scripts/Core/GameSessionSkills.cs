@@ -15,6 +15,40 @@ namespace HearthHollow.Core
 
         public bool CanEditSkills { get { return !InRun; } }
 
+        // ───── skill levels in a run (1 = base … MaxMoveLevel): each level a bigger, stronger version of the move ─────
+        public const int MaxMoveLevel = 3;
+
+        /// This run's level of a move (1 when there's no run, or it hasn't levelled up).
+        public int MoveLevel(string moveId)
+        {
+            if (Run == null || Run.moveLevels == null || string.IsNullOrEmpty(moveId)) return 1;
+            var ml = Run.moveLevels.Find(x => x.moveId == moveId);
+            return ml != null ? Math.Max(1, Math.Min(MaxMoveLevel, ml.level)) : 1;
+        }
+
+        /// Set a move's level for this run (clamped 1…MaxMoveLevel). False with no run.
+        public bool SetMoveLevel(string moveId, int level)
+        {
+            if (Run == null || string.IsNullOrEmpty(moveId)) return false;
+            if (Run.moveLevels == null) Run.moveLevels = new List<MoveLevel>();
+            level = Math.Max(1, Math.Min(MaxMoveLevel, level));
+            var ml = Run.moveLevels.Find(x => x.moveId == moveId);
+            if (ml == null) Run.moveLevels.Add(ml = new MoveLevel { moveId = moveId });
+            ml.level = level;
+            Touch(false);
+            return true;
+        }
+
+        /// One level up for this run. False if it's already at the top (or there's no run).
+        public bool LevelUpMove(string moveId)
+        {
+            int now = MoveLevel(moveId);
+            if (now >= MaxMoveLevel || !SetMoveLevel(moveId, now + 1)) return false;
+            var m = Content.Move(moveId);
+            Info("⬆️ " + (m != null ? m.emoji + " " + m.name : moveId) + " is now level " + (now + 1) + "!");
+            return true;
+        }
+
         public MoveData[] Loadout(ClassId cls) { return Progression.Loadout(Content, Profile, cls); }
         public MoveData UltimateMove(ClassId cls) { return Progression.Ultimate(Content, Profile, cls); }
 
