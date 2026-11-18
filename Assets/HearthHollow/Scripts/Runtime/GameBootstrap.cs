@@ -65,6 +65,7 @@ namespace HearthHollow.Runtime
             ArtLibrary.Active = art;   // the UI reads art through ArtLibrary.Active (emoji fallback when null)
 
             GameContent gc = content != null ? content.GetContentOrDefault() : DefaultContent.Create();
+            if (effectsLab) gc = JsonUtility.FromJson<GameContent>(JsonUtility.ToJson(gc));   // the lab adds moves: never into the content asset
             HearthHollow.UI.FoodArt.Install(gc);   // ticket 54: pixel art for every ingredient and dish
             Slice.On = effectsLab ? false : PlayerPrefs.GetInt(SlicePref, 1) == 1;   // the vertical slice gate (dev panel can switch it off; the lab has everything)
             Profile profile = effectsLab ? null : SaveService.Load();   // the lab never touches the save

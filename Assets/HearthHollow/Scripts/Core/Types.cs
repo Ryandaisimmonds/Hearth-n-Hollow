@@ -51,7 +51,8 @@ namespace HearthHollow.Core
         Snack, PepperToss, HotPot, Picnic, RollingPin,                        // Cook skills
         Combo, Sunshield, LeapSlam, EmberArrow, FlareArrow, Spotlight, Cookfire, SkewerToss,  // class rework (contentVersion 15). Append only.
         Wisp, Lantern, Sunbeam, Prism, Kindle, Blink,                         // Lamplighter (contentVersion 16)
-        Phoenix, FlameWheel, Detonate, Counter, Flicker, Sunfall, Starfall, GrandFeast, Dawn, Supernova                       // Emberfist (contentVersion 17)
+        Phoenix, FlameWheel, Detonate, Counter, Flicker, Sunfall, Starfall, GrandFeast, Dawn, Supernova,                      // Emberfist (contentVersion 17)
+        VerdantCrescent                                                       // the Effects Lab (not in content yet)
     }
     /// What a skill-tree node does. Append only.
     public enum NodeEffect

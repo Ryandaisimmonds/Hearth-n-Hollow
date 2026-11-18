@@ -60,9 +60,25 @@ namespace HearthHollow.Lab
         }
 
         // ───────────────────────── the throwaway profile ─────────────────────────
+        /// Moves still being made: they live here (not in the content) until they're ready to port.
+        public const string VerdantCrescent = "lab_verdant_crescent";
+        public static void LabMoves(GameContent c)
+        {
+            if (c.Move(VerdantCrescent) == null)
+                c.moves.Add(new MoveData
+                {
+                    id = VerdantCrescent, name = "Verdant Crescent", emoji = "🌿", anyClass = true,
+                    description = "A huge slash all the way round you. White-hot at the blade, cooling to green.",
+                    slot = MoveSlot.Skill, kind = MoveKind.VerdantCrescent, element = Element.Nature,
+                    power = 1.8f, cooldown = 6f, radius = 2.4f, range = 1f, duration = 0.5f, value = 1.15f,   // value = turns
+                    lightColour = "9CFF7A", lightIntensity = 0.9f, lightRadius = 4f,
+                });
+        }
+
         void UnlockEverything()
         {
             var C = S.Content; var P = S.Profile;
+            LabMoves(C);
             foreach (var r in C.routes)
             {
                 if (!P.clearedRouteIds.Contains(r.id)) P.clearedRouteIds.Add(r.id);
@@ -75,6 +91,7 @@ namespace HearthHollow.Lab
             S.Story.DevSetArcStage(int.MaxValue);
             S.DevMaxEverything();   // every class, gear track, trinket and the kitchen
             foreach (var m in P.packed) _meals.Add(m);   // start with the dev tray (the best dish of each station, Prime)
+            foreach (var cd in C.classes) Progression.Equip(C, P, cd.id, LoadSlot.Skill2, VerdantCrescent);   // the newest lab move, ready on Q
             if (C.Route(_area) == null && C.routes.Count > 0) _area = C.routes[0].id;
         }
 

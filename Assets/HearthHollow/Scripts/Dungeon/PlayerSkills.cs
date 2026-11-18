@@ -50,6 +50,7 @@ namespace HearthHollow.Dungeon
             { MoveKind.SkewerToss, (p, m, d, x) => p.UseSkewerToss(m, d, x) },
             { MoveKind.Cookfire, (p, m, d, x) => p.UseCookfire(m, d, x) },
             { MoveKind.RollingPin, (p, m, d, x) => p.UseRollingPin(m, d, x) },
+            { MoveKind.VerdantCrescent, (p, m, d, x) => p.UseVerdantCrescent(m, d, x) },
         };
     }
 }
