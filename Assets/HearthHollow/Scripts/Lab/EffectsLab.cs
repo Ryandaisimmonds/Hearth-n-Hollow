@@ -29,7 +29,7 @@ namespace HearthHollow.Lab
         readonly Dictionary<string, int> _levels = new Dictionary<string, int>();   // skill levels, put back on every new run
         // the menu's own picks
         int _monster, _mealRecipe, _mealGrade = Cooking.Grades - 1, _mealElement;
-        bool _elite, _boss, _autoDummy = true, _autoHeal = true, _noCooldowns;
+        bool _elite, _boss, _autoDummy = true, _autoHeal = true, _noCooldowns, _bossSwirl = true;
         static readonly float[] Speeds = { 0.1f, 0.25f, 0.5f, 0.75f, 1f };
         int _speed = Speeds.Length - 1;
 
@@ -173,7 +173,29 @@ namespace HearthHollow.Lab
             var md = S.Content.monsters[Mathf.Clamp(_monster, 0, S.Content.monsters.Count - 1)];
             var room = DC.CurrentRoom;
             var e = DC.SpawnEnemy(room, md.id, _elite && !_boss, _boss, at);
-            if (e != null) room.Adopt(e);
+            if (e != null) { room.Adopt(e); if (_boss && _bossSwirl) SwirlAura.On(e); }
+        }
+
+        /// The swirling green aura on everything in the room (dummies too), or off again if they all have it.
+        void ToggleSwirlAll()
+        {
+            var all = new List<EnemyController>();
+            foreach (var e in FindObjectsByType<EnemyController>()) if (e != null && !e.Dead) all.Add(e);
+            bool allOn = all.Count > 0 && all.TrueForAll(e => e.GetComponentInChildren<SwirlAura>() != null);
+            foreach (var e in all) { if (allOn) SwirlAura.Off(e); else SwirlAura.On(e); }
+            if (all.Count == 0) _ui.Juice.Toast("Lab: nothing here to wrap — spawn a monster or a dummy", null, 2f);
+        }
+
+        /// A boss walks in wrapped in the swirl (whatever the floor's boss is).
+        void SpawnSwirlBoss()
+        {
+            if (!Ready) return;
+            string id = DungeonRules.BossMonster(S.Content, S.Run);
+            var room = DC.CurrentRoom;
+            var e = DC.SpawnEnemy(room, id, false, true, SpawnPoint());
+            if (e == null) return;
+            room.Adopt(e);
+            SwirlAura.On(e);
         }
 
         void SpawnDummy(Vector2 at)
@@ -430,13 +452,17 @@ namespace HearthHollow.Lab
                 string id = DungeonRules.BossMonster(C, S.Run);
                 var room = DC.CurrentRoom;
                 var e = DC.SpawnEnemy(room, id, false, true, SpawnPoint());
-                if (e != null) { room.Adopt(e); DC.BossEntrance(room, e); }
+                if (e != null) { room.Adopt(e); if (_bossSwirl) SwirlAura.On(e); DC.BossEntrance(room, e); }
             }), Btn("Dummy (F2)", () => { if (Ready) SpawnDummy(SpawnPoint()); })));
             _body.Add(Row(Btn("Kill all (F4)", () => KillAll(false)), Btn("Remove dummies", () =>
             {
                 foreach (var e in FindObjectsByType<EnemyController>()) if (e != null && e.Dummy) Destroy(e.gameObject);
             })));
             _body.Add(Tog("A dummy by the door each run", _autoDummy, v => _autoDummy = v));
+
+            Section("Auras");
+            _body.Add(Tog("Bosses come wrapped in the green swirl", _bossSwirl, v => _bossSwirl = v));
+            _body.Add(Row(Btn("🌪️ Swirl boss", SpawnSwirlBoss), Btn("Swirl on / off: all here", ToggleSwirlAll)));
 
             // ── cheats ──
             Section("Cheats & time");
@@ -488,6 +514,7 @@ namespace HearthHollow.Lab
                 new KeyValuePair<string, System.Action>("🐢\nSlower  −", () => SetSpeed(_speed - 1)),
                 new KeyValuePair<string, System.Action>("🐇\nFaster  =", () => SetSpeed(_speed + 1)),
                 new KeyValuePair<string, System.Action>("⬆️\nSkill level", CycleLevels),
+                new KeyValuePair<string, System.Action>("🌪️\nSwirl boss", SpawnSwirlBoss),
             };
             const float Radius = 112f, Size = 86f;
             // near a screen edge, slide the ring in so every button shows (the spawn spot stays where the mouse was)

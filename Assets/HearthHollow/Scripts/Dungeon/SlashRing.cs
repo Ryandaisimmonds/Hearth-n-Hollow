@@ -320,6 +320,8 @@ namespace HearthHollow.Dungeon
 
         // ── the material and its streak texture (made once) ──
         static Material _mat;
+        /// The streaked HDR ribbon material (other trails use it too: SwirlAura).
+        public static Material TrailMaterial { get { return Material; } }
         static Material Material
         {
             get
