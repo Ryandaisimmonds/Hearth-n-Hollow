@@ -65,7 +65,7 @@ namespace HearthHollow.Lab
 
         // ───────────────────────── the throwaway profile ─────────────────────────
         /// Moves still being made: they live here (not in the content) until they're ready to port.
-        public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent";
+        public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -85,6 +85,15 @@ namespace HearthHollow.Lab
                     slot = MoveSlot.Skill, kind = MoveKind.CinderCrescent, element = Element.Fire,
                     power = 1.4f, cooldown = 4f, radius = 1.5f, range = 5f,
                     lightColour = "FF9A3C", lightIntensity = 0.9f, lightRadius = 4f,
+                });
+            if (c.Move(StormEdge) == null)
+                c.moves.Add(new MoveData
+                {
+                    id = StormEdge, name = "Storm Edge", emoji = "⚡", anyClass = true,
+                    description = "Lightning runs into your weapon: you glow white-blue and every hit lands harder and crackles. Lv 2: hits arc to another monster. Lv 3: arcs to two, and pulses of static hit everything round you.",
+                    slot = MoveSlot.Skill, kind = MoveKind.StormEdge, element = Element.Light,
+                    power = 1f, cooldown = 12f, duration = 6f, value = 0.35f, radius = 1f, range = 1f,
+                    lightColour = "BFE6FF", lightIntensity = 1.2f, lightRadius = 4f,
                 });
         }
 

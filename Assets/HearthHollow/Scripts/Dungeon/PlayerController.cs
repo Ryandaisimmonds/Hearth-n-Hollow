@@ -173,6 +173,7 @@ namespace HearthHollow.Dungeon
         {
             if (_dc == null || !_dc.GameplayActive) { _move = Vector2.zero; ShowReticle(false); return; }
             if (S.Run != null) InfusedAura();   // ticket 34: your meal's element drifts off you
+            if (StormOn) StormTick();           // Effects Lab: Storm Edge's pulse
             float dt = Time.deltaTime;
             _attackCd -= dt; _dashCd -= dt; _skill1Cd -= dt; _skill2Cd -= dt; _ultCd -= dt;
             if (_dashT > 0f) _dashT -= dt;
@@ -353,9 +354,11 @@ namespace HearthHollow.Dungeon
         void Hit(EnemyController e, float mult, Vector2 knockDir, float knock, Element type)
         {
             bool crit;
+            if (StormOn && !_stormChaining) mult *= 1f + _stormBonus;   // Storm Edge: charged hits
             float dmg = S.DungeonRollDamage(mult, out crit);
             if (type != Element.None && S.RunInfusions.Contains(type) && e != null) InfusedFlair(e.Body);   // ticket 34/46: meals add their elements to your hits
             e.TakeHit(dmg, crit, knockDir, knock, type);
+            if (StormOn && !_stormChaining) StormStrike(e, mult);   // …that crackle, and (level 2+) arc on to others
         }
 
         Projectile Arrow(float mult, Vector2 dir, float speed, bool pierce, float scale = 1.4f)

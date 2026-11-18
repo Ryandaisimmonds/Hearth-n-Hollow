@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using HearthHollow.Core;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace HearthHollow.Dungeon
 {
@@ -241,6 +242,101 @@ namespace HearthHollow.Dungeon
                     if (!Alive) return;
                 }
             };
+        }
+
+        // ───────────────────────── Storm Edge ─────────────────────────
+        /// Storm Edge: lightning runs into your weapon and through you. You glow white-blue (a soft halo in your
+        /// shape that fades out, bolts crackling off you) and every hit lands harder and crackles.
+        ///   Level 1  6 s, hits +35%.
+        ///   Level 2  8 s, hits +50%, and each hit arcs to the nearest other monster (half damage). A brighter glow.
+        ///   Level 3  10 s, hits +70%, arcs to two; and every 1.2 s a pulse of static hits everything close round you.
+        float _stormUntil, _stormBonus, _stormPulseT; int _stormLvl, _stormArcs; bool _stormChaining;
+        static readonly Color StormInner = new Color(0.92f, 1f, 1f), StormOuter = new Color(0.35f, 0.72f, 1f);
+        bool StormOn { get { return Time.time < _stormUntil; } }
+
+        bool UseStormEdge(MoveData m, Vector2 dir, float mult)
+        {
+            int lvl = Mathf.Clamp(S.MoveLevel(m.id), 1, GameSession.MaxMoveLevel);
+            int up = lvl - 1;
+            float seconds = (m.duration > 0f ? m.duration : 6f) + 2f * up;
+            _stormLvl = lvl; _stormBonus = (m.value > 0f ? m.value : 0.35f) + (lvl >= 3 ? 0.35f : 0.15f * up);
+            _stormArcs = up; _stormUntil = Time.time + seconds; _stormPulseT = 1.2f;
+            _stormMult = mult;
+
+            var aura = GlowAura.On(_anim.Renderer, seconds);
+            aura.Inner = StormInner; aura.Outer = StormOuter;
+            aura.Strength = 1f + 0.3f * up; aura.Spread = 0.28f + 0.07f * up; aura.CracklesPerSecond = 4f + 4f * up;
+            if (_stormLight != null) Destroy(_stormLight.gameObject);
+            _stormLight = DungeonFx.Flash(Body, StormOuter, 3.5f + up, 0.6f + 0.2f * up, 0f, transform);   // you light the room blue-white
+            After(seconds, () => { if (_stormLight != null && !StormOn) { Destroy(_stormLight.gameObject); _stormLight = null; } });
+
+            // charging up: a flash, a ring, and bolts striking down onto you
+            _anim.PlayAttack(0.3f);
+            DungeonFx.Flash(Body, StormInner, 4f + up, 1.4f + 0.3f * up, 0.35f);
+            DungeonFx.RingAt(Body, new Color(0.7f, 0.9f, 1f, 0.8f), 1.2f + 0.3f * up, 0.3f);
+            for (int i = 0; i < 3 + 2 * up; i++)
+            {
+                Vector2 top = Body + new Vector2(Random.Range(-1.2f, 1.2f), Random.Range(1.6f, 2.6f));
+                GlowAura.Bolt(top, Body + Random.insideUnitCircle * 0.3f, Color.Lerp(StormInner, StormOuter, Random.value * 0.5f), 20470, 0.07f, 0.18f);
+            }
+            _dc.Shake(0.1f + 0.05f * up, 0.06f + 0.03f * up);
+            GameLook.Punch(0.25f + 0.1f * up);
+            return true;
+        }
+        Light2D _stormLight; float _stormMult;
+
+        void StormStrike(EnemyController e, float mult)
+        {
+            if (e == null) return;
+            GlowAura.Bolt(Body, e.Body, StormInner, 20470, 0.05f, 0.1f);   // the charge leaps from you to it
+            DungeonFx.Sparks(e.Body, Vector2.up, new Color(0.75f, 0.9f, 1f), 6 + 3 * _stormLvl);
+            if (_stormArcs <= 0) return;
+            // arcs on to the nearest others
+            var done = new HashSet<EnemyController> { e };
+            EnemyController from = e;
+            _stormChaining = true;
+            try
+            {
+                for (int i = 0; i < _stormArcs; i++)
+                {
+                    EnemyController next = null; float best = 4f * 4f;
+                    foreach (var o in Combat2D.EnemiesIn(from.Body, 4f))
+                    {
+                        if (o == null || o.Dead || done.Contains(o)) continue;
+                        float d = (o.Body - from.Body).sqrMagnitude;
+                        if (d < best) { best = d; next = o; }
+                    }
+                    if (next == null) break;
+                    GlowAura.Bolt(from.Body, next.Body, Color.Lerp(StormInner, StormOuter, 0.3f), 20470, 0.08f, 0.16f);
+                    Hit(next, mult * 0.5f, (next.Body - from.Body).normalized, 3f, Element.Light);
+                    if (!Alive) return;
+                    done.Add(next); from = next;
+                }
+            }
+            finally { _stormChaining = false; }
+        }
+
+        void StormTick()
+        {
+            if (_stormLvl < 3) return;
+            _stormPulseT -= Time.deltaTime;
+            if (_stormPulseT > 0f) return;
+            _stormPulseT = 1.2f;
+            // level 3: a pulse of static round you
+            const float R = 2.2f;
+            DungeonFx.RingAt(Body, new Color(0.7f, 0.9f, 1f, 0.6f), R, 0.25f);
+            for (int i = 0; i < 6; i++) { Vector2 o = Random.insideUnitCircle.normalized; GlowAura.Bolt(Body + o * 0.4f, Body + o * R, Color.Lerp(StormInner, StormOuter, 0.4f), 20470, 0.05f, 0.12f); }
+            _stormChaining = true;
+            try
+            {
+                foreach (var e in Combat2D.EnemiesIn(Body, R))
+                {
+                    if (e == null || e.Dead) continue;
+                    Hit(e, _stormMult * 0.3f, (e.Body - Body).normalized, 2f, Element.Light);
+                    if (!Alive) return;
+                }
+            }
+            finally { _stormChaining = false; }
         }
 
         /// Cinder Crescent's fire: white-hot → yellow → orange → deep red, fiercer each level.
