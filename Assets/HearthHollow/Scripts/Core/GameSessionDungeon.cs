@@ -80,6 +80,7 @@ namespace HearthHollow.Core
             if (DungeonHas(Mutator.GlassHearts)) raw *= T.glassMult;
             int dmg = DungeonRules.IncomingDamage(raw, Stats, DungeonGuardMult);
             Run.hp -= dmg;
+            if (DevNoDeath && Run.hp < 1) Run.hp = 1;
             DeathRecap.Note(Run, source, dmg);
             Emit(new GameEvent(GameEventType.MonsterHit, dmg, true, "-" + dmg));
             if (Run.hp <= 0 && !Run.secondWindUsed && Gear.Perk(Content, Profile, TrinketPerk.SecondWind) > 0f)

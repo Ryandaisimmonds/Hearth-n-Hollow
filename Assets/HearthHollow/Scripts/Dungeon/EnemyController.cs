@@ -19,6 +19,13 @@ namespace HearthHollow.Dungeon
         public bool Dead { get; private set; }
         public bool Boss { get { return Stats != null && Stats.boss; } }
         public string DisplayName { get; private set; }
+        /// The Effects Lab's training dummy: it never moves, attacks or dies (its HP refills when it runs out).
+        public bool Dummy { get; private set; }
+        /// Every hit any monster takes (after weakness, marks and shadow): the Effects Lab's damage meter listens.
+        public static event System.Action<EnemyController, int, bool> AnyHit;
+        TrainingDummy _dummy;
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetForPlay() { AnyHit = null; }   // domain reload is off
 
         Rigidbody2D _rb;
         CharacterAnimator _anim;
@@ -163,7 +170,7 @@ namespace HearthHollow.Dungeon
 
             switch (_st)
             {
-                case St.Moving: Think(dist, dir); break;
+                case St.Moving: if (!Dummy) Think(dist, dir); break;
                 case St.Windup:
                     if (_stT <= 0f) Release(dist, dir);
                     break;
@@ -181,7 +188,7 @@ namespace HearthHollow.Dungeon
                     break;
             }
 
-            if (Data.healsAllies && _st == St.Moving)
+            if (Data.healsAllies && _st == St.Moving && !Dummy)
             {
                 _healCd -= dt;
                 if (_healCd <= 0f) { _healCd = 6f; _room.HealWeakestAlly(this, T.shamanHealPct); }
@@ -294,6 +301,7 @@ namespace HearthHollow.Dungeon
         void FixedUpdate()
         {
             if (_rb == null) return;
+            if (Dummy) { _rb.linearVelocity = Vector2.zero; return; }   // planted on its post
             if (Dead || _dc == null || !_dc.GameplayActive || Player == null || _st == St.Spawning) { _rb.linearVelocity = Vector2.zero; return; }
             if (_stunT > 0f || (_rootT > 0f && _st != St.Stagger)) { _rb.linearVelocity = _st == St.Stagger ? _rb.linearVelocity * 0.85f : Vector2.zero; return; }
             float speed = Data.moveSpeed * _speedMult * _slowMult;
@@ -371,6 +379,8 @@ namespace HearthHollow.Dungeon
             int d = Mathf.Max(1, Mathf.RoundToInt(dmg));
             Hp -= d;
             _flashT = 0.12f;
+            if (AnyHit != null) AnyHit(this, d, crit);
+            if (_dummy != null) _dummy.Hit(knockDir, crit, d);
             DungeonHud.Number(Body + Vector2.up * (_anim.FigureHeight * 0.6f), (crit ? d + "!" : d.ToString()), crit ? "dnum--crit" : "dnum--dmg");
             DungeonFx.Spark(Body, crit ? new Color(1f, 0.85f, 0.3f) : Color.white);
             HearthHollow.Runtime.GameAudio.Play(crit ? "crit" : "hit");
@@ -392,7 +402,9 @@ namespace HearthHollow.Dungeon
             GameFeel.HitStop(crit ? 0.075f : 0.035f);
             if (crit) { if (_dc != null) _dc.Shake(0.08f, 0.07f); GameLook.Punch(0.35f); }
             if (multi) foreach (var e in infused) ElementMark(e, knockDir); else ElementMark(element, knockDir);
+            if (Hp <= 0 && Dummy) { Hp = Stats.maxHp; DungeonHud.Number(Body + Vector2.up * 0.9f, "Refilled", "dnum--info"); return; }
             if (Hp <= 0) { Die(); return; }
+            if (Dummy) return;   // it rocks on its post instead of staggering
             if (!Stats.boss && !Stats.elite && _st != St.Charging)
             {
                 _st = St.Stagger; _stT = 0.16f;
@@ -450,6 +462,26 @@ namespace HearthHollow.Dungeon
                 if (_burnT > 0f) return Mathf.FloorToInt(Time.time * 14f) % 2 == 0 ? new Color(1f, 0.62f, 0.4f) : new Color(1f, 0.85f, 0.6f);
                 return null;
             }
+        }
+
+        /// Effects Lab: turn this monster into a straw training dummy (call right after DungeonController.SpawnEnemy).
+        public void MakeDummy()
+        {
+            Dummy = true;
+            DisplayName = "Training dummy";
+            name = "Training dummy";
+            var glow = GetComponent<EnemyGlow>();   // no rim, eyes or carried light on a sack of straw
+            if (glow != null) Destroy(glow);
+            foreach (var t in GetComponentsInChildren<Transform>(true))
+                if (t != transform && (t.name == "Rim" || t.name.StartsWith("Eye") || t.name == "Lantern")) Destroy(t.gameObject);
+            _anim.ShowStill(TrainingDummy.Sprite);
+            _dummy = _anim.gameObject.AddComponent<TrainingDummy>();
+            // the hit-box and HP bar follow the dummy's own height
+            var hurt = _anim.GetComponent<CircleCollider2D>();
+            if (hurt != null) { hurt.radius = _anim.FigureHeight * 0.4f; hurt.offset = new Vector2(0, _anim.FigureHeight * 0.45f); }
+            float y = _anim.FigureHeight + 0.15f;
+            if (_hpBg != null) _hpBg.transform.localPosition = new Vector3(-0.4f, y, 0);
+            if (_hpFill != null) _hpFill.transform.localPosition = new Vector3(-0.4f, y, 0);
         }
 
         // ───────────────────────── light (step 6) ─────────────────────────

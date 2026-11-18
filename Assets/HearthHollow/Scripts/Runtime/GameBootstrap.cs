@@ -23,6 +23,9 @@ namespace HearthHollow.Runtime
         public ArtLibrary art;
         [Tooltip("Themes, room prefabs and monster behaviour for the real-time dungeon. Built by Hearth & Hollow > Build Dungeon Kit.")]
         public HearthHollow.Dungeon.DungeonSettings dungeon;
+        [Tooltip("The Effects Lab (Scenes/EffectsLab): a throwaway profile with everything unlocked, straight into a dungeon, " +
+                 "with the lab menu (F1). Never loads or writes the save.")]
+        public bool effectsLab;
 
         public GameSession Session { get; private set; }
         GameUI _ui;
@@ -63,15 +66,15 @@ namespace HearthHollow.Runtime
 
             GameContent gc = content != null ? content.GetContentOrDefault() : DefaultContent.Create();
             HearthHollow.UI.FoodArt.Install(gc);   // ticket 54: pixel art for every ingredient and dish
-            Slice.On = PlayerPrefs.GetInt(SlicePref, 1) == 1;   // the vertical slice gate (dev panel can switch it off)
-            Profile profile = SaveService.Load();
-            bool firstLaunch = profile == null;
+            Slice.On = effectsLab ? false : PlayerPrefs.GetInt(SlicePref, 1) == 1;   // the vertical slice gate (dev panel can switch it off; the lab has everything)
+            Profile profile = effectsLab ? null : SaveService.Load();   // the lab never touches the save
+            bool firstLaunch = profile == null && !effectsLab;
             int seed = (int)(DateTime.Now.Ticks & 0x7FFFFFFF);
 
             Session = new GameSession(gc, profile, seed);
             GameAudio.Create(Session);   // ticket 62: sound and music
             if (dungeon != null) Session.Arc = dungeon.arc;   // the opening arc's stages and speeds live in the Dungeon Settings
-            Session.ProfileSaveRequested += SaveNow;
+            if (!effectsLab) Session.ProfileSaveRequested += SaveNow;
             if (firstLaunch) SaveNow();
 
             VisualElement root = _doc.rootVisualElement;
@@ -79,11 +82,12 @@ namespace HearthHollow.Runtime
             if (styleSheet != null) root.styleSheets.Add(styleSheet);
             else Debug.LogWarning("[Hearth & Hollow] No style sheet assigned on GameBootstrap — UI will be unstyled.");
             _ui = new GameUI(Session, root, firstLaunch);
-            if (Features.TownIsHome) _ui.OpenTown();   // the town is the hub; the old camp screen isn't used
+            if (Features.TownIsHome && !effectsLab) _ui.OpenTown();   // the town is the hub; the old camp screen isn't used
 
             if (dungeon != null)
             {
                 gameObject.AddComponent<HearthHollow.Dungeon.DungeonController>().Init(Session, _ui, dungeon);
+                if (effectsLab) { gameObject.AddComponent<HearthHollow.Lab.EffectsLab>().Init(Session, _ui); return; }   // no town, no fall
                 gameObject.AddComponent<HearthHollow.Town.TownController>().Init(Session, _ui, dungeon);   // Hearth's Hollow (town preview)
                 if (Session.Story.BeginFall())   // ticket 42: a new game opens with a fall into Meadow Hollow
                     root.schedule.Execute(() => _ui.Juice.Toast(Story.FallIntro, "toast--level", 7f)).StartingIn(1200);   // once the dungeon's on screen
@@ -96,7 +100,7 @@ namespace HearthHollow.Runtime
 
         void SaveNow()
         {
-            if (Session != null) SaveService.Save(Session.Profile);
+            if (Session != null && !effectsLab) SaveService.Save(Session.Profile);
         }
 
         void OnApplicationQuit()
@@ -112,6 +116,8 @@ namespace HearthHollow.Runtime
         {
             if (Session != null) Session.ProfileSaveRequested -= SaveNow;
             if (_ui != null) _ui.Dispose();
+            // domain reload is off: the lab's "everything on" mustn't leak into edit-mode tests or the next Play
+            if (effectsLab) Slice.On = PlayerPrefs.GetInt(SlicePref, 1) == 1;
         }
     }
 }

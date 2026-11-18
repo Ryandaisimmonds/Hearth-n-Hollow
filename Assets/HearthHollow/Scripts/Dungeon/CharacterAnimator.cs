@@ -91,6 +91,17 @@ namespace HearthHollow.Dungeon
             return hi > lo && hi - lo > 4f && hi - lo < cellH * 0.95f;
         }
 
+        /// Stop animating and stand one still sprite on the feet (pivot at its bottom centre): the lab's training dummy.
+        public void ShowStill(Sprite s)
+        {
+            anim = null;
+            if (Renderer == null) Renderer = GetComponent<SpriteRenderer>();
+            Renderer.sprite = s;
+            transform.localPosition = Vector3.zero;
+            transform.localScale = Vector3.one;
+            FigureHeight = s != null ? s.bounds.size.y : 0.8f;
+        }
+
         public void SetMoving(bool moving)
         {
             if (State == AnimState.Attack) return;

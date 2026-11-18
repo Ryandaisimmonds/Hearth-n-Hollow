@@ -3,6 +3,9 @@ namespace HearthHollow.Core
 {
     public partial class GameSession
     {
+        /// Dev (the Effects Lab): monster hits still land and show, but never take you below 1 HP.
+        public bool DevNoDeath { get; set; }
+
         /// Save the profile now (e.g. after the town remembers something, like meeting Old Wren).
         public void SaveProfile() { Touch(true); }
 
