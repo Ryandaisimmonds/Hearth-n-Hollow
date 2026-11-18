@@ -200,7 +200,7 @@ namespace HearthHollow.Town
             _builtLook = LookKey();
             if (_announcedDay == _builtDay && _builtEvent != _announcedEvent) _announcedDay = -1;   // the day's event changed (dev): announce it again
             _announcedEvent = _builtEvent;
-            var theme = Settings.ThemeFor("meadow");
+            var theme = Settings.ThemeFor(Ids.Area.Meadow);
             _root = new GameObject("Town · Hearth's Hollow (preview)");
 
             // light (sprites are lit in URP 2D)
@@ -208,6 +208,7 @@ namespace HearthHollow.Town
             lgo.transform.SetParent(_root.transform, false);
             var light = lgo.AddComponent<Light2D>();
             light.lightType = Light2D.LightType.Global;
+            light.shadowsEnabled = false;   // a global light casts no shadows anyway; set it as the lighting rule says
             light.color = theme != null ? theme.lightColor : Color.white;
             light.intensity = theme != null ? theme.lightIntensity : 1f;
             LightSetup.ApplyToAllLayers(light);
@@ -645,16 +646,16 @@ namespace HearthHollow.Town
             // (monster art id, size, tint, home, roam range)
             var list = new List<object[]>
             {
-                new object[] { "slime", 0.8f, new Color(0.7f, 1f, 0.7f), new Vector2(24f, 16f), 4f },
-                new object[] { "slime", 0.75f, new Color(0.8f, 0.9f, 1f), new Vector2(30f, 14f), 3f },
-                new object[] { "boar", 0.7f, new Color(1f, 0.85f, 0.85f), new Vector2(8f, 18f), 3.5f },
-                new object[] { "boar", 0.65f, new Color(1f, 0.9f, 0.85f), new Vector2(6f, 24f), 3f },
-                new object[] { "bat", 0.75f, Color.white, new Vector2(16f, 6f), 4f },
-                new object[] { "bat", 0.7f, Color.white, new Vector2(43f, 20f), 4f },
-                new object[] { "slime", 0.65f, new Color(0.5f, 0.85f, 0.45f), new Vector2(7.6f, 4.6f), 1.5f },   // a frog-ish slime by the pond
-                new object[] { "slime", 0.8f, new Color(1f, 0.85f, 0.6f), new Vector2(26f, 33f), 3f },
-                new object[] { "bat", 0.7f, new Color(1f, 0.95f, 0.7f), new Vector2(20f, 26f), 3f },
-                new object[] { "boar", 0.7f, new Color(0.95f, 0.85f, 0.75f), new Vector2(26f, 8f), 2.5f },
+                new object[] { Ids.Monster.Slime, 0.8f, new Color(0.7f, 1f, 0.7f), new Vector2(24f, 16f), 4f },
+                new object[] { Ids.Monster.Slime, 0.75f, new Color(0.8f, 0.9f, 1f), new Vector2(30f, 14f), 3f },
+                new object[] { Ids.Monster.Boar, 0.7f, new Color(1f, 0.85f, 0.85f), new Vector2(8f, 18f), 3.5f },
+                new object[] { Ids.Monster.Boar, 0.65f, new Color(1f, 0.9f, 0.85f), new Vector2(6f, 24f), 3f },
+                new object[] { Ids.Monster.Bat, 0.75f, Color.white, new Vector2(16f, 6f), 4f },
+                new object[] { Ids.Monster.Bat, 0.7f, Color.white, new Vector2(43f, 20f), 4f },
+                new object[] { Ids.Monster.Slime, 0.65f, new Color(0.5f, 0.85f, 0.45f), new Vector2(7.6f, 4.6f), 1.5f },   // a frog-ish slime by the pond
+                new object[] { Ids.Monster.Slime, 0.8f, new Color(1f, 0.85f, 0.6f), new Vector2(26f, 33f), 3f },
+                new object[] { Ids.Monster.Bat, 0.7f, new Color(1f, 0.95f, 0.7f), new Vector2(20f, 26f), 3f },
+                new object[] { Ids.Monster.Boar, 0.7f, new Color(0.95f, 0.85f, 0.75f), new Vector2(26f, 8f), 2.5f },
             };
             int seed = 11;
             foreach (var c in list)

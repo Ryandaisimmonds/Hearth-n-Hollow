@@ -24,7 +24,8 @@ namespace HearthHollow.Core
         public static bool HasClass(ClassId id) { return Features.AllClasses || Array.IndexOf(Classes, id) >= 0; }
     }
 
-    /// What's in this build, as named questions. The only reader of Slice.On.
+    /// What's in this build, as named questions. The game reads Slice.On only through here (the dev panel's
+    /// switch, which flips and shows it, is the one exception).
     public static class Features
     {
         static bool InSlice { get { return Slice.On; } }

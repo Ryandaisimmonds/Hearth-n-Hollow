@@ -26,7 +26,7 @@ namespace HearthHollow.Dungeon
             return s;
         }
 
-        /// Ticket 41: little 12×12 pixel-art element icons (flame, snowflake, leaf, droplet, sparkle) for the marks over monsters.
+        /// Little 12×12 pixel-art element icons (flame, snowflake, leaf, droplet, sparkle) for the marks over monsters.
         public static Sprite ElementIcon(Element e)
         {
             string[] rows; Color32 pa, pb, pc;
@@ -47,7 +47,7 @@ namespace HearthHollow.Dungeon
             }, new Vector2(0.5f, 0.5f));
         }
 
-        /// Ticket 50: a patch of freshly turned earth: something's buried here.
+        /// A patch of freshly turned earth: something's buried here.
         public static Sprite DirtPatch
         {
             get
@@ -58,7 +58,7 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Ticket 48: a little burlap pouch for loot lying on the floor.
+        /// A little burlap pouch for loot lying on the floor.
         public static Sprite Pouch
         {
             get
@@ -85,7 +85,7 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        /// Ticket 55: a big soft blob (fog banks, breath, heat shimmer): white in the middle, fading to nothing at the edge.
+        /// A big soft blob (fog banks, breath, heat shimmer): white in the middle, fading to nothing at the edge.
         public static Sprite Soft
         {
             get
@@ -109,7 +109,7 @@ namespace HearthHollow.Dungeon
             }, new Vector2(0.5f, 0.5f));
         }
 
-        /// Ticket 56: an ice shard (frost deaths), a leaf (nature deaths), a droplet (water) and a twinkle (light). White-ish, tinted by the caller.
+        /// An ice shard (frost deaths), a leaf (nature deaths), a droplet (water) and a twinkle (light). White-ish, tinted by the caller.
         public static Sprite Shard { get { return Rows("shard", new[] { "..o..", ".oao.", ".oao.", "oabao", "oabao", ".oao.", "..o.." }, new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(170, 200, 230, 255)); } }
         public static Sprite Leaf { get { return Rows("leaf", new[] { "....oo", "..oaao", ".oabao", "oabao.", "obao..", "oo...." }, new Color32(255, 255, 255, 255), new Color32(200, 230, 170, 255), new Color32(120, 150, 100, 255)); } }
         public static Sprite Drop { get { return Rows("drop", new[] { "..o..", ".oao.", "oaaao", "oabao", ".ooo." }, new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255), new Color32(150, 180, 220, 255)); } }
@@ -117,7 +117,7 @@ namespace HearthHollow.Dungeon
 
         static readonly Dictionary<Sprite, Color> _avg = new Dictionary<Sprite, Color>();
 
-        /// Ticket 56: a sprite's average visible colour (read back once from the GPU and cached), brightened a little.
+        /// A sprite's average visible colour (read back once from the GPU and cached), brightened a little.
         public static Color AverageColour(Sprite s, Color fallback)
         {
             if (s == null || s.texture == null) return fallback;
@@ -151,7 +151,7 @@ namespace HearthHollow.Dungeon
             return c;
         }
 
-        /// Ticket 56: a monster's death, in its own colour and element. Fire leaves rising embers, frost shatters into ice,
+        /// A monster's death, in its own colour and element. Fire leaves rising embers, frost shatters into ice,
         /// nature scatters leaves, water splashes, light twinkles; everything also throws chunks of the monster's own colour.
         public static void DeathBurst(Vector3 pos, Element e, Color body, bool boss, bool elite)
         {
@@ -275,7 +275,9 @@ namespace HearthHollow.Dungeon
             }
         }
 
-        static int _floorLights;
+        /// Lights left by floor embers that are still burning (at most 12 at once). Counted from the live lights each
+        /// time, so a light destroyed with its scene, or a play session ending, can't leave the count stuck.
+        static readonly List<FxLight> _floorLit = new List<FxLight>();
         /// Fire left on the floor where a hit landed: a few glowing pixels that burn down over a few seconds (light only).
         public static void FloorEmbers(Vector3 pos, Color color, int count = 5)
         {
@@ -286,15 +288,15 @@ namespace HearthHollow.Dungeon
                                life * Random.Range(0.6f, 1f), Random.Range(2.5f, 4f), 1.5f, 0f, 6, true);   // order 6: on the ground, under characters
                 fx.drag = 10f;
             }
-            if (_floorLights < 12)
+            _floorLit.RemoveAll(f => f == null || !f.isActiveAndEnabled || !f.OnFloor);
+            if (_floorLit.Count < 12)
             {
-                _floorLights++;
                 var l = Flash(pos + new Vector3(0, 0.1f), color, 1.6f, 0.85f, life);
-                l.GetComponent<FxLight>().Done = FloorLightOut;
+                var fl = l.GetComponent<FxLight>();
+                fl.OnFloor = true;
+                _floorLit.Add(fl);
             }
         }
-
-        static readonly System.Action FloorLightOut = () => _floorLights = Mathf.Max(0, _floorLights - 1);
 
         /// An arrow pointing right (+x).
         public static Sprite Arrow
@@ -317,6 +319,13 @@ namespace HearthHollow.Dungeon
         static readonly Stack<FxLight> _lights = new Stack<FxLight>();
         static readonly List<FxLight> _riders = new List<FxLight>();
         static Material _spriteDefault;
+
+        /// With domain reload off, statics survive from one play session to the next: start each one clean.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetForPlay()
+        {
+            _poolRoot = null; _sprites.Clear(); _lights.Clear(); _floorLit.Clear(); Created = 0;
+        }
 
         /// GameObjects the pools have made so far. After a warm-up, effects reuse what they have and this stops growing.
         public static int Created { get; private set; }
@@ -376,18 +385,19 @@ namespace HearthHollow.Dungeon
             {
                 var go = new GameObject("fx_light"); Created++;
                 var l = go.AddComponent<Light2D>();
-                l.lightType = Light2D.LightType.Point;
+                l.lightType = Light2D.LightType.Point; l.shadowsEnabled = false;
                 LightSetup.ApplyToAllLayers(l);
                 var w = new GameObject("fx_wallglow"); Created++;   // walls catch it from further away than the floor
                 w.transform.SetParent(go.transform, false);
                 var wl = w.AddComponent<Light2D>();
-                wl.lightType = Light2D.LightType.Point;
+                wl.lightType = Light2D.LightType.Point; wl.shadowsEnabled = false;
                 LightSetup.ApplyToLayers(wl, "Walls");
                 fl = go.AddComponent<FxLight>();
                 fl.Setup(l, wl);
             }
-            var shadowSafe = fl.GetComponent<ShadowSafeLight>();   // a fire that cast shadows last time
-            if (shadowSafe != null) Object.Destroy(shadowSafe);
+            var shadowSafe = fl.GetComponent<ShadowSafeLight>();   // a fire that cast shadows last time: off until CastShadows wants it again
+            if (shadowSafe != null) shadowSafe.enabled = false;
+            fl.transform.localScale = Vector3.one;   // it may have ridden on something scaled last time
             fl.transform.SetParent(parent != null ? parent : root, true);
             fl.gameObject.SetActive(true);
             return fl;
@@ -608,12 +618,14 @@ namespace HearthHollow.Dungeon
         public Light2D Wall { get; private set; }
         /// Called once when it has faded (then cleared).
         public System.Action Done;
+        /// Left by floor embers (they cap how many burn at once).
+        public bool OnFloor;
 
         public void Setup(Light2D main, Light2D wall) { Main = main; Wall = wall; }
 
         public void Init(float life)
         {
-            _life = Mathf.Max(0.01f, life); _t = 0f; Done = null;
+            _life = Mathf.Max(0.01f, life); _t = 0f; Done = null; OnFloor = false;
             _i0 = Main.intensity; _w0 = Wall.intensity;
         }
 

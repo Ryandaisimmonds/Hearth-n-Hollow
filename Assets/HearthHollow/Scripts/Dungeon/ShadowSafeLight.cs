@@ -33,7 +33,10 @@ namespace HearthHollow.Dungeon
 
         Transform Anchor { get { return transform.parent != null ? transform.parent : transform; } }
 
-        void Start()
+        void Start() { Rearm(); }
+
+        /// (Re)start the checks for where the light is now (a pooled light being reused).
+        public void Rearm()
         {
             _light = GetComponent<Light2D>();
             _base = _light != null ? _light.shadowIntensity : 0f;

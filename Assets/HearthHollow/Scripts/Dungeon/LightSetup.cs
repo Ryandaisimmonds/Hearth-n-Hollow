@@ -29,7 +29,9 @@ namespace HearthHollow.Dungeon
             light.shadowsEnabled = true;
             light.shadowIntensity = intensity;
             light.shadowSoftness = softness;
-            if (light.GetComponent<ShadowSafeLight>() == null) light.gameObject.AddComponent<ShadowSafeLight>();   // stays lit if its centre ends up inside a wall or rock
+            var safe = light.GetComponent<ShadowSafeLight>();   // stays lit if its centre ends up inside a wall or rock
+            if (safe == null) light.gameObject.AddComponent<ShadowSafeLight>();
+            else { safe.enabled = true; safe.Rearm(); }   // a pooled light reused: start its checks afresh
         }
 
         /// Walls and pillars block light: a shadow caster shaped by the walls tilemap's collider. Shadows fall on the

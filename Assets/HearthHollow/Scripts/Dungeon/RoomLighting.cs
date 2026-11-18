@@ -48,6 +48,7 @@ namespace HearthHollow.Dungeon
             lgo.transform.SetParent(root, false);
             var light = lgo.AddComponent<Light2D>();
             light.lightType = Light2D.LightType.Global;
+            light.shadowsEnabled = false;   // a global light casts no shadows anyway; set it as the lighting rule says
             light.color = theme.lightColor;
             light.intensity = theme.lightIntensity * Settings.roomLight;   // dark rooms: light comes from you, your moves and the fire
             // darker the deeper you go (step 5): floor 1 as set, floor 2 dusky, floor 3 properly dark; caves start darker

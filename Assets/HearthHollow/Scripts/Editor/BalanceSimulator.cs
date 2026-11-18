@@ -39,7 +39,7 @@ namespace HearthHollow.EditorTools
             return new List<Tray> { new Tray { name = "Hungry" }, t(0, "Plain"), t(1, "Fine"), t(2, "Prime"), fire, warm };
         }
 
-        public static AreaResult Run(GameContent c, DungeonSettings ds, string routeId, Tray tray, int seed)
+        public static AreaResult Run(GameContent c, string routeId, Tray tray, int seed)
         {
             var p = Economy.NewProfile(c);
             p.selectedClass = ClassId.Cook; p.arcStage = 2;
@@ -82,7 +82,7 @@ namespace HearthHollow.EditorTools
                             if (rng.NextDouble() < c.tuning.dungeonEliteChance) { foes.Add(DungeonRules.Enemy(c, run, Pick(pool, rng), true, false)); n--; }
                             for (int i = 0; i < n; i++) foes.Add(DungeonRules.Enemy(c, run, Pick(pool, rng), false, false));
                         }
-                        dead = Fight(c, ds, st, mods, infusions, guards, power, swing, foes, ref hp, ref time, rng);
+                        dead = Fight(c, st, mods, infusions, guards, power, swing, foes, ref hp, ref time, rng);
                         if (!dead) hp = Math.Min(st.maxHp, hp + Math.Max(1f, st.maxHp * c.tuning.roomClearHealPct));   // a cleared room heals a little
                         // the Cold / Poison drain while you walk the floor (a tick every hazardTickSeconds)
                         if (!dead && route != null && route.hazard != Hazard.None && route.hazardPct > 0f)
@@ -107,7 +107,7 @@ namespace HearthHollow.EditorTools
         static string Pick(List<string> pool, Random rng) { return pool.Count > 0 ? pool[rng.Next(pool.Count)] : Ids.Monster.Slime; }
 
         /// One room: you whittle them down one at a time; up to MaxAttackers hit back. True if you fall.
-        static bool Fight(GameContent c, DungeonSettings ds, PlayerStats st, CombatMods mods, List<Element> infusions, List<Element> guards,
+        static bool Fight(GameContent c, PlayerStats st, CombatMods mods, List<Element> infusions, List<Element> guards,
                           float power, float swing, List<EnemyStats> foes, ref float hp, ref float time, Random rng)
         {
             var hpLeft = new List<float>(); foreach (var f in foes) hpLeft.Add(f.maxHp);
@@ -168,23 +168,20 @@ namespace HearthHollow.EditorTools
             }
         }
 
-        public const string SettingsPath = "Assets/HearthHollow/Dungeon/DungeonSettings.asset";
         public static string ReportPath { get { return Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, "..", ".scratch", "vertical-slice", "balance-report.md")); } }
 
         /// Simulates every slice area with every tray (a few seconds) and writes the report.
         [MenuItem("Hearth & Hollow/Write Balance Report", false, 30)]
         public static void WriteReport()
         {
-            var ds = AssetDatabase.LoadAssetAtPath<DungeonSettings>(SettingsPath);
-            if (ds == null) { UnityEngine.Debug.LogError("[Balance] No Dungeon Settings at " + SettingsPath + " (run Build Dungeon Kit)."); return; }
             string path = ReportPath;
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.WriteAllText(path, Report(DefaultContent.Create(), ds));
+            File.WriteAllText(path, Report(DefaultContent.Create()));
             UnityEngine.Debug.Log("[Balance] report written to " + path);
             EditorUtility.RevealInFinder(path);
         }
 
-        public static string Report(GameContent c, DungeonSettings ds)
+        public static string Report(GameContent c)
         {
             var sb = new StringBuilder();
             sb.AppendLine("# Balance report (simulated)");
@@ -213,7 +210,7 @@ namespace HearthHollow.EditorTools
                 int seed = 1;
                 foreach (var t in Trays())
                 {
-                    var res = Run(c, ds, area, t, 1000 + seed++);
+                    var res = Run(c, area, t, 1000 + seed++);
                     var row = new StringBuilder("| " + t.name + " | " + (int)Math.Round(res.deathRate * 100) + "% | ");
                     for (int f = 1; f <= floors; f++)
                     {

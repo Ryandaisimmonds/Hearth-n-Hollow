@@ -204,6 +204,9 @@ namespace HearthHollow.PlayTests
             yield return Seconds(3f);
             Step("a second round of boss deaths made no new effect objects (" + made + " pooled)");
 
+            // ── pooled lights come back clean: no leftover scale, floor-ember lights keep coming, shadow safety re-arms ──
+            yield return PooledLights(dc);
+
             // ── a boss makes its entrance: title card, the camera pushes in and comes back ──
             var room = dc.CurrentRoom;
             string bossId = DungeonRules.BossMonster(S.Content, new RunState { routeId = Ids.Area.Meadow, floor = DungeonRules.Floors(S.Content, Ids.Area.Meadow), dungeon = true });
@@ -344,6 +347,35 @@ namespace HearthHollow.PlayTests
             Assert.Greater(moved, 0.3f, what + " moves");
             if (e != null && !e.Dead) e.TakeHit(99999f, false, Vector2.zero);
             yield return Seconds(0.5f);
+        }
+
+        IEnumerator PooledLights(DungeonController dc)
+        {
+            // a light that rode on something scaled must come back at scale 1
+            var big = new GameObject("smoke_scaled"); big.transform.localScale = Vector3.one * 3f;
+            var rider = DungeonFx.Flash(dc.Player.Body, Color.white, 2f, 1f, 0.2f, big.transform);
+            yield return Seconds(0.5f);
+            UnityEngine.Object.Destroy(big);
+            var again = DungeonFx.Flash(dc.Player.Body, Color.white, 2f, 1f, 0.2f);
+            Assert.AreEqual(1f, again.transform.lossyScale.x, 0.001f, "a reused light keeps no leftover scale");
+            // shadow safety is re-armed when a reused light casts shadows again in the same frame it's taken
+            yield return Seconds(0.5f);
+            var a = DungeonFx.Flash(dc.Player.Body, Color.white, 2f, 1f, 0.1f); LightSetup.CastShadows(a);
+            yield return Seconds(0.4f);
+            var b = DungeonFx.Flash(dc.Player.Body, Color.white, 2f, 1f, 0.3f); LightSetup.CastShadows(b);
+            yield return null;
+            var safe = b.GetComponent<ShadowSafeLight>();
+            Assert.IsTrue(safe != null && safe.enabled, "a reused shadow-casting light has its shadow safety on");
+            // floor-ember lights: lights lost with their parent don't use up the cap
+            for (int i = 0; i < 14; i++) DungeonFx.FloorEmbers(dc.Player.Body, Color.red, 1);
+            yield return Seconds(5.5f);
+            int before = UnityEngine.Object.FindObjectsByType<FxLight>(FindObjectsSortMode.None).Length;
+            DungeonFx.FloorEmbers(dc.Player.Body, Color.red, 1);
+            yield return null;
+            int after = UnityEngine.Object.FindObjectsByType<FxLight>(FindObjectsSortMode.None).Length;
+            Assert.Greater(after, before, "floor embers still make a light after the first batch burned out");
+            yield return Seconds(5.5f);
+            Step("pooled lights come back clean: scale 1, shadow safety re-armed, floor-ember lights keep coming");
         }
 
         /// A boss dies in every element at once, with hits, rings and sparks all round: the worst case for effects.

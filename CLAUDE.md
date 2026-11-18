@@ -26,7 +26,7 @@ Much of the "Game design" section below describes the build as it stands, which 
 - Balance: **Hearth & Hollow → Write Balance Report** (`Scripts/Editor/BalanceSimulator.cs`).
 
 ## Systems worth knowing
-- **Lighting:** only `DungeonController.CastShadows(light)` turns shadows on, and it adds `ShadowSafeLight`. That nudges still lights out of walls and fades shadows on moving lights inside walls. New `Light2D`s must set `shadowsEnabled = false` (URP defaults to true).
+- **Lighting:** only `LightSetup.CastShadows(light)` turns shadows on, and it adds `ShadowSafeLight`. That nudges still lights out of walls and fades shadows on moving lights inside walls. New `Light2D`s must set `shadowsEnabled = false` (URP defaults to true).
 - **Opening arc** (`Core/OpeningArc.cs`, `Core/Story.cs`): stages are 0 Arrival → 1 first death (fed, kitchen) → 2 first ladder (boots = dash, smithy/workshop) → 3 fall into the pit (cache room) → 4 home (town).
   - Base speed is 0.75, and speed gear is doubled in content v24.
   - Not done yet: hiding town stations by stage (use `Session.AreaOpen("kitchen")` etc.).
