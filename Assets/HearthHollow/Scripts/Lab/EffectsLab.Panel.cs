@@ -397,8 +397,13 @@ namespace HearthHollow.Lab
         {
             LabPrefs.Clear();
             _p = new LabPrefs();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex >= 0
-                ? UnityEngine.SceneManagement.SceneManager.GetActiveScene().name : "EffectsLab");
+            // the lab scene isn't in Build Settings (it never ships), so SceneManager.LoadScene can't find it: reload it by path
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+#if UNITY_EDITOR
+            UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(scene.path, new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single));
+#else
+            UnityEngine.SceneManagement.SceneManager.LoadScene(scene.buildIndex);
+#endif
         }
 
         static string SlotName(LoadSlot s)
