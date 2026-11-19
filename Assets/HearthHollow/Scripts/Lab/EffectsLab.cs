@@ -65,7 +65,7 @@ namespace HearthHollow.Lab
 
         // ───────────────────────── the throwaway profile ─────────────────────────
         /// Moves still being made: they live here (not in the content) until they're ready to port.
-        public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge";
+        public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge", RadiantSurge = "lab_radiant_surge";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -94,6 +94,15 @@ namespace HearthHollow.Lab
                     slot = MoveSlot.Skill, kind = MoveKind.StormEdge, element = Element.Light,
                     power = 1f, cooldown = 12f, duration = 6f, value = 0.35f, radius = 1f, range = 1f,
                     lightColour = "BFE6FF", lightIntensity = 1.2f, lightRadius = 4f,
+                });
+            if (c.Move(RadiantSurge) == null)
+                c.moves.Add(new MoveData
+                {
+                    id = RadiantSurge, name = "Radiant Surge", emoji = "🌟", anyClass = true,
+                    description = "Burst into light: your whole body glows, rings of light orbit you, and you hit harder and take less. Lv 2: longer, stronger, three rings. Lv 3: four rings, and when it ends the light bursts out of you.",
+                    slot = MoveSlot.Skill, kind = MoveKind.RadiantSurge, element = Element.Light,
+                    power = 1f, cooldown = 14f, duration = 6f, radius = 1f, range = 1f,
+                    lightColour = "D8ECFF", lightIntensity = 1.2f, lightRadius = 4f,
                 });
         }
 

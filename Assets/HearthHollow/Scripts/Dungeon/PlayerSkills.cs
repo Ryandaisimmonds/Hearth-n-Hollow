@@ -53,6 +53,7 @@ namespace HearthHollow.Dungeon
             { MoveKind.VerdantCrescent, (p, m, d, x) => p.UseVerdantCrescent(m, d, x) },
             { MoveKind.CinderCrescent, (p, m, d, x) => p.UseCinderCrescent(m, d, x) },
             { MoveKind.StormEdge, (p, m, d, x) => p.UseStormEdge(m, d, x) },
+            { MoveKind.RadiantSurge, (p, m, d, x) => p.UseRadiantSurge(m, d, x) },
         };
     }
 }

@@ -355,6 +355,7 @@ namespace HearthHollow.Dungeon
         {
             bool crit;
             if (StormOn && !_stormChaining) mult *= 1f + _stormBonus;   // Storm Edge: charged hits
+            if (RadiantOn) mult *= 1f + _radiantBonus;                   // Radiant Surge
             float dmg = S.DungeonRollDamage(mult, out crit);
             if (type != Element.None && S.RunInfusions.Contains(type) && e != null) InfusedFlair(e.Body);   // ticket 34/46: meals add their elements to your hits
             e.TakeHit(dmg, crit, knockDir, knock, type);
@@ -535,6 +536,7 @@ namespace HearthHollow.Dungeon
         {
             if (!CanBeHit || _dc == null || !_dc.GameplayActive) return;
             bool guarded = element != Element.None && S.RunGuards.Contains(element);
+            if (RadiantOn) { raw *= 1f - _radiantGuard; DungeonFx.RingAt(Body, new Color(0.8f, 0.92f, 1f, 0.7f), 0.9f, 0.2f); }   // Radiant Surge: the light takes some of it
             if (guarded) raw *= S.Content.tuning.guardMult;   // a guard meal: this element hits for half
             if (_counterUntil > Time.time && _counterMove != null) { Counter(from); return; }   // Cinder Step
             _invulnUntil = Time.time + T.hurtInvulnSeconds;

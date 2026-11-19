@@ -339,6 +339,79 @@ namespace HearthHollow.Dungeon
             finally { _stormChaining = false; }
         }
 
+        // ───────────────────────── Radiant Surge ─────────────────────────
+        /// Radiant Surge: you burst into light. Your whole body glows white-hot inside a soft blue halo, with rings of
+        /// light orbiting you and sparkles drifting off; you hit harder and take less.
+        ///   Level 1  6 s: hits +25%, damage taken −30%. Two rings.
+        ///   Level 2  8 s: +40%, −40%. Three rings, a brighter body.
+        ///   Level 3  10 s: +55%, −50%. Four rings; and when it ends, the light bursts out of you, hitting everything round you.
+        float _radiantUntil, _radiantBonus, _radiantGuard;
+        bool RadiantOn { get { return Time.time < _radiantUntil; } }
+        static readonly Color RadiantInner = new Color(0.94f, 0.98f, 1f), RadiantOuter = new Color(0.4f, 0.68f, 1f);
+
+        bool UseRadiantSurge(MoveData m, Vector2 dir, float mult)
+        {
+            int lvl = Mathf.Clamp(S.MoveLevel(m.id), 1, GameSession.MaxMoveLevel);
+            int up = lvl - 1;
+            float seconds = (m.duration > 0f ? m.duration : 6f) + 2f * up;
+            _radiantUntil = Time.time + seconds;
+            _radiantBonus = 0.25f + 0.15f * up;
+            _radiantGuard = 0.3f + 0.1f * up;
+
+            // the body lights up: a white-hot fill over the sprite and a wide blue halo round it
+            var aura = GlowAura.On(_anim.Renderer, seconds);
+            aura.Inner = RadiantInner; aura.Outer = RadiantOuter;
+            aura.Fill = 0.75f + 0.1f * up; aura.Strength = 1.2f + 0.25f * up; aura.Spread = 0.5f + 0.1f * up;
+            aura.CracklesPerSecond = 0f;
+            // rings of light orbiting
+            float size = Mathf.Max(0.8f, (Body.y - Feet.y) / 0.45f) * 0.75f;   // about the figure's height
+            var rings = LightRings.Play(transform, Body - Feet, size, 2 + up, seconds);
+            rings.Head = RadiantInner; rings.Trail = RadiantOuter; rings.SparklesPerSecond = 8f + 6f * up;
+            var glow = DungeonFx.Flash(Body, RadiantOuter, 4f + up, 0.8f + 0.2f * up, 0f, transform);   // you light the room
+            After(seconds, () => { if (glow != null) Destroy(glow.gameObject); });
+
+            // bursting into light: a flash, a ring of light rushing out, sparkles
+            _anim.PlayAttack(0.3f);
+            DungeonFx.Flash(Body, RadiantInner, 5f + up, 1.6f + 0.3f * up, 0.4f);
+            var wave = SlashRing.Play(transform, Body - Feet, 0f, 1);
+            wave.ShowBlade = false; wave.Radius = size * 0.5f; wave.Width = size * 0.35f;
+            wave.SweepTime = 0.03f; wave.Turns = 1.1f; wave.StartFadeDeg = 36f; wave.EndFadeDeg = 36f;
+            wave.TrailLife = 0.45f; wave.Drift = 1.6f + 0.4f * up; wave.Grow = 0.8f; wave.Sparks = 0; wave.LeafChance = 0f;
+            wave.HotColour = Color.white; wave.PaleColour = RadiantInner; wave.LightColour = new Color(0.6f, 0.82f, 1f); wave.DeepColour = RadiantOuter;
+            for (int i = 0; i < 16 + 8 * up; i++)
+            {
+                Vector2 o = Random.insideUnitCircle.normalized;
+                var fx = DungeonFx.Spawn(DungeonFx.Twinkle, (Vector3)(Body + o * 0.3f), Color.Lerp(RadiantInner, RadiantOuter, Random.value), Random.Range(0.5f, 0.9f), 3f, 0.5f, 0f, 20460, true);
+                fx.velocity = o * Random.Range(2f, 5f); fx.drag = 3f;
+            }
+            _dc.Shake(0.1f + 0.05f * up, 0.07f + 0.03f * up);
+            GameLook.Punch(0.3f + 0.1f * up);
+
+            if (lvl >= 3)   // when it ends, the light bursts out
+            {
+                var type = Element.Light;
+                After(seconds - 0.05f, () =>
+                {
+                    if (!Alive) return;
+                    float r = 2.6f;
+                    DungeonFx.Flash(Body, RadiantInner, 7f, 2f, 0.5f);
+                    var burst = SlashRing.Play(transform, Body - Feet, 0f, 1);
+                    burst.ShowBlade = false; burst.Radius = r * 0.4f; burst.Width = r * 0.4f;
+                    burst.SweepTime = 0.03f; burst.Turns = 1.1f; burst.StartFadeDeg = 36f; burst.EndFadeDeg = 36f;
+                    burst.TrailLife = 0.5f; burst.Drift = 1.6f; burst.Grow = 0.9f; burst.Sparks = 0; burst.LeafChance = 0f;
+                    burst.HotColour = Color.white; burst.PaleColour = RadiantInner; burst.LightColour = new Color(0.6f, 0.82f, 1f); burst.DeepColour = RadiantOuter;
+                    _dc.Shake(0.2f, 0.14f); GameFeel.HitStop(0.05f); GameLook.Punch(0.6f);
+                    foreach (var e in Combat2D.EnemiesIn(Body, r))
+                    {
+                        if (e == null || e.Dead) continue;
+                        Hit(e, mult * 1.2f, (e.Body - Body).normalized, 9f, type);
+                        if (!Alive) return;
+                    }
+                });
+            }
+            return true;
+        }
+
         /// Cinder Crescent's fire: white-hot → yellow → orange → deep red, fiercer each level.
         static void CinderFire(SlashRing r, int lvl)
         {

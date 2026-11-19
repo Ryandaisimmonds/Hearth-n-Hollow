@@ -13,9 +13,10 @@ namespace HearthHollow.Dungeon
         public float Strength = 1f;                           // overall brightness
         public float Spread = 0.42f;                          // how far the glow reaches (× the sprite's size)
         public float CracklesPerSecond = 4f;                  // little bolts off the body
+        public float Fill;                                    // 0 = just the halo; up to 1 = the whole body glows white-hot too
 
         SpriteRenderer _src;
-        SpriteRenderer[] _layers; SpriteRenderer _haze;
+        SpriteRenderer[] _layers; SpriteRenderer _haze, _fill;
         float _until, _t, _fadeIn, _crackleT;
         const int Layers = 8;
 
@@ -44,6 +45,10 @@ namespace HearthHollow.Dungeon
                 if (FxMaterials.Flat != null) sr.sharedMaterial = FxMaterials.Flat;   // a solid silhouette in its colour, HDR-bright
                 _layers[i] = sr;
             }
+            // the body itself lit up: a silhouette over the sprite in the rim colour (only shows when Fill > 0)
+            var f = new GameObject("Aura fill"); f.transform.SetParent(transform, false);
+            _fill = f.AddComponent<SpriteRenderer>();
+            if (FxMaterials.Flat != null) _fill.sharedMaterial = FxMaterials.Flat;
             // and a big soft haze behind it all, so the glow melts into the air
             var h = new GameObject("Aura haze"); h.transform.SetParent(transform, false);
             _haze = h.AddComponent<SpriteRenderer>(); _haze.sprite = DungeonFx.Soft;
@@ -54,7 +59,7 @@ namespace HearthHollow.Dungeon
         {
             if (_src == null) { Destroy(this); return; }
             float left = _until - Time.time;
-            if (left <= -0.01f) { foreach (var l in _layers) l.enabled = false; _haze.enabled = false; enabled = false; return; }
+            if (left <= -0.01f) { foreach (var l in _layers) l.enabled = false; _haze.enabled = false; _fill.enabled = false; enabled = false; return; }
             _t += Time.deltaTime;
             _fadeIn = Mathf.Min(1f, _fadeIn + Time.deltaTime / 0.15f);
             float fade = _fadeIn * Mathf.Clamp01(left / 0.4f);                    // eases in, and out over the last 0.4 s
@@ -75,6 +80,14 @@ namespace HearthHollow.Dungeon
                 Color c = Color.Lerp(Inner, Outer, Mathf.SmoothStep(0f, 1f, k));
                 c.a = (Mathf.Pow(1f - k, 1.5f) * 0.9f + 0.05f) * Strength * fade;   // bright at the edge, fading softly out
                 l.color = c;
+            }
+            _fill.enabled = Fill > 0f && _src.enabled && _src.sprite != null;
+            if (_fill.enabled)
+            {
+                _fill.sprite = _src.sprite; _fill.flipX = _src.flipX; _fill.flipY = _src.flipY;
+                _fill.sortingLayerID = _src.sortingLayerID; _fill.sortingOrder = _src.sortingOrder + 1;   // over the sprite: the body becomes light
+                Color fc = Inner; fc.a = Mathf.Clamp01(Fill * (0.88f + 0.12f * Mathf.Sin(_t * 13f))) * fade;
+                _fill.color = fc;
             }
             if (_src.sprite != null)
             {
@@ -99,7 +112,7 @@ namespace HearthHollow.Dungeon
             Bolt(from, from + dir * Random.Range(0.35f, 0.7f), Color.Lerp(Inner, Outer, 0.3f), _src.sortingOrder + 2);
         }
 
-        void OnDisable() { if (_layers != null) foreach (var l in _layers) if (l != null) l.enabled = false; if (_haze != null) _haze.enabled = false; }
+        void OnDisable() { if (_layers != null) foreach (var l in _layers) if (l != null) l.enabled = false; if (_haze != null) _haze.enabled = false; if (_fill != null) _fill.enabled = false; }
 
         // ───────── lightning: a jagged line of a few bright segments that flickers out ─────────
         public static void Bolt(Vector2 from, Vector2 to, Color c, int order = 20470, float width = 0.06f, float life = 0.12f)
