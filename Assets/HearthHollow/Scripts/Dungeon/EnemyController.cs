@@ -25,7 +25,9 @@ namespace HearthHollow.Dungeon
         public static event System.Action<EnemyController, int, bool> AnyHit;
         TrainingDummy _dummy;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetForPlay() { AnyHit = null; }   // domain reload is off
+        static void ResetForPlay() { AnyHit = null; LabFrozen = false; }   // domain reload is off
+        /// Effects Lab: every monster stands still and holds its attacks (hits, statuses and deaths still play).
+        public static bool LabFrozen;
 
         Rigidbody2D _rb;
         CharacterAnimator _anim;
@@ -159,6 +161,14 @@ namespace HearthHollow.Dungeon
             {
                 _stunT -= dt;
                 if (_st == St.Windup || _st == St.Charging || _st == St.Striking) { _st = St.Recover; _stT = 0.1f; }
+                _anim.SetMoving(false);
+                UpdateTint(); UpdateHpBar();
+                return;
+            }
+            if (LabFrozen && !Dummy)
+            {
+                if (_tele != null) { _tele.Stop(); _tele = null; }
+                if (_st != St.Stagger) _st = St.Moving;   // whatever it was winding up, it lets go
                 _anim.SetMoving(false);
                 UpdateTint(); UpdateHpBar();
                 return;
@@ -302,6 +312,7 @@ namespace HearthHollow.Dungeon
         {
             if (_rb == null) return;
             if (Dummy) { _rb.linearVelocity = Vector2.zero; return; }   // planted on its post
+            if (LabFrozen && _st != St.Stagger) { _rb.linearVelocity = Vector2.zero; return; }   // the lab's freeze (it still flinches)
             if (Dead || _dc == null || !_dc.GameplayActive || Player == null || _st == St.Spawning) { _rb.linearVelocity = Vector2.zero; return; }
             if (_stunT > 0f || (_rootT > 0f && _st != St.Stagger)) { _rb.linearVelocity = _st == St.Stagger ? _rb.linearVelocity * 0.85f : Vector2.zero; return; }
             float speed = Data.moveSpeed * _speedMult * _slowMult;

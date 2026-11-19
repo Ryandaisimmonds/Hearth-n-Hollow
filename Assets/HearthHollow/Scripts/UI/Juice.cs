@@ -99,9 +99,15 @@ namespace HearthHollow.UI
         }
 
         // ───────── toasts ─────────
+        /// Effects Lab: only toasts this lets through are shown (null = all).
+        public static System.Func<string, bool> Filter;
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetForPlay() { Filter = null; }   // domain reload is off
+
         public void Toast(string text, string variant = null, float seconds = 2.4f)
         {
             if (string.IsNullOrEmpty(text)) return;
+            if (Filter != null && !Filter(text)) return;
             while (_toastLayer.childCount >= 5) _toastLayer.RemoveAt(0);
             var t = UIKit.L(text, "toast", "toast--enter");
             if (!string.IsNullOrEmpty(variant)) t.AddToClassList(variant);

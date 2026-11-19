@@ -167,6 +167,16 @@ namespace HearthHollow.Dungeon
             return plan;
         }
 
+        /// Effects Lab: one calm room on its own (no doors, no ladder), to test in.
+        public static FloorPlan Arena()
+        {
+            var plan = new FloorPlan();
+            var room = Add(plan, Vector2Int.zero);
+            room.kind = RoomKind.Start;
+            plan.start = room;
+            return plan;
+        }
+
         static RoomNode Add(FloorPlan plan, Vector2Int cell)
         {
             var n = new RoomNode { index = plan.rooms.Count, cell = cell };

@@ -141,7 +141,11 @@ namespace HearthHollow.Dungeon
             _global.intensity = Mathf.Lerp(_darkI, _litI, Mathf.SmoothStep(0f, 1f, _lightLevel)) * _roomMult;
             _glowAdd = Mathf.MoveTowards(_glowAdd, 0f, _glowDecay * Time.deltaTime);
             _global.intensity += _glowAdd;
+            if (LabLight >= 0f) _global.intensity = LabLight + _glowAdd;   // the Effects Lab's light switch
         }
+
+        /// Effects Lab: the room's light held at this intensity (−1 = the area's own lighting).
+        public static float LabLight = -1f;
 
         /// Your light flickers like a flame (Pot meals steady it).
         public void Flicker()

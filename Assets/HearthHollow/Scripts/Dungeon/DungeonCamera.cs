@@ -10,7 +10,10 @@ namespace HearthHollow.Dungeon
         bool _saved; Vector3 _home; float _homeSize; Color _homeBg;
         Vector3 _target;
         float _shakeT, _shakeAmp;
-        float _pushBaseSize; bool _wasPushing;
+        float _pushBaseSize; bool _wasPushing; float _baseSize = 7f;
+        /// Effects Lab: follow this (the player) instead of framing the room, and zoom (× the floor's camera size).
+        public static Transform LabFollow;
+        public static float LabZoom = 1f;
 
         Camera Cam { get { if (_cam == null) _cam = Camera.main; return _cam; } }
 
@@ -20,7 +23,7 @@ namespace HearthHollow.Dungeon
             var cam = Cam;
             if (cam == null) return;
             if (!_saved) { _home = cam.transform.position; _homeSize = cam.orthographicSize; _homeBg = cam.backgroundColor; _saved = true; }
-            cam.orthographicSize = size;
+            cam.orthographicSize = size; _baseSize = size;
             if (theme != null) cam.backgroundColor = theme.background;
         }
 
@@ -55,7 +58,9 @@ namespace HearthHollow.Dungeon
                 Vector3 b = boss.Body; b.z = _target.z;
                 aim = Vector3.Lerp(_target, b, 0.55f * push);   // lean towards the boss
             }
+            if (LabFollow != null) { aim = LabFollow.position; aim.z = _target.z; }
             if (push > 0f || _wasPushing) _cam.orthographicSize = _pushBaseSize * (1f - 0.22f * push);   // and push in
+            else if (LabFollow != null) _cam.orthographicSize = _baseSize * LabZoom;
             _wasPushing = push > 0f;
             Vector3 pos = Vector3.Lerp(_cam.transform.position, aim, 1f - Mathf.Exp(-dt * 14f));
             pos.z = _target.z;

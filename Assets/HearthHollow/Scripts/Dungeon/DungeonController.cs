@@ -53,6 +53,11 @@ namespace HearthHollow.Dungeon
 
         public static int SortOrder(float y) { return 10000 - Mathf.RoundToInt(y * 10f); }
 
+        /// Effects Lab: every floor is one calm room (DungeonGenerator.Arena).
+        public static bool LabArena;
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetLab() { LabArena = false; DungeonCamera.LabFollow = null; DungeonCamera.LabZoom = 1f; RoomLighting.LabLight = -1f; }   // domain reload is off
+
         public void Init(GameSession session, GameUI ui, DungeonSettings settings)
         {
             Instance = this;
@@ -104,7 +109,8 @@ namespace HearthHollow.Dungeon
             var rng = new System.Random(seed);
             int count = rng.Next(T.roomsPerFloorMin, Mathf.Max(T.roomsPerFloorMin, T.roomsPerFloorMax) + 1) + DungeonRules.ExtraRooms(run.floor);
             bool fall = run.routeId == GameSession.FallRoute;   // the nameless opening dungeon
-            _plan = fall ? DungeonGenerator.Gauntlet(seed, T.fallRooms)
+            _plan = LabArena ? DungeonGenerator.Arena()   // the Effects Lab's single room
+                 : fall ? DungeonGenerator.Gauntlet(seed, T.fallRooms)
                          : DungeonGenerator.Generate(seed, count, Session.DungeonBossFloor && !Session.DungeonNoLadder, Session.DungeonHomeChoice,
                                                      Session.DungeonNoLadder || Session.DungeonEndExit,   // a boss-free area's last floor ends in an exit
                                                      run.floor, route != null ? route.gatherChance : 0.2f);
