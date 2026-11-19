@@ -55,7 +55,7 @@ namespace HearthHollow.Core
         VerdantCrescent, CinderCrescent, StormEdge, RadiantSurge,             // the Effects Lab (not in content yet)
         TidalCleave, FrostLance, VoidRift, Sunbreaker, PetalFlurry,           // the lab's second batch: attacks…
         EmberMantle, FrostAegis, GaleRush, CrimsonHunger, AstralCrown,        // …and buffs
-        InfernoCrescent                                                       // Verdant Crescent in real fire
+        InfernoCrescent, WildfireCrescent                                     // Verdant Crescent in real fire; halfway between the two
     }
     /// What a skill-tree node does. Append only.
     public enum NodeEffect

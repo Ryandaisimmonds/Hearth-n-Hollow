@@ -351,6 +351,23 @@ namespace HearthHollow.Dungeon
             }
         }
 
+        static Material _greenFire;
+        /// The same fire burning green-gold (Wildfire Crescent: halfway between Verdant's green and Inferno's fire).
+        public static Material GreenFireMaterial
+        {
+            get
+            {
+                if (_greenFire != null) return _greenFire;
+                if (FireMaterial == null) return null;
+                _greenFire = new Material(FireMaterial);
+                _greenFire.SetColor("_White", new Color(1f, 0.98f, 0.78f));    // still white-gold at the very core…
+                _greenFire.SetColor("_Yellow", new Color(0.82f, 1f, 0.32f));   // …into a lime-gold
+                _greenFire.SetColor("_Orange", new Color(0.34f, 0.95f, 0.14f)); // a strong green
+                _greenFire.SetColor("_Red", new Color(0.03f, 0.48f, 0.12f));   // deep emerald at the ragged edges
+                return _greenFire;
+            }
+        }
+
         static Texture2D Streaks()
         {
             const int W = 128, H = 32;
@@ -378,6 +395,6 @@ namespace HearthHollow.Dungeon
 
         // domain reload is off: the cached material and texture belong to the last play session
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetForPlay() { _mat = null; _fire = null; _bladeShape = null; }
+        static void ResetForPlay() { _mat = null; _fire = null; _greenFire = null; _bladeShape = null; }
     }
 }

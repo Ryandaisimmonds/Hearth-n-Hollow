@@ -93,7 +93,7 @@ namespace HearthHollow.Lab
         public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge", RadiantSurge = "lab_radiant_surge";
         public const string TidalCleave = "lab_tidal_cleave", FrostLance = "lab_frost_lance", VoidRift = "lab_void_rift", Sunbreaker = "lab_sunbreaker", PetalFlurry = "lab_petal_flurry",
                             EmberMantle = "lab_ember_mantle", FrostAegis = "lab_frost_aegis", GaleRush = "lab_gale_rush", CrimsonHunger = "lab_crimson_hunger", AstralCrown = "lab_astral_crown",
-                            InfernoCrescent = "lab_inferno_crescent";
+                            InfernoCrescent = "lab_inferno_crescent", WildfireCrescent = "lab_wildfire_crescent";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -134,6 +134,7 @@ namespace HearthHollow.Lab
                 });
 
             AddInferno(c);
+            AddWildfire(c);
             // the second batch: five attacks and five buffs
             AddLab(c, TidalCleave, "Tidal Cleave", "🌊", MoveKind.TidalCleave, Element.Water, 1.5f, 5f, 2.1f, 4.5f, 0f,
                    "A great overhead cleave that throws a wave forward, white foam cooling to deep blue. Lv 2: a second wave. Lv 3: the waves end in a whirlpool that drags monsters in.", "4FD8FF");
@@ -170,6 +171,19 @@ namespace HearthHollow.Lab
             });
         }
 
+        static void AddWildfire(GameContent c)
+        {
+            if (c.Move(WildfireCrescent) != null) return;
+            c.moves.Add(new MoveData
+            {
+                id = WildfireCrescent, name = "Wildfire Crescent", emoji = "🍃", anyClass = true,
+                description = "Halfway between Verdant and Inferno: a huge green slash round you that catches into green-gold fire, leaves burning as they fly. Lv 2: Verdant's echo and wind lines, and what it hits burns. Lv 3: round twice, ending in a green firestorm.",
+                slot = MoveSlot.Skill, kind = MoveKind.WildfireCrescent, element = Element.Nature,
+                power = 1.8f, cooldown = 5f, radius = 2.4f, range = 1f, duration = 0.5f, value = 1.15f,
+                lightColour = "9CFF5A", lightIntensity = 0.5f, lightRadius = 4f,
+            });
+        }
+
         static void AddLab(GameContent c, string id, string name, string emoji, MoveKind kind, Element el, float power, float cooldown, float radius, float range, float duration, string text, string light)
         {
             if (c.Move(id) != null) return;
@@ -197,7 +211,7 @@ namespace HearthHollow.Lab
             S.DevGiveKeyItems();
             S.Story.DevSetArcStage(int.MaxValue);
             S.DevMaxEverything();   // every class, gear track, trinket and the kitchen
-            foreach (var cd in C.classes) Progression.Equip(C, P, cd.id, LoadSlot.Skill2, InfernoCrescent);   // the newest lab move, ready on Q
+            foreach (var cd in C.classes) Progression.Equip(C, P, cd.id, LoadSlot.Skill2, WildfireCrescent);   // the newest lab move, ready on Q
         }
 
         /// Put back what was set up last time: area, class, loadouts, gear, trinkets, meals and skill levels.

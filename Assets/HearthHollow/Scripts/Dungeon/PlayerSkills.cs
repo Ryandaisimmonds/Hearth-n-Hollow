@@ -65,6 +65,7 @@ namespace HearthHollow.Dungeon
             { MoveKind.CrimsonHunger, (p, m, d, x) => p.UseCrimsonHunger(m, d, x) },
             { MoveKind.AstralCrown, (p, m, d, x) => p.UseAstralCrown(m, d, x) },
             { MoveKind.InfernoCrescent, (p, m, d, x) => p.UseInfernoCrescent(m, d, x) },
+            { MoveKind.WildfireCrescent, (p, m, d, x) => p.UseWildfireCrescent(m, d, x) },
         };
     }
 }
