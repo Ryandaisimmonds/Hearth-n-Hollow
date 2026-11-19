@@ -54,6 +54,16 @@ namespace HearthHollow.Dungeon
             { MoveKind.CinderCrescent, (p, m, d, x) => p.UseCinderCrescent(m, d, x) },
             { MoveKind.StormEdge, (p, m, d, x) => p.UseStormEdge(m, d, x) },
             { MoveKind.RadiantSurge, (p, m, d, x) => p.UseRadiantSurge(m, d, x) },
+            { MoveKind.TidalCleave, (p, m, d, x) => p.UseTidalCleave(m, d, x) },
+            { MoveKind.FrostLance, (p, m, d, x) => p.UseFrostLance(m, d, x) },
+            { MoveKind.VoidRift, (p, m, d, x) => p.UseVoidRift(m, d, x) },
+            { MoveKind.Sunbreaker, (p, m, d, x) => p.UseSunbreaker(m, d, x) },
+            { MoveKind.PetalFlurry, (p, m, d, x) => p.UsePetalFlurry(m, d, x) },
+            { MoveKind.EmberMantle, (p, m, d, x) => p.UseEmberMantle(m, d, x) },
+            { MoveKind.FrostAegis, (p, m, d, x) => p.UseFrostAegis(m, d, x) },
+            { MoveKind.GaleRush, (p, m, d, x) => p.UseGaleRush(m, d, x) },
+            { MoveKind.CrimsonHunger, (p, m, d, x) => p.UseCrimsonHunger(m, d, x) },
+            { MoveKind.AstralCrown, (p, m, d, x) => p.UseAstralCrown(m, d, x) },
         };
     }
 }

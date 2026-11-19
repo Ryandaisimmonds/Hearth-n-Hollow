@@ -91,6 +91,8 @@ namespace HearthHollow.Lab
         // ───────────────────────── the throwaway profile ─────────────────────────
         /// Moves still being made: they live here (not in the content) until they're ready to port.
         public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge", RadiantSurge = "lab_radiant_surge";
+        public const string TidalCleave = "lab_tidal_cleave", FrostLance = "lab_frost_lance", VoidRift = "lab_void_rift", Sunbreaker = "lab_sunbreaker", PetalFlurry = "lab_petal_flurry",
+                            EmberMantle = "lab_ember_mantle", FrostAegis = "lab_frost_aegis", GaleRush = "lab_gale_rush", CrimsonHunger = "lab_crimson_hunger", AstralCrown = "lab_astral_crown";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -129,6 +131,40 @@ namespace HearthHollow.Lab
                     power = 1f, cooldown = 14f, duration = 6f, radius = 1f, range = 1f,
                     lightColour = "D8ECFF", lightIntensity = 1.2f, lightRadius = 4f,
                 });
+
+            // the second batch: five attacks and five buffs
+            AddLab(c, TidalCleave, "Tidal Cleave", "🌊", MoveKind.TidalCleave, Element.Water, 1.5f, 5f, 2.1f, 4.5f, 0f,
+                   "A great overhead cleave that throws a wave forward, white foam cooling to deep blue. Lv 2: a second wave. Lv 3: the waves end in a whirlpool that drags monsters in.", "4FD8FF");
+            AddLab(c, FrostLance, "Frost Lance", "🧊", MoveKind.FrostLance, Element.Frost, 1.7f, 3.5f, 0.5f, 5f, 0f,
+                   "Lunge and thrust a long lance of ice-light that pierces everything in line. Lv 2: two more lances fan out. Lv 3: the line freezes into crystals that shatter.", "9FE6FF");
+            AddLab(c, VoidRift, "Void Rift", "🌀", MoveKind.VoidRift, Element.None, 1.6f, 6f, 1.5f, 6f, 0f,
+                   "Tear a rift open on the monster you aim at: it sucks everything in, then bursts violet. Lv 2: bigger. Lv 3: two more rifts open nearby.", "A64DFF");
+            AddLab(c, Sunbreaker, "Sunbreaker", "🔨", MoveKind.Sunbreaker, Element.Light, 1.8f, 7f, 2.2f, 1f, 0f,
+                   "Hammer the ground: golden shockwaves roll out and cracks of light split the floor. Lv 2: a second wave. Lv 3: a third, and pillars of sunlight fall on everything hit.", "FFC24D");
+            AddLab(c, PetalFlurry, "Petal Flurry", "🌸", MoveKind.PetalFlurry, Element.Nature, 1.2f, 4f, 1.5f, 1f, 0f,
+                   "Twin blades in a blur of quick slashes, shedding pink petals. Lv 2: five slashes. Lv 3: seven, and a finishing cross-cut.", "FF7AB8");
+            AddLab(c, EmberMantle, "Ember Mantle", "🌋", MoveKind.EmberMantle, Element.Fire, 1f, 12f, 1.7f, 1f, 6f,
+                   "Wrap yourself in fire: rings of flame pulse out and burn what's close. Lv 2: wider and hotter. Lv 3: your footsteps leave fire behind.", "FF7A1A");
+            AddLab(c, FrostAegis, "Frost Aegis", "❄️", MoveKind.FrostAegis, Element.Frost, 1f, 14f, 1f, 1f, 10f,
+                   "Shards of ice circle you, each taking a hit for you. Lv 2: four, and they burst outwards when they break. Lv 3: five, and any left fly at monsters at the end.", "9FE6FF");
+            AddLab(c, GaleRush, "Gale Rush", "💨", MoveKind.GaleRush, Element.Nature, 1f, 12f, 1f, 1f, 6f,
+                   "The wind takes you: much faster, after-images and wind streaks, a quicker dash. Lv 2: the wind cuts monsters you run past. Lv 3: a gust on cast throws them back.", "7AFFD6");
+            AddLab(c, CrimsonHunger, "Crimson Hunger", "🩸", MoveKind.CrimsonHunger, Element.None, 1f, 14f, 1f, 1f, 6f,
+                   "A red hunger: hit harder, and every hit heals you a little. Lv 2: more. Lv 3: more again, and kills make it last longer.", "FF2A44");
+            AddLab(c, AstralCrown, "Astral Crown", "✨", MoveKind.AstralCrown, Element.Light, 1f, 15f, 1f, 1f, 8f,
+                   "A crown of stars circles your head and each fires starlight at the nearest monster. Lv 2: four stars, faster. Lv 3: five, and every bolt bursts.", "FFD06A");
+        }
+
+        static void AddLab(GameContent c, string id, string name, string emoji, MoveKind kind, Element el, float power, float cooldown, float radius, float range, float duration, string text, string light)
+        {
+            if (c.Move(id) != null) return;
+            c.moves.Add(new MoveData
+            {
+                id = id, name = name, emoji = emoji, anyClass = true, description = text,
+                slot = MoveSlot.Skill, kind = kind, element = el,
+                power = power, cooldown = cooldown, radius = radius, range = range, duration = duration,
+                lightColour = light, lightIntensity = 0.9f, lightRadius = 4f,
+            });
         }
 
         void UnlockEverything()

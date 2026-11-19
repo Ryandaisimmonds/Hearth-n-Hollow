@@ -174,6 +174,7 @@ namespace HearthHollow.Dungeon
             if (_dc == null || !_dc.GameplayActive) { _move = Vector2.zero; ShowReticle(false); return; }
             if (S.Run != null) InfusedAura();   // ticket 34: your meal's element drifts off you
             if (StormOn) StormTick();           // Effects Lab: Storm Edge's pulse
+            LabBuffsTick();                     // Effects Lab: the second batch's buffs
             float dt = Time.deltaTime;
             _attackCd -= dt; _dashCd -= dt; _skill1Cd -= dt; _skill2Cd -= dt; _ultCd -= dt;
             if (_dashT > 0f) _dashT -= dt;
@@ -247,6 +248,7 @@ namespace HearthHollow.Dungeon
             {
                 float speed = _dc.Settings.playerSpeed * _dc.Session.ArcSpeed * _mods.moveSpeed;   // opening arc: a slower start that gear builds back up
                 if (Time.time < _hasteUntil) speed *= 1.3f;
+                speed *= LabSpeedMult;   // Effects Lab: Gale Rush
                 speed *= 1f - _dc.Session.DungeonHazardSlow;   // Frostfang cold
                 speed *= _dc.Session.MutatorSpeed;              // Swift ×2 / Frantic ×3
                 if (_attackT >= 0f) speed *= 0.3f;
@@ -356,10 +358,12 @@ namespace HearthHollow.Dungeon
             bool crit;
             if (StormOn && !_stormChaining) mult *= 1f + _stormBonus;   // Storm Edge: charged hits
             if (RadiantOn) mult *= 1f + _radiantBonus;                   // Radiant Surge
+            mult *= LabHitMult();                                        // Crimson Hunger
             float dmg = S.DungeonRollDamage(mult, out crit);
             if (type != Element.None && S.RunInfusions.Contains(type) && e != null) InfusedFlair(e.Body);   // ticket 34/46: meals add their elements to your hits
             e.TakeHit(dmg, crit, knockDir, knock, type);
             if (StormOn && !_stormChaining) StormStrike(e, mult);   // …that crackle, and (level 2+) arc on to others
+            LabAfterHit(e, dmg);                                     // Crimson Hunger: hits heal
         }
 
         Projectile Arrow(float mult, Vector2 dir, float speed, bool pierce, float scale = 1.4f)
@@ -536,6 +540,7 @@ namespace HearthHollow.Dungeon
         {
             if (!CanBeHit || _dc == null || !_dc.GameplayActive) return;
             bool guarded = element != Element.None && S.RunGuards.Contains(element);
+            if (LabAbsorb(from)) return;   // Frost Aegis: a shard takes it
             if (RadiantOn) { raw *= 1f - _radiantGuard; DungeonFx.RingAt(Body, new Color(0.8f, 0.92f, 1f, 0.7f), 0.9f, 0.2f); }   // Radiant Surge: the light takes some of it
             if (guarded) raw *= S.Content.tuning.guardMult;   // a guard meal: this element hits for half
             if (_counterUntil > Time.time && _counterMove != null) { Counter(from); return; }   // Cinder Step
