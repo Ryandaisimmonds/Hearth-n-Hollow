@@ -92,7 +92,8 @@ namespace HearthHollow.Lab
         /// Moves still being made: they live here (not in the content) until they're ready to port.
         public const string VerdantCrescent = "lab_verdant_crescent", CinderCrescent = "lab_cinder_crescent", StormEdge = "lab_storm_edge", RadiantSurge = "lab_radiant_surge";
         public const string TidalCleave = "lab_tidal_cleave", FrostLance = "lab_frost_lance", VoidRift = "lab_void_rift", Sunbreaker = "lab_sunbreaker", PetalFlurry = "lab_petal_flurry",
-                            EmberMantle = "lab_ember_mantle", FrostAegis = "lab_frost_aegis", GaleRush = "lab_gale_rush", CrimsonHunger = "lab_crimson_hunger", AstralCrown = "lab_astral_crown";
+                            EmberMantle = "lab_ember_mantle", FrostAegis = "lab_frost_aegis", GaleRush = "lab_gale_rush", CrimsonHunger = "lab_crimson_hunger", AstralCrown = "lab_astral_crown",
+                            InfernoCrescent = "lab_inferno_crescent";
         public static void LabMoves(GameContent c)
         {
             if (c.Move(VerdantCrescent) == null)
@@ -132,6 +133,7 @@ namespace HearthHollow.Lab
                     lightColour = "D8ECFF", lightIntensity = 1.2f, lightRadius = 4f,
                 });
 
+            AddInferno(c);
             // the second batch: five attacks and five buffs
             AddLab(c, TidalCleave, "Tidal Cleave", "🌊", MoveKind.TidalCleave, Element.Water, 1.5f, 5f, 2.1f, 4.5f, 0f,
                    "A great overhead cleave that throws a wave forward, white foam cooling to deep blue. Lv 2: a second wave. Lv 3: the waves end in a whirlpool that drags monsters in.", "4FD8FF");
@@ -153,6 +155,19 @@ namespace HearthHollow.Lab
                    "A red hunger: hit harder, and every hit heals you a little. Lv 2: more. Lv 3: more again, and kills make it last longer.", "FF2A44");
             AddLab(c, AstralCrown, "Astral Crown", "✨", MoveKind.AstralCrown, Element.Light, 1f, 15f, 1f, 1f, 8f,
                    "A crown of stars circles your head and each fires starlight at the nearest monster. Lv 2: four stars, faster. Lv 3: five, and every bolt bursts.", "FFD06A");
+        }
+
+        static void AddInferno(GameContent c)
+        {
+            if (c.Move(InfernoCrescent) != null) return;
+            c.moves.Add(new MoveData
+            {
+                id = InfernoCrescent, name = "Inferno Crescent", emoji = "🔥", anyClass = true,
+                description = "Verdant Crescent in real fire: a huge swing all the way round you that leaves rising, churning flame and smoke. Lv 2: a ring of fire inside it, the floor burns and so do the monsters. Lv 3: round twice, ending in a firestorm.",
+                slot = MoveSlot.Skill, kind = MoveKind.InfernoCrescent, element = Element.Fire,
+                power = 1.8f, cooldown = 5f, radius = 2.4f, range = 1f, duration = 0.5f, value = 1.15f,   // under 5.5 s: no room flood light (it blows fire out to white)
+                lightColour = "FF8A2A", lightIntensity = 0.5f, lightRadius = 4f,
+            });
         }
 
         static void AddLab(GameContent c, string id, string name, string emoji, MoveKind kind, Element el, float power, float cooldown, float radius, float range, float duration, string text, string light)
@@ -182,7 +197,7 @@ namespace HearthHollow.Lab
             S.DevGiveKeyItems();
             S.Story.DevSetArcStage(int.MaxValue);
             S.DevMaxEverything();   // every class, gear track, trinket and the kitchen
-            foreach (var cd in C.classes) Progression.Equip(C, P, cd.id, LoadSlot.Skill2, VerdantCrescent);   // the newest lab move, ready on Q
+            foreach (var cd in C.classes) Progression.Equip(C, P, cd.id, LoadSlot.Skill2, InfernoCrescent);   // the newest lab move, ready on Q
         }
 
         /// Put back what was set up last time: area, class, loadouts, gear, trinkets, meals and skill levels.

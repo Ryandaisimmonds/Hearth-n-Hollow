@@ -38,6 +38,8 @@ namespace HearthHollow.Dungeon
         public float HeatScale = 1f;       // × how bright the whole trail burns (a stronger green)
         public int Sparks = 1;             // sparks thrown off the tip each beat…
         public float LeafChance = 0.35f;   // …and the chance of a leaf
+        public Material Look;              // the ribbon's material (null = the streaked glow; FireMaterial = burning)
+        public float Rise;                 // world units the trail lifts as it ages (fire and heat go up)
 
         // the colour the trail cools through as it ages: white-hot → very light green → light green → green
         public Color HotColour = new Color(1f, 1f, 0.96f);
@@ -102,7 +104,7 @@ namespace HearthHollow.Dungeon
             var go = new GameObject(name); go.transform.SetParent(transform, false);
             go.AddComponent<MeshFilter>().sharedMesh = new Mesh { name = "slash ring " + name };
             mr = go.AddComponent<MeshRenderer>();
-            mr.sharedMaterial = Material;
+            mr.sharedMaterial = Look != null ? Look : Material;
             mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
             return go.GetComponent<MeshFilter>().sharedMesh;
         }
@@ -205,12 +207,13 @@ namespace HearthHollow.Dungeon
             w *= Mathf.Lerp(0.25f, 1f, ends);
             heat *= HeatScale;
             var V = _tv; var C = _tc; var U = _tu; var H = _th;
-            V.Add(Point(s.a, r - w)); V.Add(Point(s.a, r));
+            Vector2 up = new Vector2(0f, Rise * k * (0.6f + 0.4f * k));   // it lifts, faster as it goes
+            V.Add(Point(s.a, r - w) + up * 0.7f); V.Add(Point(s.a, r) + up);  // the outer edge most: tongues lean up
             Color inner = c; inner.a *= 0.85f;
             C.Add(inner); C.Add(c);
             float u = s.a / (Mathf.PI * 2f) * 3f;   // streaks repeat three times round
             U.Add(new Vector2(u, 0f)); U.Add(new Vector2(u, 1f));
-            H.Add(new Vector2(heat, 0f)); H.Add(new Vector2(heat, 0f));
+            H.Add(new Vector2(heat, k)); H.Add(new Vector2(heat, k));   // y: age, for the fire shader
         }
 
         static void Fill(Mesh m, List<Vector3> v, List<Color> c, List<Vector2> u, List<Vector2> h, List<int> t)
@@ -334,6 +337,20 @@ namespace HearthHollow.Dungeon
             }
         }
 
+        static Material _fire;
+        /// Burning ribbon (Rendering/FireTrail.shader): set as Look.
+        public static Material FireMaterial
+        {
+            get
+            {
+                if (_fire != null) return _fire;
+                var src = Resources.Load<Material>("HHFx/Fire Trail");
+                if (src != null) _fire = new Material(src);
+                else { var sh = Shader.Find("HearthHollow/Fire Trail"); if (sh != null) _fire = new Material(sh); }
+                return _fire;
+            }
+        }
+
         static Texture2D Streaks()
         {
             const int W = 128, H = 32;
@@ -361,6 +378,6 @@ namespace HearthHollow.Dungeon
 
         // domain reload is off: the cached material and texture belong to the last play session
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetForPlay() { _mat = null; _bladeShape = null; }
+        static void ResetForPlay() { _mat = null; _fire = null; _bladeShape = null; }
     }
 }
